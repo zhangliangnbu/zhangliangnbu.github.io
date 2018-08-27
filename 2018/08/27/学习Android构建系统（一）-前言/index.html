@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next muse use-motion" lang="">
+<html class="theme-next muse use-motion" lang="zh-CN">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Android,Build," />
+  <meta name="keywords" content="Android,Build,Gradle,Groovy," />
 
 
 
@@ -94,18 +94,18 @@
 
 
 
-<meta name="description" content="说明 开发Android应用，就离不开基于Gradle的Android构建系统。刚开始做Android开发的时候，遇到编译问题，一般上网搜索解决之。但一般很难知道问题产生的深层次原因，也不知道以后如何避免，更不知道如何快速解决一般性的编译异常问题。想去学习，但一般的博客或书籍的内容与Android开发者官网介绍的内容相似，没有关于Groovy和Gradle的内容，让人很难理解，只知道是这样，而不知">
-<meta name="keywords" content="Android,Build">
+<meta name="description" content="说明开发Android应用，就离不开基于Gradle的Android构建系统。刚开始做Android开发的时候，遇到编译问题，一般上网搜索解决之。但一般很难知道问题产生的深层次原因，也不知道以后如何避免，更不知道如何快速解决一般性的编译异常问题。想去学习，但一般的博客或书籍的内容与Android开发者官网介绍的内容相似，没有关于Groovy和Gradle的内容，让人很难理解，只知道是这样，而不知道">
+<meta name="keywords" content="Android,Build,Gradle,Groovy">
 <meta property="og:type" content="article">
 <meta property="og:title" content="学习Android构建系统（一）-前言">
 <meta property="og:url" content="http://yoursite.com/2018/08/27/学习Android构建系统（一）-前言/index.html">
 <meta property="og:site_name" content="CodingForEverything">
-<meta property="og:description" content="说明 开发Android应用，就离不开基于Gradle的Android构建系统。刚开始做Android开发的时候，遇到编译问题，一般上网搜索解决之。但一般很难知道问题产生的深层次原因，也不知道以后如何避免，更不知道如何快速解决一般性的编译异常问题。想去学习，但一般的博客或书籍的内容与Android开发者官网介绍的内容相似，没有关于Groovy和Gradle的内容，让人很难理解，只知道是这样，而不知">
-<meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-08-27T10:14:50.584Z">
+<meta property="og:description" content="说明开发Android应用，就离不开基于Gradle的Android构建系统。刚开始做Android开发的时候，遇到编译问题，一般上网搜索解决之。但一般很难知道问题产生的深层次原因，也不知道以后如何避免，更不知道如何快速解决一般性的编译异常问题。想去学习，但一般的博客或书籍的内容与Android开发者官网介绍的内容相似，没有关于Groovy和Gradle的内容，让人很难理解，只知道是这样，而不知道">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-08-27T12:59:11.719Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="学习Android构建系统（一）-前言">
-<meta name="twitter:description" content="说明 开发Android应用，就离不开基于Gradle的Android构建系统。刚开始做Android开发的时候，遇到编译问题，一般上网搜索解决之。但一般很难知道问题产生的深层次原因，也不知道以后如何避免，更不知道如何快速解决一般性的编译异常问题。想去学习，但一般的博客或书籍的内容与Android开发者官网介绍的内容相似，没有关于Groovy和Gradle的内容，让人很难理解，只知道是这样，而不知">
+<meta name="twitter:description" content="说明开发Android应用，就离不开基于Gradle的Android构建系统。刚开始做Android开发的时候，遇到编译问题，一般上网搜索解决之。但一般很难知道问题产生的深层次原因，也不知道以后如何避免，更不知道如何快速解决一般性的编译异常问题。想去学习，但一般的博客或书籍的内容与Android开发者官网介绍的内容相似，没有关于Groovy和Gradle的内容，让人很难理解，只知道是这样，而不知道">
 
 
 
@@ -158,7 +158,7 @@
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
 
   
   
@@ -211,6 +211,26 @@
         </li>
       
         
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
         <li class="menu-item menu-item-archives">
           <a href="/archives/" rel="section">
             
@@ -222,7 +242,7 @@
       
         
         <li class="menu-item menu-item-tags">
-          <a href="/tags/" rel="section">
+          <a href="/tags" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
@@ -268,7 +288,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Zhang Liang">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="https://www.xda-developers.com/files/2013/12/android-code.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -352,8 +372,7 @@
       
 
       
-        <h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><hr>
-<p>开发Android应用，就离不开基于Gradle的Android构建系统。刚开始做Android开发的时候，遇到编译问题，一般上网搜索解决之。但一般很难知道问题产生的深层次原因，也不知道以后如何避免，更不知道如何快速解决一般性的编译异常问题。想去学习，但一般的博客或书籍的内容与Android开发者官网介绍的内容相似，没有关于Groovy和Gradle的内容，让人很难理解，只知道是这样，而不知道为什么是这样。于是，一直想对Android构建系统做一个系统性的学习和总结，最近终于能够抽出一些空来做这件事。</p>
+        <h1 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h1><p>开发Android应用，就离不开基于Gradle的Android构建系统。刚开始做Android开发的时候，遇到编译问题，一般上网搜索解决之。但一般很难知道问题产生的深层次原因，也不知道以后如何避免，更不知道如何快速解决一般性的编译异常问题。想去学习，但一般的博客或书籍的内容与Android开发者官网介绍的内容相似，没有关于Groovy和Gradle的内容，让人很难理解，只知道是这样，而不知道为什么是这样。于是，一直想对Android构建系统做一个系统性的学习和总结，最近终于能够抽出一些空来做这件事。</p>
 <p>本来只想写一篇文章，但写到Gradle之后，发现篇幅太长，故分开写，当做一个系列。</p>
 <p><strong>学习目标</strong><br>对于Android Build System，我们应该掌握哪些知识或技能点呢？</p>
 <ol>
@@ -370,7 +389,7 @@
 <li><a href="https://developer.android.com/studio/build/" target="_blank" rel="noopener">Android开发者官网-Configure your build</a></li>
 </ol>
 <p><br></p>
-<h2 id="Android构建系统与三大知识块"><a href="#Android构建系统与三大知识块" class="headerlink" title="Android构建系统与三大知识块"></a>Android构建系统与三大知识块</h2><p><strong>Android构建系统</strong><br>Android构建系统，即Android Build System，它的作用是编译app资源和源代码，并将它们打包成APK。之后我们可以对APK进行测试、部署、签名和发布。</p>
+<h1 id="Android构建系统与三大知识块"><a href="#Android构建系统与三大知识块" class="headerlink" title="Android构建系统与三大知识块"></a>Android构建系统与三大知识块</h1><p><strong>Android构建系统</strong><br>Android构建系统，即Android Build System，它的作用是编译app资源和源代码，并将它们打包成APK。之后我们可以对APK进行测试、部署、签名和发布。</p>
 <blockquote>
 <p>The Android build system compiles app resources and source code, and packages them into APKs that you can test, deploy, sign, and distribute</p>
 </blockquote>
@@ -386,21 +405,21 @@
 </li>
 </ul>
 <p><br></p>
-<h2 id="开发环境"><a href="#开发环境" class="headerlink" title="开发环境"></a>开发环境</h2><ol>
-<li>主流操作系统。Gradle能够运行在所有的主流操作系统上，我的系统是<code>masOS High Sierra Version 10.13.6</code> 。</li>
-<li><a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html" target="_blank" rel="noopener">Java JDK</a> 7+。Gradle基于Groovy，Groovy需要Java开发环境，Gradle官网说Gradle运行的最低Java JDK版本是7。<blockquote>
-<p>Gradle runs on all major operating systems and requires only a Java JDK version 7 or higher to run</p>
-</blockquote>
+<h1 id="开发环境"><a href="#开发环境" class="headerlink" title="开发环境"></a>开发环境</h1><ol>
+<li><p>主流操作系统。Gradle能够运行在所有的主流操作系统上，我的系统是<code>masOS High Sierra Version 10.13.6</code> 。</p>
 </li>
-</ol>
-<p>我的Java版本如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ java -version</span><br><span class="line">java version &quot;1.8.0_91&quot;</span><br><span class="line">Java(TM) SE Runtime Environment (build 1.8.0_91-b14)</span><br><span class="line">Java HotSpot(TM) 64-Bit Server VM (build 25.91-b14, mixed mode)</span><br></pre></td></tr></table></figure></p>
-<ol start="3">
-<li>Gradle。Gradle环境中包含Groovy，因此安装Gradle之后就不需要单独安装Groovy了。各平台以及不同安装方式见官网 <a href="https://docs.gradle.org/current/userguide/installation.html" target="_blank" rel="noopener">Installing Gradle</a>。macOS上可以使用<code>Homebrew</code>快速安装<code>$ brew install gradle</code>，安装成功后，查看版本信息如下：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ gradle -v</span><br><span class="line">------------------------------------------------------------</span><br><span class="line">Gradle 4.8.1</span><br><span class="line">------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">Build time:   2018-06-21 07:53:06 UTC</span><br><span class="line">Revision:     0abdea078047b12df42e7750ccba34d69b516a22</span><br><span class="line"></span><br><span class="line">Groovy:       2.4.12</span><br><span class="line">Ant:          Apache Ant(TM) version 1.9.11 compiled on March 23 2018</span><br><span class="line">JVM:          1.8.0_91 (Oracle Corporation 25.91-b14)</span><br><span class="line">OS:           Mac OS X 10.13.6 x86_64</span><br></pre></td></tr></table></figure>
+<li><p><a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html" target="_blank" rel="noopener">Java JDK</a> 7+。Gradle基于Groovy，Groovy需要Java开发环境，Gradle官网说Gradle运行的最低Java JDK版本是7。</p>
+<p>我的Java版本如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ java -version</span><br><span class="line">java version &quot;1.8.0_91&quot;</span><br><span class="line">Java(TM) SE Runtime Environment (build 1.8.0_91-b14)</span><br><span class="line">Java HotSpot(TM) 64-Bit Server VM (build 25.91-b14, mixed mode)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Gradle。Gradle环境中包含Groovy，因此安装Gradle之后就不需要单独安装Groovy了。各平台以及不同安装方式见官网 <a href="https://docs.gradle.org/current/userguide/installation.html" target="_blank" rel="noopener">Installing Gradle</a>。macOS上可以使用<code>Homebrew</code>快速安装<code>$ brew install gradle</code>，安装成功后，查看版本信息如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ gradle -v</span><br><span class="line">------------------------------------------------------------</span><br><span class="line">Gradle 4.8.1</span><br><span class="line">------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">Build time:   2018-06-21 07:53:06 UTC</span><br><span class="line">Revision:     0abdea078047b12df42e7750ccba34d69b516a22</span><br><span class="line"></span><br><span class="line">Groovy:       2.4.12</span><br><span class="line">Ant:          Apache Ant(TM) version 1.9.11 compiled on March 23 2018</span><br><span class="line">JVM:          1.8.0_91 (Oracle Corporation 25.91-b14)</span><br><span class="line">OS:           Mac OS X 10.13.6 x86_64</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
 <p><br></p>
-<h2 id="Hello-World示例"><a href="#Hello-World示例" class="headerlink" title="Hello World示例"></a>Hello World示例</h2><p>创建一个简单的Gradle项目：包含一个<code>build.gradle</code>文件的目录。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir hello-world</span><br><span class="line">$ <span class="built_in">cd</span> hello-world</span><br><span class="line">$ vim build.gradle</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">```gradle</span><br><span class="line">task helloworld &#123;</span><br><span class="line">  doLast &#123;</span><br><span class="line">      println&apos;Hello World!&apos;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="Hello-World示例"><a href="#Hello-World示例" class="headerlink" title="Hello World示例"></a>Hello World示例</h1><p>创建一个简单的Gradle项目：包含一个<code>build.gradle</code>文件的目录。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir hello-world</span><br><span class="line">$ <span class="built_in">cd</span> hello-world</span><br><span class="line">$ vim build.gradle</span><br></pre></td></tr></table></figure></p>
+<p><code>build.gradle</code>文件</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">task helloworld &#123;</span><br><span class="line">  doLast &#123;</span><br><span class="line">      println<span class="string">'Hello World!'</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>执行任务<br><figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ gradle helloworld</span><br><span class="line"><span class="comment"># 输出如下：</span></span><br><span class="line">Starting a Gradle Daemon (subsequent builds will be faster)</span><br><span class="line">&gt; Task :helloworld</span><br><span class="line">Hello World!</span><br><span class="line">BUILD SUCCESSFUL <span class="keyword">in</span> 2s</span><br><span class="line">1 actionable task: 1 executed</span><br></pre></td></tr></table></figure></p>
 <p>简单解释下 <code>build.gradle</code>文件：</p>
 <ol>
@@ -410,8 +429,7 @@
 <li>一个任务（<code>Task</code>）可以包含很多<code>Action</code>，执行任务的时候，顺序执行<code>Action</code>。</li>
 </ol>
 <p><br></p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><hr>
-<ol>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
 <li><a href="http://www.groovy-lang.org/learn.html" target="_blank" rel="noopener">Groovy 官网</a></li>
 <li><a href="https://gradle.org/" target="_blank" rel="noopener">Gradle官网</a></li>
 <li><a href="https://developer.android.com/studio/build/" target="_blank" rel="noopener">Android开发者官网-Configure your build</a></li>
@@ -436,6 +454,10 @@
             <a href="/tags/Android/" rel="tag"># Android</a>
           
             <a href="/tags/Build/" rel="tag"># Build</a>
+          
+            <a href="/tags/Gradle/" rel="tag"># Gradle</a>
+          
+            <a href="/tags/Groovy/" rel="tag"># Groovy</a>
           
         </div>
       
@@ -525,7 +547,7 @@
       <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
-               src="/images/avatar.gif"
+               src="https://www.xda-developers.com/files/2013/12/android-code.jpg"
                alt="Zhang Liang" />
           <p class="site-author-name" itemprop="name">Zhang Liang</p>
            
@@ -537,7 +559,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">posts</span>
               </a>
             </div>
@@ -547,10 +569,10 @@
             
             
             <div class="site-state-item site-state-categories">
-              
+              <a href="/categories/index.html">
                 <span class="site-state-item-count">1</span>
                 <span class="site-state-item-name">categories</span>
-              
+              </a>
             </div>
           
 
@@ -558,10 +580,10 @@
             
             
             <div class="site-state-item site-state-tags">
-              
+              <a href="/tags/index.html">
                 <span class="site-state-item-count">4</span>
                 <span class="site-state-item-name">tags</span>
-              
+              </a>
             </div>
           
 
@@ -594,7 +616,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#说明"><span class="nav-number">1.</span> <span class="nav-text">说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Android构建系统与三大知识块"><span class="nav-number">2.</span> <span class="nav-text">Android构建系统与三大知识块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开发环境"><span class="nav-number">3.</span> <span class="nav-text">开发环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hello-World示例"><span class="nav-number">4.</span> <span class="nav-text">Hello World示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#说明"><span class="nav-number">1.</span> <span class="nav-text">说明</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Android构建系统与三大知识块"><span class="nav-number">2.</span> <span class="nav-text">Android构建系统与三大知识块</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#开发环境"><span class="nav-number">3.</span> <span class="nav-text">开发环境</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Hello-World示例"><span class="nav-number">4.</span> <span class="nav-text">Hello World示例</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
             
 
           </div>

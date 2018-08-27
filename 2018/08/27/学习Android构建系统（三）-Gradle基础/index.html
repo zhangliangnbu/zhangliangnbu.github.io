@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next muse use-motion" lang="">
+<html class="theme-next muse use-motion" lang="zh-CN">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Android,Build,Gradle,Groovy," />
 
 
 
@@ -95,20 +95,20 @@
 
 
 <meta name="description" content="引言 Gradle是Android构建系统的重点，需要花费时间用心学习。学习资料主要是官方的Gradle Docs。  Gradle简介 Gradle是一个注重灵活性和性能的开源构建自动化工具，使用Groovy或Kotlin DSL来编写构建脚本。  虽然支持Kotlin，但还是建议学习Groovy。因为：一，目前官方示例里有许多还没有kotlin方式；二，目前大多数项目的Gradle脚本都是用G">
-<meta name="keywords" content="Andriod Web">
+<meta name="keywords" content="Android,Build,Gradle,Groovy">
 <meta property="og:type" content="article">
 <meta property="og:title" content="学习Android构建系统（三）-Gradle基础">
 <meta property="og:url" content="http://yoursite.com/2018/08/27/学习Android构建系统（三）-Gradle基础/index.html">
 <meta property="og:site_name" content="CodingForEverything">
 <meta property="og:description" content="引言 Gradle是Android构建系统的重点，需要花费时间用心学习。学习资料主要是官方的Gradle Docs。  Gradle简介 Gradle是一个注重灵活性和性能的开源构建自动化工具，使用Groovy或Kotlin DSL来编写构建脚本。  虽然支持Kotlin，但还是建议学习Groovy。因为：一，目前官方示例里有许多还没有kotlin方式；二，目前大多数项目的Gradle脚本都是用G">
-<meta property="og:locale" content="default">
+<meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2658578-2994773758087b8b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2658578-cdd4581f5ceba5ab.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2658578-4447b4bcffca92b9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2658578-e14ed964872f9d58.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2658578-f4b3e247a668231b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2658578-df8c01595c625c03.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2018-08-27T10:09:31.453Z">
+<meta property="og:updated_time" content="2018-08-27T10:46:32.744Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="学习Android构建系统（三）-Gradle基础">
 <meta name="twitter:description" content="引言 Gradle是Android构建系统的重点，需要花费时间用心学习。学习资料主要是官方的Gradle Docs。  Gradle简介 Gradle是一个注重灵活性和性能的开源构建自动化工具，使用Groovy或Kotlin DSL来编写构建脚本。  虽然支持Kotlin，但还是建议学习Groovy。因为：一，目前官方示例里有许多还没有kotlin方式；二，目前大多数项目的Gradle脚本都是用G">
@@ -165,7 +165,7 @@
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
 
   
   
@@ -218,6 +218,26 @@
         </li>
       
         
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
         <li class="menu-item menu-item-archives">
           <a href="/archives/" rel="section">
             
@@ -229,7 +249,7 @@
       
         
         <li class="menu-item menu-item-tags">
-          <a href="/tags/" rel="section">
+          <a href="/tags" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
@@ -275,7 +295,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Zhang Liang">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="https://www.xda-developers.com/files/2013/12/android-code.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -309,6 +329,28 @@
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android-Build-System/" itemprop="url" rel="index">
+                    <span itemprop="name">Android Build System</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -469,6 +511,18 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+            <a href="/tags/Build/" rel="tag"># Build</a>
+          
+            <a href="/tags/Gradle/" rel="tag"># Gradle</a>
+          
+            <a href="/tags/Groovy/" rel="tag"># Groovy</a>
+          
+        </div>
+      
 
       
       
@@ -487,6 +541,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/27/学习Android构建系统（四）-Gradle构建流程/" rel="prev" title="学习Android构建系统（四）-Gradle构建流程">
+                学习Android构建系统（四）-Gradle构建流程 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -551,7 +609,7 @@
       <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
-               src="/images/avatar.gif"
+               src="https://www.xda-developers.com/files/2013/12/android-code.jpg"
                alt="Zhang Liang" />
           <p class="site-author-name" itemprop="name">Zhang Liang</p>
            
@@ -563,7 +621,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">posts</span>
               </a>
             </div>
@@ -573,10 +631,10 @@
             
             
             <div class="site-state-item site-state-categories">
-              
+              <a href="/categories/index.html">
                 <span class="site-state-item-count">1</span>
                 <span class="site-state-item-name">categories</span>
-              
+              </a>
             </div>
           
 
@@ -584,10 +642,10 @@
             
             
             <div class="site-state-item site-state-tags">
-              
+              <a href="/tags/index.html">
                 <span class="site-state-item-count">4</span>
                 <span class="site-state-item-name">tags</span>
-              
+              </a>
             </div>
           
 

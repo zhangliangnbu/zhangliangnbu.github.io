@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next muse use-motion" lang="">
+<html class="theme-next muse use-motion" lang="zh-CN">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -101,7 +101,7 @@
 <meta property="og:url" content="http://yoursite.com/index.html">
 <meta property="og:site_name" content="CodingForEverything">
 <meta property="og:description" content="code android web">
-<meta property="og:locale" content="default">
+<meta property="og:locale" content="zh-CN">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CodingForEverything">
 <meta name="twitter:description" content="code android web">
@@ -157,7 +157,7 @@
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
 
   
   
@@ -212,6 +212,26 @@
         </li>
       
         
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
         <li class="menu-item menu-item-archives">
           <a href="/archives/" rel="section">
             
@@ -223,7 +243,7 @@
       
         
         <li class="menu-item menu-item-tags">
-          <a href="/tags/" rel="section">
+          <a href="/tags" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
@@ -264,12 +284,229 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/27/学习Android构建系统（四）-Gradle构建流程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhang Liang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://www.xda-developers.com/files/2013/12/android-code.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CodingForEverything">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/27/学习Android构建系统（四）-Gradle构建流程/" itemprop="url">学习Android构建系统（四）-Gradle构建流程</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-27T20:24:50+08:00">
+                2018-08-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="构建的生命周期"><a href="#构建的生命周期" class="headerlink" title="构建的生命周期"></a>构建的生命周期</h1><p>Gradle项目构建分为三个阶段：初始化、配置、执行。<br>参考官方手册 <a href="https://docs.gradle.org/current/userguide/build_lifecycle.html" target="_blank" rel="noopener">Build Lifecycle</a>。</p>
+<h2 id="初始化（Initialization）"><a href="#初始化（Initialization）" class="headerlink" title="初始化（Initialization）"></a>初始化（Initialization）</h2><p>在这个阶段中，Gradle决定哪些项目加入到构建中（因为Gradle支持多项目构建），并为这些项目分别创建一个<code>Project</code>实例。</p>
+<p>Gradle支持单项目和多项目构建，如果是单项目构建，则初始化当前项目即可，如果是多项目构建，则需要决定哪些项目需要加入到构建中并初始化。那么：</p>
+<ol>
+<li>Gradle是如何判断当前构建是单项目还是多项目构建呢？</li>
+<li>如果是多项目构建，Gradle又是如何决定将哪些项目加入到构建中呢？</li>
+</ol>
+<p><strong>构建多项目还是单项目？</strong><br>这里的关键是一个名为<code>setting.gradle</code>的文件，Gradle在初始化阶段会首先去寻找<code>setting.gradle</code>文件，寻找的规则如下：</p>
+<ol>
+<li>查找构建的目录下有<code>setting.gradle</code>文件。</li>
+<li>如果没有找到，则查找名为<code>master</code>的目录，该目录具有与当前目录相同的嵌套级别。</li>
+<li>如果没有找到，则查找父目录。</li>
+<li>如果没有找到，则进行单项目构建。</li>
+<li>如果找到了，Gradle会检查当前项目是否是<code>settings.gradle</code>中定义的多项目层次结构的一部分。如果不是，则进行单项目构建，否则进行多项目构建。</li>
+</ol>
+<p>多项目工程必须存在<code>setting.gradle</code>文件，并位于工程根目录，单项目工程则可以不需要这个文件。</p>
+<p><strong>构建多项目的项目集如何决定？</strong><br>多项目构建时，项目集由<code>setting.gradle</code>创建。项目集可以用一个树形结构表示，每个节点表示一个项目，并且有对应的项目路径。在大多数情况下，项目路径与文件系统中项目的物理位置一致，当然这也是可以配置的。<br>在<code>setting.gradle</code>中，有很多方法可以定义项目树，常见的是层次化和扁平化的布局。</p>
+<p>层次化布局<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// setting.gradle</span><br><span class="line">include &apos;project1&apos;, &apos;project2:child&apos;, &apos;project3:child1&apos;</span><br></pre></td></tr></table></figure></p>
+<p><code>include</code>方法接收多个项目路径作为参数。<br>每个项目路径对应文件系统的一个目录，通常，项目路径和文件目录一一对应，比如<code>project2:child</code>对应项目根目录下的<code>project2/child</code>目录。<br>如果项目树的叶子节点和它的父节点都需要包含在构建中，则只需指定叶子节点即可。比如，<code>project2:child</code>，将创建两个项目<code>project2</code>和<code>project2:child</code>。</p>
+<p>扁平化布局<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// setting.gradle</span><br><span class="line">includeFlat &apos;project3&apos;, &apos;project4&apos;</span><br></pre></td></tr></table></figure></p>
+<p><code>includeFlat</code>方法将目录名作为参数。这些目录是根项目目录的兄弟目录，并作为多项目树中根项目的子项目。</p>
+<p><strong>Settings语法</strong><br>这里主要说一下<code>include</code>方法的语法，其余的语法请见对应的<a href="https://docs.gradle.org/current/dsl/org.gradle.api.initialization.Settings.html" target="_blank" rel="noopener">DSL Reference</a><br><code>setting.gradle</code>在构建时会生成<code>Settings</code>对象，其<code>include</code>方法对应着 <code>Settings.include(java.lang.String[])</code>，查看其<a href="https://docs.gradle.org/current/dsl/org.gradle.api.initialization.Settings.html#org.gradle.api.initialization.Settings:include(java.lang.String[]" target="_blank" rel="noopener">DSL Reference</a>):</p>
+<ol>
+<li><code>include</code>方法接收项目路径，并将对应的项目添加到构建中。</li>
+<li>参数中支持的项目路径分隔符为’:’，而不是’/‘。</li>
+<li>路径的最后一个节点是项目的名称。</li>
+<li>项目路径是相对路径，对应的是根项目目录，可以使用<a href="https://docs.gradle.org/current/javadoc/org/gradle/api/initialization/ProjectDescriptor.html#setProjectDir-java.io.File-" target="_blank" rel="noopener"><code>ProjectDescriptor.setProjectDir(java.io.File)</code></a>)更改。</li>
+</ol>
+<p>示例<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// 引入两个项目, &apos;foo&apos; and &apos;foo:bar&apos;</span><br><span class="line">// 对应的文件目录是 $rootDir/a 和 $rootDir/a/b</span><br><span class="line">// directories are inferred by replacing &apos;:&apos; with &apos;/&apos;</span><br><span class="line">include &apos;foo:bar&apos;</span><br><span class="line"></span><br><span class="line">// include one project whose project dir does not match the logical project path</span><br><span class="line">// 引入‘baz’项目，对应的文件目录是foo/baz</span><br><span class="line">include &apos;baz&apos;</span><br><span class="line">project(&apos;:baz&apos;).projectDir = file(&apos;foo/baz&apos;)</span><br></pre></td></tr></table></figure></p>
+<h2 id="配置（Configuration）"><a href="#配置（Configuration）" class="headerlink" title="配置（Configuration）"></a>配置（Configuration）</h2><p>在这个阶段，Gradle会配置加入到构建中的<code>Project</code>实例，执行所有项目对应的构建脚本。<br><a href="https://docs.gradle.org/current/javadoc/index.html?org/gradle/api/Project.html" target="_blank" rel="noopener">https://docs.gradle.org/current/javadoc/index.html?org/gradle/api/Project.html</a></p>
+<blockquote>
+<p>作为名词的‘配置（Configuration）’是指，Gradle执行项目的构建脚本这一过程。<br>作为动词的’配置（ Configure）’是指，Gradle执行项目的构建脚本这一动作。</p>
+</blockquote>
+<p>默认情况下，配置项目遵循<a href="https://docs.gradle.org/current/userguide/multi_project_builds.html" target="_blank" rel="noopener">按需配置规则</a>：</p>
+<ul>
+<li>根项目总会被配置。</li>
+<li>构建的当前项目也会被配置。</li>
+<li>项目的依赖会被配置。如果项目A将项目B作为依赖，则构建A时，A和B都会被配置。</li>
+<li>任务依赖对应的项目会被配置。如’someTask.dependsOn(“:someOtherProject:someOtherTask”)‘，someOtherProject会被配置。</li>
+<li>通过命令行构建任务时会配置相应的项目。如构建 ‘projectA:projectB:someTask’时会配置projectB。</li>
+</ul>
+<h2 id="执行（Execution）"><a href="#执行（Execution）" class="headerlink" title="执行（Execution）"></a>执行（Execution）</h2><p>在这个阶段，首先，Gradle确定要执行的任务集，任务集是由输入到命令行的任务名称参数和当前目录决定的。然后，Gradle会去执行任务集中的每个任务。<br>任务（<code>Task</code>）由一系列的活动（<code>Action</code>）组成，当<code>Task</code>执行的时候，<code>Action</code>会依次执行。<code>Task</code>可以通过<code>doFirst</code>和<code>doLast</code>方法添加到<code>Task</code>中。<br>问题：</p>
+<ol>
+<li>多项目构建中，Gradle如何确定任务是哪个项目呢？尤其是任务名称相同的情况下。</li>
+<li>如果确定多个任务执行的顺序？</li>
+</ol>
+<p><strong>任务的位置</strong><br>以<code>$ gradle hello</code>为例，在执行阶段，Gradle会查找项目树层级，从构建的当前项目目录开始，往下查找名称为<code>hello</code>的任务并执行。因此Gradle不会执行当前项目的父项目和兄弟节点项目的任务。</p>
+<p><strong>任务的顺序</strong><br>如果未定义任何其他内容，Gradle将以字母数字顺序执行任务。比如 “:consumer:action” 将先于 “:producer:action”执行。</p>
+<blockquote>
+<p>If nothing else is defined, Gradle executes the task in alphanumeric order</p>
+</blockquote>
+<p><br></p>
+<h1 id="示例-单项目构建"><a href="#示例-单项目构建" class="headerlink" title="示例-单项目构建"></a>示例-单项目构建</h1><hr>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建项目目录</span></span><br><span class="line">$ mkdir single-project-build-lifecycle-demo</span><br><span class="line">$ <span class="built_in">cd</span> single-project-build-lifecycle-demo</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建settings.gradle文件</span></span><br><span class="line">$ vi settings.gradle</span><br></pre></td></tr></table></figure>
+<p><code>settings.gradle</code>文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rootProject.name = &apos;single-project-build-lifecycle-demo&apos;</span><br><span class="line">println &apos;settings.gradle -&gt; this is executed during the initialization phase.&apos;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建build.gradle文件</span></span><br><span class="line">$ vi build.gradle</span><br></pre></td></tr></table></figure>
+<p><code>build.gradle</code>文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">println &apos;build.gradle -&gt; global println -&gt; This is executed during the configuration phase.&apos;</span><br><span class="line"></span><br><span class="line">task configured &#123;</span><br><span class="line">    println &apos;build.gradle -&gt; task configured -&gt; This is also executed during the configuration phase.&apos;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">task test &#123;</span><br><span class="line">    doLast &#123;</span><br><span class="line">        println &apos;build.gradle -&gt; task test -&gt; doLast -&gt; This is executed during the execution phase.&apos;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">task testBoth &#123;</span><br><span class="line">    doFirst &#123;</span><br><span class="line">      println &apos;build.gradle -&gt; task testBoth -&gt; doFirst -&gt; This is executed first during the execution phase.&apos;</span><br><span class="line">    &#125;</span><br><span class="line">    doLast &#123;</span><br><span class="line">      println &apos;build.gradle -&gt; task testBoth -&gt; doLast -&gt; This is executed last during the execution phase.&apos;</span><br><span class="line">    &#125;</span><br><span class="line">    println &apos;build.gradle -&gt; task testBoth -&gt; This is executed during the configuration phase as well.&apos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>开始构建，并执行testBoth任务 <code>$ gradle testBoth</code>，输出如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">settings.gradle -&gt; this is executed during the initialization phase.</span><br><span class="line"></span><br><span class="line">&gt; Configure project :</span><br><span class="line">build.gradle -&gt; global println -&gt; This is executed during the configuration phase.</span><br><span class="line">build.gradle -&gt; task configured -&gt; This is also executed during the configuration phase.</span><br><span class="line">build.gradle -&gt; task testBoth -&gt; This is executed during the configuration phase as well.</span><br><span class="line"></span><br><span class="line">&gt; Task :testBoth</span><br><span class="line">build.gradle -&gt; task testBoth -&gt; doFirst -&gt; This is executed first during the execution phase.</span><br><span class="line">build.gradle -&gt; task testBoth -&gt; doLast -&gt; This is executed last during the execution phase.</span><br><span class="line"></span><br><span class="line">BUILD SUCCESSFUL <span class="keyword">in</span> 0s</span><br><span class="line">1 actionable task: 1 executed</span><br></pre></td></tr></table></figure>
+<p>构建过程如下：</p>
+<ol>
+<li><p>初始化阶段。<br>执行<code>settings.gradle</code>脚本，所以首先输出’settings.gradle -&gt; this is executed during the initialization phase.’。</p>
+</li>
+<li><p>配置阶段。<br>由于<code>settings.gradle</code>没有定义项目，根项目即当前项目有<code>build.gradle</code>，因此只是执行这个文件。顺序执行：打印语句、三个task方法。<br>这里的三个task方法对应<code>Project</code>实例中<code>Task task(String name, Closure configureClosure)</code>，查看其<a href="https://docs.gradle.org/current/dsl/org.gradle.api.Project.html#org.gradle.api.Project:task(java.lang.String,%20groovy.lang.Closure" target="_blank" rel="noopener">Reference文档</a>)，说是这个方法会产生一个任务对象并添加到当前<code>Project</code>实例中，并且在返回这个任务的时候会执行闭包以配置这个任务。也就说在配置我们这个项目时，三个<code>task</code>方法的闭包都会被执行。<br>以testBoth任务对应的<code>task</code>方法为例，它的闭包里包含<code>doFirst</code>、<code>doLast</code>和<code>println</code>三个方法。其中<code>doFirst</code>和<code>doLast</code>是<code>Task</code>的方法，查看<code>doFirst</code>的<a href="https://docs.gradle.org/current/dsl/org.gradle.api.Task.html#org.gradle.api.Task:doFirst(groovy.lang.Closure" target="_blank" rel="noopener">Reference文档</a>)，说是添加闭包到任务的action列表中，当任务执行的时候，会执行这个闭包。在配置阶段，并不会去执行任务，也就是说不会去执行<code>doFirst</code>和<code>doLast</code>闭包里的内容。<br>因此，在配置阶段，Gradle会依次执行三个任务方法里的闭包，而不会执行闭包里添加action的闭包即<code>doFirst</code>和<code>doLast</code>的闭包，因此会依次输出<br>‘build.gradle -&gt; task configured -&gt; …’ 和‘build.gradle -&gt; task testBoth -…’</p>
+</li>
+<li><p>执行阶段。<br>由于在命令行只构建testBoth任务，因此这个阶段只执行testBoth任务中的<code>Action</code>列表，依次执行<code>doFirst</code>和<code>doLast</code>的闭包。</p>
+</li>
+</ol>
+<p><br></p>
+<h1 id="示例-多项目构建"><a href="#示例-多项目构建" class="headerlink" title="示例-多项目构建"></a>示例-多项目构建</h1><hr>
+<p>参考官方手册<a href="https://docs.gradle.org/current/userguide/multi_project_builds.html#sec:project_jar_dependencies" target="_blank" rel="noopener">Authoring Multi-Project Builds</a><br>模拟一个常见的Java项目，目录结构如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">multi-project-build-lifecycle-demo/</span><br><span class="line">  settings.gradle</span><br><span class="line">  build.gradle</span><br><span class="line">  api/</span><br><span class="line">    src/main/java/</span><br><span class="line">      org/gradle/sample/</span><br><span class="line">        api/</span><br><span class="line">          Person.java</span><br><span class="line">        apiImpl/</span><br><span class="line">          PersonImpl.java</span><br><span class="line">  services/personService/</span><br><span class="line">    src/</span><br><span class="line">      main/java/</span><br><span class="line">        org/gradle/sample/services/</span><br><span class="line">          PersonService.java</span><br><span class="line">      test/java/</span><br><span class="line">        org/gradle/sample/services/</span><br><span class="line">          PersonServiceTest.java</span><br><span class="line">  shared/</span><br><span class="line">    src/main/java/</span><br><span class="line">      org/gradle/sample/shared/</span><br><span class="line">        Helper.java</span><br></pre></td></tr></table></figure></p>
+<p>根目录<code>settings.gradle</code><br><figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">include</span> <span class="string">'api'</span>, <span class="string">'shared'</span>, <span class="string">'services:personService'</span></span><br></pre></td></tr></table></figure></p>
+<p>根目录<code>build.gradle</code><br><figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">subprojects</span> &#123;</span><br><span class="line">    apply plugin: <span class="string">'java'</span></span><br><span class="line">    <span class="keyword">group</span> = <span class="string">'org.gradle.sample'</span></span><br><span class="line">    version = <span class="string">'1.0'</span></span><br><span class="line">    <span class="keyword">repositories</span> &#123;</span><br><span class="line">        mavenCentral()</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">dependencies</span> &#123;</span><br><span class="line">        testCompile <span class="string">"junit:junit:4.12"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">project</span>(<span class="string">':shared'</span>) &#123;</span><br><span class="line">    <span class="keyword">task</span> hello &#123;</span><br><span class="line">        <span class="keyword">doLast</span> &#123;</span><br><span class="line">            <span class="keyword">println</span> <span class="string">"shared task hello -&gt; doLast"</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">println</span> <span class="string">"shared task hello"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">project</span>(<span class="string">':api'</span>) &#123;</span><br><span class="line">    <span class="keyword">dependencies</span> &#123;</span><br><span class="line">        <span class="keyword">compile</span> <span class="keyword">project</span>(<span class="string">':shared'</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">task</span> hello &#123;</span><br><span class="line">        <span class="keyword">doLast</span> &#123;</span><br><span class="line">            <span class="keyword">println</span> <span class="string">"api task hello -&gt; doLast"</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">println</span> <span class="string">"api task hello"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">project</span>(<span class="string">':services:personService'</span>) &#123;</span><br><span class="line">    <span class="keyword">dependencies</span> &#123;</span><br><span class="line">        <span class="keyword">compile</span> <span class="keyword">project</span>(<span class="string">':shared'</span>), <span class="keyword">project</span>(<span class="string">':api'</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">task</span> hello &#123;</span><br><span class="line">        <span class="keyword">doLast</span> &#123;</span><br><span class="line">            <span class="keyword">println</span> <span class="string">"personService task hello -&gt; doLast"</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">println</span> <span class="string">"personService task hello"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>执行命令<code>gradle -i :services:personService:hello</code>，输出如下</p>
+<blockquote>
+<p><code>-i</code> 是gradle的log等级的一种，输出较为详细的info信息<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">Initialized native services <span class="keyword">in</span>: /Users/zhangliang/.gradle/native</span><br><span class="line">The client will now receive all logging from the daemon (pid: 27188). The daemon <span class="built_in">log</span> file: /Users/zhangliang/.gradle/daemon/4.8.1/daemon-27188.out.log</span><br><span class="line">Starting 4th build <span class="keyword">in</span> daemon [uptime: 2 mins 55.761 secs, performance: 98%, no major garbage collections]</span><br><span class="line">Using 8 worker leases.</span><br><span class="line">Starting Build</span><br><span class="line">Settings evaluated using settings file <span class="string">'/Users/zhangliang/Projects/tools/learn-gradle/multi-project-build-lifecycle-demo/settings.gradle'</span>.</span><br><span class="line">Projects loaded. Root project using build file <span class="string">'/Users/zhangliang/Projects/tools/learn-gradle/multi-project-build-lifecycle-demo/build.gradle'</span>.</span><br><span class="line">Included projects: [root project <span class="string">'multi-project-build-lifecycle-demo'</span>, project <span class="string">':api'</span>, project <span class="string">':services'</span>, project <span class="string">':shared'</span>, project <span class="string">':services:personService'</span>]</span><br><span class="line"></span><br><span class="line">&gt; Configure project :</span><br><span class="line">Evaluating root project <span class="string">'multi-project-build-lifecycle-demo'</span> using build file <span class="string">'/Users/zhangliang/Projects/tools/learn-gradle/multi-project-build-lifecycle-demo/build.gradle'</span>.</span><br><span class="line">shared task hello</span><br><span class="line">api task hello</span><br><span class="line">personService task hello</span><br><span class="line"></span><br><span class="line">&gt; Configure project :api</span><br><span class="line">Evaluating project <span class="string">':api'</span> using build file <span class="string">'/Users/zhangliang/Projects/tools/learn-gradle/multi-project-build-lifecycle-demo/api/build.gradle'</span>.</span><br><span class="line"></span><br><span class="line">&gt; Configure project :services</span><br><span class="line">Evaluating project <span class="string">':services'</span> using build file <span class="string">'/Users/zhangliang/Projects/tools/learn-gradle/multi-project-build-lifecycle-demo/services/build.gradle'</span>.</span><br><span class="line"></span><br><span class="line">&gt; Configure project :shared</span><br><span class="line">Evaluating project <span class="string">':shared'</span> using build file <span class="string">'/Users/zhangliang/Projects/tools/learn-gradle/multi-project-build-lifecycle-demo/shared/build.gradle'</span>.</span><br><span class="line"></span><br><span class="line">&gt; Configure project :services:personService</span><br><span class="line">Evaluating project <span class="string">':services:personService'</span> using build file <span class="string">'/Users/zhangliang/Projects/tools/learn-gradle/multi-project-build-lifecycle-demo/services/personService/build.gradle'</span>.</span><br><span class="line">All projects evaluated.</span><br><span class="line">Selected primary task <span class="string">':services:personService:hello'</span> from project :services:personService</span><br><span class="line">Tasks to be executed: [task <span class="string">':services:personService:hello'</span>]</span><br><span class="line">:services:personService:hello (Thread[Task worker <span class="keyword">for</span> <span class="string">':'</span>,5,main]) started.</span><br><span class="line"></span><br><span class="line">&gt; Task :services:personService:hello</span><br><span class="line">Task <span class="string">':services:personService:hello'</span> is not up-to-date because:</span><br><span class="line">  Task has not declared any outputs despite executing actions.</span><br><span class="line">personService task hello -&gt; doLast</span><br><span class="line">:services:personService:hello (Thread[Task worker <span class="keyword">for</span> <span class="string">':'</span>,5,main]) completed. Took 0.001 secs.</span><br><span class="line"></span><br><span class="line">BUILD SUCCESSFUL <span class="keyword">in</span> 0s</span><br><span class="line">1 actionable task: 1 executed</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>从输出可以看出：</p>
+<ol>
+<li>Gradle首先查找<code>settings.gradle</code>文件进行初始化，确定根项目目录并创建所有<code>include</code>的项目实例。其中包括<code>services</code>。</li>
+<li>配置<code>settings.gradle</code>中<code>include</code>的所有的项目。<br>项目配置的顺序，首先是根项目，其次是子项目，多个子项目看来也是按照字母顺序依次进行的。<blockquote>
+<p>当前配置排序是<br>[root project ‘multi-project-build-lifecycle-demo’, project ‘:api’, project ‘:services’, project ‘:shared’, project ‘:services:personService’]<br>当我将‘shared’项目重命名为‘ashared’后，配置排序变为<br>[root project ‘multi-project-build-lifecycle-demo’, project ‘:api’, project ‘:ashared’, project ‘:services’, project ‘:services:personService’]</p>
+</blockquote>
+</li>
+<li>最后执行任务<code>:services:personService:hello</code>。</li>
+</ol>
+<h1 id="配置模式-跨项目配置或配置注入"><a href="#配置模式-跨项目配置或配置注入" class="headerlink" title="配置模式 跨项目配置或配置注入"></a>配置模式 跨项目配置或配置注入</h1><p><a href="https://docs.gradle.org/current/userguide/multi_project_builds.html#sec:cross_project_configuration" target="_blank" rel="noopener">https://docs.gradle.org/current/userguide/multi_project_builds.html#sec:cross_project_configuration</a></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><hr>
+<ol>
+<li><a href="https://docs.gradle.org/current/userguide/userguide.html" target="_blank" rel="noopener">Gradle官网 user guide</a></li>
+<li><a href="http://www.groovy-lang.org/learn.html" target="_blank" rel="noopener">Groovy 官网</a></li>
+<li><a href="https://blog.csdn.net/singwhatiwanna/article/details/76084580" target="_blank" rel="noopener">任玉刚 Gradle从入门到实战 - Groovy基础</a></li>
+<li><a href="http://tools.android.com/tech-docs/new-build-system/user-guide" target="_blank" rel="noopener">Android-Gradle Plugin User Guide</a> 这篇文档已经废弃，但说的比较全面，值得参考</li>
+<li><a href="https://developer.android.com/studio/build/" target="_blank" rel="noopener">Android-Configure your build</a> 这是新的文档</li>
+<li><a href="http://google.github.io/android-gradle-dsl/current/" target="_blank" rel="noopener">Android Gradle Plugin  DSL API</a></li>
+<li><a href="https://www.jianshu.com/p/001abe1d8e95" target="_blank" rel="noopener">个人博客-Gradle 入门</a></li>
+<li><a href="https://blog.csdn.net/innost/article/details/48228651" target="_blank" rel="noopener">深入理解Android之Gradle</a></li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/27/学习Android构建系统（三）-Gradle基础/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Zhang Liang">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="https://www.xda-developers.com/files/2013/12/android-code.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -305,6 +542,28 @@
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android-Build-System/" itemprop="url" rel="index">
+                    <span itemprop="name">Android Build System</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -505,7 +764,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Zhang Liang">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="https://www.xda-developers.com/files/2013/12/android-code.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -729,7 +988,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Zhang Liang">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="https://www.xda-developers.com/files/2013/12/android-code.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -817,8 +1076,7 @@
       
         
           
-            <h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><hr>
-<p>开发Android应用，就离不开基于Gradle的Android构建系统。刚开始做Android开发的时候，遇到编译问题，一般上网搜索解决之。但一般很难知道问题产生的深层次原因，也不知道以后如何避免，更不知道如何快速解决一般性的编译异常问题。想去学习，但一般的博客或书籍的内容与Android开发者官网介绍的内容相似，没有关于Groovy和Gradle的内容，让人很难理解，只知道是这样，而不知道为什么是这样。于是，一直想对Android构建系统做一个系统性的学习和总结，最近终于能够抽出一些空来做这件事。</p>
+            <h1 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h1><p>开发Android应用，就离不开基于Gradle的Android构建系统。刚开始做Android开发的时候，遇到编译问题，一般上网搜索解决之。但一般很难知道问题产生的深层次原因，也不知道以后如何避免，更不知道如何快速解决一般性的编译异常问题。想去学习，但一般的博客或书籍的内容与Android开发者官网介绍的内容相似，没有关于Groovy和Gradle的内容，让人很难理解，只知道是这样，而不知道为什么是这样。于是，一直想对Android构建系统做一个系统性的学习和总结，最近终于能够抽出一些空来做这件事。</p>
 <p>本来只想写一篇文章，但写到Gradle之后，发现篇幅太长，故分开写，当做一个系列。</p>
 <p><strong>学习目标</strong><br>对于Android Build System，我们应该掌握哪些知识或技能点呢？</p>
 <ol>
@@ -835,7 +1093,7 @@
 <li><a href="https://developer.android.com/studio/build/" target="_blank" rel="noopener">Android开发者官网-Configure your build</a></li>
 </ol>
 <p><br></p>
-<h2 id="Android构建系统与三大知识块"><a href="#Android构建系统与三大知识块" class="headerlink" title="Android构建系统与三大知识块"></a>Android构建系统与三大知识块</h2><p><strong>Android构建系统</strong><br>Android构建系统，即Android Build System，它的作用是编译app资源和源代码，并将它们打包成APK。之后我们可以对APK进行测试、部署、签名和发布。</p>
+<h1 id="Android构建系统与三大知识块"><a href="#Android构建系统与三大知识块" class="headerlink" title="Android构建系统与三大知识块"></a>Android构建系统与三大知识块</h1><p><strong>Android构建系统</strong><br>Android构建系统，即Android Build System，它的作用是编译app资源和源代码，并将它们打包成APK。之后我们可以对APK进行测试、部署、签名和发布。</p>
 <blockquote>
 <p>The Android build system compiles app resources and source code, and packages them into APKs that you can test, deploy, sign, and distribute</p>
 </blockquote>
@@ -851,21 +1109,21 @@
 </li>
 </ul>
 <p><br></p>
-<h2 id="开发环境"><a href="#开发环境" class="headerlink" title="开发环境"></a>开发环境</h2><ol>
-<li>主流操作系统。Gradle能够运行在所有的主流操作系统上，我的系统是<code>masOS High Sierra Version 10.13.6</code> 。</li>
-<li><a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html" target="_blank" rel="noopener">Java JDK</a> 7+。Gradle基于Groovy，Groovy需要Java开发环境，Gradle官网说Gradle运行的最低Java JDK版本是7。<blockquote>
-<p>Gradle runs on all major operating systems and requires only a Java JDK version 7 or higher to run</p>
-</blockquote>
+<h1 id="开发环境"><a href="#开发环境" class="headerlink" title="开发环境"></a>开发环境</h1><ol>
+<li><p>主流操作系统。Gradle能够运行在所有的主流操作系统上，我的系统是<code>masOS High Sierra Version 10.13.6</code> 。</p>
 </li>
-</ol>
-<p>我的Java版本如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ java -version</span><br><span class="line">java version &quot;1.8.0_91&quot;</span><br><span class="line">Java(TM) SE Runtime Environment (build 1.8.0_91-b14)</span><br><span class="line">Java HotSpot(TM) 64-Bit Server VM (build 25.91-b14, mixed mode)</span><br></pre></td></tr></table></figure></p>
-<ol start="3">
-<li>Gradle。Gradle环境中包含Groovy，因此安装Gradle之后就不需要单独安装Groovy了。各平台以及不同安装方式见官网 <a href="https://docs.gradle.org/current/userguide/installation.html" target="_blank" rel="noopener">Installing Gradle</a>。macOS上可以使用<code>Homebrew</code>快速安装<code>$ brew install gradle</code>，安装成功后，查看版本信息如下：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ gradle -v</span><br><span class="line">------------------------------------------------------------</span><br><span class="line">Gradle 4.8.1</span><br><span class="line">------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">Build time:   2018-06-21 07:53:06 UTC</span><br><span class="line">Revision:     0abdea078047b12df42e7750ccba34d69b516a22</span><br><span class="line"></span><br><span class="line">Groovy:       2.4.12</span><br><span class="line">Ant:          Apache Ant(TM) version 1.9.11 compiled on March 23 2018</span><br><span class="line">JVM:          1.8.0_91 (Oracle Corporation 25.91-b14)</span><br><span class="line">OS:           Mac OS X 10.13.6 x86_64</span><br></pre></td></tr></table></figure>
+<li><p><a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html" target="_blank" rel="noopener">Java JDK</a> 7+。Gradle基于Groovy，Groovy需要Java开发环境，Gradle官网说Gradle运行的最低Java JDK版本是7。</p>
+<p>我的Java版本如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ java -version</span><br><span class="line">java version &quot;1.8.0_91&quot;</span><br><span class="line">Java(TM) SE Runtime Environment (build 1.8.0_91-b14)</span><br><span class="line">Java HotSpot(TM) 64-Bit Server VM (build 25.91-b14, mixed mode)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Gradle。Gradle环境中包含Groovy，因此安装Gradle之后就不需要单独安装Groovy了。各平台以及不同安装方式见官网 <a href="https://docs.gradle.org/current/userguide/installation.html" target="_blank" rel="noopener">Installing Gradle</a>。macOS上可以使用<code>Homebrew</code>快速安装<code>$ brew install gradle</code>，安装成功后，查看版本信息如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ gradle -v</span><br><span class="line">------------------------------------------------------------</span><br><span class="line">Gradle 4.8.1</span><br><span class="line">------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">Build time:   2018-06-21 07:53:06 UTC</span><br><span class="line">Revision:     0abdea078047b12df42e7750ccba34d69b516a22</span><br><span class="line"></span><br><span class="line">Groovy:       2.4.12</span><br><span class="line">Ant:          Apache Ant(TM) version 1.9.11 compiled on March 23 2018</span><br><span class="line">JVM:          1.8.0_91 (Oracle Corporation 25.91-b14)</span><br><span class="line">OS:           Mac OS X 10.13.6 x86_64</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
 <p><br></p>
-<h2 id="Hello-World示例"><a href="#Hello-World示例" class="headerlink" title="Hello World示例"></a>Hello World示例</h2><p>创建一个简单的Gradle项目：包含一个<code>build.gradle</code>文件的目录。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir hello-world</span><br><span class="line">$ <span class="built_in">cd</span> hello-world</span><br><span class="line">$ vim build.gradle</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">```gradle</span><br><span class="line">task helloworld &#123;</span><br><span class="line">  doLast &#123;</span><br><span class="line">      println&apos;Hello World!&apos;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="Hello-World示例"><a href="#Hello-World示例" class="headerlink" title="Hello World示例"></a>Hello World示例</h1><p>创建一个简单的Gradle项目：包含一个<code>build.gradle</code>文件的目录。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir hello-world</span><br><span class="line">$ <span class="built_in">cd</span> hello-world</span><br><span class="line">$ vim build.gradle</span><br></pre></td></tr></table></figure></p>
+<p><code>build.gradle</code>文件</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">task helloworld &#123;</span><br><span class="line">  doLast &#123;</span><br><span class="line">      println<span class="string">'Hello World!'</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>执行任务<br><figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ gradle helloworld</span><br><span class="line"><span class="comment"># 输出如下：</span></span><br><span class="line">Starting a Gradle Daemon (subsequent builds will be faster)</span><br><span class="line">&gt; Task :helloworld</span><br><span class="line">Hello World!</span><br><span class="line">BUILD SUCCESSFUL <span class="keyword">in</span> 2s</span><br><span class="line">1 actionable task: 1 executed</span><br></pre></td></tr></table></figure></p>
 <p>简单解释下 <code>build.gradle</code>文件：</p>
 <ol>
@@ -875,8 +1133,7 @@
 <li>一个任务（<code>Task</code>）可以包含很多<code>Action</code>，执行任务的时候，顺序执行<code>Action</code>。</li>
 </ol>
 <p><br></p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><hr>
-<ol>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
 <li><a href="http://www.groovy-lang.org/learn.html" target="_blank" rel="noopener">Groovy 官网</a></li>
 <li><a href="https://gradle.org/" target="_blank" rel="noopener">Gradle官网</a></li>
 <li><a href="https://developer.android.com/studio/build/" target="_blank" rel="noopener">Android开发者官网-Configure your build</a></li>
@@ -934,7 +1191,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Zhang Liang">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="https://www.xda-developers.com/files/2013/12/android-code.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -1078,7 +1335,7 @@
       <section class="site-overview sidebar-panel sidebar-panel-active">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
-               src="/images/avatar.gif"
+               src="https://www.xda-developers.com/files/2013/12/android-code.jpg"
                alt="Zhang Liang" />
           <p class="site-author-name" itemprop="name">Zhang Liang</p>
            
@@ -1090,7 +1347,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">posts</span>
               </a>
             </div>
@@ -1100,10 +1357,10 @@
             
             
             <div class="site-state-item site-state-categories">
-              
+              <a href="/categories/index.html">
                 <span class="site-state-item-count">1</span>
                 <span class="site-state-item-name">categories</span>
-              
+              </a>
             </div>
           
 
@@ -1111,10 +1368,10 @@
             
             
             <div class="site-state-item site-state-tags">
-              
+              <a href="/tags/index.html">
                 <span class="site-state-item-count">4</span>
                 <span class="site-state-item-name">tags</span>
-              
+              </a>
             </div>
           
 
