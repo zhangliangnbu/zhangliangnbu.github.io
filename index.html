@@ -284,6 +284,365 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/28/学习Android构建系统（五）-Gradle的Wrapper、命令行和环境配置/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhang Liang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://www.xda-developers.com/files/2013/12/android-code.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CodingForEverything">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/28/学习Android构建系统（五）-Gradle的Wrapper、命令行和环境配置/" itemprop="url">学习Android构建系统（五）-Gradle的Wrapper、命令行和环境配置</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-28T16:12:25+08:00">
+                2018-08-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习Android构建系统/" itemprop="url" rel="index">
+                    <span itemprop="name">学习Android构建系统</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>这三个知识点不难，但经常用到，如果不看官方文档，有时候并不知道怎么使用，出现问题也不知道原因，所以有必要做一个总结。由于每个知识点都不多，又有关联，所以放在同一节。</p>
+<h1 id="Gradle-Wrapper"><a href="#Gradle-Wrapper" class="headerlink" title="Gradle Wrapper"></a>Gradle Wrapper</h1><p>Gradle Wrapper（以下简写为“Wrapper”）用于管理当前项目的Gradle版本，Gradle官方强烈推荐使用Wrapper构建项目。多人协作时，必须规定项目的Gradle版本，并以此版本的Gradle作为项目的构建工具，由于每个人在本地安装的Gradle版本可能并不一致（也没有必要一致），因此有必要在项目中统一管理Gradle版本。</p>
+<p>Wrapper的文件结构如下（项目根目录中）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">├── build.gradle</span><br><span class="line">├── settings.gradle</span><br><span class="line">├── gradle</span><br><span class="line">│   └── wrapper</span><br><span class="line">│       ├── gradle-wrapper.jar</span><br><span class="line">│       └── gradle-wrapper.properties</span><br><span class="line">├── gradlew</span><br><span class="line">└── gradlew.bat</span><br></pre></td></tr></table></figure>
+<p>包括一个gradle文件和两个可执行的脚本文件gradlew（macOS等平台用）和gradlew.bat（Windows平台用）。</p>
+<ul>
+<li><code>gradle-wrapper.jar</code>。用于下载所需版本的Gradle。</li>
+<li><code>gradle-wrapper.properties</code>。配置Gradle的版本号、本地存储地址等。各属性说明请见<a href="https://docs.gradle.org/current/userguide/gradle_wrapper.html#sec:adding_wrapper" target="_blank" rel="noopener">官方文档</a>。</li>
+<li><code>gradlew</code>, <code>gradlew.bat</code>。Wrapper的执行脚本，用于替代<code>gradle</code>命令来构建项目。</li>
+</ul>
+<blockquote>
+<p>注意：<code>gradle-wrapper.properties</code>中有一个<code>distributionUrl</code>属性，用于定义Gradle版本地下载URL，如<code>distributionUrl=https\://services.gradle.org/distributions/gradle-4.0-all.zip</code>，版本号后面有个“-all”，有时你也可能看到“-bin”，是什么意思呢？”-all”表示会下载此版本Gralde的所有的资源，包括二进制运行时文件、示例代码和相关文档。“-bin”表示只下载二进制运行时文件。</p>
+</blockquote>
+<p>Wrapper 构建项目时，其工作流程如下：</p>
+<ol>
+<li>检查规定的Gradle版本，如果没有则去服务器下载。</li>
+<li>下载的Gradle版本存储在Gradle的用户目录中。如macOS中默认存储所有的Gradle版本到<code>/Users/yourname/.gradle/wrapper/dists/</code>中。</li>
+<li>使用解压后的Gradle版本来构建项目。</li>
+</ol>
+<p><img src="https://docs.gradle.org/current/userguide/img/wrapper-workflow.png" alt="wrapper workflow"></p>
+<p><strong>添加Wrapper</strong></p>
+<p>使用命令行添加Wrapper有两种方式：</p>
+<ol>
+<li>使用<code>gradle init</code>创建新项目，则会初始化一个带有Wrapper的Gradle项目。</li>
+<li>使用<code>gradle wrapper</code>在旧的项目中添加Wrapper。</li>
+</ol>
+<blockquote>
+<p><code>wrapper</code>是Gradle的内建任务</p>
+</blockquote>
+<p>一般的IDE创建项目时都会自动生产Wrapper文件，如Android Studio。</p>
+<p><strong>使用Wrapper执行任务</strong></p>
+<p>用Wrapper脚本替换掉<code>gradle</code>来执行任务即可。以macOS平台为例，在项目根目录下执行<code>./gradlew [task name]</code>即可，如列出当前项目的所有任务，项目根目录下执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ./gradlew tasks</span><br></pre></td></tr></table></figure>
+<p><strong>更新Wrapper</strong></p>
+<p>有两种方式更新Wrapper</p>
+<ol>
+<li>命令行方法。<code>.gradlew wrapper --gradle-version [要更新的版本号]</code>。</li>
+<li>修改<code>gradle/wrapper/gradle-wrapper.properties</code>中的<code>distributionUrl</code>属性。</li>
+</ol>
+<p><br></p>
+<h1 id="Gradle命令行"><a href="#Gradle命令行" class="headerlink" title="Gradle命令行"></a>Gradle命令行</h1><p>与Gradle交互有两种方式，一是<a href="https://docs.gradle.org/current/userguide/command_line_interface.html" target="_blank" rel="noopener">命令行界面</a>，二是IDE的图形界面，如Android Studio。IDE方式各有不同且未必包括所有的命令行指令，但命令行方式却是不变的，因此需要学会基本的命令行指令，以不变应万变。</p>
+<blockquote>
+<p>注意：在项目中使用命令行方式时，推荐使用<code>./gradlew</code> or <code>gradlew.bat</code> 来代替 <code>gradle</code>。示例中为了方便，统一使用<code>gradle</code></p>
+</blockquote>
+<p>命令行指令可以自定义，参见<a href="https://docs.gradle.org/current/userguide/custom_tasks.html#sec:declaring_and_using_command_line_options" target="_blank" rel="noopener">declaring_and_using_command_line_options</a></p>
+<p><strong>指令形式</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gradle [taskName...] [--option-name...]</span><br></pre></td></tr></table></figure>
+<p>说明</p>
+<ul>
+<li><p>任务名（taskName）有多个时，使用空格分开，如<code>gradle task1 task2</code></p>
+</li>
+<li><p>在多项目工程中，执行某个项目的任务时，可以用“:”将项目名添加到任务名之前，如</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> gradle projectName:taskName</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> gradle :projectName:taskName</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>可选项（option-name）如果接收参数，建议使用<code>=</code>拼接，如</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> gradle task1 --console=plain</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>可选项规定一个行为时，可使用<code>--no-</code>作为其全称（long-form）前缀，来指定它的对立行为。如</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">--build-cache</span><br><span class="line">--no-build-cache</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>可选项的全称名称常有简写形式 ，如</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">--help</span><br><span class="line">-h</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong><a href="https://docs.gradle.org/current/userguide/command_line_interface.html#common_tasks" target="_blank" rel="noopener">常见内建（built-in）任务指令</a></strong></p>
+<ul>
+<li><code>gradle build</code>。生成所有的输出，并执行所有的检查。</li>
+<li><code>gradle run</code>。生成应用程序并执行某些脚本或二进制文件</li>
+<li><code>gradle check</code>。执行所有检测类任务如tests、linting等</li>
+<li><code>gradle clean</code>。删除build文件目录。</li>
+<li><code>gradle projects</code>。查看项目结构。</li>
+<li><code>gradle tasks</code>。查看任务列表。查看某个任务详细信息，可用<code>gradle help --task someTask</code></li>
+<li><code>gradle dependencies</code>。查看依赖列表。</li>
+</ul>
+<p>部分常见命令行选项说明如下：</p>
+<p><strong>调试类</strong></p>
+<ul>
+<li><code>-?</code>, <code>-h</code>, <code>--help</code>。查看帮助信息。</li>
+<li><code>-v</code>,<code>--version</code>。查看版本信息。</li>
+<li><code>-s</code>,<code>--stacktrace</code>。执行任务时，打印栈信息。如<code>gradle build --s</code></li>
+</ul>
+<p>其他选项说明见官方文档<a href="https://docs.gradle.org/current/userguide/command_line_interface.html#sec:command_line_debugging" target="_blank" rel="noopener">Debugging options</a></p>
+<p><strong>日志类</strong></p>
+<ul>
+<li><code>-q</code>, <code>--quiet</code>。只打印errors类信息。</li>
+<li><code>-i</code>, <code>--info</code>。打印详细的信息。</li>
+</ul>
+<p>其他选项说明见官方文档<a href="https://docs.gradle.org/current/userguide/command_line_interface.html#setting_log_level" target="_blank" rel="noopener">Logging options</a>，更多关于日志类描述请见<a href="https://docs.gradle.org/current/userguide/logging.html#logging" target="_blank" rel="noopener">Logging</a>。</p>
+<p><strong>性能类</strong></p>
+<p>用于优化构建的性能</p>
+<ul>
+<li><code>--configure-on-demand</code>,<code>--no-configure-on-demand</code>。是否开启按需配置模式。</li>
+<li><code>--build-cache</code>, <code>--no-build-cache</code>。是否使用缓存。</li>
+</ul>
+<p>其他选项说明见官方文档<a href="https://docs.gradle.org/current/userguide/command_line_interface.html#sec:command_line_performance" target="_blank" rel="noopener">Performance Options</a>，更多关于性能优化方面的描述请见 <a href="https://guides.gradle.org/performance/" target="_blank" rel="noopener">improving performance of Gradle builds here</a>.</p>
+<p><strong>环境配置类</strong></p>
+<p>用于配置构建时的环境</p>
+<ul>
+<li><code>-c</code>, <code>--settings-file</code>。如果不用默认的<code>settings.gradle</code>时，可指定Setting文件。</li>
+<li><code>-b</code>, <code>--build-file</code>。指定构建文件。</li>
+<li><code>-Dorg.gradle.jvmargs</code>。设置JVM参数。</li>
+</ul>
+<p>其他选项说明见官方文档<a href="https://docs.gradle.org/current/userguide/command_line_interface.html#environment_options" target="_blank" rel="noopener">Environment options</a>，更多关于环境配置方面的描述请见<a href="https://docs.gradle.org/current/userguide/build_environment.html#build_environment" target="_blank" rel="noopener">build environment</a></p>
+<p><br></p>
+<h1 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h1><p><a href="https://docs.gradle.org/current/userguide/build_environment.html" target="_blank" rel="noopener">配置构建环境</a>，主要配置Gradle构建参数和对应的JVM参数，如代理策略等。其目的是为了多人协作时，保持在一致的环境下进行项目开发。</p>
+<p>配置环境有几种途径，优先级从高往低，列出如下：</p>
+<ol>
+<li>命令行。</li>
+<li><code>GRADLE_USER_HOME</code>目录中的<code>gradle.properties</code>文件。</li>
+<li>项目根目录中的<code>gradle.properties</code>文件。</li>
+<li>环境变量。运行Gradle环境的变量，如JAVA_HOME等。</li>
+</ol>
+<p>配置环境其实是设置各种属性参数，以上四种方式对于某些属性都可以配置。其中命令行和<code>gradle.properties</code>文件方式支持所有属性的配置。属性有不同的级别，按照优先级从高到底列出如下：</p>
+<ol>
+<li>系统属性（System properties）。</li>
+<li>Gradle属性。</li>
+</ol>
+<p><strong>系统属性</strong></p>
+<p>用于设置Gradle的JVM环境。</p>
+<ol>
+<li>命令行方式。通过给属性添加<code>-D</code>前缀来设置。如<code>gradle -Dgradle.user.home=foo</code></li>
+<li><code>gradle.properties</code>文件方式。根目录中，为属性添加<code>systemProp.</code>前缀，如<code>systemProp.gradle.wrapperUser=myuser</code></li>
+</ol>
+<p>几个系统属性如下：</p>
+<ul>
+<li><code>gradle.wrapperUser=(myuser)</code>。设置Wrapper下载Gradle版本的代理服务器的用户名。</li>
+<li><code>gradle.wrapperPassword=(mypassword)</code>。设置Wrapper下载Gradle版本的代理服务器的密码。</li>
+<li><code>gradle.user.home=(path to directory)</code>。设置Gradle用户目录地址。</li>
+</ul>
+<p><strong>Gradle属性</strong></p>
+<p>Gradle属性都有对应的命令行方式，<code>gradle.properties</code>文件属性和对应的命令行如下：</p>
+<table>
+<thead>
+<tr>
+<th><code>gradle.properties</code>文件属性</th>
+<th style="text-align:left">命令行指令</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>org.gradle.caching=(true,false)</code></td>
+<td style="text-align:left"><code>--build-cache</code>,  <code>--no-build-cache</code></td>
+</tr>
+<tr>
+<td><code>org.gradle.caching.debug=(true,false)</code></td>
+<td style="text-align:left">?</td>
+</tr>
+<tr>
+<td><code>org.gradle.configureondemand=(true,false)</code></td>
+<td style="text-align:left"><code>--configure-on-demand</code>, <code>--no-configure-on-demand</code></td>
+</tr>
+<tr>
+<td><code>org.gradle.console=(auto,plain,rich,verbose)</code></td>
+<td style="text-align:left"><code>--console=(auto,plain,rich,verbose)</code></td>
+</tr>
+<tr>
+<td><code>org.gradle.daemon=(true,false)</code></td>
+<td style="text-align:left"><code>--daemon</code>, <code>--no-daemon</code></td>
+</tr>
+<tr>
+<td><code>org.gradle.daemon.idletimeout=(# of idle millis)</code></td>
+<td style="text-align:left"><code>-Dorg.gradle.daemon.idletimeout=(number of milliseconds)</code></td>
+</tr>
+<tr>
+<td><code>org.gradle.debug=(true,false)</code></td>
+<td style="text-align:left"><code>-Dorg.gradle.debug=（true,false)</code></td>
+</tr>
+<tr>
+<td><code>org.gradle.java.home=(path to JDK home)</code></td>
+<td style="text-align:left"><code>-Dorg.gradle.java.home</code></td>
+</tr>
+<tr>
+<td><code>org.gradle.jvmargs=(JVM arguments)</code></td>
+<td style="text-align:left"><code>-Dorg.gradle.jvmargs</code></td>
+</tr>
+<tr>
+<td><code>org.gradle.logging.level=(quiet,warn,lifecycle,info,debug)</code></td>
+<td style="text-align:left"><code>-Dorg.gradle.logging.level=(quiet,warn,lifecycle,info,debug)</code>或者 <code>-q</code>、<code>-w</code>、<code>-i</code>、<code>-d</code></td>
+</tr>
+<tr>
+<td><code>org.gradle.parallel=(true,false)</code></td>
+<td style="text-align:left"><code>--parallel</code>, <code>--no-parallel</code></td>
+</tr>
+<tr>
+<td><code>org.gradle.warning.mode=(all,none,summary)</code></td>
+<td style="text-align:left"><code>-Dorg.gradle.warning.mode=(all,none,summary)</code> 或者<code>--warning-mode=(all,none,summary)</code></td>
+</tr>
+<tr>
+<td><code>org.gradle.workers.max=(max # of worker processes)</code></td>
+<td style="text-align:left"><code>--max-workers</code></td>
+</tr>
+</tbody>
+</table>
+<p>详细说明请见<a href="https://docs.gradle.org/current/userguide/build_environment.html#sec:gradle_configuration_properties" target="_blank" rel="noopener">Gradle properties</a></p>
+<p>另外官网中有项目属性和通过项目属性配置任务的说明，这里不做描述，请见官网<a href="https://docs.gradle.org/current/userguide/build_environment.html#sec:project_properties" target="_blank" rel="noopener">Project properties</a></p>
+<p><strong>示例-设置JVM参数</strong></p>
+<p>对于每个Java虚拟机进程，Gradle默认配置堆空间最大为1024MB（<code>-Xmx1024m</code>）。-Xmx1024m根据项目大小，可以修改这一参数。如果使用了Gradle Daemon（<code>org.gradle.daemon=true</code>，默认开启），则配置参数如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">org.gradle.jvmargs=-Xmx2g -XX:MaxPermSize=256m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8</span><br></pre></td></tr></table></figure>
+<p>Java虚拟机参数设置参考Java HotSpot VM Options：<a href="https://docs.oracle.com/javase/8/docs/technotes/tools/unix/java.html" target="_blank" rel="noopener">Java 8及以上</a>，<a href="http://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html" target="_blank" rel="noopener">Java 7参考</a>。上面的参数说明如下：</p>
+<ul>
+<li><p><code>-Xmx[size]</code>。设置虚拟机最大内存空间。必须是1024的倍数，且不能小于2MB，单位为k/K、m/M、g/G，默认值随系统配置而变。与<code>XX:MaxHeapSize</code>等价。示例80MB：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-Xmx83886080</span><br><span class="line">-Xmx81920k</span><br><span class="line">-Xmx80m</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>-XX:MaxPermSize=[size]</code>。设置持久代最大空间，持久代用于存储常量等，如果报<code>java.lang.OutOfMemoryError: PermGen space</code>的异常，则需要增加这一空间。</p>
+</li>
+<li><p><code>-XX:-HeapDumpOnOutOfMemoryError</code>。当抛出<code>java.lang.OutOfMemoryError</code>异常时，将堆内容存储到文件中，用于调试。</p>
+</li>
+<li><p><code>-Dfile.encoding=UTF-8</code>。虚拟机编码格式。</p>
+<blockquote>
+<p>在参考文档中并没有找到<code></code>-Dfile.encoding`设置</p>
+</blockquote>
+</li>
+</ul>
+<p><strong>示例-设置代理</strong></p>
+<p>国内下载依赖和Google资源时有时候速度很慢，可以通过设置HTTP和HTTPS代理服务解决。在<code>gradle.properties</code>中设置如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">// http代理</span><br><span class="line">systemProp.http.proxyHost=www.somehost.org</span><br><span class="line">systemProp.http.proxyPort=8080</span><br><span class="line">systemProp.http.proxyUser=userid</span><br><span class="line">systemProp.http.proxyPassword=password</span><br><span class="line">systemProp.http.nonProxyHosts=*.nonproxyrepos.com|localhost</span><br><span class="line"></span><br><span class="line">// https代理</span><br><span class="line">systemProp.https.proxyHost=www.somehost.org</span><br><span class="line">systemProp.https.proxyPort=8080</span><br><span class="line">systemProp.https.proxyUser=userid</span><br><span class="line">systemProp.https.proxyPassword=password</span><br><span class="line">systemProp.https.nonProxyHosts=*.nonproxyrepos.com|localhost</span><br></pre></td></tr></table></figure>
+<p>如果没有user和password，可以不用写。</p>
+<p>其他的代理参数可以参考Java文档<a href="https://docs.oracle.com/javase/7/docs/technotes/guides/net/properties.html" target="_blank" rel="noopener">Networking Properties</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/27/学习Android构建系统（四）-Gradle构建流程/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1387,7 +1746,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-count">6</span>
                 <span class="site-state-item-name">posts</span>
               </a>
             </div>
