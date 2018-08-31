@@ -581,6 +581,9 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-Xmx83886080</span><br><span class="line">-Xmx81920k</span><br><span class="line">-Xmx80m</span><br></pre></td></tr></table></figure>
 </li>
 <li><p><code>-XX:MaxPermSize=[size]</code>。设置持久代最大空间，持久代用于存储常量等，如果报<code>java.lang.OutOfMemoryError: PermGen space</code>的异常，则需要增加这一空间。</p>
+<blockquote>
+<p>Java虚拟机内存划分请见Oracle官方文档<a href="https://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/generations.html" target="_blank" rel="noopener">Generations</a></p>
+</blockquote>
 </li>
 <li><p><code>-XX:-HeapDumpOnOutOfMemoryError</code>。当抛出<code>java.lang.OutOfMemoryError</code>异常时，将堆内容存储到文件中，用于调试。</p>
 </li>
@@ -592,9 +595,15 @@
 </ul>
 <p><strong>示例-设置代理</strong></p>
 <p>国内下载依赖和Google资源时有时候速度很慢，可以通过设置HTTP和HTTPS代理服务解决。在<code>gradle.properties</code>中设置如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">// http代理</span><br><span class="line">systemProp.http.proxyHost=www.somehost.org</span><br><span class="line">systemProp.http.proxyPort=8080</span><br><span class="line">systemProp.http.proxyUser=userid</span><br><span class="line">systemProp.http.proxyPassword=password</span><br><span class="line">systemProp.http.nonProxyHosts=*.nonproxyrepos.com|localhost</span><br><span class="line"></span><br><span class="line">// https代理</span><br><span class="line">systemProp.https.proxyHost=www.somehost.org</span><br><span class="line">systemProp.https.proxyPort=8080</span><br><span class="line">systemProp.https.proxyUser=userid</span><br><span class="line">systemProp.https.proxyPassword=password</span><br><span class="line">systemProp.https.nonProxyHosts=*.nonproxyrepos.com|localhost</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># http代理</span><br><span class="line">systemProp.http.proxyHost=www.somehost.org</span><br><span class="line">systemProp.http.proxyPort=8080</span><br><span class="line">systemProp.http.proxyUser=userid</span><br><span class="line">systemProp.http.proxyPassword=password</span><br><span class="line">systemProp.http.nonProxyHosts=*.nonproxyrepos.com|localhost</span><br><span class="line"></span><br><span class="line"># https代理</span><br><span class="line">systemProp.https.proxyHost=www.somehost.org</span><br><span class="line">systemProp.https.proxyPort=8080</span><br><span class="line">systemProp.https.proxyUser=userid</span><br><span class="line">systemProp.https.proxyPassword=password</span><br><span class="line">systemProp.https.nonProxyHosts=*.nonproxyrepos.com|localhost</span><br></pre></td></tr></table></figure>
 <p>如果没有user和password，可以不用写。</p>
 <p>其他的代理参数可以参考Java文档<a href="https://docs.oracle.com/javase/7/docs/technotes/guides/net/properties.html" target="_blank" rel="noopener">Networking Properties</a></p>
+<p><br></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li><a href="https://docs.gradle.org/current/userguide/gradle_wrapper.html" target="_blank" rel="noopener">Gradle官网-Gradle Wrapper</a></li>
+<li><a href="https://docs.gradle.org/current/userguide/command_line_interface.html" target="_blank" rel="noopener">Gradle官网-Command-Line Interface</a></li>
+<li><a href="https://docs.gradle.org/current/userguide/build_environment.html" target="_blank" rel="noopener">Gradle官网-Build Environment</a></li>
+</ol>
 
           
         
