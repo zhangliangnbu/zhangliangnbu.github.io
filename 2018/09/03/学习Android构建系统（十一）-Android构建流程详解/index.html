@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Android,Build,Gradle," />
 
 
 
@@ -94,18 +94,20 @@
 
 
 
-<meta name="description" content="code android web">
-<meta name="keywords" content="Andriod Web">
-<meta property="og:type" content="website">
-<meta property="og:title" content="about">
-<meta property="og:url" content="http://yoursite.com/about/index.html">
+<meta name="description" content="https://juejin.im/post/5a69c0ccf265da3e2a0dc9aa https://blog.csdn.net/yanbober/article/details/49408489 https://jasonzhong.github.io/2017/06/27/Android-Apk%E6%9E%84%E5%BB%BA%E5%8E%9F%E7%90%86/ #简介 And">
+<meta name="keywords" content="Android,Build,Gradle">
+<meta property="og:type" content="article">
+<meta property="og:title" content="学习Android构建系统（十一）-Android构建流程详解">
+<meta property="og:url" content="http://yoursite.com/2018/09/03/学习Android构建系统（十一）-Android构建流程详解/index.html">
 <meta property="og:site_name" content="CodingForEverything">
-<meta property="og:description" content="code android web">
+<meta property="og:description" content="https://juejin.im/post/5a69c0ccf265da3e2a0dc9aa https://blog.csdn.net/yanbober/article/details/49408489 https://jasonzhong.github.io/2017/06/27/Android-Apk%E6%9E%84%E5%BB%BA%E5%8E%9F%E7%90%86/ #简介 And">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-08-27T13:20:39.166Z">
+<meta property="og:image" content="http://yoursite.com/2018/09/03/images/android_build_process_simple_2x.png">
+<meta property="og:updated_time" content="2018-09-04T05:49:19.977Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="about">
-<meta name="twitter:description" content="code android web">
+<meta name="twitter:title" content="学习Android构建系统（十一）-Android构建流程详解">
+<meta name="twitter:description" content="https://juejin.im/post/5a69c0ccf265da3e2a0dc9aa https://blog.csdn.net/yanbober/article/details/49408489 https://jasonzhong.github.io/2017/06/27/Android-Apk%E6%9E%84%E5%BB%BA%E5%8E%9F%E7%90%86/ #简介 And">
+<meta name="twitter:image" content="http://yoursite.com/2018/09/03/images/android_build_process_simple_2x.png">
 
 
 
@@ -134,13 +136,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/about/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/09/03/学习Android构建系统（十一）-Android构建流程详解/"/>
 
 
 
 
 
-  <title>about | CodingForEverything</title>
+  <title>学习Android构建系统（十一）-Android构建流程详解 | CodingForEverything</title>
   
 
 
@@ -271,33 +273,185 @@
 
   <div id="posts" class="posts-expand">
     
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/03/学习Android构建系统（十一）-Android构建流程详解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhang Liang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://www.xda-developers.com/files/2013/12/android-code.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CodingForEverything">
+    </span>
+
     
-    
-    <div class="post-block page">
       <header class="post-header">
 
-	<h1 class="post-title" itemprop="name headline">about</h1>
-
-
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
         
         
+          <h1 class="post-title" itemprop="name headline">学习Android构建系统（十一）-Android构建流程详解</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-03T18:02:08+08:00">
+                2018-09-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
           
-        
-      </div>
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习Android构建系统/" itemprop="url" rel="index">
+                    <span itemprop="name">学习Android构建系统</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
       
+
+      
+        <p><a href="https://juejin.im/post/5a69c0ccf265da3e2a0dc9aa" target="_blank" rel="noopener">https://juejin.im/post/5a69c0ccf265da3e2a0dc9aa</a></p>
+<p><a href="https://blog.csdn.net/yanbober/article/details/49408489" target="_blank" rel="noopener">https://blog.csdn.net/yanbober/article/details/49408489</a></p>
+<p><a href="https://jasonzhong.github.io/2017/06/27/Android-Apk%E6%9E%84%E5%BB%BA%E5%8E%9F%E7%90%86/" target="_blank" rel="noopener">https://jasonzhong.github.io/2017/06/27/Android-Apk%E6%9E%84%E5%BB%BA%E5%8E%9F%E7%90%86/</a></p>
+<p>#简介</p>
+<p>Android构建流程是指将Android项目转换成Apk（Android Application Package）这一过程，里面涉及到许多工步骤和<a href="https://developer.android.com/studio/command-line/" target="_blank" rel="noopener">工具</a>。构建流程由Gradle工具和Android Gradle Plugin插件来管理，既可以通过IDE方式，也可以通过命令行方式来进行。</p>
+<h1 id="构建流程"><a href="#构建流程" class="headerlink" title="构建流程"></a>构建流程</h1><p>官网有一个简单的<a href="https://developer.android.com/studio/build/#build-process" target="_blank" rel="noopener">流程图</a>，如下：</p>
+<p><img src="../images/android_build_process_simple_2x.png" alt=""></p>
+<p>比较简略，图中主要展示了两步</p>
+<ol>
+<li>编译。编译器将源代码编译成DEX文件和供前者直接使用的资源文件。</li>
+<li>签名并打包。将上述DEX文件和资源文件进行签名，然后合并成APK。</li>
+</ol>
+
       
     </div>
     
     
     
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+            <a href="/tags/Build/" rel="tag"># Build</a>
+          
+            <a href="/tags/Gradle/" rel="tag"># Gradle</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/03/学习Android构建系统（十）-Android构建基础/" rel="next" title="学习Android构建系统（十）-Android构建基础">
+                <i class="fa fa-chevron-left"></i> 学习Android构建系统（十）-Android构建基础
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/04/学习Android构建系统（十一）-Android构建流程详解/" rel="prev" title="学习Android构建系统（十一）-Android构建流程详解">
+                学习Android构建系统（十一）-Android构建流程详解 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
   </div>
 
 
@@ -330,8 +484,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="https://www.xda-developers.com/files/2013/12/android-code.jpg"
@@ -393,6 +556,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#构建流程"><span class="nav-number">1.</span> <span class="nav-text">构建流程</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -506,10 +685,10 @@
   
 
   
-    <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
 <script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
 
-  
+
 
   
 
