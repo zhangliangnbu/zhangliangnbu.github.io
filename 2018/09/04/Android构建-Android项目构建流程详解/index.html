@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Android,Build,Gradle,开发笔记," />
+  <meta name="keywords" content="Android,Build,Gradle," />
 
 
 
@@ -94,20 +94,18 @@
 
 
 
-<meta name="description" content="问题描述之前构建Android项目时，经常出现以下WARNING： 12WARNING: Configuration &apos;compile&apos; is obsolete and has been replaced with &apos;implementation&apos; and &apos;api&apos;.It will be removed at the end of 2018. For more information see:">
-<meta name="keywords" content="Android,Build,Gradle,开发笔记">
+<meta name="description" content="https://juejin.im/post/5a69c0ccf265da3e2a0dc9aa https://blog.csdn.net/yanbober/article/details/49408489 https://jasonzhong.github.io/2017/06/27/Android-Apk%E6%9E%84%E5%BB%BA%E5%8E%9F%E7%90%86/ 简介Andro">
+<meta name="keywords" content="Android,Build,Gradle">
 <meta property="og:type" content="article">
-<meta property="og:title" content="开发笔记-Complie关键字过时警告问题">
-<meta property="og:url" content="http://yoursite.com/2018/09/10/开发笔记-Complie关键字过时WARNING解决/index.html">
+<meta property="og:title" content="Android构建06-Android项目构建流程详解">
+<meta property="og:url" content="http://yoursite.com/2018/09/04/Android构建-Android项目构建流程详解/index.html">
 <meta property="og:site_name" content="CodingForEverything">
-<meta property="og:description" content="问题描述之前构建Android项目时，经常出现以下WARNING： 12WARNING: Configuration &apos;compile&apos; is obsolete and has been replaced with &apos;implementation&apos; and &apos;api&apos;.It will be removed at the end of 2018. For more information see:">
+<meta property="og:description" content="https://juejin.im/post/5a69c0ccf265da3e2a0dc9aa https://blog.csdn.net/yanbober/article/details/49408489 https://jasonzhong.github.io/2017/06/27/Android-Apk%E6%9E%84%E5%BB%BA%E5%8E%9F%E7%90%86/ 简介Andro">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://yoursite.com/2018/09/10/开发笔记-Complie关键字过时WARNING解决/warning1.png">
-<meta property="og:updated_time" content="2018-09-10T09:42:53.953Z">
+<meta property="og:updated_time" content="2018-10-18T01:28:07.725Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="开发笔记-Complie关键字过时警告问题">
-<meta name="twitter:description" content="问题描述之前构建Android项目时，经常出现以下WARNING： 12WARNING: Configuration &apos;compile&apos; is obsolete and has been replaced with &apos;implementation&apos; and &apos;api&apos;.It will be removed at the end of 2018. For more information see:">
-<meta name="twitter:image" content="http://yoursite.com/2018/09/10/开发笔记-Complie关键字过时WARNING解决/warning1.png">
+<meta name="twitter:title" content="Android构建06-Android项目构建流程详解">
+<meta name="twitter:description" content="https://juejin.im/post/5a69c0ccf265da3e2a0dc9aa https://blog.csdn.net/yanbober/article/details/49408489 https://jasonzhong.github.io/2017/06/27/Android-Apk%E6%9E%84%E5%BB%BA%E5%8E%9F%E7%90%86/ 简介Andro">
 
 
 
@@ -136,13 +134,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/09/10/开发笔记-Complie关键字过时WARNING解决/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/09/04/Android构建-Android项目构建流程详解/"/>
 
 
 
 
 
-  <title>开发笔记-Complie关键字过时警告问题 | CodingForEverything</title>
+  <title>Android构建06-Android项目构建流程详解 | CodingForEverything</title>
   
 
 
@@ -285,7 +283,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/10/开发笔记-Complie关键字过时WARNING解决/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/04/Android构建-Android项目构建流程详解/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Zhang Liang">
@@ -302,7 +300,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">开发笔记-Complie关键字过时警告问题</h1>
+          <h1 class="post-title" itemprop="name headline">Android构建06-Android项目构建流程详解</h1>
         
 
         <div class="post-meta">
@@ -314,8 +312,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-10T16:29:15+08:00">
-                2018-09-10
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-04T13:53:41+08:00">
+                2018-09-04
               </time>
             
 
@@ -337,8 +335,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android开发笔记/" itemprop="url" rel="index">
-                    <span itemprop="name">Android开发笔记</span>
+                  <a href="/categories/学习Android构建系统/" itemprop="url" rel="index">
+                    <span itemprop="name">学习Android构建系统</span>
                   </a>
                 </span>
 
@@ -374,24 +372,30 @@
       
 
       
-        <h1 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h1><p>之前构建Android项目时，经常出现以下WARNING：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">WARNING: Configuration <span class="string">'compile'</span> is obsolete and has been replaced with <span class="string">'implementation'</span> and <span class="string">'api'</span>.</span><br><span class="line">It will be removed at the end of 2018. For more information see: http://d.android.com/r/tools/update-dependency-configurations.html</span><br></pre></td></tr></table></figure>
-<p>但我检查了APP项目以及所有的Module，都没有发现<code>compile</code>关键字，用全局搜索（command + shift + f）也没有查到，所以应该是某个远程依赖或插件中使用了<code>compile</code>关键字，但如何定位是哪一个呢？</p>
-<p>通过IDE<code>Sync</code>后的提示如下：</p>
-<img src="/2018/09/10/开发笔记-Complie关键字过时WARNING解决/warning1.png" title="Sync后的Warning提示">
+        <p><a href="https://juejin.im/post/5a69c0ccf265da3e2a0dc9aa" target="_blank" rel="noopener">https://juejin.im/post/5a69c0ccf265da3e2a0dc9aa</a></p>
+<p><a href="https://blog.csdn.net/yanbober/article/details/49408489" target="_blank" rel="noopener">https://blog.csdn.net/yanbober/article/details/49408489</a></p>
+<p><a href="https://jasonzhong.github.io/2017/06/27/Android-Apk%E6%9E%84%E5%BB%BA%E5%8E%9F%E7%90%86/" target="_blank" rel="noopener">https://jasonzhong.github.io/2017/06/27/Android-Apk%E6%9E%84%E5%BB%BA%E5%8E%9F%E7%90%86/</a></p>
+<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>Android构建流程是指将Android项目转换成Apk（Android Application Package）这一过程，里面涉及到许多工步骤和<a href="https://developer.android.com/studio/command-line/" target="_blank" rel="noopener">工具</a>。构建流程由Gradle工具和Android Gradle Plugin插件来管理，既可以通过IDE方式，也可以通过命令行方式来进行。</p>
+<h1 id="构建流程"><a href="#构建流程" class="headerlink" title="构建流程"></a>构建流程</h1><p>官网有一个简单的<a href="https://developer.android.com/studio/build/#build-process" target="_blank" rel="noopener">流程图</a>，如下：</p>
+
+<p>比较简略，图中主要展示了两步，且都是由Gradle工具和Andorid插件管理的：</p>
+<ol>
+<li>编译。编译器将源代码编译成DEX文件和供前者直接使用的资源文件。</li>
+<li>打包并签名。将上述DEX文件和资源文件合并成APK，之后进行签名生成最终可以用于安装、测试或发布的APK。</li>
+</ol>
+<p>在许多博客中，都提到一个<a href="http://androidsrc.net/android-app-build-overview/" target="_blank" rel="noopener">详细的流程图</a>，相关链接请见“参考”一节。都说是来自官网，但我没有找到，可能以前存在，现在已经删除了，如下：</p>
+
+<p>上述流程中涉及许多工具，如“aapt”、“aidl”等</p>
 <p><br></p>
-<h1 id="问题分析和解决"><a href="#问题分析和解决" class="headerlink" title="问题分析和解决"></a>问题分析和解决</h1><p>IDE给的提示太简略，只能通过Gradle命令和<a href="https://docs.gradle.org/current/userguide/command_line_interface.html#sec:command_line_debugging" target="_blank" rel="noopener">Logging options</a>来打印详细的构建信息来定位问题。Logging级别从简略到详细依次为<code>-q</code>、<code>-w</code> 、<code>-i</code>、<code>-d</code>。IDE默认应该是使用<code>-q</code>的，可以逐级打印信息，也可以直接使用<code>-d</code>级别日志打印信息。</p>
-<p>在项目根目录下，执行命令</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./gradlew assembleDebug -d &gt; gradle.log</span><br></pre></td></tr></table></figure>
-<p>其中<code>-d</code>是为了打印构建的Debug级别的信息，非常详细。由于信息非常多，命令行界面不能一屏完全显示，故放入名为<code>gradle.log</code>的文件中。</p>
-<p>最后生成的文件有13M多，5万多行。通过搜索关键字”WARNING”，定位信息如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">16:03:26.459 [DEBUG] [org.gradle.internal.progress.DefaultBuildOperationExecutor] Build operation <span class="string">'Apply plugin com.sensorsdata.analytics.android to project '</span>:app<span class="string">''</span> started</span><br><span class="line">16:03:26.459 [WARN] [org.gradle.api.Project] WARNING: Configuration <span class="string">'compile'</span> is obsolete and has been replaced with <span class="string">'implementation'</span> and <span class="string">'api'</span>.</span><br><span class="line">It will be removed at the end of 2018. For more information see: http://d.android.com/r/tools/update-dependency-configurations.html</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<p>警告信息出现在”Build operation Apply plugin com.sensorsdata.analytics.android to project…”语句下，那很可能就是Gradle在应用这个插件的时候报的错。</p>
-<p>插件是神策统计的，我的版本是<code>1.0.2</code>，查看官网给的<a href="https://dl.bintray.com/zouyuhan/maven" target="_blank" rel="noopener">Mavne库</a>，查看最新版本，<code>android-gradle-plugin2/</code>目录下，最高版本是<code>2.0.2</code>。</p>
-<p>更新插件版本，重新构建，警告消失了，问题解决了。</p>
-<blockquote>
-<p>文章首发<a href="https://zhangliangnbu.github.io/" target="_blank" rel="noopener">我的个人博客</a>和<a href="https://www.jianshu.com/" target="_blank" rel="noopener">简书</a></p>
-</blockquote>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li><a href="http://www.herongyang.com/Android/Project-Android-Application-Project-Build-Process.html" target="_blank" rel="noopener">Android Application Project Build Process</a></li>
+<li><a href="https://segmentfault.com/a/1190000008071324" target="_blank" rel="noopener">Android APK 编译打包流程</a></li>
+<li><a href="https://cdn-images-1.medium.com/max/1600/1*LbKGyabN6vr-9iR-rvnzPg.png" target="_blank" rel="noopener">https://cdn-images-1.medium.com/max/1600/1*LbKGyabN6vr-9iR-rvnzPg.png</a></li>
+<li><a href="https://juejin.im/entry/58b78d1b61ff4b006cd47e5b" target="_blank" rel="noopener">Apk 打包流程梳理-流程图较清晰</a></li>
+<li><a href="https://segmentfault.com/a/1190000008071324" target="_blank" rel="noopener">https://segmentfault.com/a/1190000008071324</a></li>
+<li><a href="https://segmentfault.com/a/1190000004916563" target="_blank" rel="noopener">https://segmentfault.com/a/1190000004916563</a></li>
+<li><a href="https://juejin.im/post/5a69c0ccf265da3e2a0dc9aa" target="_blank" rel="noopener">https://juejin.im/post/5a69c0ccf265da3e2a0dc9aa</a></li>
+</ol>
 
       
     </div>
@@ -415,8 +419,6 @@
           
             <a href="/tags/Gradle/" rel="tag"># Gradle</a>
           
-            <a href="/tags/开发笔记/" rel="tag"># 开发笔记</a>
-          
         </div>
       
 
@@ -428,8 +430,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/09/04/Android构建-Android项目构建流程详解/" rel="next" title="Android构建06-Android项目构建流程详解">
-                <i class="fa fa-chevron-left"></i> Android构建06-Android项目构建流程详解
+              <a href="/2018/08/27/Android构建04-Gradle构建流程/" rel="next" title="Android构建04-Gradle构建流程">
+                <i class="fa fa-chevron-left"></i> Android构建04-Gradle构建流程
               </a>
             
           </div>
@@ -438,8 +440,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/09/29/开发笔记-Gradle下载公司内部依赖失败问题排查/" rel="prev" title="开发笔记-Gradle下载公司内部依赖失败问题排查">
-                开发笔记-Gradle下载公司内部依赖失败问题排查 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/09/10/开发笔记-Complie关键字过时WARNING解决/" rel="prev" title="开发笔记-Complie关键字过时警告问题">
+                开发笔记-Complie关键字过时警告问题 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -574,7 +576,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#问题描述"><span class="nav-number">1.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#问题分析和解决"><span class="nav-number">2.</span> <span class="nav-text">问题分析和解决</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#构建流程"><span class="nav-number">2.</span> <span class="nav-text">构建流程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">3.</span> <span class="nav-text">参考</span></a></li></ol></div>
             
 
           </div>

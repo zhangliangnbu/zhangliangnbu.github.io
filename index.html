@@ -284,7 +284,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/29/Gradle下载公司内部依赖失败问题排查/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/18/Gradle的Wrapper、命令行和环境配置/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Zhang Liang">
@@ -303,7 +303,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/09/29/Gradle下载公司内部依赖失败问题排查/" itemprop="url">Gradle下载公司内部依赖失败问题排查</a></h1>
+                <a class="post-title-link" href="/2018/10/18/Gradle的Wrapper、命令行和环境配置/" itemprop="url">Gradle的Wrapper、命令行和环境配置</a></h1>
         
 
         <div class="post-meta">
@@ -315,8 +315,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-29T09:26:42+08:00">
-                2018-09-29
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-10-18T16:12:25+08:00">
+                2018-10-18
               </time>
             
 
@@ -338,1313 +338,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android开发笔记/" itemprop="url" rel="index">
-                    <span itemprop="name">Android开发笔记</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h1><p>最近的一个项目使用了公司自己的Maven库中的依赖，这个Maven库只能用公司内网访问。开始我设置了代理，<code>sync</code>后，有部分依赖不能下载，有时候<code>sync</code>依然会成功，但<code>build</code>一定会失败，执行<code>./gradlew build --stacktrack</code>,获得错误信息如下： </p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Could not resolve xxxxx.xxx.xxx.xxx.</span><br></pre></td></tr></table></figure>
-<p>只是公司自己的Maven库依赖不能解析，其他三方库依赖没有报错。 </p>
-<h1 id="问题排查"><a href="#问题排查" class="headerlink" title="问题排查"></a>问题排查</h1><p>排查思路如下： </p>
-<p><strong>一，确定公司内部Maven库能够从自己的电脑上访问</strong> </p>
-<ol>
-<li><p>是否能够<code>ping</code>通？ </p>
-<p><code>$ ping xxx.xxx.xxx(公司内部Maven库服务地址)</code>。 </p>
-</li>
-<li><p>能够<code>ping</code>通后，再用浏览器尝试访问公司内部Maven库，看能够找到需要的依赖。 </p>
-</li>
-</ol>
-<p>确定公司内部Maven库能够被访问后，再看下一步 </p>
-<p><strong>二，确定自己的Gradle没有设置外部代理</strong> </p>
-<p>如果设置了外部代理，则是从外部网络访问公司内部Maven，肯定是访问不了的。依次检查如下： </p>
-<ol>
-<li><p>项目根目录下的<code>gradle.properties</code>是否设置了代理。 </p>
-</li>
-<li><p>Android Studio是否设置了代理。”Preference -&gt; Appearence&amp;Behavior -&gt; System Settings -&gt; HTTP Proxy” </p>
-</li>
-<li><p>用户主目录<code>~/.gradle/gradle.properties</code>中是否设置了全局代理。 </p>
-</li>
-</ol>
-<p>如果设置了代理，则关闭所有的代理或者设置内部Maven库地址不走代理，而其他的走代理。 </p>
-<p><strong>内部Maven库地址不走代理设置</strong> </p>
-<p><code>gradle.properties</code>设置如下： </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemProp.http.nonProxyHosts=xxxx.xxxx.xxxx</span><br></pre></td></tr></table></figure>
-<p>Android Studio设置如下： </p>
-<p>在”Preference -&gt; Appearence&amp;Behavior -&gt; System Settings -&gt; HTTP Proxy”中的”No proxy for”中填入公司内部Host主机地址。 </p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/10/开发笔记-Complie关键字过时WARNING解决/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Zhang Liang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://www.xda-developers.com/files/2013/12/android-code.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="CodingForEverything">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/10/开发笔记-Complie关键字过时WARNING解决/" itemprop="url">开发笔记-Complie关键字过时警告问题</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-10T16:29:15+08:00">
-                2018-09-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android开发笔记/" itemprop="url" rel="index">
-                    <span itemprop="name">Android开发笔记</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h1><p>之前构建Android项目时，经常出现以下WARNING：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">WARNING: Configuration <span class="string">'compile'</span> is obsolete and has been replaced with <span class="string">'implementation'</span> and <span class="string">'api'</span>.</span><br><span class="line">It will be removed at the end of 2018. For more information see: http://d.android.com/r/tools/update-dependency-configurations.html</span><br></pre></td></tr></table></figure>
-<p>但我检查了APP项目以及所有的Module，都没有发现<code>compile</code>关键字，用全局搜索（command + shift + f）也没有查到，所以应该是某个远程依赖或插件中使用了<code>compile</code>关键字，但如何定位是哪一个呢？</p>
-<p>通过IDE<code>Sync</code>后的提示如下：</p>
-<img src="/2018/09/10/开发笔记-Complie关键字过时WARNING解决/warning1.png" title="Sync后的Warning提示">
-<p><br></p>
-<h1 id="问题分析和解决"><a href="#问题分析和解决" class="headerlink" title="问题分析和解决"></a>问题分析和解决</h1><p>IDE给的提示太简略，只能通过Gradle命令和<a href="https://docs.gradle.org/current/userguide/command_line_interface.html#sec:command_line_debugging" target="_blank" rel="noopener">Logging options</a>来打印详细的构建信息来定位问题。Logging级别从简略到详细依次为<code>-q</code>、<code>-w</code> 、<code>-i</code>、<code>-d</code>。IDE默认应该是使用<code>-q</code>的，可以逐级打印信息，也可以直接使用<code>-d</code>级别日志打印信息。</p>
-<p>在项目根目录下，执行命令</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./gradlew assembleDebug -d &gt; gradle.log</span><br></pre></td></tr></table></figure>
-<p>其中<code>-d</code>是为了打印构建的Debug级别的信息，非常详细。由于信息非常多，命令行界面不能一屏完全显示，故放入名为<code>gradle.log</code>的文件中。</p>
-<p>最后生成的文件有13M多，5万多行。通过搜索关键字”WARNING”，定位信息如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">16:03:26.459 [DEBUG] [org.gradle.internal.progress.DefaultBuildOperationExecutor] Build operation <span class="string">'Apply plugin com.sensorsdata.analytics.android to project '</span>:app<span class="string">''</span> started</span><br><span class="line">16:03:26.459 [WARN] [org.gradle.api.Project] WARNING: Configuration <span class="string">'compile'</span> is obsolete and has been replaced with <span class="string">'implementation'</span> and <span class="string">'api'</span>.</span><br><span class="line">It will be removed at the end of 2018. For more information see: http://d.android.com/r/tools/update-dependency-configurations.html</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<p>警告信息出现在”Build operation Apply plugin com.sensorsdata.analytics.android to project…”语句下，那很可能就是Gradle在应用这个插件的时候报的错。</p>
-<p>插件是神策统计的，我的版本是<code>1.0.2</code>，查看官网给的<a href="https://dl.bintray.com/zouyuhan/maven" target="_blank" rel="noopener">Mavne库</a>，查看最新版本，<code>android-gradle-plugin2/</code>目录下，最高版本是<code>2.0.2</code>。</p>
-<p>更新插件版本，重新构建，警告消失了，问题解决了。</p>
-<blockquote>
-<p>文章首发<a href="https://zhangliangnbu.github.io/" target="_blank" rel="noopener">我的个人博客</a>和<a href="https://www.jianshu.com/" target="_blank" rel="noopener">简书</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/04/学习Android构建系统（十一）-Android构建流程详解/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Zhang Liang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://www.xda-developers.com/files/2013/12/android-code.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="CodingForEverything">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/04/学习Android构建系统（十一）-Android构建流程详解/" itemprop="url">学习Android构建系统（十一）-Android构建流程详解</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-04T13:53:41+08:00">
-                2018-09-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/学习Android构建系统/" itemprop="url" rel="index">
-                    <span itemprop="name">学习Android构建系统</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><a href="https://juejin.im/post/5a69c0ccf265da3e2a0dc9aa" target="_blank" rel="noopener">https://juejin.im/post/5a69c0ccf265da3e2a0dc9aa</a></p>
-<p><a href="https://blog.csdn.net/yanbober/article/details/49408489" target="_blank" rel="noopener">https://blog.csdn.net/yanbober/article/details/49408489</a></p>
-<p><a href="https://jasonzhong.github.io/2017/06/27/Android-Apk%E6%9E%84%E5%BB%BA%E5%8E%9F%E7%90%86/" target="_blank" rel="noopener">https://jasonzhong.github.io/2017/06/27/Android-Apk%E6%9E%84%E5%BB%BA%E5%8E%9F%E7%90%86/</a></p>
-<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>Android构建流程是指将Android项目转换成Apk（Android Application Package）这一过程，里面涉及到许多工步骤和<a href="https://developer.android.com/studio/command-line/" target="_blank" rel="noopener">工具</a>。构建流程由Gradle工具和Android Gradle Plugin插件来管理，既可以通过IDE方式，也可以通过命令行方式来进行。</p>
-<h1 id="构建流程"><a href="#构建流程" class="headerlink" title="构建流程"></a>构建流程</h1><p>官网有一个简单的<a href="https://developer.android.com/studio/build/#build-process" target="_blank" rel="noopener">流程图</a>，如下：</p>
-<img src="/2018/09/04/学习Android构建系统（十一）-Android构建流程详解/android_build_process_simple_2x.png" title="Android Build Process">
-<p>比较简略，图中主要展示了两步，且都是由Gradle工具和Andorid插件管理的：</p>
-<ol>
-<li>编译。编译器将源代码编译成DEX文件和供前者直接使用的资源文件。</li>
-<li>打包并签名。将上述DEX文件和资源文件合并成APK，之后进行签名生成最终可以用于安装、测试或发布的APK。</li>
-</ol>
-<p>在许多博客中，都提到一个<a href="http://androidsrc.net/android-app-build-overview/" target="_blank" rel="noopener">详细的流程图</a>，相关链接请见“参考”一节。都说是来自官网，但我没有找到，可能以前存在，现在已经删除了，如下：</p>
-<img src="/2018/09/04/学习Android构建系统（十一）-Android构建流程详解/android_build_process_detail.png" title="Android Build Process">
-<p>上述流程中涉及许多工具，如“aapt”、“aidl”等</p>
-<p><br></p>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
-<li><a href="http://www.herongyang.com/Android/Project-Android-Application-Project-Build-Process.html" target="_blank" rel="noopener">Android Application Project Build Process</a></li>
-<li><a href="https://segmentfault.com/a/1190000008071324" target="_blank" rel="noopener">Android APK 编译打包流程</a></li>
-<li><a href="https://cdn-images-1.medium.com/max/1600/1*LbKGyabN6vr-9iR-rvnzPg.png" target="_blank" rel="noopener">https://cdn-images-1.medium.com/max/1600/1*LbKGyabN6vr-9iR-rvnzPg.png</a></li>
-<li><a href="https://juejin.im/entry/58b78d1b61ff4b006cd47e5b" target="_blank" rel="noopener">Apk 打包流程梳理-流程图较清晰</a></li>
-<li><a href="https://segmentfault.com/a/1190000008071324" target="_blank" rel="noopener">https://segmentfault.com/a/1190000008071324</a></li>
-<li><a href="https://segmentfault.com/a/1190000004916563" target="_blank" rel="noopener">https://segmentfault.com/a/1190000004916563</a></li>
-<li><a href="https://juejin.im/post/5a69c0ccf265da3e2a0dc9aa" target="_blank" rel="noopener">https://juejin.im/post/5a69c0ccf265da3e2a0dc9aa</a></li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/03/学习Android构建系统（十）-Android构建基础/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Zhang Liang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://www.xda-developers.com/files/2013/12/android-code.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="CodingForEverything">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/03/学习Android构建系统（十）-Android构建基础/" itemprop="url">学习Android构建系统（十）-Android构建基础</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-03T18:01:20+08:00">
-                2018-09-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/学习Android构建系统/" itemprop="url" rel="index">
-                    <span itemprop="name">学习Android构建系统</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>大纲：简介、Androi Plugin &amp;  DSL Reference、常见Android项目构建脚本结构</p>
-<p>挖坑，待续 :P</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/03/学习Android构建系统（九）-Gradle建议和总结/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Zhang Liang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://www.xda-developers.com/files/2013/12/android-code.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="CodingForEverything">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/03/学习Android构建系统（九）-Gradle建议和总结/" itemprop="url">学习Android构建系统（九）-Gradle建议和总结</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-03T17:53:38+08:00">
-                2018-09-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/学习Android构建系统/" itemprop="url" rel="index">
-                    <span itemprop="name">学习Android构建系统</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>挖坑，待续 :P</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/03/学习Android构建系统（八）-Gradle问题排查和性能优化/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Zhang Liang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://www.xda-developers.com/files/2013/12/android-code.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="CodingForEverything">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/03/学习Android构建系统（八）-Gradle问题排查和性能优化/" itemprop="url">学习Android构建系统（八）-Gradle问题排查和性能优化</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-03T17:50:46+08:00">
-                2018-09-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/学习Android构建系统/" itemprop="url" rel="index">
-                    <span itemprop="name">学习Android构建系统</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>大纲：</p>
-<ol>
-<li><p>简介</p>
-</li>
-<li><p>工具-Logging和Build Scan</p>
-</li>
-<li><p>Troubleshooting</p>
-</li>
-<li><p>性能优化</p>
-</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Configuration <span class="string">'compile'</span> is obsolete and has been replaced with <span class="string">'implementation'</span> and <span class="string">'api'</span>.</span><br><span class="line">It will be removed at the end of 2018. For more information see: http://d.android.com/r/tools/update-dependency-configurations.html</span><br></pre></td></tr></table></figure>
-<p>打印构建日志到文件中</p>
-<p><a href="http://willis7.github.io/blog/2013/gradle-output-to-log.html" target="_blank" rel="noopener">http://willis7.github.io/blog/2013/gradle-output-to-log.html</a></p>
-<p>挖坑，待续 :P</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/03/学习Android构建系统（七）-Gradle插件与内建任务/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Zhang Liang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://www.xda-developers.com/files/2013/12/android-code.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="CodingForEverything">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/03/学习Android构建系统（七）-Gradle插件与内建任务/" itemprop="url">学习Android构建系统（七）-Gradle插件与内建任务</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-03T17:47:05+08:00">
-                2018-09-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/学习Android构建系统/" itemprop="url" rel="index">
-                    <span itemprop="name">学习Android构建系统</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p>Gradle provides the core plugins (e.g. JavaPlugin) as part of its distribution which means they are automatically resolved</p>
-</blockquote>
-<p>挖坑，待续:p</p>
-<p><br></p>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
-<li><a href="https://docs.gradle.org/current/userguide/plugins.html#sec:using_plugins" target="_blank" rel="noopener">Using Gradle Plugins</a></li>
-<li><a href="https://docs.gradle.org/current/userguide/standard_plugins.html" target="_blank" rel="noopener">Standard Gradle plugins</a></li>
-<li><a href="https://docs.gradle.org/current/userguide/plugin_reference.html" target="_blank" rel="noopener">Core Plugin</a></li>
-<li><a href="https://docs.gradle.org/current/userguide/custom_plugins.html" target="_blank" rel="noopener">Writing Custom Plugins</a></li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/31/学习Android构建系统（六）-Gradle依赖管理/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Zhang Liang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://www.xda-developers.com/files/2013/12/android-code.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="CodingForEverything">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/31/学习Android构建系统（六）-Gradle依赖管理/" itemprop="url">学习Android构建系统（六）-Gradle依赖管理</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-31T15:03:18+08:00">
-                2018-08-31
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/学习Android构建系统/" itemprop="url" rel="index">
-                    <span itemprop="name">学习Android构建系统</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>依赖管理是一种以自动方式声明、解析和使用项目所需的依赖的技术。其中“依赖”的术语，官方定义如下：</p>
-<blockquote>
-<p>A dependency is a pointer to another piece of software required to build, test or run a <a href="https://docs.gradle.org/current/userguide/dependency_management_terminology.html#sub:terminology_module" target="_blank" rel="noopener">module</a></p>
-<p>所以，依赖是指向软件模块的指针，而非模块本身</p>
-</blockquote>
-<p><strong>依赖管理流程</strong></p>
-<ol>
-<li>声明。在构建脚本中声明依赖和对应的仓库。</li>
-<li>解析。项目构建时，Gradle会定位依赖的本地路径或远程服务器路径并下载依赖（有必须要的话）。</li>
-<li>缓存。依赖解析后，Gradle会将从远程服务下载的依赖缓存到本地，避免下次构建时重复下载。</li>
-</ol>
-<p><strong>依赖是如何解析的</strong></p>
-<ol>
-<li><p>查找依赖指向的模块。根据仓库的类型，查找对应的描述模块的元数据属性文件（ (<code>.module</code>, <code>.pom</code> or <code>ivy.xml</code>) ）。</p>
-<ul>
-<li>如果依赖的版本号是动态的（如<code>1.+</code>），取最高的固定版本。</li>
-<li>如果属性文件是POM文件则递归遍历父POM目录中的模块（？）。</li>
-</ul>
-</li>
-</ol>
-<ol start="2">
-<li><p>选择模块。</p>
-<ul>
-<li>对于动态版本声明，选择最高的版本。</li>
-</ul>
-<ul>
-<li>优先选择库中有属性文件定义的模块。</li>
-<li>优先选择排序在前的库。</li>
-<li>声明固定版本号的依赖并在库中定义了属性文件时，选择此依赖。</li>
-</ul>
-</li>
-</ol>
-<blockquote>
-<p>注意：依赖的解析这块知识点，有些地方依旧不明晰，续详细研究</p>
-</blockquote>
-<p><br></p>
-<h1 id="依赖与仓库"><a href="#依赖与仓库" class="headerlink" title="依赖与仓库"></a>依赖与仓库</h1><p><strong>依赖的几种类型</strong></p>
-<ul>
-<li><p>模块依赖（Module dependencies）。指向一个库中的模块，这是最常见的依赖类型。模块依赖的声明有两种方法：字符串表示法和map表示法，详细描述请见<a href="https://docs.gradle.org/current/dsl/org.gradle.api.artifacts.dsl.DependencyHandler.html" target="_blank" rel="noopener">DependencyHandler</a>和<a href="https://docs.gradle.org/current/javadoc/org/gradle/api/artifacts/ExternalModuleDependency.html" target="_blank" rel="noopener">ExternalModuleDependency</a> Reference。示例如下：</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    <span class="comment">// map表示法</span></span><br><span class="line">    runtime <span class="string">group:</span> <span class="string">'org.springframework'</span>, <span class="string">name:</span> <span class="string">'spring-core'</span>, <span class="string">version:</span> <span class="string">'2.5'</span></span><br><span class="line">    <span class="comment">// 字符串表示法</span></span><br><span class="line">    runtime <span class="string">'org.springframework:spring-core:2.5'</span>,</span><br><span class="line">            <span class="string">'org.springframework:spring-aop:2.5'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>文件依赖。指向无需仓库的一系列文件。如</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    runtime files(<span class="string">'libs/a.jar'</span>, <span class="string">'libs/b.jar'</span>)</span><br><span class="line">    runtime fileTree(<span class="string">dir:</span> <span class="string">'libs'</span>, <span class="string">include:</span> <span class="string">'*.jar'</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>项目依赖。指向多项目工程主项目需要用到的其他项目，声明如下：</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    compile project(<span class="string">':shared'</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>特定分发的依赖。如API依赖、TestKit依赖和本地Groovy依赖等。</p>
-</li>
-</ul>
-<p><strong>常见的仓库</strong></p>
-<ul>
-<li><a href="https://docs.gradle.org/current/userguide/repository_types.html#sec:flat_dir_resolver" target="_blank" rel="noopener">文件系统仓库</a>。通过查找文件目录以解析依赖。</li>
-<li><a href="https://mvnrepository.com/repos/central" target="_blank" rel="noopener">Maven Central 仓库</a>。一般默认的Maven仓库。</li>
-<li><a href="https://jfrog.com/" target="_blank" rel="noopener">JCenter Maven 仓库</a>。Android默认的Maven仓库。</li>
-<li><a href="https://dl.google.com/dl/android/maven2/index.html" target="_blank" rel="noopener">Google Maven 仓库</a>。Google的支持库所在的Maven仓库。</li>
-<li><a href="https://docs.gradle.org/current/userguide/repository_types.html#sub:maven_local" target="_blank" rel="noopener">本地 Maven仓库</a>。就是你开发项目所用的主机中的仓库。</li>
-<li><a href="https://docs.gradle.org/current/userguide/repository_types.html#sub:maven_repo" target="_blank" rel="noopener">自定义Maven仓库</a>。一些公司，如阿里，喜欢把阿里云云OSS服务SDK等存储在自己搭建的Maven仓库中。</li>
-<li><a href="https://docs.gradle.org/current/userguide/repository_types.html#sec:ivy_repositories" target="_blank" rel="noopener">Ivy仓库</a>。不常用，不解释，自己看文档。</li>
-</ul>
-<blockquote>
-<p>Maven仓库是用<a href="https://maven.apache.org/index.html" target="_blank" rel="noopener">Apache Maven</a>工具搭建的存储不同类型资源的本地或远程资源服务。Maven Central仓库、JCenter Maven仓库和Google Maven仓库都是Maven仓库，区别在于存储的服务器和管理的机构不一样。</p>
-</blockquote>
-<p><br></p>
-<h1 id="依赖传递和冲突解决"><a href="#依赖传递和冲突解决" class="headerlink" title="依赖传递和冲突解决"></a>依赖传递和冲突解决</h1><p>待续</p>
-<p><br></p>
-<h1 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h1><p>待续</p>
-<blockquote>
-<p>这章写的比较马虎，但就这样吧，以后有时间再做详细的研究。</p>
-</blockquote>
-<p><br></p>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
-<li><a href="https://docs.gradle.org/current/userguide/introduction_dependency_management.html" target="_blank" rel="noopener">Introduction to Dependency Management</a></li>
-<li><a href="https://docs.gradle.org/current/userguide/dependency_types.html" target="_blank" rel="noopener">Dependency Types</a></li>
-<li><a href="https://docs.gradle.org/current/userguide/repository_types.html" target="_blank" rel="noopener">Repository Types</a></li>
-<li><a href="https://maven.apache.org/index.html" target="_blank" rel="noopener">Apache Maven</a></li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/28/学习Android构建系统（五）-Gradle的Wrapper、命令行和环境配置/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Zhang Liang">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://www.xda-developers.com/files/2013/12/android-code.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="CodingForEverything">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/28/学习Android构建系统（五）-Gradle的Wrapper、命令行和环境配置/" itemprop="url">学习Android构建系统（五）-Gradle的Wrapper、命令行和环境配置</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-28T16:12:25+08:00">
-                2018-08-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/学习Android构建系统/" itemprop="url" rel="index">
-                    <span itemprop="name">学习Android构建系统</span>
+                  <a href="/categories/Gradle/" itemprop="url" rel="index">
+                    <span itemprop="name">Gradle</span>
                   </a>
                 </span>
 
@@ -1957,7 +652,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/27/学习Android构建系统（四）-Gradle构建流程/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/29/开发笔记-Gradle下载公司内部依赖失败问题排查/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Zhang Liang">
@@ -1976,7 +671,501 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/08/27/学习Android构建系统（四）-Gradle构建流程/" itemprop="url">学习Android构建系统（四）-Gradle构建流程</a></h1>
+                <a class="post-title-link" href="/2018/09/29/开发笔记-Gradle下载公司内部依赖失败问题排查/" itemprop="url">开发笔记-Gradle下载公司内部依赖失败问题排查</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-29T09:26:42+08:00">
+                2018-09-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android开发笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">Android开发笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h1><p>最近的一个项目使用了公司自己的Maven库中的依赖，这个Maven库只能用公司内网访问。开始我设置了代理，<code>sync</code>后，有部分依赖不能下载，有时候<code>sync</code>依然会成功，但<code>build</code>一定会失败，执行<code>./gradlew build --stacktrack</code>,获得错误信息如下： </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Could not resolve xxxxx.xxx.xxx.xxx.</span><br></pre></td></tr></table></figure>
+<p>只是公司自己的Maven库依赖不能解析，其他三方库依赖没有报错。 </p>
+<h1 id="问题排查"><a href="#问题排查" class="headerlink" title="问题排查"></a>问题排查</h1><p>排查思路如下： </p>
+<p><strong>一，确定公司内部Maven库能够从自己的电脑上访问</strong> </p>
+<ol>
+<li><p>是否能够<code>ping</code>通？ </p>
+<p><code>$ ping xxx.xxx.xxx(公司内部Maven库服务地址)</code>。 </p>
+</li>
+<li><p>能够<code>ping</code>通后，再用浏览器尝试访问公司内部Maven库，看能够找到需要的依赖。 </p>
+</li>
+</ol>
+<p>确定公司内部Maven库能够被访问后，再看下一步 </p>
+<p><strong>二，确定自己的Gradle没有设置外部代理</strong> </p>
+<p>如果设置了外部代理，则是从外部网络访问公司内部Maven，肯定是访问不了的。依次检查如下： </p>
+<ol>
+<li><p>项目根目录下的<code>gradle.properties</code>是否设置了代理。 </p>
+</li>
+<li><p>Android Studio是否设置了代理。”Preference -&gt; Appearence&amp;Behavior -&gt; System Settings -&gt; HTTP Proxy” </p>
+</li>
+<li><p>用户主目录<code>~/.gradle/gradle.properties</code>中是否设置了全局代理。 </p>
+</li>
+</ol>
+<p>如果设置了代理，则关闭所有的代理或者设置内部Maven库地址不走代理，而其他的走代理。 </p>
+<p><strong>内部Maven库地址不走代理设置</strong> </p>
+<p><code>gradle.properties</code>设置如下： </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemProp.http.nonProxyHosts=xxxx.xxxx.xxxx</span><br></pre></td></tr></table></figure>
+<p>Android Studio设置如下： </p>
+<p>在”Preference -&gt; Appearence&amp;Behavior -&gt; System Settings -&gt; HTTP Proxy”中的”No proxy for”中填入公司内部Host主机地址。 </p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/10/开发笔记-Complie关键字过时WARNING解决/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhang Liang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://www.xda-developers.com/files/2013/12/android-code.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CodingForEverything">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/10/开发笔记-Complie关键字过时WARNING解决/" itemprop="url">开发笔记-Complie关键字过时警告问题</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-10T16:29:15+08:00">
+                2018-09-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android开发笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">Android开发笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h1><p>之前构建Android项目时，经常出现以下WARNING：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">WARNING: Configuration <span class="string">'compile'</span> is obsolete and has been replaced with <span class="string">'implementation'</span> and <span class="string">'api'</span>.</span><br><span class="line">It will be removed at the end of 2018. For more information see: http://d.android.com/r/tools/update-dependency-configurations.html</span><br></pre></td></tr></table></figure>
+<p>但我检查了APP项目以及所有的Module，都没有发现<code>compile</code>关键字，用全局搜索（command + shift + f）也没有查到，所以应该是某个远程依赖或插件中使用了<code>compile</code>关键字，但如何定位是哪一个呢？</p>
+<p>通过IDE<code>Sync</code>后的提示如下：</p>
+<img src="/2018/09/10/开发笔记-Complie关键字过时WARNING解决/warning1.png" title="Sync后的Warning提示">
+<p><br></p>
+<h1 id="问题分析和解决"><a href="#问题分析和解决" class="headerlink" title="问题分析和解决"></a>问题分析和解决</h1><p>IDE给的提示太简略，只能通过Gradle命令和<a href="https://docs.gradle.org/current/userguide/command_line_interface.html#sec:command_line_debugging" target="_blank" rel="noopener">Logging options</a>来打印详细的构建信息来定位问题。Logging级别从简略到详细依次为<code>-q</code>、<code>-w</code> 、<code>-i</code>、<code>-d</code>。IDE默认应该是使用<code>-q</code>的，可以逐级打印信息，也可以直接使用<code>-d</code>级别日志打印信息。</p>
+<p>在项目根目录下，执行命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./gradlew assembleDebug -d &gt; gradle.log</span><br></pre></td></tr></table></figure>
+<p>其中<code>-d</code>是为了打印构建的Debug级别的信息，非常详细。由于信息非常多，命令行界面不能一屏完全显示，故放入名为<code>gradle.log</code>的文件中。</p>
+<p>最后生成的文件有13M多，5万多行。通过搜索关键字”WARNING”，定位信息如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">16:03:26.459 [DEBUG] [org.gradle.internal.progress.DefaultBuildOperationExecutor] Build operation <span class="string">'Apply plugin com.sensorsdata.analytics.android to project '</span>:app<span class="string">''</span> started</span><br><span class="line">16:03:26.459 [WARN] [org.gradle.api.Project] WARNING: Configuration <span class="string">'compile'</span> is obsolete and has been replaced with <span class="string">'implementation'</span> and <span class="string">'api'</span>.</span><br><span class="line">It will be removed at the end of 2018. For more information see: http://d.android.com/r/tools/update-dependency-configurations.html</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>警告信息出现在”Build operation Apply plugin com.sensorsdata.analytics.android to project…”语句下，那很可能就是Gradle在应用这个插件的时候报的错。</p>
+<p>插件是神策统计的，我的版本是<code>1.0.2</code>，查看官网给的<a href="https://dl.bintray.com/zouyuhan/maven" target="_blank" rel="noopener">Mavne库</a>，查看最新版本，<code>android-gradle-plugin2/</code>目录下，最高版本是<code>2.0.2</code>。</p>
+<p>更新插件版本，重新构建，警告消失了，问题解决了。</p>
+<blockquote>
+<p>文章首发<a href="https://zhangliangnbu.github.io/" target="_blank" rel="noopener">我的个人博客</a>和<a href="https://www.jianshu.com/" target="_blank" rel="noopener">简书</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/04/Android构建-Android项目构建流程详解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhang Liang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://www.xda-developers.com/files/2013/12/android-code.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CodingForEverything">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/04/Android构建-Android项目构建流程详解/" itemprop="url">Android构建06-Android项目构建流程详解</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-04T13:53:41+08:00">
+                2018-09-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习Android构建系统/" itemprop="url" rel="index">
+                    <span itemprop="name">学习Android构建系统</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><a href="https://juejin.im/post/5a69c0ccf265da3e2a0dc9aa" target="_blank" rel="noopener">https://juejin.im/post/5a69c0ccf265da3e2a0dc9aa</a></p>
+<p><a href="https://blog.csdn.net/yanbober/article/details/49408489" target="_blank" rel="noopener">https://blog.csdn.net/yanbober/article/details/49408489</a></p>
+<p><a href="https://jasonzhong.github.io/2017/06/27/Android-Apk%E6%9E%84%E5%BB%BA%E5%8E%9F%E7%90%86/" target="_blank" rel="noopener">https://jasonzhong.github.io/2017/06/27/Android-Apk%E6%9E%84%E5%BB%BA%E5%8E%9F%E7%90%86/</a></p>
+<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>Android构建流程是指将Android项目转换成Apk（Android Application Package）这一过程，里面涉及到许多工步骤和<a href="https://developer.android.com/studio/command-line/" target="_blank" rel="noopener">工具</a>。构建流程由Gradle工具和Android Gradle Plugin插件来管理，既可以通过IDE方式，也可以通过命令行方式来进行。</p>
+<h1 id="构建流程"><a href="#构建流程" class="headerlink" title="构建流程"></a>构建流程</h1><p>官网有一个简单的<a href="https://developer.android.com/studio/build/#build-process" target="_blank" rel="noopener">流程图</a>，如下：</p>
+
+<p>比较简略，图中主要展示了两步，且都是由Gradle工具和Andorid插件管理的：</p>
+<ol>
+<li>编译。编译器将源代码编译成DEX文件和供前者直接使用的资源文件。</li>
+<li>打包并签名。将上述DEX文件和资源文件合并成APK，之后进行签名生成最终可以用于安装、测试或发布的APK。</li>
+</ol>
+<p>在许多博客中，都提到一个<a href="http://androidsrc.net/android-app-build-overview/" target="_blank" rel="noopener">详细的流程图</a>，相关链接请见“参考”一节。都说是来自官网，但我没有找到，可能以前存在，现在已经删除了，如下：</p>
+
+<p>上述流程中涉及许多工具，如“aapt”、“aidl”等</p>
+<p><br></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li><a href="http://www.herongyang.com/Android/Project-Android-Application-Project-Build-Process.html" target="_blank" rel="noopener">Android Application Project Build Process</a></li>
+<li><a href="https://segmentfault.com/a/1190000008071324" target="_blank" rel="noopener">Android APK 编译打包流程</a></li>
+<li><a href="https://cdn-images-1.medium.com/max/1600/1*LbKGyabN6vr-9iR-rvnzPg.png" target="_blank" rel="noopener">https://cdn-images-1.medium.com/max/1600/1*LbKGyabN6vr-9iR-rvnzPg.png</a></li>
+<li><a href="https://juejin.im/entry/58b78d1b61ff4b006cd47e5b" target="_blank" rel="noopener">Apk 打包流程梳理-流程图较清晰</a></li>
+<li><a href="https://segmentfault.com/a/1190000008071324" target="_blank" rel="noopener">https://segmentfault.com/a/1190000008071324</a></li>
+<li><a href="https://segmentfault.com/a/1190000004916563" target="_blank" rel="noopener">https://segmentfault.com/a/1190000004916563</a></li>
+<li><a href="https://juejin.im/post/5a69c0ccf265da3e2a0dc9aa" target="_blank" rel="noopener">https://juejin.im/post/5a69c0ccf265da3e2a0dc9aa</a></li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/27/Android构建04-Gradle构建流程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhang Liang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://www.xda-developers.com/files/2013/12/android-code.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CodingForEverything">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/27/Android构建04-Gradle构建流程/" itemprop="url">Android构建04-Gradle构建流程</a></h1>
         
 
         <div class="post-meta">
@@ -2111,6 +1300,7 @@
 <blockquote>
 <p>If nothing else is defined, Gradle executes the task in alphanumeric order</p>
 </blockquote>
+<hr>
 <p><br></p>
 <h1 id="示例-单项目构建"><a href="#示例-单项目构建" class="headerlink" title="示例-单项目构建"></a>示例-单项目构建</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建项目目录</span></span><br><span class="line">$ mkdir single-project-build-lifecycle-demo</span><br><span class="line">$ <span class="built_in">cd</span> single-project-build-lifecycle-demo</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建settings.gradle文件</span></span><br><span class="line">$ vi settings.gradle</span><br></pre></td></tr></table></figure>
 <p><code>settings.gradle</code>文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rootProject.name = &apos;single-project-build-lifecycle-demo&apos;</span><br><span class="line">println &apos;settings.gradle -&gt; this is executed during the initialization phase.&apos;</span><br></pre></td></tr></table></figure></p>
@@ -2128,6 +1318,7 @@
 <li><p>执行阶段。<br>由于在命令行只构建testBoth任务，因此这个阶段只执行testBoth任务中的<code>Action</code>列表，依次执行<code>doFirst</code>和<code>doLast</code>的闭包。</p>
 </li>
 </ol>
+<hr>
 <p><br></p>
 <h1 id="示例-常见的多项目构建"><a href="#示例-常见的多项目构建" class="headerlink" title="示例-常见的多项目构建"></a>示例-常见的多项目构建</h1><p>参考官方手册<a href="https://docs.gradle.org/current/userguide/multi_project_builds.html#sec:project_jar_dependencies" target="_blank" rel="noopener">Authoring Multi-Project Builds</a><br>模拟一个常见的Java项目，目录结构如下</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">multi-project-build-lifecycle-demo/</span><br><span class="line">  settings.gradle</span><br><span class="line">  build.gradle</span><br><span class="line">  api/</span><br><span class="line">    src/main/java/</span><br><span class="line">      org/gradle/sample/</span><br><span class="line">        api/</span><br><span class="line">          Person.java</span><br><span class="line">        apiImpl/</span><br><span class="line">          PersonImpl.java</span><br><span class="line">  services/personService/</span><br><span class="line">    src/</span><br><span class="line">      main/java/</span><br><span class="line">        org/gradle/sample/services/</span><br><span class="line">          PersonService.java</span><br><span class="line">      test/java/</span><br><span class="line">        org/gradle/sample/services/</span><br><span class="line">          PersonServiceTest.java</span><br><span class="line">  shared/</span><br><span class="line">    src/main/java/</span><br><span class="line">      org/gradle/sample/shared/</span><br><span class="line">        Helper.java</span><br></pre></td></tr></table></figure>
@@ -2149,6 +1340,7 @@
 <ol start="3">
 <li>最后执行任务<code>:services:personService:hello</code>。</li>
 </ol>
+<hr>
 <p><br></p>
 <h1 id="示例-按需配置的多项目构建"><a href="#示例-按需配置的多项目构建" class="headerlink" title="示例-按需配置的多项目构建"></a>示例-按需配置的多项目构建</h1><p>参考文档<a href="https://docs.gradle.org/current/userguide/multi_project_builds.html#example_build_script_of_water_parent_project" target="_blank" rel="noopener">Build script of water (parent) project</a></p>
 <p>创建一个多项目工程，目录结构如下：</p>
@@ -2163,6 +1355,7 @@
 <p>根目录下执行<code>gradle -i :bluewhale:hello --configure-on-demand</code>，输出如下（省略部分无关信息）：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Initialized native services <span class="keyword">in</span>: /Users/zhangliang/.gradle/native</span><br><span class="line">Included projects: [root project <span class="string">'water'</span>, project <span class="string">':bluewhale'</span>, project <span class="string">':krill'</span>]</span><br><span class="line">Configuration on demand is an incubating feature.</span><br><span class="line"></span><br><span class="line">&gt; Configure project :</span><br><span class="line">&gt; Configure project :bluewhale</span><br><span class="line">All projects evaluated.</span><br><span class="line"></span><br><span class="line">&gt; Task :bluewhale:hello</span><br><span class="line">I<span class="string">'m bluewhale</span></span><br></pre></td></tr></table></figure>
 <p>上面的输出中出现了一句话”Configuration on demand is an incubating feature”，表示当前的“按需配置模式”还只是实验中的功能。从输出中可以看出，没有配置与任务无关的“krill”项目。</p>
+<hr>
 <p><br></p>
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
 <li><a href="https://gradle.org/" target="_blank" rel="noopener">Gradle官网</a></li>
@@ -2202,13 +1395,910 @@
 
 
     
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/27/Android构建03-Gradle基础/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhang Liang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://www.xda-developers.com/files/2013/12/android-code.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CodingForEverything">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/27/Android构建03-Gradle基础/" itemprop="url">Android构建03-Gradle基础</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-27T18:02:47+08:00">
+                2018-08-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习Android构建系统/" itemprop="url" rel="index">
+                    <span itemprop="name">学习Android构建系统</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>Gradle是Android构建系统的重点，需要花费时间用心学习。学习资料主要是官方的<a href="https://docs.gradle.org/current/userguide/userguide.html" target="_blank" rel="noopener">Gradle Docs</a>，有个社区版的<a href="https://dongchuan.gitbooks.io/gradle-user-guide-/" target="_blank" rel="noopener">中文翻译资料</a>，英语不好的同学可以看看，但不全。</p>
+<p>这章首先对Gradle做一个简单的介绍，然后讲如何使用官方文档和API，接着讲解Gradle的基本概念、Wrapper和学习中需要使用到的命令行指令、插件等。有些知识点如插件应该放在之后的章节讲解，但为了保持文章的完整性，我放在了这一章，学习的过程中可能不能完全理解，没有关系，在以后的章节中如果有涉及的话，会具体解释。</p>
+<hr>
+<p><br></p>
+<h1 id="Gradle简介"><a href="#Gradle简介" class="headerlink" title="Gradle简介"></a>Gradle简介</h1><p>Gradle是一个注重灵活性和性能的开源构建自动化工具，使用Groovy或Kotlin DSL来编写构建脚本。</p>
+<blockquote>
+<p>虽然支持Kotlin，但还是建议学习Groovy。因为：一，目前官方示例里有许多还没有kotlin方式；二，目前大多数项目的Gradle脚本都是用Groovy编写的。</p>
+</blockquote>
+<p>Gradle特点如下：</p>
+<ol>
+<li>高度可定制。Gradle使用了可定制和可扩展的设计思想，如使用插件。</li>
+<li>快速。Gradle通过重用先前执行的输出，仅处理已更改的输入以及并行执行任务来快速完成任务。</li>
+<li>强大。Gradle是Android的官方构建工具，并支持许多主流的编程语言和技术。</li>
+</ol>
+<p><strong>图形界面和命令行</strong> Gradle支持IDE或命令行两种方式来构建工程。支持主流的IDE，如Android Studio, Eclipse, IntelliJ IDEA, Visual Studio 2017, 和XCode等。</p>
+<blockquote>
+<p>提示：命令行方式构建是必须掌握的，因为命令行方式包含所有的功能，而图形界面方式却未必。在调试时，命令行方式尤其重要。</p>
+</blockquote>
+<p><strong>典型的工程目录</strong> 一个典型Gradle项目一般会包括两个脚本文件（<code>settings.gradle</code>和<code>build.gradle</code>）和Wrapper文件（gradle文件目录和gradlew、gradlew.bat可执行文件）。如下所示<br><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">├── settings.gradle </span><br><span class="line">├── build.gradle</span><br><span class="line">├── gradle</span><br><span class="line">│   └── wrapper</span><br><span class="line">│       ├── gradle-wrapper.jar  </span><br><span class="line">│       └── gradle-wrapper.properties  </span><br><span class="line">├── gradlew  </span><br><span class="line">└── gradlew.bat</span><br></pre></td></tr></table></figure></p>
+<p>其中<code>settings.gradle</code>和<code>build.gradle</code>是项目构建时所需的脚本，Gradle会据此创建相应的Java实例。Wrapper文件用于管理<code>gradle</code>版本，一个终端上不同的项目可以使用不同配置和版本的Gradle，具体项目中使用<code>./gradlew</code>或<code>gradlew.bat</code>来替代<code>gradle</code>命令。</p>
+<hr>
+<p><br></p>
+<h1 id="Gradle-Docs的使用"><a href="#Gradle-Docs的使用" class="headerlink" title="Gradle Docs的使用"></a>Gradle Docs的使用</h1><p><a href="https://docs.gradle.org/current/userguide/userguide.html" target="_blank" rel="noopener">Gradle Docs</a>资料中，最重要的是User Manual（用户手册）和API文档（DSL Reference和Javadoc），其余的可以不用看。</p>
+<p><strong>Gradle User Manual</strong> User Manual中最关键的一部分当属“Build Configuration Scripts”（官网经常换名字，可能已经不叫这个标题了）。这一部分内容相当多，内容也比较杂。可以先看<a href="https://docs.gradle.org/current/userguide/build_lifecycle.html" target="_blank" rel="noopener">Build Lifecycle</a>和<a href="https://docs.gradle.org/current/userguide/multi_project_builds.html" target="_blank" rel="noopener">Configuring Multi-Project Build</a>这两节，看懂这两节，就可以对Gradle构建的流程有一个清晰的了解了，之后再看其他章节就非常容易了。</p>
+<p><strong>API文档</strong> API文档包括<a href="https://docs.gradle.org/current/dsl/" target="_blank" rel="noopener">Gradle DSL Reference（Gradle特定语言指南）</a> 和 <a href="https://docs.gradle.org/current/javadoc/" target="_blank" rel="noopener">Javadoc（Java文档）</a>。Reference包含主要的接口和类，并做了描述和分类以利于学习，Javadoc包含所有的API，主要用于检索。就内容的覆盖面而言，Javadoc完全包含Reference。学习时可以看Reference，使用中具体查找Gradle的某个API文档时，用Javadoc。</p>
+<hr>
+<p><br></p>
+<h1 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h1><p>使用Gradle构建项目时，会经常涉及到几个重要的概念：脚本(Script)、项目(Project)和任务(Task)。这几个概念出现的顺序如下：</p>
+<ol>
+<li>开发者编写脚本，如<code>settings.gradle</code>和<code>build.gradle</code>；</li>
+<li>构建项目时，Gradle会根据构建脚本创建对应的Java实例，如<code>settings.gradle</code>对应<a href="https://docs.gradle.org/current/dsl/org.gradle.api.initialization.Settings.html" target="_blank" rel="noopener">Setting</a>，<code>build.gradle</code>对应<a href="https://docs.gradle.org/current/dsl/org.gradle.api.Project.html" target="_blank" rel="noopener">Project</a>，其中<code>Project</code>包含构建需要的任务集。然后，Gradle根据这些实例依次执行初始化、项目配置和任务执行等来构建项目。</li>
+</ol>
+<h2 id="脚本-Script"><a href="#脚本-Script" class="headerlink" title="脚本(Script)"></a><a href="https://docs.gradle.org/current/dsl/org.gradle.api.Script.html" target="_blank" rel="noopener">脚本(Script)</a></h2><p>利用Gradle构建项目时，与开发者直接交互的就是脚本了。<a href="https://docs.gradle.org/current/dsl/" target="_blank" rel="noopener">Gradle脚本有以下特点</a>：</p>
+<ol>
+<li>每个脚本都有一个对应的Java实例，称为代理对象，在脚本中可以直接使用代理对象的属性和方法。</li>
+<li>Gradle脚本实现了<a href="https://docs.gradle.org/current/dsl/org.gradle.api.Script.html" target="_blank" rel="noopener"><code>Script</code></a>接口。此接口定义了许多属性和方法，可以在脚本中直接使用。</li>
+<li>Gradle脚本由零或多个语句和脚本块组成（statements and script blocks）。 语句包括方法调用、属性赋值和局部变量定义等。 脚本块是一种方法调用，它以闭包作为方法的参数，而闭包用来配置代理对象。</li>
+</ol>
+<h2 id="项目-Project"><a href="#项目-Project" class="headerlink" title="项目(Project)"></a><a href="https://docs.gradle.org/current/dsl/org.gradle.api.Project.html" target="_blank" rel="noopener">项目(Project)</a></h2><p>项目是Gradle的最基本的概念之一。<br>Gradle通过<code>build.gradle</code>脚本生成实现了<code>Project</code>接口的项目实例，每个Gradle构建都由一个或多个项目组成。<code>Project</code>接口是脚本文件与Gradle交互的主要API，可以通过<code>Project</code>实例访问Gradle的所有功能。</p>
+<h2 id="任务-Task"><a href="#任务-Task" class="headerlink" title="任务(Task)"></a><a href="https://docs.gradle.org/current/dsl/org.gradle.api.Task.html" target="_blank" rel="noopener">任务(Task)</a></h2><p>项目由一个或多个任务组成。 每个任务执行一些基本工作，例如编译类、运行单元测试或压缩WAR文件等。<br>任务由一系列Action对象组成。 执行任务时，通过调用<code>Action.execute（T）</code>依次执行每个<code>Action</code>。 可以通过调用<code>Task.doFirst（org.gradle.api.Action）</code>或<code>Task.doLast（org.gradle.api.Action）</code>向任务添加<code>Action</code>。</p>
+<p><strong>概念之间的关系</strong> Gradle中项目和任务、Action的关系如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">A[Gradle构建]</span><br><span class="line">A --&gt;B1(项目1)</span><br><span class="line">A --&gt;B2(项目2)</span><br><span class="line">A --&gt;B3(项目 ...)</span><br><span class="line">B1 --&gt; T11[任务 ...]</span><br><span class="line">T11 --&gt; A111[Action ...]</span><br><span class="line">B2 --&gt; T21[任务 ...]</span><br><span class="line">T21 --&gt; A211[Action ...]</span><br><span class="line">B3 --&gt; T31[任务 ...]</span><br><span class="line">T31 --&gt; A311[Action ...]</span><br></pre></td></tr></table></figure>
+<p><strong>浏览官方文档</strong> 以上概念详细说明和使用，请见官方手册和指南：</p>
+<ol>
+<li>脚本。<a href="https://docs.gradle.org/current/userguide/writing_build_scripts.html" target="_blank" rel="noopener">Writing Build Scripts</a>、<a href="https://docs.gradle.org/current/dsl/org.gradle.api.Script.html" target="_blank" rel="noopener">Script Reference</a></li>
+<li>项目。<a href="https://docs.gradle.org/current/dsl/org.gradle.api.Project.html" target="_blank" rel="noopener">Project Reference</a></li>
+<li>任务。<a href="https://docs.gradle.org/current/userguide/tutorial_using_tasks.html" target="_blank" rel="noopener">Build Script Basics</a>、<a href="https://docs.gradle.org/current/userguide/more_about_tasks.html" target="_blank" rel="noopener">Authoring Tasks</a>、<a href="https://docs.gradle.org/current/userguide/custom_tasks.html" target="_blank" rel="noopener">Writing Custom Task Classes</a>、<a href="https://docs.gradle.org/current/dsl/org.gradle.api.Task.html" target="_blank" rel="noopener">Task Reference</a></li>
+</ol>
+<p>以上文档可以不用深读，但需要浏览一遍，知道大概。</p>
+<hr>
+<p><br></p>
+<h1 id="Gradle-Wrapper"><a href="#Gradle-Wrapper" class="headerlink" title="Gradle Wrapper"></a>Gradle Wrapper</h1><p>前言中已经提到了Wrapper，即一种管理当前项目的Gradle版本的工具。多人协作时，每个人安装的Gradle环境可能不一致（也没有必要一致），需要使用Wrapper管理项目的版本。官方强烈推荐使用Wrapper管理具体的项目，并以<code>./gradlew</code>(macOS)代替<code>gradle</code>执行命令。<br>Wrapper目录中有一个<code>gradle-wrapper.properties</code>文件，配置Gradle的版本号、本地存储地址等。</p>
+<p><strong>引入Wrapper</strong> 使用命令行添加Wrapper有两种方式：</p>
+<ol>
+<li>使用<code>gradle init</code>创建新项目，则会初始化一个带有Wrapper的Gradle项目。</li>
+<li>使用<code>gradle wrapper</code>在旧的项目中添加Wrapper。<blockquote>
+<p><code>wrapper</code>是Gradle的内建任务</p>
+</blockquote>
+</li>
+</ol>
+<p>一般的IDE创建项目时都会自动生产Wrapper文件，如Android Studio。</p>
+<p><strong>使用Wrapper执行任务</strong> 用Wrapper脚本替换掉<code>gradle</code>来执行任务即可。以macOS平台为例，在项目根目录下执行<code>./gradlew [task name]</code>即可，如列出当前项目的所有任务，项目根目录下执行：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> ./gradlew tasks</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>更新Wrapper</strong> 有两种方式更新Wrapper</p>
+<ol>
+<li>命令行方法。<code>.gradlew wrapper --gradle-version [要更新的版本号]</code>。</li>
+<li>修改<code>gradle/wrapper/gradle-wrapper.properties</code>中的<code>distributionUrl</code>属性。</li>
+</ol>
+<p>关于Gradle Wrapper的详细说明请见官方手册<a href="https://docs.gradle.org/current/userguide/gradle_wrapper.html" target="_blank" rel="noopener">The Gradle Wrapper</a></p>
+<hr>
+<p><br></p>
+<h1 id="命令行"><a href="#命令行" class="headerlink" title="命令行"></a>命令行</h1><p><strong>指令形式</strong> Gradle命令行指令由三部分组成: 可执行文件<code>gradle</code>或<code>./gradlew</code>、一个或多个任务名、零或多个选项名，如下所示：。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> gradle [taskName...] [--option-name...]</span></span><br></pre></td></tr></table></figure></p>
+<p>指令的详细说明请见官方手册<a href="https://docs.gradle.org/current/userguide/command_line_interface.html" target="_blank" rel="noopener">Command-Line Interface</a>，这里我只介绍学习或调试中常用的指令。部分常见命令行选项说明如下：</p>
+<p><strong>固有任务类</strong></p>
+<ul>
+<li><code>gradle build</code>。生成所有的输出，并执行所有的检查。</li>
+<li><code>gradle clean</code>。删除build文件目录。</li>
+<li><code>gradle projects</code>。查看项目结构。</li>
+<li><code>gradle tasks</code>。查看任务列表。查看某个任务详细信息，可用<code>gradle help --task someTask</code></li>
+<li><code>gradle dependencies</code>。查看依赖列表。</li>
+</ul>
+<p><strong>调试类</strong></p>
+<ul>
+<li><code>-?</code>, <code>-h</code>, <code>--help</code>。查看帮助信息。</li>
+<li><code>-v</code>,<code>--version</code>。查看版本信息。</li>
+<li><code>-s</code>,<code>--stacktrace</code>。执行任务时，打印栈信息。如<code>gradle build -s</code></li>
+</ul>
+<p><strong>日志类</strong></p>
+<ul>
+<li><code>-q</code>, <code>--quiet</code>。只打印errors类信息。</li>
+<li><code>-i</code>, <code>--info</code>。打印详细的信息。</li>
+</ul>
+<p>其中在学习的过程中，经常会用到<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ gradle [taskName...] -i</span><br></pre></td></tr></table></figure></p>
+<p>这会打印比较详细的构建信息，用于帮助我们理解Gradle构建流程、项目配置和依赖、任务依赖等。</p>
+<hr>
+<p><br></p>
+<h1 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h1><p>配置构建环境，主要配置Gradle构建参数和对应的JVM参数，如代理策略等。其目的是为了多人协作时，保持在一致的环境下进行项目开发。</p>
+<p>配置环境有几种途径，优先级从高往低，列出如下：</p>
+<ol>
+<li>命令行。</li>
+<li><code>GRADLE_USER_HOME</code>目录中的<code>gradle.properties</code>文件。</li>
+<li>项目根目录中的<code>gradle.properties</code>文件。</li>
+<li>环境变量。运行Gradle环境的变量，如JAVA_HOME等。</li>
+</ol>
+<p>具体参数的配置请见官方手册<a href="https://docs.gradle.org/current/userguide/build_environment.html" target="_blank" rel="noopener">Build Environment</a></p>
+<hr>
+<p><br></p>
+<h1 id="插件-Plugin"><a href="#插件-Plugin" class="headerlink" title="插件(Plugin)"></a>插件(Plugin)</h1><p><strong>插件简介</strong> Gradle的一个非常大的特点就是灵活或者说可扩展性，它本身没有提供多少构建具体任务的逻辑，构建各类具体的项目都是通过增加插件实现的。插件可以添加新任务（例如JavaCompile），新的域对象（例如SourceSet），新的规定（例如Java源位于src/main/java）以及继承其他插件而获得的功能。<br>Gradle本身提供了一些基础的插件，只需要配置id即可使用，如<code>Java Plugin</code>。</p>
+<p><strong>二进制插件及配置</strong> 插件分为两种，本地脚本插件和远程发布的二进制插件，一般我们常用的是后者。如Android项目中我们用到的Android插件，就是一种远程二进制插件。<br>Android项目添加插件示例：<br>在根目录<code>build.gradle</code>中添加仓库和插件路径</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">buildscript &#123;</span><br><span class="line">    repositories &#123;</span><br><span class="line">        google()</span><br><span class="line">        jcenter()</span><br><span class="line">    &#125;</span><br><span class="line">    dependencies &#123;</span><br><span class="line">        classpath <span class="string">'com.android.tools.build:gradle:3.1.4'</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在app目录<code>build.gradle</code>中应用插件<br><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apply <span class="string">plugin:</span> <span class="string">'com.android.application'</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>插件的使用</strong> Gradle使用插件里的构建逻辑分为两步</p>
+<ol>
+<li>解析插件。即获取插件的jar包。插件被解析后，就可以在脚本文件中直接使用它的API，如Android项目脚本文件中的配置<code>android</code>、方法<code>compileSdkVersion</code>等。本地脚本插件和Gradle固有插件会自动解析。</li>
+<li>应用插件。即执行插件的<code>Plugin.apply(T)</code>方法，这是插件的核心方法。在这个方法中，可以为当前项目添加一些新的任务。</li>
+</ol>
+<p>关于插件更详细的说明请见官方手册:</p>
+<ol>
+<li><a href="https://docs.gradle.org/current/userguide/plugins.html#sec:using_plugins" target="_blank" rel="noopener">Using Gradle Plugins</a></li>
+<li><a href="https://docs.gradle.org/current/userguide/standard_plugins.html" target="_blank" rel="noopener">Standard Gradle plugins</a></li>
+<li><a href="https://docs.gradle.org/current/userguide/plugin_reference.html" target="_blank" rel="noopener">Core Plugin</a></li>
+<li><a href="https://docs.gradle.org/current/userguide/custom_plugins.html" target="_blank" rel="noopener">Writing Custom Plugins</a></li>
+</ol>
+<p>如何你想查看Gradle源码，看看插件是如何实现的，链接如下：</p>
+<ol>
+<li><a href="https://github.com/gradle/gradle" target="_blank" rel="noopener">Github上的Gradle源码</a></li>
+<li><a href="https://source.android.com/setup/build/downloading" target="_blank" rel="noopener">Android插件源码-AOSP</a></li>
+<li><a href="http://repo.spring.io/libs-milestone/com/android/tools/build/gradle/" target="_blank" rel="noopener">Andorid插件源码-repe.spring.io</a></li>
+<li><a href="https://android.googlesource.com/platform/tools/build/+/e49dcf3e1edbe40d945a24fee85c6422eb6221b9/" target="_blank" rel="noopener">Android源码-android.google.source</a></li>
+</ol>
+<hr>
+<p><br></p>
+<h1 id="示例-单项目构建"><a href="#示例-单项目构建" class="headerlink" title="示例-单项目构建"></a>示例-单项目构建</h1><p>官方示例 <a href="https://guides.gradle.org/creating-new-gradle-builds/?_ga=2.262531468.1022039991.1532854446-1803358189.1525999794" target="_blank" rel="noopener">Creating New Gradle Builds</a><br>主要练习：初始化项目、执行任务、移动文件、添加Plugin等。</p>
+<blockquote>
+<p>提示：示例中使用了<code>./gradlew</code>来执行命令，如果因为下载失败导致该命令不可用，使用<code>gradle</code>命令即可。</p>
+</blockquote>
+<hr>
+<p><br></p>
+<h1 id="示例-多项目构建"><a href="#示例-多项目构建" class="headerlink" title="示例-多项目构建"></a>示例-多项目构建</h1><p>官方示例 <a href="https://guides.gradle.org/creating-multi-project-builds/?_ga=2.39430567.560526946.1533349009-1803358189.1525999794" target="_blank" rel="noopener">Creating Multi-project Builds</a></p>
+<blockquote>
+<p>提示：示例中需要下载依赖，国内网络直接访问可能导致下载失败，需要设置国外代理服务。我的代理服务走的通道是<code>shadowsocks</code>，有的资源使用<code>shadowsocks</code>协议是访问不了的，需要使用<code>http</code>或<code>https</code>协议才行，可以使用<code>privoxy</code>切换<code>shadowsocks</code>协议为<code>http</code>和<code>https</code>协议（实际上是在本地<code>shadowsocks</code>端口上再加了一层<code>privoxy</code>代理）。<br><code>shadowsocks</code>代理设置请参考<a href="https://github.com/shadowsocks/shadowsocks/blob/master/README.md" target="_blank" rel="noopener">Github shadowsocks</a><br><code>privoxy</code>代理设置请参考 <a href="https://www.privoxy.org/" target="_blank" rel="noopener">Privoxy 官网</a>、<a href="http://lazybios.com/2016/11/transter-socks5-to-http-by-privoxy/" target="_blank" rel="noopener">使用Privoxy桥接Http代理到SOCKS5代理</a>、<a href="https://blog.zfanw.com/privoxy-tutorial/" target="_blank" rel="noopener">Privoxy 教程</a><br>Gradle项目代理设置如下：在电脑中设置好<code>http</code>协议代理后，在当前项目根目录下创建<code>gradle.properties</code>文件（如果有就不用创建），编辑文件如下:</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt; systemProp.http.proxyHost=<span class="number">127.0</span>.<span class="number">0.1</span></span><br><span class="line">&gt; systemProp.http.nonProxyHosts=<span class="number">192.168</span>.*, &lt;localhost&gt;</span><br><span class="line">&gt; systemProp.http.proxyPort=<span class="number">8118</span></span><br><span class="line">&gt; systemProp.https.proxyHost=<span class="number">127.0</span>.<span class="number">0.1</span></span><br><span class="line">&gt; systemProp.https.nonProxyHosts=<span class="number">192.168</span>.*, &lt;localhost&gt;</span><br><span class="line">&gt; systemProp.https.proxyPort=<span class="number">8118</span></span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>其中<code>8118</code>是<code>privoxy</code>的端口号<br>Gradle代理设置详细说明请参考官方文档<a href="https://docs.gradle.org/4.0/userguide/build_environment.html#N10D07" target="_blank" rel="noopener">Accessing the web via a proxy</a>（虽然也不够详细:p）</p>
+</blockquote>
+<hr>
+<p><br></p>
+<h1 id="示例-Android项目根目录-build-gradle语法分析"><a href="#示例-Android项目根目录-build-gradle语法分析" class="headerlink" title="示例-Android项目根目录 build.gradle语法分析"></a>示例-Android项目根目录 <code>build.gradle</code>语法分析</h1><p>利用<code>Android Studio</code>创建一个项目，根目录中<code>build.gradle</code>文件如下</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">buildscript &#123;</span><br><span class="line">    ext.kotlin_version = <span class="string">'1.2.50'</span></span><br><span class="line">    repositories &#123;</span><br><span class="line">        google()</span><br><span class="line">        jcenter()</span><br><span class="line">    &#125;</span><br><span class="line">    dependencies &#123;</span><br><span class="line">        classpath <span class="string">'com.android.tools.build:gradle:3.1.4'</span></span><br><span class="line">        classpath <span class="string">"org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// <span class="doctag">NOTE:</span> Do not place your application dependencies here; they belong</span></span><br><span class="line">        <span class="comment">// in the individual module build.gradle files</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">allprojects &#123;</span><br><span class="line">    repositories &#123;</span><br><span class="line">        google()</span><br><span class="line">        jcenter()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">task clean(<span class="string">type:</span> Delete) &#123;</span><br><span class="line">    delete rootProject.buildDir</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>直接使用API文档来分析上面的代码：</p>
+<ul>
+<li><p><code>Project</code>和方法。<code>build.gradle</code>脚本的代理对象是<code>Project</code>实例，<code>buildscript</code>、<code>allprojects</code>和<code>task</code>是<code>Project</code>中的三个方法（实际上，<code>task</code>在这里是关键字，不是方法，但<code>Project</code>中有方法与之对应）。</p>
+</li>
+<li><p><code>buildscript</code>。在<code>Android Studio</code>中(<code>Mac</code>平台 <code>Command+鼠标左键</code>)或者在文档中查看API详情，如下<br>￼￼<img src="https://upload-images.jianshu.io/upload_images/2658578-f4b3e247a668231b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="buildscript"><br>这个方法的作用是配置项目构建脚本的<code>classpath</code>，参数是一个闭包，闭包的代理对象是<code>ScriptHandler</code>，即如果<code>buildscript</code>代码块中的属性和方法，如果不能在<code>Project</code>中找到，就去<code>ScriptHandler</code>中去找。<br>再来分析下<code>buildscript</code>代码块里的内容。示例代码中，<code>repositories</code>和<code>dependencies</code>都是<code>ScriptHandler</code>的方法，可以直接在<code>Android Studio</code>中点击查看其API。但<code>ext</code>是什么，是谁的属性？<code>owner</code>（<code>Project</code>）的，还是<code>delegate</code>（<code>ScriptHandler</code>）的？由于不能在<code>Studio</code>里直接查看，我们先看看<code>Project</code>的API<br><img src="https://upload-images.jianshu.io/upload_images/2658578-df8c01595c625c03.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Project"><br>全局搜索<code>ext</code>或<code>setExt</code>、<code>getExt</code>，都没有结果。再看看其继承的接口，发现<a href="https://docs.gradle.org/current/javadoc/org/gradle/api/plugins/ExtensionAware.html" target="_blank" rel="noopener">ExtensionAware</a>中可以搜索到，API文档说</p>
+</li>
+</ul>
+<blockquote>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;  <span class="comment">// All extension aware objects have a special “ext” extension of type &gt;ExtraPropertiesExtension</span></span><br><span class="line">&gt;  <span class="keyword">assert</span> project.hasProperty(<span class="string">"myProperty"</span>) == <span class="literal">false</span></span><br><span class="line">&gt;  project.ext.myProperty = <span class="string">"myValue"</span></span><br><span class="line">&gt;  <span class="comment">// Properties added to the “ext” extension are promoted to the owning &gt;object</span></span><br><span class="line">&gt;  <span class="keyword">assert</span> project.myProperty == <span class="string">"myValue"</span></span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>继承了<code>ExtensionAware</code>的对象都有一个特殊的<code>ext</code>扩展类型，可以直接添加属性<code>project.ext.myProperty = &quot;myValue&quot;</code>，之后使用属性<code>myProperty</code>时可以不用写<code>ext</code>，如<code>project.myProperty</code>。<br>因此示例代码中的<code>ext</code>是<code>owner</code>（<code>Project</code>）的属性。</p>
+</blockquote>
+<ul>
+<li><p><code>allprojects</code>。分析方法同上，略。</p>
+</li>
+<li><p><code>task</code>。<code>Project</code>中有四个<code>task</code>方法</p>
+</li>
+</ul>
+<blockquote>
+<p><code>Task task(String name)</code><br><code>Task task(String name, Closure configureClosure)</code><br><code>Task task(Map&lt;String, ?&gt; args, String name)</code><br><code>Task task(Map&lt;String, ?&gt; args, String name, Closure configureClosure)</code></p>
+</blockquote>
+<p><code>Studio</code>中链接的是<code>Task task(String name)</code>，但后面的<code>clean(type: Delete) {
+​    delete rootProject.buildDir
+}</code>是什么呢？开始以为是方法，实际上并不是，一是在<code>Project</code>中没有<code>clean</code>方法，二是<a href="http://www.groovy-lang.org/semantics.html#_optional_parentheses" target="_blank" rel="noopener">Groovy语法中不允许嵌套的方法省略括号</a>。</p>
+<blockquote>
+<p>Parentheses are required for method calls without parameters or ambiguous method calls:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; println(Math.max(5, 10))</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>不是方法，但看起来又不是参数。查看<code>Task</code>API，有定义task的示例<br>You can also use the task keyword in your build file:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt; task myTask</span><br><span class="line">&gt; task myTask &#123; configure closure &#125;</span><br><span class="line">&gt; task myTask(type: SomeType)</span><br><span class="line">&gt; task myTask(type: SomeType) &#123; configure closure &#125;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>也就是说<code>task</code>可以是一个关键字！去看Gradle官方文档<a href="https://docs.gradle.org/current/userguide/more_about_tasks.html#sec:defining_tasks" target="_blank" rel="noopener">Defining tasks</a><br>There are a few variations on this style, which you may need to use in certain situations. For example, the keyword style does not work in expressions.</p>
+</blockquote>
+<p>有很多方式定义task，有关键字格式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">task copy(type: Copy) &#123;</span><br><span class="line">    from(file(&apos;srcDir&apos;))</span><br><span class="line">    into(buildDir)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们的示例就是这种格式的。<br>也有方法格式的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">task(&apos;copy&apos;, type: Copy) &#123;</span><br><span class="line">    from(file(&apos;srcDir&apos;))</span><br><span class="line">    into(buildDir)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这对应<code>Project</code>的方法<code>Task task(Map&lt;String, ?&gt; args, String name, Closure configureClosure)</code>。Groovy方法中的参数似乎是可以改变顺序的，有人写的<a href="https://blog.csdn.net/cckevincyh/article/details/75094293" target="_blank" rel="noopener">博客</a>中提到了这件事，但我没有找到相关的官方文档。<br>终于分析完了，初学者学习这些估计要抓狂，:p。</p>
+<p>最后，把示例代码中省略的括号和<code>owner</code>、<code>delegate</code>补全，以提高可读性，如下</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">buildscript(&#123;</span><br><span class="line">    owner.ext.kotlin_version = <span class="string">'1.2.50'</span></span><br><span class="line">    delegate.repositories(&#123;</span><br><span class="line">        delegate.google()</span><br><span class="line">        delegate.jcenter()</span><br><span class="line">    &#125;)</span><br><span class="line">    dependencies(&#123;</span><br><span class="line">        delegate.add(<span class="string">'classpath'</span>, <span class="string">'com.android.tools.build:gradle:3.1.4'</span>)</span><br><span class="line">        delegate.add(<span class="string">'classpath'</span>, <span class="string">"org.jetbrains.kotlin:kotlin-gradle-plugin:$&#123;owner.kotlin_version&#125;"</span>)</span><br><span class="line">        <span class="comment">// <span class="doctag">NOTE:</span> Do not place your application dependencies here; they belong</span></span><br><span class="line">        <span class="comment">// in the individual module build.gradle files</span></span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">allprojects(&#123;</span><br><span class="line">    delegate.repositories(&#123;</span><br><span class="line">        delegate.google()</span><br><span class="line">        delegate.jcenter()</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">task clean(<span class="string">type:</span> Delete) &#123;</span><br><span class="line">    delete rootProject.buildDir</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意: 其中的<code>classpath</code>，我暂时并没有理解清楚它是如何工作的，它不是方法，只能理解它是一个可以添加的配置属性。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; Dependency add(String configurationName, Object &gt;dependencyNotation);</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<hr>
+<p><br></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li><a href="https://gradle.org/" target="_blank" rel="noopener">Gradle官网</a></li>
+<li><a href="https://dongchuan.gitbooks.io/gradle-user-guide-/" target="_blank" rel="noopener">Gradle User Guide 中文版(非官方)</a></li>
+<li><a href="http://www.groovy-lang.org/learn.html" target="_blank" rel="noopener">Groovy官网</a></li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/27/Android构建02-Groovy基础/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhang Liang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://www.xda-developers.com/files/2013/12/android-code.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CodingForEverything">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/27/Android构建02-Groovy基础/" itemprop="url">Android构建02-Groovy基础</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-27T17:52:09+08:00">
+                2018-08-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习Android构建系统/" itemprop="url" rel="index">
+                    <span itemprop="name">学习Android构建系统</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>Groovy是JVM语言，与Java语法类似，如果你熟悉kotlin的话，你会发现它与kotlin更类似些。它可以作为Java平台的脚本语言使用。详细介绍请见<a href="http://groovy-lang.org/index.html" target="_blank" rel="noopener">Groovy官网</a>和<a href="https://zh.wikipedia.org/wiki/Groovy" target="_blank" rel="noopener">维基百科</a>。</p>
+<blockquote>
+<p>提示：“Groovy基础”这一部分建议不要花费太多时间，能看懂语法，尤其是闭包的语法，以及知道如何查阅API即可。</p>
+</blockquote>
+<hr>
+<p><br></p>
+<h1 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h1><p>对于语法的学习，我这里就不详细说了，请大家按照下面步骤去学习：</p>
+<ol>
+<li>浏览一遍官方文档的<a href="http://www.groovy-lang.org/documentation.html" target="_blank" rel="noopener">语言规范</a>，里面有示例，很容易看懂。要知道Groovy语言规范大致讲了哪些内容，以后遇到不懂的语法，可以回来快速查阅。</li>
+<li>另外，也可以看下国人写的入门博客：<a href="https://blog.csdn.net/singwhatiwanna/article/details/76084580" target="_blank" rel="noopener">任玉刚 Gradle从入门到实战 - Groovy基础</a>、<a href="https://www.jianshu.com/p/ba55dc163dfd" target="_blank" rel="noopener">使用Groovy开发之新特性</a>。</li>
+</ol>
+<p><strong>重点看的部分</strong></p>
+<ol>
+<li>闭包<a href="http://www.groovy-lang.org/closures.html" target="_blank" rel="noopener">Closures</a>。定义、使用、代理策略(<code>owner</code>, <code>delegate</code> and <code>this</code>)</li>
+<li>语义<a href="http://www.groovy-lang.org/semantics.html" target="_blank" rel="noopener">Semantics</a>。重点看<code>Promotion and coercion</code>、<code>Optionality</code>和<code>Typing</code>部分，尤其是和闭包相关的部分。</li>
+</ol>
+<hr>
+<p><br></p>
+<h1 id="API文档使用说明"><a href="#API文档使用说明" class="headerlink" title="API文档使用说明"></a>API文档使用说明</h1><p>Groovy API包括两部分，一部分是Groovy化的JDK API(<code>groovy-jdk</code>)，另一部分是新增的纯Groovy API(<code>gapi</code>)。</p>
+<p>文档入口：</p>
+<ol>
+<li><a href="http://groovy-lang.org/documentation.html" target="_blank" rel="noopener">官网Document</a>-&gt;API documentation<br><img src="https://upload-images.jianshu.io/upload_images/2658578-cae297c94add4e77.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Groovy API入口"></li>
+</ol>
+<ol start="2">
+<li>直接进入<a href="http://docs.groovy-lang.org/" target="_blank" rel="noopener">API文档</a><br><img src="https://upload-images.jianshu.io/upload_images/2658578-0da24a5176f7dff8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Groovy Api Document"></li>
+</ol>
+<p><strong><a href="http://docs.groovy-lang.org/docs/latest/html/groovy-jdk/" target="_blank" rel="noopener">Groovy化的JDK API</a></strong></p>
+<blockquote>
+<p>This document describes the methods added to the JDK to make it more groovy.</p>
+</blockquote>
+<p>Groovy在JDK中增加了许多方法，如在<code>List</code>增加了<code>public List each(Closure closure)</code>、<code>public List dropWhile(Closure condition)</code>等方法，使其Groovy化。</p>
+<p>查找API示例：查看<code>List</code>中<code>public List each(Closure closure)</code>方法详情。</p>
+<ol>
+<li><p>通过包(<code>Package</code>)查。<code>java.util</code> -&gt; <code>Interfaces</code> -&gt; <code>List</code> -&gt; <code>each(Closure closure)</code></p>
+</li>
+<li><p>通过索引(<code>Index</code>)查。<code>Index</code> -&gt; 页面搜索<code>each(groovy.lang.Closure)</code>(<code>Mac</code>版<code>Chrome</code>浏览器快捷键<code>Command+F</code>) -&gt; 找到<code>Method in interface java.util.List</code>一项</p>
+</li>
+</ol>
+<p>最终结果如下：<br><img src="https://upload-images.jianshu.io/upload_images/2658578-23a786dc872d9aa0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="List的each方法详情"><br>描述说是迭代一个<code>List</code>，并将每个子项作为参数传递到闭包中进行处理。</p>
+<p><strong><a href="http://docs.groovy-lang.org/docs/latest/html/gapi/" target="_blank" rel="noopener">新增的Groovy类 API</a></strong></p>
+<blockquote>
+<p>Groovy - An agile dynamic language for the Java Platform<br>(GroovyDoc for Groovy and Java classes)</p>
+</blockquote>
+<p>上面说的是<code>Groovy and Java classes</code>文档，包括<code>Groovy</code>类和原生<code>Java</code>类(可通过文档中的类的链接查看)。尤其要注意，这个文档中的<code>JDK API</code>点击后都会链接到原始的Java类，而不是Groovy化的Java类。<br>查看某个API详情的方法与上面的相同，略。</p>
+<hr>
+<p><br></p>
+<h1 id="示例-Map语法"><a href="#示例-Map语法" class="headerlink" title="示例-Map语法"></a>示例-Map语法</h1><p>创建Gradle项目，并添加名为groovySyntax的任务<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir groovy-syntax</span><br><span class="line">$ <span class="built_in">cd</span> groovy-syntax</span><br><span class="line">$ vi build.gradle</span><br></pre></td></tr></table></figure></p>
+<p><code>build.gradle</code>文件<br><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">task(groovySyntax).doLast &#123;</span><br><span class="line">    println <span class="string">'start groovy syntax task'</span></span><br><span class="line">    doMap()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> doMap() &#123;</span><br><span class="line">    <span class="keyword">def</span> emptyMap = [:]</span><br><span class="line">    <span class="keyword">def</span> test = [<span class="string">"id"</span>:<span class="number">1</span>, <span class="string">"name"</span>:<span class="string">"zhangliang"</span>, <span class="string">"isMale"</span>:<span class="literal">true</span>]</span><br><span class="line">    test[<span class="string">"id"</span>] = <span class="number">2</span></span><br><span class="line">    test.id = <span class="number">900</span></span><br><span class="line">    println test.id</span><br><span class="line">    println test.isMale</span><br><span class="line">    println test</span><br><span class="line"></span><br><span class="line">    test.each &#123; key ,value -&gt;</span><br><span class="line">        println <span class="string">"key=$key, value=$value"</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    test.each &#123; entry -&gt;</span><br><span class="line">        println <span class="string">"entry-&gt;$entry,$&#123;entry.key&#125;, $&#123;entry.value&#125;"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>执行<code>gradle groovySyntax</code>，输出如下<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Starting a Gradle Daemon (subsequent builds will be faster)</span><br><span class="line"></span><br><span class="line">&gt; Task :groovySyntax</span><br><span class="line">start groovy syntax task</span><br><span class="line">900</span><br><span class="line"><span class="literal">true</span></span><br><span class="line">&#123;id=900, name=zhangliang, isMale=<span class="literal">true</span>&#125;</span><br><span class="line">key=id, value=900</span><br><span class="line">key=name, value=zhangliang</span><br><span class="line">key=isMale, value=<span class="literal">true</span></span><br><span class="line">entry-&gt;id=900,id, 900</span><br><span class="line">entry-&gt;name=zhangliang,name, zhangliang</span><br><span class="line">entry-&gt;isMale=<span class="literal">true</span>,isMale, <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">BUILD SUCCESSFUL <span class="keyword">in</span> 2s</span><br><span class="line">1 actionable task: 1 executed</span><br></pre></td></tr></table></figure></p>
+<p>上面的代码和输出结果不难理解，分析如下：</p>
+<ol>
+<li>方法没有嵌套时，括号可以省略。<code>println &#39;start groovy syntax task&#39;</code>和<code>test.each{...}</code>写全就是<code>println(&#39;start groovy syntax task)&#39;</code>和<code>test.each({...})</code></li>
+<li><code>Map</code>的定义参见<a href="http://www.groovy-lang.org/syntax.html#_maps" target="_blank" rel="noopener">语言规范-Map</a>。</li>
+<li><code>Map</code>的方法<code>each(Closure closure)</code>的API文档说明如下<blockquote>
+<p>Allows a Map to be iterated through using a closure. If the closure takes one parameter then it will be passed the Map.Entry otherwise if the closure takes two parameters then it will be passed the key and the value.<br>可以用一个闭包来迭代<code>Map</code>，闭包的参数如果是一个就作为<code>Map.Entry</code>，如果两个参数就作为<code>key</code>和<code>value</code>。</p>
+</blockquote>
+</li>
+</ol>
+<hr>
+<p><br></p>
+<h1 id="示例-修改Android项目输出的APK名称"><a href="#示例-修改Android项目输出的APK名称" class="headerlink" title="示例-修改Android项目输出的APK名称"></a>示例-修改Android项目输出的APK名称</h1><p>Android开发中，打包完后修改apk的名称是一个比较常见的做法。之前开发的Android项目中，在<code>app/build.gradle</code>中加入了几行代码，每次打包后自动修改apk的名称，相关代码如下：<br><code>app/build.gradle</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">// 利用git commit count 作为构建号</span><br><span class="line">static def gitBuildCode() &#123;</span><br><span class="line">    def cmd = &apos;git rev-list HEAD --first-parent --count&apos;</span><br><span class="line">    cmd.execute().text.trim().toInteger()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">static def appName() &#123;</span><br><span class="line">    return &quot;youchat&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 修改输出文件的名称</span><br><span class="line">android.applicationVariants.all &#123; variant -&gt;</span><br><span class="line">    variant.outputs.all &#123;</span><br><span class="line">        if (outputFileName != null &amp;&amp; outputFileName.endsWith(&apos;.apk&apos;)) &#123;</span><br><span class="line">            def endStr = outputFileName</span><br><span class="line">            if (outputFileName.contains(&quot;debug&quot;)) &#123;</span><br><span class="line">                endStr = &quot;debug.apk&quot;</span><br><span class="line">            &#125; else if (outputFileName.contains(&quot;preRelease&quot;)) &#123;</span><br><span class="line">                endStr = &quot;preRelease.apk&quot;</span><br><span class="line">            &#125; else if (outputFileName.contains(&quot;release&quot;)) &#123;</span><br><span class="line">                endStr = &quot;release.apk&quot;</span><br><span class="line">            &#125;</span><br><span class="line">            outputFileName = &quot;$&#123;appName()&#125;_$&#123;android.defaultConfig.versionName&#125;_$&#123;gitBuildCode()&#125;_$&#123;endStr&#125;&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>打包完后，可以得到类似下面的文件<br><code>app/build/outputs/apk/preRelease/youchat_7.5.0_999_preRelease.apk</code><br>上面的代码逻辑比较简单，简单分析如下：</p>
+<ol>
+<li>定义了两个方法。<code>gitBuildCode ()</code>方法没有写<code>return</code>关键字，因为在<code>Groovy</code>中，方法总会返回值的，如果没有写<code>return</code>，就返回最后一行产生的值。参见<a href="http://www.groovy-lang.org/objectorientation.html#_methods" target="_blank" rel="noopener">语言规范-Object orientation-Method</a><blockquote>
+<p>Methods in Groovy always return some value. If no return statement is provided, the value evaluated in the last line executed will be returned</p>
+</blockquote>
+</li>
+<li><code>android.applicationVariants.all(Closure var1)</code>和<code>variant.outputs.all(Closure var1)</code>是Gradle DSL语法，可以查看它的<a href="https://docs.gradle.org/current/javadoc/" target="_blank" rel="noopener">javadoc</a><blockquote>
+<p>Executes the given closure against all objects in this collection, and any objects subsequently added to this collection. The object is passed to the closure as the closure delegate. Alternatively, it is also passed as a parameter.<br>迭代容器中所有的对象，并传递给闭包进行处理。</p>
+</blockquote>
+</li>
+<li><code>variant.outputs.all(Closure var1)</code>闭包中的代码逻辑是很简单的，只说下最后一行<code>outputFileName</code>的赋值语句，它使用了<a href="http://groovy-lang.org/syntax.html#all-strings" target="_blank" rel="noopener">字符串插值</a>语法<code>${}</code>，与kotlin里字符串模板是类似的。</li>
+</ol>
+<hr>
+<p><br></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li><a href="http://www.groovy-lang.org/" target="_blank" rel="noopener">Groovy 官网</a></li>
+<li><a href="http://docs.groovy-lang.org/" target="_blank" rel="noopener">Apache Groovy Documentation</a></li>
+<li><a href="https://blog.csdn.net/singwhatiwanna/article/details/76084580" target="_blank" rel="noopener">任玉刚 Gradle从入门到实战 - Groovy基础</a></li>
+<li><a href="https://docs.gradle.org/current/javadoc/" target="_blank" rel="noopener">Gradle DSL Javadoc</a></li>
+<li><a href="https://www.jianshu.com/p/ba55dc163dfd" target="_blank" rel="noopener">使用Groovy开发之新特性</a></li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/27/Android构建01-前言/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhang Liang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://www.xda-developers.com/files/2013/12/android-code.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CodingForEverything">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/27/Android构建01-前言/" itemprop="url">Android构建01-前言</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-27T14:52:48+08:00">
+                2018-08-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习Android构建系统/" itemprop="url" rel="index">
+                    <span itemprop="name">学习Android构建系统</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h1><p>开发Android应用，就离不开基于Gradle的Android构建系统。刚开始做Android开发的时候，遇到编译问题，一般上网搜索解决之。但一般很难知道问题产生的深层次原因，也不知道以后如何避免，更不知道如何快速解决一般性的编译异常问题。想去学习，但一般的博客或书籍的内容与Android开发者官网介绍的内容相似，没有关于Groovy和Gradle的内容，让人很难理解，只知道是这样，而不知道为什么是这样。于是，一直想对Android构建系统做一个系统性的学习和总结，最近终于能够抽出一些空来做这件事。</p>
+<p>本来只想写一篇文章，但写到Gradle之后，发现篇幅太长，故分开写，当做一个系列。</p>
+<p><strong>核心问题</strong></p>
+<p>当我执行<code>./gradlew assemble</code>命令时，我需要知道Gradle做了哪些事情？它是如何做的（即源码是如何写的）？</p>
+<p><strong>学习目标</strong><br>对于Android Build System，我们应该掌握哪些知识或技能点呢？</p>
+<ol>
+<li>Groovy。语言基础，尤其是闭包概念，API快速查阅等。</li>
+<li>Gradle。项目构建流程、基础概念、基本命令行指令、插件、API和Reference的查阅等。</li>
+<li>Android Plugin。基础概念、Reference的查阅等。</li>
+<li>Android应用构建（编译和打包）流程。</li>
+</ol>
+<p>文章也将主要按照这个学习流程来写。</p>
+<p><strong>参考资料</strong><br>主要参考官方文档</p>
+<ol>
+<li><a href="http://www.groovy-lang.org/learn.html" target="_blank" rel="noopener">Groovy 官网</a></li>
+<li><a href="https://gradle.org/" target="_blank" rel="noopener">Gradle官网</a></li>
+<li><a href="https://developer.android.com/studio/build/" target="_blank" rel="noopener">Android开发者官网-Configure your build</a></li>
+</ol>
+<p><br></p>
+<h1 id="Android构建系统与三大知识块"><a href="#Android构建系统与三大知识块" class="headerlink" title="Android构建系统与三大知识块"></a>Android构建系统与三大知识块</h1><p><strong>Android构建系统</strong><br>Android构建系统，即Android Build System，它的作用是编译app资源和源代码，并将它们打包成APK。之后我们可以对APK进行测试、部署、签名和发布。</p>
+<blockquote>
+<p>The Android build system compiles app resources and source code, and packages them into APKs that you can test, deploy, sign, and distribute</p>
+</blockquote>
+<p><br><strong>三大知识块</strong><br>整个Android Build System基于三大知识块：</p>
+<ul>
+<li><a href="http://groovy-lang.org/" target="_blank" rel="noopener">Apache Groovy</a><br>一种功能强大的JVM语言，包含脚本编写、DSL（特定领域语言）创建、运行时和编译时元编程以及函数编程等功能。</li>
+<li><p><a href="https://gradle.org/" target="_blank" rel="noopener">Gradle</a><br>一种项目自动化构建工具。综合了Ant和Maven的一些特点，并使用Groovy的DSL来声明项目设置，而不是传统的XML。包含插件（Plugin）等功能。</p>
+<blockquote>
+<p>提示：目前Gradle可以使用Kotlin语言来编写脚本，但建议初学者以Groovy为主，毕竟遗留项目以及当前大多数项目的Gradle脚本都是使用Groovy来编写的。</p>
+</blockquote>
+</li>
+<li><p><a href="http://google.github.io/android-gradle-dsl/current/" target="_blank" rel="noopener">Android Plugin</a><br>Gradle的插件，用于增加一些特定于构建Android应用的功能。</p>
+</li>
+</ul>
+<p><br></p>
+<h1 id="开发环境"><a href="#开发环境" class="headerlink" title="开发环境"></a>开发环境</h1><ol>
+<li><p>主流操作系统。Gradle能够运行在所有的主流操作系统上，我的系统是<code>masOS High Sierra Version 10.13.6</code> 。</p>
+</li>
+<li><p><a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html" target="_blank" rel="noopener">Java JDK</a> 7+。Gradle基于Groovy，Groovy需要Java开发环境，Gradle官网说Gradle运行的最低Java JDK版本是7。</p>
+<p>我的Java版本如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ java -version</span><br><span class="line">java version &quot;1.8.0_91&quot;</span><br><span class="line">Java(TM) SE Runtime Environment (build 1.8.0_91-b14)</span><br><span class="line">Java HotSpot(TM) 64-Bit Server VM (build 25.91-b14, mixed mode)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Gradle。Gradle环境中包含Groovy，因此安装Gradle之后就不需要单独安装Groovy了。各平台以及不同安装方式见官网 <a href="https://docs.gradle.org/current/userguide/installation.html" target="_blank" rel="noopener">Installing Gradle</a>。macOS上可以使用<code>Homebrew</code>快速安装<code>$ brew install gradle</code>，安装成功后，查看版本信息如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ gradle -v</span><br><span class="line">------------------------------------------------------------</span><br><span class="line">Gradle 4.8.1</span><br><span class="line">------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">Build time:   2018-06-21 07:53:06 UTC</span><br><span class="line">Revision:     0abdea078047b12df42e7750ccba34d69b516a22</span><br><span class="line"></span><br><span class="line">Groovy:       2.4.12</span><br><span class="line">Ant:          Apache Ant(TM) version 1.9.11 compiled on March 23 2018</span><br><span class="line">JVM:          1.8.0_91 (Oracle Corporation 25.91-b14)</span><br><span class="line">OS:           Mac OS X 10.13.6 x86_64</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><br></p>
+<h1 id="Hello-World示例"><a href="#Hello-World示例" class="headerlink" title="Hello World示例"></a>Hello World示例</h1><p>创建一个简单的Gradle项目：包含一个<code>build.gradle</code>文件的目录。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir hello-world</span><br><span class="line">$ <span class="built_in">cd</span> hello-world</span><br><span class="line">$ vim build.gradle</span><br></pre></td></tr></table></figure></p>
+<p><code>build.gradle</code>文件</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">task helloworld &#123;</span><br><span class="line">  doLast &#123;</span><br><span class="line">      println<span class="string">'Hello World!'</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>执行任务<br><figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ gradle helloworld</span><br><span class="line"><span class="comment"># 输出如下：</span></span><br><span class="line">Starting a Gradle Daemon (subsequent builds will be faster)</span><br><span class="line">&gt; Task :helloworld</span><br><span class="line">Hello World!</span><br><span class="line">BUILD SUCCESSFUL <span class="keyword">in</span> 2s</span><br><span class="line">1 actionable task: 1 executed</span><br></pre></td></tr></table></figure></p>
+<p>简单解释下 <code>build.gradle</code>文件：</p>
+<ol>
+<li><code>build.gradle</code>是Gradle的编译脚本，在构建过程中Gradle会据此生成一个<code>Project</code>的Java实例。</li>
+<li><code>task</code>是<code>Gradle DSL</code>的关键字，用于添加任务到当前那项目中。<code>helloworld</code>是任务的名称。后面连接的一个Groovy闭包，构建时，会返回一个名为‘helloworld’的任务。</li>
+<li>闭包中的<code>doLast</code>是<code>Task</code>的方法，根据闭包的语法，省略了方法的对象，写全的话是<code>owner.doLast</code>。表示向任务中添加一个打印’Hello World!’字符串的<code>Action</code>到任务的<code>Action</code>列表的最后。</li>
+<li>一个任务（<code>Task</code>）可以包含很多<code>Action</code>，执行任务的时候，顺序执行<code>Action</code>。</li>
+</ol>
+<p><br></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li><a href="http://www.groovy-lang.org/learn.html" target="_blank" rel="noopener">Groovy 官网</a></li>
+<li><a href="https://gradle.org/" target="_blank" rel="noopener">Gradle官网</a></li>
+<li><a href="https://developer.android.com/studio/build/" target="_blank" rel="noopener">Android开发者官网-Configure your build</a></li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/27/hello-world/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhang Liang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://www.xda-developers.com/files/2013/12/android-code.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CodingForEverything">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/27/hello-world/" itemprop="url">Hello World</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-27T08:56:19+08:00">
+                2018-08-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
   </section>
 
   
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
-  </nav>
-
 
 
           </div>
@@ -2252,7 +2342,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-count">9</span>
                 <span class="site-state-item-name">posts</span>
               </a>
             </div>
@@ -2263,7 +2353,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-count">3</span>
                 <span class="site-state-item-name">categories</span>
               </a>
             </div>

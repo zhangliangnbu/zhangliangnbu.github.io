@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android,Build,Gradle,Groovy," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="前言Groovy是JVM语言，与Java语法类似，如果你熟悉kotlin的话，你会发现它与kotlin更类似些。它可以作为Java平台的脚本语言使用。详细介绍请见Groovy官网和维基百科。  提示：“Groovy基础”这一部分建议不要花费太多时间，能看懂语法，尤其是闭包的语法，以及知道如何查阅API即可。    语法对于语法的学习，我这里就不详细说了，请大家按照下面步骤去学习：  浏览一遍官方文">
+<meta name="keywords" content="Android,Build,Gradle,Groovy">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android构建02-Groovy基础">
+<meta property="og:url" content="http://yoursite.com/2018/08/27/Android构建02-Groovy基础/index.html">
+<meta property="og:site_name" content="CodingForEverything">
+<meta property="og:description" content="前言Groovy是JVM语言，与Java语法类似，如果你熟悉kotlin的话，你会发现它与kotlin更类似些。它可以作为Java平台的脚本语言使用。详细介绍请见Groovy官网和维基百科。  提示：“Groovy基础”这一部分建议不要花费太多时间，能看懂语法，尤其是闭包的语法，以及知道如何查阅API即可。    语法对于语法的学习，我这里就不详细说了，请大家按照下面步骤去学习：  浏览一遍官方文">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2658578-cae297c94add4e77.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2658578-0da24a5176f7dff8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2658578-23a786dc872d9aa0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2018-10-18T01:10:48.037Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android构建02-Groovy基础">
+<meta name="twitter:description" content="前言Groovy是JVM语言，与Java语法类似，如果你熟悉kotlin的话，你会发现它与kotlin更类似些。它可以作为Java平台的脚本语言使用。详细介绍请见Groovy官网和维基百科。  提示：“Groovy基础”这一部分建议不要花费太多时间，能看懂语法，尤其是闭包的语法，以及知道如何查阅API即可。    语法对于语法的学习，我这里就不详细说了，请大家按照下面步骤去学习：  浏览一遍官方文">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/2658578-cae297c94add4e77.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/08/27/Android构建02-Groovy基础/"/>
+
+
+
+
+
+  <title>Android构建02-Groovy基础 | CodingForEverything</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">CodingForEverything</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">code everything from here</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/27/Android构建02-Groovy基础/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhang Liang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://www.xda-developers.com/files/2013/12/android-code.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CodingForEverything">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Android构建02-Groovy基础</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-27T17:52:09+08:00">
+                2018-08-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习Android构建系统/" itemprop="url" rel="index">
+                    <span itemprop="name">学习Android构建系统</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>Groovy是JVM语言，与Java语法类似，如果你熟悉kotlin的话，你会发现它与kotlin更类似些。它可以作为Java平台的脚本语言使用。详细介绍请见<a href="http://groovy-lang.org/index.html" target="_blank" rel="noopener">Groovy官网</a>和<a href="https://zh.wikipedia.org/wiki/Groovy" target="_blank" rel="noopener">维基百科</a>。</p>
+<blockquote>
+<p>提示：“Groovy基础”这一部分建议不要花费太多时间，能看懂语法，尤其是闭包的语法，以及知道如何查阅API即可。</p>
+</blockquote>
+<hr>
+<p><br></p>
+<h1 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h1><p>对于语法的学习，我这里就不详细说了，请大家按照下面步骤去学习：</p>
+<ol>
+<li>浏览一遍官方文档的<a href="http://www.groovy-lang.org/documentation.html" target="_blank" rel="noopener">语言规范</a>，里面有示例，很容易看懂。要知道Groovy语言规范大致讲了哪些内容，以后遇到不懂的语法，可以回来快速查阅。</li>
+<li>另外，也可以看下国人写的入门博客：<a href="https://blog.csdn.net/singwhatiwanna/article/details/76084580" target="_blank" rel="noopener">任玉刚 Gradle从入门到实战 - Groovy基础</a>、<a href="https://www.jianshu.com/p/ba55dc163dfd" target="_blank" rel="noopener">使用Groovy开发之新特性</a>。</li>
+</ol>
+<p><strong>重点看的部分</strong></p>
+<ol>
+<li>闭包<a href="http://www.groovy-lang.org/closures.html" target="_blank" rel="noopener">Closures</a>。定义、使用、代理策略(<code>owner</code>, <code>delegate</code> and <code>this</code>)</li>
+<li>语义<a href="http://www.groovy-lang.org/semantics.html" target="_blank" rel="noopener">Semantics</a>。重点看<code>Promotion and coercion</code>、<code>Optionality</code>和<code>Typing</code>部分，尤其是和闭包相关的部分。</li>
+</ol>
+<hr>
+<p><br></p>
+<h1 id="API文档使用说明"><a href="#API文档使用说明" class="headerlink" title="API文档使用说明"></a>API文档使用说明</h1><p>Groovy API包括两部分，一部分是Groovy化的JDK API(<code>groovy-jdk</code>)，另一部分是新增的纯Groovy API(<code>gapi</code>)。</p>
+<p>文档入口：</p>
+<ol>
+<li><a href="http://groovy-lang.org/documentation.html" target="_blank" rel="noopener">官网Document</a>-&gt;API documentation<br><img src="https://upload-images.jianshu.io/upload_images/2658578-cae297c94add4e77.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Groovy API入口"></li>
+</ol>
+<ol start="2">
+<li>直接进入<a href="http://docs.groovy-lang.org/" target="_blank" rel="noopener">API文档</a><br><img src="https://upload-images.jianshu.io/upload_images/2658578-0da24a5176f7dff8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Groovy Api Document"></li>
+</ol>
+<p><strong><a href="http://docs.groovy-lang.org/docs/latest/html/groovy-jdk/" target="_blank" rel="noopener">Groovy化的JDK API</a></strong></p>
+<blockquote>
+<p>This document describes the methods added to the JDK to make it more groovy.</p>
+</blockquote>
+<p>Groovy在JDK中增加了许多方法，如在<code>List</code>增加了<code>public List each(Closure closure)</code>、<code>public List dropWhile(Closure condition)</code>等方法，使其Groovy化。</p>
+<p>查找API示例：查看<code>List</code>中<code>public List each(Closure closure)</code>方法详情。</p>
+<ol>
+<li><p>通过包(<code>Package</code>)查。<code>java.util</code> -&gt; <code>Interfaces</code> -&gt; <code>List</code> -&gt; <code>each(Closure closure)</code></p>
+</li>
+<li><p>通过索引(<code>Index</code>)查。<code>Index</code> -&gt; 页面搜索<code>each(groovy.lang.Closure)</code>(<code>Mac</code>版<code>Chrome</code>浏览器快捷键<code>Command+F</code>) -&gt; 找到<code>Method in interface java.util.List</code>一项</p>
+</li>
+</ol>
+<p>最终结果如下：<br><img src="https://upload-images.jianshu.io/upload_images/2658578-23a786dc872d9aa0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="List的each方法详情"><br>描述说是迭代一个<code>List</code>，并将每个子项作为参数传递到闭包中进行处理。</p>
+<p><strong><a href="http://docs.groovy-lang.org/docs/latest/html/gapi/" target="_blank" rel="noopener">新增的Groovy类 API</a></strong></p>
+<blockquote>
+<p>Groovy - An agile dynamic language for the Java Platform<br>(GroovyDoc for Groovy and Java classes)</p>
+</blockquote>
+<p>上面说的是<code>Groovy and Java classes</code>文档，包括<code>Groovy</code>类和原生<code>Java</code>类(可通过文档中的类的链接查看)。尤其要注意，这个文档中的<code>JDK API</code>点击后都会链接到原始的Java类，而不是Groovy化的Java类。<br>查看某个API详情的方法与上面的相同，略。</p>
+<hr>
+<p><br></p>
+<h1 id="示例-Map语法"><a href="#示例-Map语法" class="headerlink" title="示例-Map语法"></a>示例-Map语法</h1><p>创建Gradle项目，并添加名为groovySyntax的任务<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir groovy-syntax</span><br><span class="line">$ <span class="built_in">cd</span> groovy-syntax</span><br><span class="line">$ vi build.gradle</span><br></pre></td></tr></table></figure></p>
+<p><code>build.gradle</code>文件<br><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">task(groovySyntax).doLast &#123;</span><br><span class="line">    println <span class="string">'start groovy syntax task'</span></span><br><span class="line">    doMap()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> doMap() &#123;</span><br><span class="line">    <span class="keyword">def</span> emptyMap = [:]</span><br><span class="line">    <span class="keyword">def</span> test = [<span class="string">"id"</span>:<span class="number">1</span>, <span class="string">"name"</span>:<span class="string">"zhangliang"</span>, <span class="string">"isMale"</span>:<span class="literal">true</span>]</span><br><span class="line">    test[<span class="string">"id"</span>] = <span class="number">2</span></span><br><span class="line">    test.id = <span class="number">900</span></span><br><span class="line">    println test.id</span><br><span class="line">    println test.isMale</span><br><span class="line">    println test</span><br><span class="line"></span><br><span class="line">    test.each &#123; key ,value -&gt;</span><br><span class="line">        println <span class="string">"key=$key, value=$value"</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    test.each &#123; entry -&gt;</span><br><span class="line">        println <span class="string">"entry-&gt;$entry,$&#123;entry.key&#125;, $&#123;entry.value&#125;"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>执行<code>gradle groovySyntax</code>，输出如下<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Starting a Gradle Daemon (subsequent builds will be faster)</span><br><span class="line"></span><br><span class="line">&gt; Task :groovySyntax</span><br><span class="line">start groovy syntax task</span><br><span class="line">900</span><br><span class="line"><span class="literal">true</span></span><br><span class="line">&#123;id=900, name=zhangliang, isMale=<span class="literal">true</span>&#125;</span><br><span class="line">key=id, value=900</span><br><span class="line">key=name, value=zhangliang</span><br><span class="line">key=isMale, value=<span class="literal">true</span></span><br><span class="line">entry-&gt;id=900,id, 900</span><br><span class="line">entry-&gt;name=zhangliang,name, zhangliang</span><br><span class="line">entry-&gt;isMale=<span class="literal">true</span>,isMale, <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">BUILD SUCCESSFUL <span class="keyword">in</span> 2s</span><br><span class="line">1 actionable task: 1 executed</span><br></pre></td></tr></table></figure></p>
+<p>上面的代码和输出结果不难理解，分析如下：</p>
+<ol>
+<li>方法没有嵌套时，括号可以省略。<code>println &#39;start groovy syntax task&#39;</code>和<code>test.each{...}</code>写全就是<code>println(&#39;start groovy syntax task)&#39;</code>和<code>test.each({...})</code></li>
+<li><code>Map</code>的定义参见<a href="http://www.groovy-lang.org/syntax.html#_maps" target="_blank" rel="noopener">语言规范-Map</a>。</li>
+<li><code>Map</code>的方法<code>each(Closure closure)</code>的API文档说明如下<blockquote>
+<p>Allows a Map to be iterated through using a closure. If the closure takes one parameter then it will be passed the Map.Entry otherwise if the closure takes two parameters then it will be passed the key and the value.<br>可以用一个闭包来迭代<code>Map</code>，闭包的参数如果是一个就作为<code>Map.Entry</code>，如果两个参数就作为<code>key</code>和<code>value</code>。</p>
+</blockquote>
+</li>
+</ol>
+<hr>
+<p><br></p>
+<h1 id="示例-修改Android项目输出的APK名称"><a href="#示例-修改Android项目输出的APK名称" class="headerlink" title="示例-修改Android项目输出的APK名称"></a>示例-修改Android项目输出的APK名称</h1><p>Android开发中，打包完后修改apk的名称是一个比较常见的做法。之前开发的Android项目中，在<code>app/build.gradle</code>中加入了几行代码，每次打包后自动修改apk的名称，相关代码如下：<br><code>app/build.gradle</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">// 利用git commit count 作为构建号</span><br><span class="line">static def gitBuildCode() &#123;</span><br><span class="line">    def cmd = &apos;git rev-list HEAD --first-parent --count&apos;</span><br><span class="line">    cmd.execute().text.trim().toInteger()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">static def appName() &#123;</span><br><span class="line">    return &quot;youchat&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 修改输出文件的名称</span><br><span class="line">android.applicationVariants.all &#123; variant -&gt;</span><br><span class="line">    variant.outputs.all &#123;</span><br><span class="line">        if (outputFileName != null &amp;&amp; outputFileName.endsWith(&apos;.apk&apos;)) &#123;</span><br><span class="line">            def endStr = outputFileName</span><br><span class="line">            if (outputFileName.contains(&quot;debug&quot;)) &#123;</span><br><span class="line">                endStr = &quot;debug.apk&quot;</span><br><span class="line">            &#125; else if (outputFileName.contains(&quot;preRelease&quot;)) &#123;</span><br><span class="line">                endStr = &quot;preRelease.apk&quot;</span><br><span class="line">            &#125; else if (outputFileName.contains(&quot;release&quot;)) &#123;</span><br><span class="line">                endStr = &quot;release.apk&quot;</span><br><span class="line">            &#125;</span><br><span class="line">            outputFileName = &quot;$&#123;appName()&#125;_$&#123;android.defaultConfig.versionName&#125;_$&#123;gitBuildCode()&#125;_$&#123;endStr&#125;&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>打包完后，可以得到类似下面的文件<br><code>app/build/outputs/apk/preRelease/youchat_7.5.0_999_preRelease.apk</code><br>上面的代码逻辑比较简单，简单分析如下：</p>
+<ol>
+<li>定义了两个方法。<code>gitBuildCode ()</code>方法没有写<code>return</code>关键字，因为在<code>Groovy</code>中，方法总会返回值的，如果没有写<code>return</code>，就返回最后一行产生的值。参见<a href="http://www.groovy-lang.org/objectorientation.html#_methods" target="_blank" rel="noopener">语言规范-Object orientation-Method</a><blockquote>
+<p>Methods in Groovy always return some value. If no return statement is provided, the value evaluated in the last line executed will be returned</p>
+</blockquote>
+</li>
+<li><code>android.applicationVariants.all(Closure var1)</code>和<code>variant.outputs.all(Closure var1)</code>是Gradle DSL语法，可以查看它的<a href="https://docs.gradle.org/current/javadoc/" target="_blank" rel="noopener">javadoc</a><blockquote>
+<p>Executes the given closure against all objects in this collection, and any objects subsequently added to this collection. The object is passed to the closure as the closure delegate. Alternatively, it is also passed as a parameter.<br>迭代容器中所有的对象，并传递给闭包进行处理。</p>
+</blockquote>
+</li>
+<li><code>variant.outputs.all(Closure var1)</code>闭包中的代码逻辑是很简单的，只说下最后一行<code>outputFileName</code>的赋值语句，它使用了<a href="http://groovy-lang.org/syntax.html#all-strings" target="_blank" rel="noopener">字符串插值</a>语法<code>${}</code>，与kotlin里字符串模板是类似的。</li>
+</ol>
+<hr>
+<p><br></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li><a href="http://www.groovy-lang.org/" target="_blank" rel="noopener">Groovy 官网</a></li>
+<li><a href="http://docs.groovy-lang.org/" target="_blank" rel="noopener">Apache Groovy Documentation</a></li>
+<li><a href="https://blog.csdn.net/singwhatiwanna/article/details/76084580" target="_blank" rel="noopener">任玉刚 Gradle从入门到实战 - Groovy基础</a></li>
+<li><a href="https://docs.gradle.org/current/javadoc/" target="_blank" rel="noopener">Gradle DSL Javadoc</a></li>
+<li><a href="https://www.jianshu.com/p/ba55dc163dfd" target="_blank" rel="noopener">使用Groovy开发之新特性</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+            <a href="/tags/Build/" rel="tag"># Build</a>
+          
+            <a href="/tags/Gradle/" rel="tag"># Gradle</a>
+          
+            <a href="/tags/Groovy/" rel="tag"># Groovy</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/27/Android构建01-前言/" rel="next" title="Android构建01-前言">
+                <i class="fa fa-chevron-left"></i> Android构建01-前言
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/27/Android构建03-Gradle基础/" rel="prev" title="Android构建03-Gradle基础">
+                Android构建03-Gradle基础 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://www.xda-developers.com/files/2013/12/android-code.jpg"
+               alt="Zhang Liang" />
+          <p class="site-author-name" itemprop="name">Zhang Liang</p>
+           
+              <p class="site-description motion-element" itemprop="description">code android web</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#语法"><span class="nav-number">2.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#API文档使用说明"><span class="nav-number">3.</span> <span class="nav-text">API文档使用说明</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#示例-Map语法"><span class="nav-number">4.</span> <span class="nav-text">示例-Map语法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#示例-修改Android项目输出的APK名称"><span class="nav-number">5.</span> <span class="nav-text">示例-修改Android项目输出的APK名称</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhang Liang</span>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
