@@ -108,25 +108,25 @@
 
 
 
-  <meta name="description" content="问题描述最近的一个项目使用了公司自己的Maven库中的依赖，这个Maven库只能用公司内网访问。开始我设置了代理，sync后，有部分依赖不能下载，有时候sync依然会成功，但build一定会失败，执行./gradlew build --stacktrack,获得错误信息如下：  1Could not resolve xxxxx.xxx.xxx.xxx. 只是公司自己的Maven库依赖不能解析，其他">
-<meta name="keywords" content="Android,Build,Gradle,开发笔记">
+  <meta name="description" content="介绍用于更安全地在APP之间实现文件共享的一种机制，适用于Android 7.0及以上。 当应用A（如相册）允许其他应用（以应用B为例）调用自己并获取自己的文件时，应用A需要使用FileProvider来转化自己的文件路径为content://Uri，并提供给需要文件的应用B。其中  Android 7.0以上如果不使用FileProvider，应用A将返回file:/// Uri，而报错。 返回">
+<meta name="keywords" content="Android,FileProvider">
 <meta property="og:type" content="article">
-<meta property="og:title" content="开发笔记-Gradle下载公司内部依赖失败问题排查">
-<meta property="og:url" content="http://yoursite.com/2018/09/29/开发笔记-Gradle下载公司内部依赖失败问题排查/index.html">
+<meta property="og:title" content="开发笔记-理解FileProvider">
+<meta property="og:url" content="http://yoursite.com/2018/10/21/开发笔记-理解FileProvider/index.html">
 <meta property="og:site_name" content="永恒的码流">
-<meta property="og:description" content="问题描述最近的一个项目使用了公司自己的Maven库中的依赖，这个Maven库只能用公司内网访问。开始我设置了代理，sync后，有部分依赖不能下载，有时候sync依然会成功，但build一定会失败，执行./gradlew build --stacktrack,获得错误信息如下：  1Could not resolve xxxxx.xxx.xxx.xxx. 只是公司自己的Maven库依赖不能解析，其他">
+<meta property="og:description" content="介绍用于更安全地在APP之间实现文件共享的一种机制，适用于Android 7.0及以上。 当应用A（如相册）允许其他应用（以应用B为例）调用自己并获取自己的文件时，应用A需要使用FileProvider来转化自己的文件路径为content://Uri，并提供给需要文件的应用B。其中  Android 7.0以上如果不使用FileProvider，应用A将返回file:/// Uri，而报错。 返回">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-10-17T06:52:48.000Z">
+<meta property="og:updated_time" content="2018-10-21T09:52:48.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="开发笔记-Gradle下载公司内部依赖失败问题排查">
-<meta name="twitter:description" content="问题描述最近的一个项目使用了公司自己的Maven库中的依赖，这个Maven库只能用公司内网访问。开始我设置了代理，sync后，有部分依赖不能下载，有时候sync依然会成功，但build一定会失败，执行./gradlew build --stacktrack,获得错误信息如下：  1Could not resolve xxxxx.xxx.xxx.xxx. 只是公司自己的Maven库依赖不能解析，其他">
+<meta name="twitter:title" content="开发笔记-理解FileProvider">
+<meta name="twitter:description" content="介绍用于更安全地在APP之间实现文件共享的一种机制，适用于Android 7.0及以上。 当应用A（如相册）允许其他应用（以应用B为例）调用自己并获取自己的文件时，应用A需要使用FileProvider来转化自己的文件路径为content://Uri，并提供给需要文件的应用B。其中  Android 7.0以上如果不使用FileProvider，应用A将返回file:/// Uri，而报错。 返回">
 
 
 
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/09/29/开发笔记-Gradle下载公司内部依赖失败问题排查/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/10/21/开发笔记-理解FileProvider/"/>
 
 
 
@@ -136,7 +136,7 @@
   };
 </script>
 
-  <title>开发笔记-Gradle下载公司内部依赖失败问题排查 | 永恒的码流</title>
+  <title>开发笔记-理解FileProvider | 永恒的码流</title>
   
 
 
@@ -318,7 +318,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/29/开发笔记-Gradle下载公司内部依赖失败问题排查/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/21/开发笔记-理解FileProvider/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="章亮">
@@ -335,7 +335,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">开发笔记-Gradle下载公司内部依赖失败问题排查
+          <h1 class="post-title" itemprop="name headline">开发笔记-理解FileProvider
               
             
           </h1>
@@ -360,24 +360,12 @@
                 
               
 
-              <time title="创建时间：2018-09-29 09:26:42" itemprop="dateCreated datePublished" datetime="2018-09-29T09:26:42+08:00">2018-09-29</time>
+              <time title="创建时间：2018-10-21 11:53:40 / 修改时间：17:52:48" itemprop="dateCreated datePublished" datetime="2018-10-21T11:53:40+08:00">2018-10-21</time>
             
 
             
               
 
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2018-10-17 14:52:48" itemprop="dateModified" datetime="2018-10-17T14:52:48+08:00">2018-10-17</time>
               
             
           </span>
@@ -436,35 +424,29 @@
       
 
       
-        <h1 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h1><p>最近的一个项目使用了公司自己的Maven库中的依赖，这个Maven库只能用公司内网访问。开始我设置了代理，<code>sync</code>后，有部分依赖不能下载，有时候<code>sync</code>依然会成功，但<code>build</code>一定会失败，执行<code>./gradlew build --stacktrack</code>,获得错误信息如下： </p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Could not resolve xxxxx.xxx.xxx.xxx.</span><br></pre></td></tr></table></figure>
-<p>只是公司自己的Maven库依赖不能解析，其他三方库依赖没有报错。 </p>
-<h1 id="问题排查"><a href="#问题排查" class="headerlink" title="问题排查"></a>问题排查</h1><p>排查思路如下： </p>
-<p><strong>一，确定公司内部Maven库能够从自己的电脑上访问</strong> </p>
+        <h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>用于更安全地在APP之间实现文件共享的一种机制，适用于Android 7.0及以上。</p>
+<p>当应用A（如相册）允许其他应用（以应用B为例）调用自己并获取自己的文件时，应用A需要使用<code>FileProvider</code>来转化自己的文件路径为<code>content://Uri</code>，并提供给需要文件的应用B。其中</p>
 <ol>
-<li><p>是否能够<code>ping</code>通？ </p>
-<p><code>$ ping xxx.xxx.xxx(公司内部Maven库服务地址)</code>。 </p>
-</li>
-<li><p>能够<code>ping</code>通后，再用浏览器尝试访问公司内部Maven库，看能够找到需要的依赖。 </p>
-</li>
+<li>Android 7.0以上如果不使用<code>FileProvider</code>，应用A将返回<code>file:///</code> <code>Uri</code>，而报错。</li>
+<li>返回的<code>content://Uri</code>有生命周期，即应用B接收文件的<code>Activity</code>的生命周期，如果这个<code>Activity</code>被销毁了，则返回的<code>content://Uri</code>也将失效而不能获取文件。</li>
 </ol>
-<p>确定公司内部Maven库能够被访问后，再看下一步 </p>
-<p><strong>二，确定自己的Gradle没有设置外部代理</strong> </p>
-<p>如果设置了外部代理，则是从外部网络访问公司内部Maven，肯定是访问不了的。依次检查如下： </p>
-<ol>
-<li><p>项目根目录下的<code>gradle.properties</code>是否设置了代理。 </p>
-</li>
-<li><p>Android Studio是否设置了代理。”Preference -&gt; Appearence&amp;Behavior -&gt; System Settings -&gt; HTTP Proxy” </p>
-</li>
-<li><p>用户主目录<code>~/.gradle/gradle.properties</code>中是否设置了全局代理。 </p>
-</li>
+<hr>
+<p><br></p>
+<h1 id="场景-从相册获取图片"><a href="#场景-从相册获取图片" class="headerlink" title="场景-从相册获取图片"></a>场景-从相册获取图片</h1><p>这是经常遇到的场景。当我们的APP（开发者APP）需要从相册获取图片时，一般使用如下代码</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">getPicture</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">val</span> intent = Intent()</span><br><span class="line">    intent.type = <span class="string">"image/*"</span></span><br><span class="line">    intent.action = Intent.ACTION_GET_CONTENT</span><br><span class="line">    intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, <span class="literal">true</span>)</span><br><span class="line">    startActivityForResult(Intent.createChooser(intent, <span class="string">"Select Picture"</span>), REQUEST_CODE_ADD_PICTURE)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>并在<code>onActivityResult</code>处理获取到Uri，但需要记住的是，这个Uri是相册应用使用<code>FileProvider</code>处理后的<code>content://Uri</code>，其获取图片的权限是暂时的。</p>
+<p>这个场景中，是开发者APP从相册获取图片，无需在开发者APP中配置<code>FileProvider</code>。</p>
+<hr>
+<p><br></p>
+<h1 id="场景-拍照"><a href="#场景-拍照" class="headerlink" title="场景-拍照"></a>场景-拍照</h1><p>开发者APP调用相机拍照并获取照片，官方文档<a href="https://developer.android.com/training/camera/photobasics#kotlin" target="_blank" rel="noopener">TakePhoto</a>对这一块有详细的说明。</p>
+<p>开发者APP调用相机拍照后需要保存在一个文件中，这个文件地址由开发者APP规定。也就是说，相机在拍照后需要读写开发者APP规定的文件，那么这个时候，开发者APP就需要提供文件共享功能，这就需要用到<code>FileProvider</code>了。</p>
+<p>在这个场景中，开发者APP中需要配置<code>FileProvider</code>。</p>
+<hr>
+<p><br></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li><a href="https://developer.android.com/reference/android/support/v4/content/FileProvider" target="_blank" rel="noopener">FileProvider</a></li>
+<li><a href="https://developer.android.com/training/camera/photobasics#kotlin" target="_blank" rel="noopener">TakePhoto</a></li>
 </ol>
-<p>如果设置了代理，则关闭所有的代理或者设置内部Maven库地址不走代理，而其他的走代理。 </p>
-<p><strong>内部Maven库地址不走代理设置</strong> </p>
-<p><code>gradle.properties</code>设置如下： </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemProp.http.nonProxyHosts=xxxx.xxxx.xxxx</span><br></pre></td></tr></table></figure>
-<p>Android Studio设置如下： </p>
-<p>在”Preference -&gt; Appearence&amp;Behavior -&gt; System Settings -&gt; HTTP Proxy”中的”No proxy for”中填入公司内部Host主机地址。 </p>
 
       
     </div>
@@ -487,11 +469,7 @@
           
             <a href="/tags/Android/" rel="tag"># Android</a>
           
-            <a href="/tags/Build/" rel="tag"># Build</a>
-          
-            <a href="/tags/Gradle/" rel="tag"># Gradle</a>
-          
-            <a href="/tags/开发笔记/" rel="tag"># 开发笔记</a>
+            <a href="/tags/FileProvider/" rel="tag"># FileProvider</a>
           
         </div>
       
@@ -504,8 +482,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/09/10/开发笔记-Complie关键字过时WARNING解决/" rel="next" title="开发笔记-Complie关键字过时警告问题">
-                <i class="fa fa-chevron-left"></i> 开发笔记-Complie关键字过时警告问题
+              <a href="/2018/10/20/开发笔记-Uri过期导致图片不显示的问题/" rel="next" title="开发笔记-Uri过期导致图片不显示的问题">
+                <i class="fa fa-chevron-left"></i> 开发笔记-Uri过期导致图片不显示的问题
               </a>
             
           </div>
@@ -513,10 +491,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/10/18/Gradle的Wrapper、命令行和环境配置/" rel="prev" title="Gradle的Wrapper、命令行和环境配置">
-                Gradle的Wrapper、命令行和环境配置 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -668,7 +642,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#问题描述"><span class="nav-number">1.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#问题排查"><span class="nav-number">2.</span> <span class="nav-text">问题排查</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#介绍"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#场景-从相册获取图片"><span class="nav-number">2.</span> <span class="nav-text">场景-从相册获取图片</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#场景-拍照"><span class="nav-number">3.</span> <span class="nav-text">场景-拍照</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
             
 
           </div>

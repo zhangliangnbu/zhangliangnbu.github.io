@@ -111,13 +111,13 @@
   <meta name="description" content="code android ios web h5">
 <meta name="keywords" content="Andriod IOS Web">
 <meta property="og:type" content="website">
-<meta property="og:title" content="永恒的活火">
+<meta property="og:title" content="永恒的码流">
 <meta property="og:url" content="http://yoursite.com/index.html">
-<meta property="og:site_name" content="永恒的活火">
+<meta property="og:site_name" content="永恒的码流">
 <meta property="og:description" content="code android ios web h5">
 <meta property="og:locale" content="zh-CN">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="永恒的活火">
+<meta name="twitter:title" content="永恒的码流">
 <meta name="twitter:description" content="code android ios web h5">
 
 
@@ -135,7 +135,7 @@
   };
 </script>
 
-  <title>永恒的活火</title>
+  <title>永恒的码流</title>
   
 
 
@@ -203,7 +203,7 @@
     <div class="custom-logo-site-title">
       <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">永恒的活火</span>
+        <span class="site-title">永恒的码流</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
@@ -318,7 +318,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/20/开发笔记-Uri过期导致图片不显示的问题/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/21/开发笔记-理解FileProvider/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="章亮">
@@ -327,7 +327,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="永恒的活火">
+      <meta itemprop="name" content="永恒的码流">
     </span>
 
     
@@ -337,8 +337,8 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/10/20/开发笔记-Uri过期导致图片不显示的问题/" itemprop="url">
-                  开发笔记-Uri过期导致图片不显示的问题
+                <a class="post-title-link" href="/2018/10/21/开发笔记-理解FileProvider/" itemprop="url">
+                  开发笔记-理解FileProvider
                 </a>
               
             
@@ -364,7 +364,7 @@
                 
               
 
-              <time title="创建时间：2018-10-20 09:50:22 / 修改时间：17:52:48" itemprop="dateCreated datePublished" datetime="2018-10-20T09:50:22+08:00">2018-10-20</time>
+              <time title="创建时间：2018-10-21 11:53:40 / 修改时间：17:52:48" itemprop="dateCreated datePublished" datetime="2018-10-21T11:53:40+08:00">2018-10-21</time>
             
 
             
@@ -422,21 +422,220 @@
       
         
           
-            <h1 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h1><p>最近做APP开发时，需要从相册选取图片后在APP的<code>PictureActivity</code>中显示，且每次都需要把获取到的图片URI缓存起来，用以下次进入页面时显示之前选择的图片。但这样偶尔会出现问题：用缓存的URI并不能获取图片，并报错如下：</p>
+            <h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>用于更安全地在APP之间实现文件共享的一种机制，适用于Android 7.0及以上。</p>
+<p>当应用A（如相册）允许其他应用（以应用B为例）调用自己并获取自己的文件时，应用A需要使用<code>FileProvider</code>来转化自己的文件路径为<code>content://Uri</code>，并提供给需要文件的应用B。其中</p>
+<ol>
+<li>Android 7.0以上如果不使用<code>FileProvider</code>，应用A将返回<code>file:///</code> <code>Uri</code>，而报错。</li>
+<li>返回的<code>content://Uri</code>有生命周期，即应用B接收文件的<code>Activity</code>的生命周期，如果这个<code>Activity</code>被销毁了，则返回的<code>content://Uri</code>也将失效而不能获取文件。</li>
+</ol>
+<hr>
+<p><br></p>
+<h1 id="场景-从相册获取图片"><a href="#场景-从相册获取图片" class="headerlink" title="场景-从相册获取图片"></a>场景-从相册获取图片</h1><p>这是经常遇到的场景。当我们的APP（开发者APP）需要从相册获取图片时，一般使用如下代码</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">getPicture</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">val</span> intent = Intent()</span><br><span class="line">    intent.type = <span class="string">"image/*"</span></span><br><span class="line">    intent.action = Intent.ACTION_GET_CONTENT</span><br><span class="line">    intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, <span class="literal">true</span>)</span><br><span class="line">    startActivityForResult(Intent.createChooser(intent, <span class="string">"Select Picture"</span>), REQUEST_CODE_ADD_PICTURE)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>并在<code>onActivityResult</code>处理获取到Uri，但需要记住的是，这个Uri是相册应用使用<code>FileProvider</code>处理后的<code>content://Uri</code>，其获取图片的权限是暂时的。</p>
+<p>这个场景中，是开发者APP从相册获取图片，无需在开发者APP中配置<code>FileProvider</code>。</p>
+<hr>
+<p><br></p>
+<h1 id="场景-拍照"><a href="#场景-拍照" class="headerlink" title="场景-拍照"></a>场景-拍照</h1><p>开发者APP调用相机拍照并获取照片，官方文档<a href="https://developer.android.com/training/camera/photobasics#kotlin" target="_blank" rel="noopener">TakePhoto</a>对这一块有详细的说明。</p>
+<p>开发者APP调用相机拍照后需要保存在一个文件中，这个文件地址由开发者APP规定。也就是说，相机在拍照后需要读写开发者APP规定的文件，那么这个时候，开发者APP就需要提供文件共享功能，这就需要用到<code>FileProvider</code>了。</p>
+<p>在这个场景中，开发者APP中需要配置<code>FileProvider</code>。</p>
+<hr>
+<p><br></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li><a href="https://developer.android.com/reference/android/support/v4/content/FileProvider" target="_blank" rel="noopener">FileProvider</a></li>
+<li><a href="https://developer.android.com/training/camera/photobasics#kotlin" target="_blank" rel="noopener">TakePhoto</a></li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/20/开发笔记-Uri过期导致图片不显示的问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="code android ios web h5">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/20/开发笔记-Uri过期导致图片不显示的问题/" itemprop="url">
+                  开发笔记-Uri过期导致图片不显示的问题
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-10-20 09:50:22" itemprop="dateCreated datePublished" datetime="2018-10-20T09:50:22+08:00">2018-10-20</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-10-21 17:52:48" itemprop="dateModified" datetime="2018-10-21T17:52:48+08:00">2018-10-21</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Android开发笔记/" itemprop="url" rel="index"><span itemprop="name">Android开发笔记</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h1><p>最近做APP开发时，需要从相册选取图片后在APP的<code>PictureActivity</code>中显示，且每次都需要把获取到的图片URI缓存起来，用以下次进入页面时显示之前选择的图片。但这样偶尔会出现问题：用缓存的Uri并不能获取图片，并报错如下：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java.lang.SecurityException: Permission Denial: opening provider com.android.providers.media.MediaDocumentsProvider from ProcessRecord&#123;9ebe048 23462:cn.com.xxxx.xxxxx/u0a209&#125; (pid=23462, uid=10209) requires android.permission.MANAGE_DOCUMENTS or android.permission.MANAGE_DOCUMENTS</span><br></pre></td></tr></table></figure>
 <p><code>PictureActivity</code>相关代码如下：</p>
 <figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">   <span class="comment">// </span></span><br><span class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">addPicture</span><span class="params">()</span></span> &#123;</span><br><span class="line">       <span class="keyword">val</span> intent = Intent()</span><br><span class="line">       intent.type = <span class="string">"image/*"</span></span><br><span class="line">       intent.action = Intent.ACTION_GET_CONTENT</span><br><span class="line">       intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE)</span><br><span class="line">       startActivityForResult(Intent.createChooser(intent, <span class="string">"Select Picture"</span>), REQUEST_CODE_ADD_PICTURE)</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onActivityResult</span><span class="params">(requestCode: <span class="type">Int</span>, resultCode: <span class="type">Int</span>, <span class="keyword">data</span>: <span class="type">Intent</span>?)</span></span> &#123;</span><br><span class="line">       <span class="keyword">super</span>.onActivityResult(requestCode, resultCode, <span class="keyword">data</span>)</span><br><span class="line">       <span class="keyword">if</span>(REQUEST_CODE_ADD_PICTURE == requestCode) &#123;</span><br><span class="line">           <span class="comment">// cacheUri是APP全局静态变量，用于缓存到Memory里</span></span><br><span class="line">           cacheUri = <span class="keyword">data</span>?.<span class="keyword">data</span>?:<span class="keyword">return</span></span><br><span class="line">           <span class="comment">// 使用Glide显示图片</span></span><br><span class="line">           Glide.with(<span class="keyword">this</span>).load(<span class="keyword">data</span>?.<span class="keyword">data</span>).into(iv_picture)</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
 <hr>
 <p><br></p>
-<h1 id="分析和解决"><a href="#分析和解决" class="headerlink" title="分析和解决"></a>分析和解决</h1><p><strong>URI有生命周期</strong></p>
-<p>在网上查到一篇文章<a href="https://commonsware.com/blog/2016/08/10/uri-access-lifetime-shorter-than-you-might-think.html" target="_blank" rel="noopener">Uri Access Lifetime: Shorter Than You Might Think</a>，说是URI有生命周期，即选择图片的当前Activity的生命周期。当Activity销毁后，之前的URI就不能用来获取图片了，否则就会上面的报错。</p>
+<h1 id="分析和解决"><a href="#分析和解决" class="headerlink" title="分析和解决"></a>分析和解决</h1><p><strong>Uri有生命周期</strong></p>
+<p>查了一下官网以及相关文章，说是用Uri获取图片的权限是暂时赋予的，有生命周期，即选择图片的当前Activity的生命周期。当Activity销毁后，之前的Uri就不能用来获取图片了，否则就会上面的报错。</p>
+<p>上面的例子中，我的应用从相册应用选择图片后，相册会返回图片的Uri，这些Uri获取相册图片的权限是暂时的，即只能在接收这些Uri的<code>PictureActivity</code>中使用，当<code>PictureActivity</code>销毁后，Uri权限即失效，不能用来获取图片。</p>
 <p><strong>Glide有缓存</strong></p>
 <p>Glide默认会有缓存，因此才会导致问题不容易复现，只是偶尔出现。去掉磁盘缓存和内存缓存后，每次回退后再次进入<code>PictureActivity</code>，就一定会复现这个问题。</p>
 <figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Glide.with(<span class="keyword">this</span>)</span><br><span class="line">     .applyDefaultRequestOptions(RequestOptions()</span><br><span class="line">           .diskCacheStrategy(DiskCacheStrategy.NONE)</span><br><span class="line">           .skipMemoryCache(<span class="literal">true</span>))</span><br><span class="line">     .load(item).into(iv_picture)</span><br></pre></td></tr></table></figure>
+<p><strong>解决</strong></p>
+<p>知道问题的原因所在，就可以对症下药了。既然Uri的生命周期是短暂的，那么就不要缓存Uri了，缓存图片的绝对路径就可以了。</p>
+<p>获取图片Uri后，将其转换为绝对路径形式，代码如下（参考了网上他人的代码，网上相关的代码有很多）：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">getFilePathByUri</span><span class="params">(Context context, Uri uri)</span> </span>&#123;</span><br><span class="line">    String path = <span class="keyword">null</span>;</span><br><span class="line">    <span class="comment">// 以 file:// 开头的</span></span><br><span class="line">    <span class="keyword">if</span> (ContentResolver.SCHEME_FILE.equals(uri.getScheme())) &#123;</span><br><span class="line">        path = uri.getPath();</span><br><span class="line">        <span class="keyword">return</span> path;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 以 content:// 开头的，比如 content://media/extenral/images/media/17766</span></span><br><span class="line">    <span class="keyword">if</span> (ContentResolver.SCHEME_CONTENT.equals(uri.getScheme()) &amp;&amp; Build.VERSION.SDK_INT &lt; Build.VERSION_CODES.KITKAT) &#123;</span><br><span class="line">        Cursor cursor = context.getContentResolver().query(uri, <span class="keyword">new</span> String[]&#123;MediaStore.Images.Media.DATA&#125;, <span class="keyword">null</span>, <span class="keyword">null</span>, <span class="keyword">null</span>);</span><br><span class="line">        <span class="keyword">if</span> (cursor != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (cursor.moveToFirst()) &#123;</span><br><span class="line">                <span class="keyword">int</span> columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);</span><br><span class="line">                <span class="keyword">if</span> (columnIndex &gt; -<span class="number">1</span>) &#123;</span><br><span class="line">                    path = cursor.getString(columnIndex);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            cursor.close();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> path;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 4.4及之后的 是以 content:// 开头的，比如 content://com.android.providers.media.documents/document/image%3A235700</span></span><br><span class="line">    <span class="keyword">if</span> (ContentResolver.SCHEME_CONTENT.equals(uri.getScheme()) &amp;&amp; Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.KITKAT) &#123;</span><br><span class="line">        <span class="keyword">if</span> (DocumentsContract.isDocumentUri(context, uri)) &#123;</span><br><span class="line">            <span class="keyword">if</span> (isExternalStorageDocument(uri)) &#123;</span><br><span class="line">                <span class="comment">// ExternalStorageProvider</span></span><br><span class="line">                <span class="keyword">final</span> String docId = DocumentsContract.getDocumentId(uri);</span><br><span class="line">                <span class="keyword">final</span> String[] split = docId.split(<span class="string">":"</span>);</span><br><span class="line">                <span class="keyword">final</span> String type = split[<span class="number">0</span>];</span><br><span class="line">                <span class="keyword">if</span> (<span class="string">"primary"</span>.equalsIgnoreCase(type)) &#123;</span><br><span class="line">                    path = Environment.getExternalStorageDirectory() + <span class="string">"/"</span> + split[<span class="number">1</span>];</span><br><span class="line">                    <span class="keyword">return</span> path;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isDownloadsDocument(uri)) &#123;</span><br><span class="line">                <span class="comment">// DownloadsProvider</span></span><br><span class="line">                <span class="keyword">final</span> String id = DocumentsContract.getDocumentId(uri);</span><br><span class="line">                <span class="keyword">final</span> Uri contentUri = ContentUris.withAppendedId(Uri.parse(<span class="string">"content://downloads/public_downloads"</span>),</span><br><span class="line">                        Long.valueOf(id));</span><br><span class="line">                path = getDataColumn(context, contentUri, <span class="keyword">null</span>, <span class="keyword">null</span>);</span><br><span class="line">                <span class="keyword">return</span> path;</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isMediaDocument(uri)) &#123;</span><br><span class="line">                <span class="comment">// MediaProvider</span></span><br><span class="line">                <span class="keyword">final</span> String docId = DocumentsContract.getDocumentId(uri);</span><br><span class="line">                <span class="keyword">final</span> String[] split = docId.split(<span class="string">":"</span>);</span><br><span class="line">                <span class="keyword">final</span> String type = split[<span class="number">0</span>];</span><br><span class="line">                Uri contentUri = <span class="keyword">null</span>;</span><br><span class="line">                <span class="keyword">if</span> (<span class="string">"image"</span>.equals(type)) &#123;</span><br><span class="line">                    contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;</span><br><span class="line">                &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="string">"video"</span>.equals(type)) &#123;</span><br><span class="line">                    contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;</span><br><span class="line">                &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="string">"audio"</span>.equals(type)) &#123;</span><br><span class="line">                    contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">final</span> String selection = <span class="string">"_id=?"</span>;</span><br><span class="line">                <span class="keyword">final</span> String[] selectionArgs = <span class="keyword">new</span> String[]&#123;split[<span class="number">1</span>]&#125;;</span><br><span class="line">                path = getDataColumn(context, contentUri, selection, selectionArgs);</span><br><span class="line">                <span class="keyword">return</span> path;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            String[] projection = &#123; MediaStore.Images.Media.DATA &#125;;</span><br><span class="line">            Cursor cursor = <span class="keyword">null</span>;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                cursor = context.getContentResolver().query(uri, projection, <span class="keyword">null</span>, <span class="keyword">null</span>, <span class="keyword">null</span>);</span><br><span class="line">                <span class="keyword">int</span> column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);</span><br><span class="line">                <span class="keyword">if</span> (cursor.moveToFirst()) &#123;</span><br><span class="line">                    <span class="keyword">return</span> cursor.getString(column_index);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> (cursor != <span class="keyword">null</span>) &#123;</span><br><span class="line">                    cursor.close();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <hr>
 <p><br></p>
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
 <li><a href="https://commonsware.com/blog/2016/08/10/uri-access-lifetime-shorter-than-you-might-think.html" target="_blank" rel="noopener">Uri Access Lifetime: Shorter Than You Might Think</a></li>
+<li><a href="https://developer.android.com/reference/android/support/v4/content/FileProvider" target="_blank" rel="noopener">FileProvider</a></li>
+<li><a href="https://developer.android.com/training/camera/photobasics#kotlin" target="_blank" rel="noopener">TakePhoto</a></li>
 </ol>
 
           
@@ -500,7 +699,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="永恒的活火">
+      <meta itemprop="name" content="永恒的码流">
     </span>
 
     
@@ -884,7 +1083,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="永恒的活火">
+      <meta itemprop="name" content="永恒的码流">
     </span>
 
     
@@ -1082,7 +1281,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="永恒的活火">
+      <meta itemprop="name" content="永恒的码流">
     </span>
 
     
@@ -1269,7 +1468,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="永恒的活火">
+      <meta itemprop="name" content="永恒的码流">
     </span>
 
     
@@ -1462,7 +1661,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="永恒的活火">
+      <meta itemprop="name" content="永恒的码流">
     </span>
 
     
@@ -1752,7 +1951,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="永恒的活火">
+      <meta itemprop="name" content="永恒的码流">
     </span>
 
     
@@ -2124,7 +2323,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="永恒的活火">
+      <meta itemprop="name" content="永恒的码流">
     </span>
 
     
@@ -2376,7 +2575,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="永恒的活火">
+      <meta itemprop="name" content="永恒的码流">
     </span>
 
     
@@ -2585,153 +2784,13 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/27/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="章亮">
-      <meta itemprop="description" content="code android ios web h5">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="永恒的活火">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/27/hello-world/" itemprop="url">
-                  Hello World
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-08-27 08:56:19" itemprop="dateCreated datePublished" datetime="2018-08-27T08:56:19+08:00">2018-08-27</time>
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+  </nav>
+
 
 
           </div>
@@ -2772,7 +2831,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-count">11</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -2816,7 +2875,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">6</span>
+                      
+                    
+                    <span class="site-state-item-count">7</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
