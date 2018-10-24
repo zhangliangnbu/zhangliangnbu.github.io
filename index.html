@@ -318,6 +318,664 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/23/Android构建06-Android项目构建流程详解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="code android ios web h5">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/23/Android构建06-Android项目构建流程详解/" itemprop="url">
+                  Android构建06-Android项目构建流程详解
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-10-23 13:53:41 / 修改时间：14:52:48" itemprop="dateCreated datePublished" datetime="2018-10-23T13:53:41+08:00">2018-10-23</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习Android构建系统/" itemprop="url" rel="index"><span itemprop="name">学习Android构建系统</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><a href="https://juejin.im/post/5a69c0ccf265da3e2a0dc9aa" target="_blank" rel="noopener">https://juejin.im/post/5a69c0ccf265da3e2a0dc9aa</a></p>
+<p><a href="https://blog.csdn.net/yanbober/article/details/49408489" target="_blank" rel="noopener">https://blog.csdn.net/yanbober/article/details/49408489</a></p>
+<p><a href="https://jasonzhong.github.io/2017/06/27/Android-Apk%E6%9E%84%E5%BB%BA%E5%8E%9F%E7%90%86/" target="_blank" rel="noopener">https://jasonzhong.github.io/2017/06/27/Android-Apk%E6%9E%84%E5%BB%BA%E5%8E%9F%E7%90%86/</a></p>
+<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>Android构建流程是指将Android项目转换成Apk（Android Application Package）这一过程，里面涉及到许多工步骤和<a href="https://developer.android.com/studio/command-line/" target="_blank" rel="noopener">工具</a>。构建流程由Gradle工具和Android Gradle Plugin插件来管理，既可以通过IDE方式，也可以通过命令行方式来进行。</p>
+<h1 id="构建流程"><a href="#构建流程" class="headerlink" title="构建流程"></a>构建流程</h1><p>官网有一个简单的<a href="https://developer.android.com/studio/build/#build-process" target="_blank" rel="noopener">流程图</a>，如下：</p>
+
+<p>比较简略，图中主要展示了两步，且都是由Gradle工具和Andorid插件管理的：</p>
+<ol>
+<li>编译。编译器将源代码编译成DEX文件和供前者直接使用的资源文件。</li>
+<li>打包并签名。将上述DEX文件和资源文件合并成APK，之后进行签名生成最终可以用于安装、测试或发布的APK。</li>
+</ol>
+<p>在许多博客中，都提到一个<a href="http://androidsrc.net/android-app-build-overview/" target="_blank" rel="noopener">详细的流程图</a>，相关链接请见“参考”一节。都说是来自官网，但我没有找到，可能以前存在，现在已经删除了，如下：</p>
+
+<p>上述流程中涉及许多工具，如“aapt”、“aidl”等</p>
+<p><br></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li><a href="http://www.herongyang.com/Android/Project-Android-Application-Project-Build-Process.html" target="_blank" rel="noopener">Android Application Project Build Process</a></li>
+<li><a href="https://segmentfault.com/a/1190000008071324" target="_blank" rel="noopener">Android APK 编译打包流程</a></li>
+<li><a href="https://cdn-images-1.medium.com/max/1600/1*LbKGyabN6vr-9iR-rvnzPg.png" target="_blank" rel="noopener">https://cdn-images-1.medium.com/max/1600/1*LbKGyabN6vr-9iR-rvnzPg.png</a></li>
+<li><a href="https://juejin.im/entry/58b78d1b61ff4b006cd47e5b" target="_blank" rel="noopener">Apk 打包流程梳理-流程图较清晰</a></li>
+<li><a href="https://segmentfault.com/a/1190000008071324" target="_blank" rel="noopener">https://segmentfault.com/a/1190000008071324</a></li>
+<li><a href="https://segmentfault.com/a/1190000004916563" target="_blank" rel="noopener">https://segmentfault.com/a/1190000004916563</a></li>
+<li><a href="https://juejin.im/post/5a69c0ccf265da3e2a0dc9aa" target="_blank" rel="noopener">https://juejin.im/post/5a69c0ccf265da3e2a0dc9aa</a></li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/23/Git基础与命令/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="code android ios web h5">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/23/Git基础与命令/" itemprop="url">
+                  Git基础与命令
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-10-23 10:18:06 / 修改时间：17:57:23" itemprop="dateCreated datePublished" datetime="2018-10-23T10:18:06+08:00">2018-10-23</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/版本管理/" itemprop="url" rel="index"><span itemprop="name">版本管理</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>使用Git也有几年了，涉及场景较多的是：</p>
+<p><strong>学习开源库</strong>。从GitHub上克隆代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git clone ...</span><br></pre></td></tr></table></figure>
+<p><strong>公司开发</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// 分支相关</span><br><span class="line">$ git branch</span><br><span class="line">$ git checkout -b dev</span><br><span class="line">$ git checkout dev</span><br><span class="line"></span><br><span class="line">// 提交代码</span><br><span class="line">$ git status</span><br><span class="line">$ git add .</span><br><span class="line">$ git commit -m &quot;...&quot;</span><br><span class="line">$ git pull</span><br><span class="line">$ git push origin dev</span><br></pre></td></tr></table></figure>
+<p>其他情况使用命令行如<code>git merge</code>等较少，多用IDE（如 Android Studio）自带的版本控制GUI工具。一般情况下，记得上面几个命令就足以应付日常工作了，如果需要使用其他的命令，网上搜一下即可。</p>
+<p>最近开始管理小团队，需要管理分支的创建、代码审核、分支合并、删除、冲突解决等等，开发的人数开始增多，以前不常用的命令，现在也要常用了，因此有必要全面的总结下Git的使用。</p>
+<p>可能有人会问，为什么要学习命令行，熟悉GUI不就可以了吗？答案是不可以的。</p>
+<blockquote>
+<p>只有在命令行模式下你才能执行 Git 的 所有 命令，而大多数的 GUI 软件只实现了 Git 所有功能的一个子集以降低操作难度。 如果你学会了在命令行下如何操作，那么你在操作 GUI 软件时应该也不会遇到什么困难，但是，反之则不成立。 此外，由于每个人的想法与侧重点不同，不同的人常常会安装不同的GUI 软件，但所有人一定会有命令行工具。</p>
+</blockquote>
+<p>本文主要资料参考<a href="https://git-scm.com/book/zh/v2" target="_blank" rel="noopener">Git官网-Pro Git教程</a>和<a href="https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000" target="_blank" rel="noopener">廖雪峰的Git教程</a>。廖写的东西通俗易懂，非常值得一读。我的总结尽可能精简，初学者可以看廖的教程，了解更详细的可以看<a href="https://git-scm.com/book/zh/v2" target="_blank" rel="noopener">Git官网-Pro Git教程</a>，说的非常详细，里面有中文文档。</p>
+<hr>
+<p><br></p>
+<h1 id="Git基础"><a href="#Git基础" class="headerlink" title="Git基础"></a>Git基础</h1><p><strong>三个工作区域</strong><br>一个Git项目包括：工作目录、暂存区（stage或index）和仓库目录。基本的 Git 工作流程如下：</p>
+<ol>
+<li>在工作目录中修改文件。如通过<code>$ git clone</code>命令将项目克隆到本地，然后做一些修改。</li>
+<li>暂存文件，将文件的快照放入暂存区域。如通过<code>$ git add .</code>命令进行操作。</li>
+<li>提交更新，找到暂存区域的文件，将快照永久性存储到 Git 仓库目录。如通过<code>$ git commit</code>命令进行操作。</li>
+</ol>
+<p><img src="http://upload-images.jianshu.io/upload_images/2658578-0a3c6479055e37b5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="来源Git官网"></p>
+<p><strong>三种状态</strong><br>工作目录下的文件分为两种状态：已跟踪或未跟踪。</p>
+<ol>
+<li>未跟踪。没有纳入版本控制的文件。</li>
+<li>已跟踪。已跟踪的文件是指那些被纳入了版本控制的文件，在上一次快照中有它们的记录，在工作一段时间后，它们的状态可能处于未修改，已修改或已放入暂存区。</li>
+</ol>
+<p>已跟踪的文件分为三种：</p>
+<ol>
+<li>已提交（committed）。表示数据已经安全的保存在本地仓库目录中。 </li>
+<li>已修改（modified）。表示修改了文件，但还没保存到暂存区中。 </li>
+<li>已暂存（staged）。表示对一个已修改文件的当前版本做了标记，即已经放到了暂存区，使之包含在下次提交的快照中。</li>
+</ol>
+<p><img src="https://upload-images.jianshu.io/upload_images/2658578-dd8bea81c4b8c82f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Git项目文件生命周期"></p>
+<p><strong>分支结构变更示意</strong><br><code>master</code>指向自己分支的最新提交，<code>HEAD</code>指向当前分支</p>
+<ol>
+<li><p>只有一个主分支时<br><img src="https://upload-images.jianshu.io/upload_images/2658578-3d9b499d978d52fa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="只有一个主分支master"></p>
+</li>
+<li><p>创建并切换到分支dev。即创建一个dev指针指向当前提交，同时HEAD也指向dev分支<br><img src="https://upload-images.jianshu.io/upload_images/2658578-0e4b492bab51186d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="创建并切换分支dev"></p>
+</li>
+<li><p>修改并提交分支dev<br><img src="https://upload-images.jianshu.io/upload_images/2658578-7ddb24059a53d93e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="修改并提交分支dev"></p>
+</li>
+<li><p>合并分支dev到master(默认的快速模式)<br><img src="https://upload-images.jianshu.io/upload_images/2658578-6028d4eab1c70d1f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="合并分支-ff"><br><img src="https://upload-images.jianshu.io/upload_images/2658578-12b3c045442d59b4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="合并分支-no-ff"></p>
+</li>
+<li><p>删除分支dev<br><img src="https://upload-images.jianshu.io/upload_images/2658578-c9396e94563a2cfd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="删除分支dev"></p>
+</li>
+</ol>
+<hr>
+<p><br></p>
+<h1 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h1><h2 id="使用较多的6个命令"><a href="#使用较多的6个命令" class="headerlink" title="使用较多的6个命令"></a>使用较多的6个命令</h2><p><img src="https://upload-images.jianshu.io/upload_images/2658578-5bf3855193087be8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="日常使用的命令"></p>
+<h2 id="创建"><a href="#创建" class="headerlink" title="创建"></a>创建</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建版本库。在当前文件件创建版本库。</span></span><br><span class="line">$ git init</span><br><span class="line"><span class="comment"># 添加文件。修改文件后，需要把修改后内容添加到暂存区以备提交。“.” 代表所有文件，也可以添加指定的文件。</span></span><br><span class="line">$ git add .</span><br><span class="line"><span class="comment"># 提交到本地版本库。</span></span><br><span class="line">$ git commit -m <span class="string">"本次提交的信息"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 关联远程服务器</span></span><br><span class="line">$ git remote add origin <span class="string">"远程仓库链接"</span></span><br><span class="line"><span class="comment"># 推送当前分支信息到远程服务器。“origin”代表默认的远程服务，“master”代表分支。</span></span><br><span class="line">$ git push -u origin master</span><br></pre></td></tr></table></figure>
+<h2 id="查看"><a href="#查看" class="headerlink" title="查看"></a>查看</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看状态。当前版本目录的状态</span></span><br><span class="line">$ git status</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看提交历史</span></span><br><span class="line">$ git <span class="built_in">log</span></span><br><span class="line">$ git <span class="built_in">log</span> --pretty=oneline</span><br><span class="line">$ git <span class="built_in">log</span> --graph</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看命令历史：checkout、commit、reset等</span></span><br><span class="line">$ git reflog</span><br></pre></td></tr></table></figure>
+<h2 id="回退、撤销与删除"><a href="#回退、撤销与删除" class="headerlink" title="回退、撤销与删除"></a>回退、撤销与删除</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 版本回退。回退到历史版本</span></span><br><span class="line"><span class="comment"># 其中“HEAD^”表示上一个版本，“HEAD^^”表示上上个版本</span></span><br><span class="line">$ git reset --hard HEAD^</span><br><span class="line"><span class="comment"># 版本切换。回退到历史版本或跳到最新版本。</span></span><br><span class="line"><span class="comment"># “1094a”表示指定commit id的版本</span></span><br><span class="line"><span class="comment"># 可以通过“git log”命令查看历史版本commit id</span></span><br><span class="line"><span class="comment"># 或通过通过“git reflog”查看提交记录</span></span><br><span class="line">$ git reset --hard 1094a</span><br><span class="line"></span><br><span class="line"><span class="comment"># 撤销已修改的文件。恢复到最近一次git commit或git add时的状态</span></span><br><span class="line">$ git checkout -- &lt;file&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 撤销已暂存的文件。恢复到已修改状态。</span></span><br><span class="line"><span class="comment"># 然后通过“git checkout -- &lt;file&gt;”，恢复到最近一次git commit或git add时的状态</span></span><br><span class="line">$ git reset HEAD &lt;file&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="分支管理"><a href="#分支管理" class="headerlink" title="分支管理"></a>分支管理</h2><p><strong>命令-创建和切换</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建并切换分支</span></span><br><span class="line">$ git checkout -b dev</span><br><span class="line"><span class="comment"># 查看本地分支</span></span><br><span class="line">$ git branch</span><br><span class="line"><span class="comment"># 查看远程分支</span></span><br><span class="line">$ git branch -a</span><br><span class="line"><span class="comment"># 切换分支</span></span><br><span class="line">$ git checkout dev</span><br></pre></td></tr></table></figure>
+<p><strong>命令-合并</strong><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在其他分支上合并dev分支</span></span><br><span class="line"><span class="comment"># 默认是Fast-forward模式，直接把master指向dev的当前提交，这种模式下，删除分支后，会丢掉分支信息</span></span><br><span class="line">$ git merge dev</span><br><span class="line"><span class="comment"># no-ff模式，合并后会保存分支信息</span></span><br><span class="line">$ git merge dev --no-ff</span><br></pre></td></tr></table></figure></p>
+<p><strong>命令-保存和恢复工作现场</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 保存当前工作现场。不提交情况下，可保存当前工作现场，再并切换到其他分支。</span></span><br><span class="line">$ git stash</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看保存的当前工作现场</span></span><br><span class="line">$ git stash list</span><br><span class="line"></span><br><span class="line"><span class="comment"># 恢复并删除当前工作现场。如果stash有很多，则默认操作最新的一个。</span></span><br><span class="line">$ git stash pop</span><br><span class="line"><span class="comment"># 恢复当前工作现场。仅恢复，不删除</span></span><br><span class="line">$ git stash apply</span><br><span class="line"><span class="comment"># 删除工作现场</span></span><br><span class="line">$ git stash drop</span><br></pre></td></tr></table></figure>
+<p><strong>命令-删除分支</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 删除本地分支`dev`。</span></span><br><span class="line">$ git branch -d dev</span><br><span class="line"><span class="comment"># 删除本地分支。强行删除没有合并的分支</span></span><br><span class="line">$ git branch -D dev</span><br><span class="line"><span class="comment"># 删除远程分支`dev`。</span></span><br><span class="line">$ git push origin --delete dev</span><br></pre></td></tr></table></figure>
+<h2 id="标签管理"><a href="#标签管理" class="headerlink" title="标签管理"></a>标签管理</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 增加标签。默认为HEAD</span></span><br><span class="line">$ git tag v1.0</span><br><span class="line"><span class="comment"># 增加标签。针对历史版本</span></span><br><span class="line">$ git tag v1.0 &lt;commit id&gt;</span><br><span class="line"><span class="comment"># 增加标签。附带说明</span></span><br><span class="line">$ git tag -a v1.0 -m <span class="string">"version 1.0 release"</span> &lt;commit id&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看所有标签</span></span><br><span class="line">$ git tag</span><br><span class="line"><span class="comment"># 查看某个标签</span></span><br><span class="line">$ git show v1.0</span><br><span class="line"></span><br><span class="line"><span class="comment"># 推送标签。增加标签存储在本地，如有必要可以推送到远程。</span></span><br><span class="line">$ git push origin v1.0</span><br><span class="line"><span class="comment"># 推送所有标签。</span></span><br><span class="line">$ git push origin --tags</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除本地标签</span></span><br><span class="line">$ git tag -d v1.0</span><br><span class="line"><span class="comment"># 删除远程标签。先从本地删除，再推送到远程。</span></span><br><span class="line">$ git push origin :refs/tags/v1.0</span><br></pre></td></tr></table></figure>
+<h2 id="远程仓库"><a href="#远程仓库" class="headerlink" title="远程仓库"></a>远程仓库</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 克隆远程库。本地没有建立项目时，使用这个</span></span><br><span class="line">$ git <span class="built_in">clone</span> &lt;远程仓库地址&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 关联本地项目到远程服务。本地有Git项目时，使用这个。</span></span><br><span class="line">$ git remote add origin &lt;远程仓库地址&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 从远程库更新本地库。多人协作，远程有更新时</span></span><br><span class="line"><span class="comment"># 会自动合并</span></span><br><span class="line">$ git pull</span><br><span class="line"><span class="comment"># 不会自动合并</span></span><br><span class="line">$ git fetch</span><br><span class="line"></span><br><span class="line"><span class="comment"># 推动本地内容到远程</span></span><br><span class="line">$ git push -u origin master</span><br></pre></td></tr></table></figure>
+<h2 id="配置信息"><a href="#配置信息" class="headerlink" title="配置信息"></a>配置信息</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 配置别名</span></span><br><span class="line">$ git config --global alias.st status</span><br><span class="line">$ git config --global alias.co checkout</span><br><span class="line">$ git config --global alias.ci commit</span><br><span class="line">$ git config --global alias.br branch</span><br><span class="line">$ git config --global alias.lg <span class="string">"log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)&lt;%an&gt;%Creset' --abbrev-commit"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置颜色</span></span><br><span class="line">$ git config --global color.ui <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置用户名和邮件</span></span><br><span class="line">$ git config --global user.name <span class="string">"Your Name"</span></span><br><span class="line">$ git config --global user.email <span class="string">"email@example.com"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看配置</span></span><br><span class="line">$ git config --list</span><br></pre></td></tr></table></figure>
+<p>Git配置信息存储在配置文件中，可以在配置文件中直接修改或删除配置信息。</p>
+<ol>
+<li>当期仓库的配置信息在<code>.git/config</code>中</li>
+<li><code>--global</code>的配置信息在用户主目录下的<code>.gitconfig</code>中</li>
+<li><code>--system</code>的配置信息在<code>/etc/gitconfig</code>中</li>
+</ol>
+<p>其中，每一个级别覆盖上一级别的配置</p>
+<h2 id="其他实用命令"><a href="#其他实用命令" class="headerlink" title="其他实用命令"></a>其他实用命令</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看使用手册。&lt;verb&gt;表示要查看的命令名</span></span><br><span class="line">$ git <span class="built_in">help</span> &lt;verb&gt;</span><br><span class="line">$ git &lt;verb&gt; --<span class="built_in">help</span></span><br><span class="line">$ man git-&lt;verb&gt;</span><br></pre></td></tr></table></figure>
+<hr>
+<p><br></p>
+<h1 id="常见场景"><a href="#常见场景" class="headerlink" title="常见场景"></a>常见场景</h1><p><strong>创建、提交、推送</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 本地没有项目，远程有Git项目</span></span><br><span class="line">$ git <span class="built_in">clone</span> &lt;远程仓库地址&gt;</span><br><span class="line">$ git add .</span><br><span class="line">$ git commit -m <span class="string">"初始化"</span></span><br><span class="line">$ git push origin master</span><br><span class="line"></span><br><span class="line"><span class="comment"># 本地有项目，远程新创建空Git项目</span></span><br><span class="line">$ git init</span><br><span class="line"><span class="comment"># 修改.gitignore文件</span></span><br><span class="line">$ git add .</span><br><span class="line">$ git commit -m <span class="string">""</span></span><br><span class="line">$ git remote add origin &lt;远程仓库地址&gt;</span><br><span class="line">$ git push -u origin master</span><br></pre></td></tr></table></figure>
+<p><strong>多人协作</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 合并他人分支、解决冲突</span></span><br><span class="line"><span class="comment"># 新建一个分支，与指定的远程分支建立追踪关系</span></span><br><span class="line">$ git branch --track dev origin/dev</span><br><span class="line">$ git checkout dev</span><br><span class="line">$ git pull</span><br><span class="line">$ git checkout master</span><br><span class="line">$ git merge dev --no-ff</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果没有冲突，直接就合并好了，如果有冲突，先解决冲突，然后提交</span></span><br><span class="line"><span class="comment"># 如果冲突没有解决好，希望撤销这次合并</span></span><br><span class="line">$ git merge --abort</span><br><span class="line"></span><br><span class="line"><span class="comment"># 其他待续</span></span><br></pre></td></tr></table></figure>
+<hr>
+<p><br></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li>说明。图中图片皆来自参考链接</li>
+<li><a href="https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000" target="_blank" rel="noopener">廖雪峰Git教程</a></li>
+<li><a href="https://git-scm.com/book/zh/v2" target="_blank" rel="noopener">Git官网-Pro Git教程</a></li>
+<li><a href="http://www.ruanyifeng.com/blog/2015/12/git-cheat-sheet.html" target="_blank" rel="noopener">阮一峰-常用Git命令清单</a></li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/22/Android构建05-Gradle最佳实践/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="code android ios web h5">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/22/Android构建05-Gradle最佳实践/" itemprop="url">
+                  Android构建05-Gradle最佳实践
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-10-22 09:09:26" itemprop="dateCreated datePublished" datetime="2018-10-22T09:09:26+08:00">2018-10-22</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-10-24 09:10:54" itemprop="dateModified" datetime="2018-10-24T09:10:54+08:00">2018-10-24</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习Android构建系统/" itemprop="url" rel="index"><span itemprop="name">学习Android构建系统</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="文件分布简述"><a href="#文件分布简述" class="headerlink" title="文件分布简述"></a>文件分布简述</h1><p>详情请见官方文档<a href="https://docs.gradle.org/current/userguide/directory_layout.html" target="_blank" rel="noopener">Directory Layout</a>。</p>
+<p>之前官方文档并没有这方面的说明，现在却单独用一个章节来做说明，可能考虑到许多开发者都遇到过这方面的疑惑吧：项目的依赖包在哪里？我去掉了项目里<code>gradle.properties</code>和IDE（如Android Studio）里的代理设置之后，会什么代理还会生效？等等。</p>
+<p>Gradle相关文件包括Wrapper文件、Gradle各版本包、依赖包等。它们并不都存放在项目目录里，如依赖包，你在项目根目录下是找不到的。</p>
+<p>Gradle相关文件分布在两个地方：</p>
+<ol>
+<li>项目根目录。这个目录下的gradle相关文件只对当前项目生效。包括Wrapper配置和可执行命令文件、项目的<code>gradle.properties</code>、<code>build.gradle</code>等构建和配置文件。</li>
+<li>用户目录。<code>$USER_HOME/.gradle</code>，macOS中执行<code>$ cd ~/.gradle/</code>即可进入，该目录下的配置对所有的项目生效。包括配置文件<code>gradle.properties</code>、Gradle各版本、项目依赖包等。</li>
+</ol>
+<hr>
+<p><br></p>
+<h1 id="问题排查"><a href="#问题排查" class="headerlink" title="问题排查"></a>问题排查</h1><p><strong>获取帮助</strong></p>
+<ol>
+<li><a href="https://discuss.gradle.org/c/help-discuss" target="_blank" rel="noopener">Gradle Forums</a>。更新缓慢，回复率很低。</li>
+<li><a href="https://stackoverflow.com/questions/tagged/gradle" target="_blank" rel="noopener">StackOverflow #gradle</a> 。在StackOverFlow上一般能找到所需要的解答。</li>
+<li><a href="https://help.gradle.org/" target="_blank" rel="noopener">help.gradle.org</a>。没用过，估计和Gradle论坛一样吧。</li>
+</ol>
+<p><strong>安装问题</strong></p>
+<p>详情请见官网<a href="https://docs.gradle.org/current/userguide/troubleshooting.html#sec:troubleshooting_installation" target="_blank" rel="noopener">Troubleshooting Gradle installation</a>，按照官网的教程安装，一般没有什么问题。</p>
+<p><strong>定位一般构建问题</strong></p>
+<ol>
+<li>执行<code>$ ./gradlew [task name] -s</code>。打印栈信息，一般可以定位问题出现在哪里，否则执行下一步操作。</li>
+<li>执行<code>$ ./gradlew assembleDebug -d &gt; gradle.log</code>。打印所有的构建信息到<code>gradle.log</code>文件，通过搜索<code>WARNING</code>或<code>ERROR</code>定位错误。</li>
+</ol>
+<p><strong>依赖解析问题</strong></p>
+<p>参考官网<a href="https://docs.gradle.org/current/userguide/troubleshooting_dependency_resolution.html" target="_blank" rel="noopener">Troubleshooting Dependency Resolution</a>，补充如下：</p>
+<ol>
+<li>版本冲突。升级低版本或在某个依赖里排除掉(<code>exclude</code>)低版本。</li>
+<li>依赖下载失败。一般会报错<code>Could not resolve xxx....xxxx timed out</code>，有以下两种解决方法：<ul>
+<li>设置HTTP代理或国内镜像仓库。HTTP代理可在<code>$USER_HOME/.gradle/gradle.properties</code>或项目根目录<code>gradle.properties</code>里设置。镜像仓库可使用<a href="http://maven.aliyun.com/mvn/view" target="_blank" rel="noopener">阿里云的仓库</a>，包括google、Maven Central和jcenter等的镜像仓库。</li>
+<li>下载依赖并从缓存执行构建。从官网下载依赖并放在缓存(<code>$USER_HOME/.gradle/caches/jars-3或modules-2</code>)里，然后使用命令行构建时添加<code>--offline</code>可选项。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<p><br></p>
+<h1 id="代理设置"><a href="#代理设置" class="headerlink" title="代理设置"></a>代理设置</h1><p>Gradle的代理一般用于解决Gradle版本和依赖下载失败的问题，代理参数可以设置在两个地方：</p>
+<ul>
+<li>项目根目录下的<code>gradle.properties</code>。仅对当前项目生效。</li>
+<li>用户目录下的<code>$USER_HOME/.gradle/gradle.properties</code>。对所有的Gradle项目生效。</li>
+</ul>
+<p>我的代理策略是使用<a href="https://www.privoxy.org/" target="_blank" rel="noopener">Privoxy</a>做HTTP代理，再让Privoxy监听Shadowsocks端口，真正实现代理的是本地Shadowsocks与远程代理服务中Shadowsocks的通信。</p>
+<blockquote>
+<p>因为Shadowsocks走的是Socks协议，而有些资源一定需要HTTP代理才生效，故需要使用Privoxy做一下转换。</p>
+</blockquote>
+<p>我一般的做法是在<code>$USER_HOME/.gradle/gradle.properties</code>下设置代理，代理参数及说明如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># https代理</span><br><span class="line"># 代理主机地址。本地，因为是先要走本地Privoxy。</span><br><span class="line">systemProp.https.proxyHost=127.0.0.1</span><br><span class="line"># 代理端口号。Privoxy的端口号</span><br><span class="line">systemProp.https.proxyPort=8118</span><br><span class="line"># 不走代理的地址。公司内部Maven库、内网、本地、阿里云OSS文件服务、个推、eclipse资源等，不用走代理，否则连接缓慢或者失败</span><br><span class="line">systemProp.https.nonProxyHosts=maven.xxxx.com|192.168.*|localhost|oss.sonatype.org|mvn.gt.igexin.com|repo.eclipse.org</span><br><span class="line"></span><br><span class="line"># http代理。与https代理参数一直。</span><br><span class="line">systemProp.http.proxyHost=127.0.0.1</span><br><span class="line">systemProp.http.proxyPort=8118</span><br><span class="line">systemProp.http.nonProxyHosts=maven.xxxx.com|192.168.*|localhost|oss.sonatype.org|mvn.gt.igexin.com|repo.eclipse.org</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>IDE以Andorid Studio 为例，其代理设置（在<code>Preferences-&gt;System Settings-&gt;HTTP Proxy</code>中）仅仅对IDE更新、下载SDK等生效，不会影响到Gradle构建时下载依赖。</p>
+<p>需要注意的是，Andorid Studio中设置了代理后，一般会弹出对话框，问是否要把Studio的代理设置到用户目录下的<code>$USER_HOME/.gradle/gradle.properties</code>中，如果你点击了确定，则Studio会把自己的代理配置更新到用户目录的<code>gradle.properties</code>文件中，这样代理就对Gradle生效了。一般不建议点确定，因为Studio和Gradle的代理的资源不一样，配置也会不一致，有时候一个可能需要代理，而另一个却不需要代理。</p>
+<p>IDE和Gradle的代理应该分别配置。</p>
+</blockquote>
+<hr>
+<p><br></p>
+<h1 id="待续"><a href="#待续" class="headerlink" title="待续"></a>待续</h1><p>撰写可维护的构建脚本</p>
+<p><a href="https://docs.gradle.org/current/userguide/authoring_maintainable_build_scripts.html" target="_blank" rel="noopener">Authoring Maintainable Build Scripts</a></p>
+<p>搭建Gradle项目</p>
+<p><a href="https://docs.gradle.org/current/userguide/organizing_gradle_projects.html" target="_blank" rel="noopener">Organizing Gradle Projects</a></p>
+<p>提高构建性能</p>
+<p><a href="https://guides.gradle.org/performance/" target="_blank" rel="noopener">Improving the Performance of Gradle Builds</a></p>
+<p>使用缓存</p>
+<p><a href="https://guides.gradle.org/using-build-cache/" target="_blank" rel="noopener">https://guides.gradle.org/using-build-cache/</a></p>
+<hr>
+<p><br></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li><a href="https://docs.gradle.org/current/userguide/troubleshooting.html" target="_blank" rel="noopener">Troubleshooting</a></li>
+<li><a href="https://docs.gradle.org/current/userguide/troubleshooting_dependency_resolution.html" target="_blank" rel="noopener">Troubleshooting Dependency Resolution</a></li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/21/开发笔记-理解FileProvider/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1459,199 +2117,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/04/Android构建06-Android项目构建流程详解/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="章亮">
-      <meta itemprop="description" content="code android ios web h5">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="永恒的码流">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/04/Android构建06-Android项目构建流程详解/" itemprop="url">
-                  Android构建06-Android项目构建流程详解
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-09-04 13:53:41" itemprop="dateCreated datePublished" datetime="2018-09-04T13:53:41+08:00">2018-09-04</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2018-10-17 14:52:48" itemprop="dateModified" datetime="2018-10-17T14:52:48+08:00">2018-10-17</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习Android构建系统/" itemprop="url" rel="index"><span itemprop="name">学习Android构建系统</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><a href="https://juejin.im/post/5a69c0ccf265da3e2a0dc9aa" target="_blank" rel="noopener">https://juejin.im/post/5a69c0ccf265da3e2a0dc9aa</a></p>
-<p><a href="https://blog.csdn.net/yanbober/article/details/49408489" target="_blank" rel="noopener">https://blog.csdn.net/yanbober/article/details/49408489</a></p>
-<p><a href="https://jasonzhong.github.io/2017/06/27/Android-Apk%E6%9E%84%E5%BB%BA%E5%8E%9F%E7%90%86/" target="_blank" rel="noopener">https://jasonzhong.github.io/2017/06/27/Android-Apk%E6%9E%84%E5%BB%BA%E5%8E%9F%E7%90%86/</a></p>
-<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>Android构建流程是指将Android项目转换成Apk（Android Application Package）这一过程，里面涉及到许多工步骤和<a href="https://developer.android.com/studio/command-line/" target="_blank" rel="noopener">工具</a>。构建流程由Gradle工具和Android Gradle Plugin插件来管理，既可以通过IDE方式，也可以通过命令行方式来进行。</p>
-<h1 id="构建流程"><a href="#构建流程" class="headerlink" title="构建流程"></a>构建流程</h1><p>官网有一个简单的<a href="https://developer.android.com/studio/build/#build-process" target="_blank" rel="noopener">流程图</a>，如下：</p>
-
-<p>比较简略，图中主要展示了两步，且都是由Gradle工具和Andorid插件管理的：</p>
-<ol>
-<li>编译。编译器将源代码编译成DEX文件和供前者直接使用的资源文件。</li>
-<li>打包并签名。将上述DEX文件和资源文件合并成APK，之后进行签名生成最终可以用于安装、测试或发布的APK。</li>
-</ol>
-<p>在许多博客中，都提到一个<a href="http://androidsrc.net/android-app-build-overview/" target="_blank" rel="noopener">详细的流程图</a>，相关链接请见“参考”一节。都说是来自官网，但我没有找到，可能以前存在，现在已经删除了，如下：</p>
-
-<p>上述流程中涉及许多工具，如“aapt”、“aidl”等</p>
-<p><br></p>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
-<li><a href="http://www.herongyang.com/Android/Project-Android-Application-Project-Build-Process.html" target="_blank" rel="noopener">Android Application Project Build Process</a></li>
-<li><a href="https://segmentfault.com/a/1190000008071324" target="_blank" rel="noopener">Android APK 编译打包流程</a></li>
-<li><a href="https://cdn-images-1.medium.com/max/1600/1*LbKGyabN6vr-9iR-rvnzPg.png" target="_blank" rel="noopener">https://cdn-images-1.medium.com/max/1600/1*LbKGyabN6vr-9iR-rvnzPg.png</a></li>
-<li><a href="https://juejin.im/entry/58b78d1b61ff4b006cd47e5b" target="_blank" rel="noopener">Apk 打包流程梳理-流程图较清晰</a></li>
-<li><a href="https://segmentfault.com/a/1190000008071324" target="_blank" rel="noopener">https://segmentfault.com/a/1190000008071324</a></li>
-<li><a href="https://segmentfault.com/a/1190000004916563" target="_blank" rel="noopener">https://segmentfault.com/a/1190000004916563</a></li>
-<li><a href="https://juejin.im/post/5a69c0ccf265da3e2a0dc9aa" target="_blank" rel="noopener">https://juejin.im/post/5a69c0ccf265da3e2a0dc9aa</a></li>
-</ol>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/27/Android构建04-Gradle构建流程/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2119,7 +2584,7 @@
 </li>
 </ol>
 <p>一般的IDE创建项目时都会自动生产Wrapper文件，如Android Studio。</p>
-<p><strong>使用Wrapper执行任务</strong> 用Wrapper脚本替换掉<code>gradle</code>来执行任务即可。以macOS平台为例，在项目根目录下执行<code>./gradlew [task name]</code>即可，如列出当前项目的所有任务，项目根目录下执行：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> ./gradlew tasks</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>使用Wrapper执行任务</strong> 用Wrapper脚本替换掉<code>gradle</code>来执行任务即可。以macOS平台为例，在项目根目录下执行<code>./gradlew [task name]</code>即可，如列出当前项目的所有任务，项目根目录下执行：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> ./gradlew tasks</span><br></pre></td></tr></table></figure></p>
 <p><strong>更新Wrapper</strong> 有两种方式更新Wrapper</p>
 <ol>
 <li>命令行方法。<code>.gradlew wrapper --gradle-version [要更新的版本号]</code>。</li>
@@ -2128,7 +2593,7 @@
 <p>关于Gradle Wrapper的详细说明请见官方手册<a href="https://docs.gradle.org/current/userguide/gradle_wrapper.html" target="_blank" rel="noopener">The Gradle Wrapper</a></p>
 <hr>
 <p><br></p>
-<h1 id="命令行"><a href="#命令行" class="headerlink" title="命令行"></a>命令行</h1><p><strong>指令形式</strong> Gradle命令行指令由三部分组成: 可执行文件<code>gradle</code>或<code>./gradlew</code>、一个或多个任务名、零或多个选项名，如下所示：。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> gradle [taskName...] [--option-name...]</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="命令行"><a href="#命令行" class="headerlink" title="命令行"></a>命令行</h1><p><strong>指令形式</strong> Gradle命令行指令由三部分组成: 可执行文件<code>gradle</code>或<code>./gradlew</code>、一个或多个任务名、零或多个选项名，如下所示：。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> gradle [taskName...] [--option-name...]</span><br></pre></td></tr></table></figure></p>
 <p>指令的详细说明请见官方手册<a href="https://docs.gradle.org/current/userguide/command_line_interface.html" target="_blank" rel="noopener">Command-Line Interface</a>，这里我只介绍学习或调试中常用的指令。部分常见命令行选项说明如下：</p>
 <p><strong>固有任务类</strong></p>
 <ul>
@@ -2162,6 +2627,40 @@
 <li>环境变量。运行Gradle环境的变量，如JAVA_HOME等。</li>
 </ol>
 <p>具体参数的配置请见官方手册<a href="https://docs.gradle.org/current/userguide/build_environment.html" target="_blank" rel="noopener">Build Environment</a></p>
+<hr>
+<p><br></p>
+<h1 id="依赖管理"><a href="#依赖管理" class="headerlink" title="依赖管理"></a>依赖管理</h1><p>现在的项目基本上都需要使用第三方库，一般称其为依赖，这样说并不准确，<a href="(https://docs.gradle.org/current/userguide/dependency_management_terminology.html#sub:terminology_module">官方的定义</a>)是:</p>
+<blockquote>
+<p>A dependency is a pointer to another piece of software required to build, test or run a module</p>
+<p>依赖是指向软件模块的指针，而非模块本身</p>
+</blockquote>
+<p>依赖管理是一种以自动方式声明、解析和使用项目所需的依赖的技术。</p>
+<p><strong>依赖管理流程</strong> </p>
+<ol>
+<li>声明。在构建脚本中声明依赖和对应的仓库。 </li>
+<li>解析。项目构建时，Gradle会定位依赖的本地路径或远程服务器路径并下载依赖（有必须要的话）。 </li>
+<li>缓存。依赖解析后，Gradle会将从远程服务下载的依赖缓存到本地，避免下次构建时重复下载。 </li>
+</ol>
+<p><strong>依赖的类型</strong></p>
+<ul>
+<li>模块依赖（Module dependencies）。指向一个库中的模块，这是最常见的依赖类型。</li>
+<li>文件依赖。指向无需仓库的一系列文件。</li>
+<li>项目依赖。指向多项目工程主项目需要用到的其他项目。</li>
+<li>特定分发的依赖。如API依赖、TestKit依赖和本地Groovy依赖等。 </li>
+</ul>
+<p><strong>常见的仓库</strong></p>
+<ul>
+<li>文件系统仓库。通过查找文件目录以解析依赖。</li>
+<li>Maven Central 仓库。一般默认的Maven仓库。</li>
+<li>JCenter Maven 仓库。Android默认的Maven仓库。</li>
+<li>Google Maven 仓库。Google的支持库所在的Maven仓库。</li>
+<li>本地 Maven仓库。就是你开发项目所用的主机中的仓库。</li>
+<li>自定义Maven仓库。一些公司，如阿里，喜欢把阿里云OSS服务SDK等存储在自己搭建的Maven仓库中。</li>
+<li>Ivy仓库。不常用。</li>
+</ul>
+<blockquote>
+<p>Maven仓库是用<a href="javascript:void%200" target="_blank" rel="noopener">Apache Maven</a>工具搭建的存储不同类型资源的本地或远程资源服务。Maven Central仓库、JCenter Maven仓库和Google Maven仓库都是Maven仓库，区别在于存储的服务器和管理的机构不一样。 </p>
+</blockquote>
 <hr>
 <p><br></p>
 <h1 id="插件-Plugin"><a href="#插件-Plugin" class="headerlink" title="插件(Plugin)"></a>插件(Plugin)</h1><p><strong>插件简介</strong> Gradle的一个非常大的特点就是灵活或者说可扩展性，它本身没有提供多少构建具体任务的逻辑，构建各类具体的项目都是通过增加插件实现的。插件可以添加新任务（例如JavaCompile），新的域对象（例如SourceSet），新的规定（例如Java源位于src/main/java）以及继承其他插件而获得的功能。<br>Gradle本身提供了一些基础的插件，只需要配置id即可使用，如<code>Java Plugin</code>。</p>
@@ -2299,491 +2798,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/27/Android构建02-Groovy基础/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="章亮">
-      <meta itemprop="description" content="code android ios web h5">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="永恒的码流">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/27/Android构建02-Groovy基础/" itemprop="url">
-                  Android构建02-Groovy基础
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-08-27 17:52:09" itemprop="dateCreated datePublished" datetime="2018-08-27T17:52:09+08:00">2018-08-27</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2018-10-17 14:52:48" itemprop="dateModified" datetime="2018-10-17T14:52:48+08:00">2018-10-17</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习Android构建系统/" itemprop="url" rel="index"><span itemprop="name">学习Android构建系统</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>Groovy是JVM语言，与Java语法类似，如果你熟悉kotlin的话，你会发现它与kotlin更类似些。它可以作为Java平台的脚本语言使用。详细介绍请见<a href="http://groovy-lang.org/index.html" target="_blank" rel="noopener">Groovy官网</a>和<a href="https://zh.wikipedia.org/wiki/Groovy" target="_blank" rel="noopener">维基百科</a>。</p>
-<blockquote>
-<p>提示：“Groovy基础”这一部分建议不要花费太多时间，能看懂语法，尤其是闭包的语法，以及知道如何查阅API即可。</p>
-</blockquote>
-<hr>
-<p><br></p>
-<h1 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h1><p>对于语法的学习，我这里就不详细说了，请大家按照下面步骤去学习：</p>
-<ol>
-<li>浏览一遍官方文档的<a href="http://www.groovy-lang.org/documentation.html" target="_blank" rel="noopener">语言规范</a>，里面有示例，很容易看懂。要知道Groovy语言规范大致讲了哪些内容，以后遇到不懂的语法，可以回来快速查阅。</li>
-<li>另外，也可以看下国人写的入门博客：<a href="https://blog.csdn.net/singwhatiwanna/article/details/76084580" target="_blank" rel="noopener">任玉刚 Gradle从入门到实战 - Groovy基础</a>、<a href="https://www.jianshu.com/p/ba55dc163dfd" target="_blank" rel="noopener">使用Groovy开发之新特性</a>。</li>
-</ol>
-<p><strong>重点看的部分</strong></p>
-<ol>
-<li>闭包<a href="http://www.groovy-lang.org/closures.html" target="_blank" rel="noopener">Closures</a>。定义、使用、代理策略(<code>owner</code>, <code>delegate</code> and <code>this</code>)</li>
-<li>语义<a href="http://www.groovy-lang.org/semantics.html" target="_blank" rel="noopener">Semantics</a>。重点看<code>Promotion and coercion</code>、<code>Optionality</code>和<code>Typing</code>部分，尤其是和闭包相关的部分。</li>
-</ol>
-<hr>
-<p><br></p>
-<h1 id="API文档使用说明"><a href="#API文档使用说明" class="headerlink" title="API文档使用说明"></a>API文档使用说明</h1><p>Groovy API包括两部分，一部分是Groovy化的JDK API(<code>groovy-jdk</code>)，另一部分是新增的纯Groovy API(<code>gapi</code>)。</p>
-<p>文档入口：</p>
-<ol>
-<li><a href="http://groovy-lang.org/documentation.html" target="_blank" rel="noopener">官网Document</a>-&gt;API documentation<br><img src="https://upload-images.jianshu.io/upload_images/2658578-cae297c94add4e77.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Groovy API入口"></li>
-</ol>
-<ol start="2">
-<li>直接进入<a href="http://docs.groovy-lang.org/" target="_blank" rel="noopener">API文档</a><br><img src="https://upload-images.jianshu.io/upload_images/2658578-0da24a5176f7dff8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Groovy Api Document"></li>
-</ol>
-<p><strong><a href="http://docs.groovy-lang.org/docs/latest/html/groovy-jdk/" target="_blank" rel="noopener">Groovy化的JDK API</a></strong></p>
-<blockquote>
-<p>This document describes the methods added to the JDK to make it more groovy.</p>
-</blockquote>
-<p>Groovy在JDK中增加了许多方法，如在<code>List</code>增加了<code>public List each(Closure closure)</code>、<code>public List dropWhile(Closure condition)</code>等方法，使其Groovy化。</p>
-<p>查找API示例：查看<code>List</code>中<code>public List each(Closure closure)</code>方法详情。</p>
-<ol>
-<li><p>通过包(<code>Package</code>)查。<code>java.util</code> -&gt; <code>Interfaces</code> -&gt; <code>List</code> -&gt; <code>each(Closure closure)</code></p>
-</li>
-<li><p>通过索引(<code>Index</code>)查。<code>Index</code> -&gt; 页面搜索<code>each(groovy.lang.Closure)</code>(<code>Mac</code>版<code>Chrome</code>浏览器快捷键<code>Command+F</code>) -&gt; 找到<code>Method in interface java.util.List</code>一项</p>
-</li>
-</ol>
-<p>最终结果如下：<br><img src="https://upload-images.jianshu.io/upload_images/2658578-23a786dc872d9aa0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="List的each方法详情"><br>描述说是迭代一个<code>List</code>，并将每个子项作为参数传递到闭包中进行处理。</p>
-<p><strong><a href="http://docs.groovy-lang.org/docs/latest/html/gapi/" target="_blank" rel="noopener">新增的Groovy类 API</a></strong></p>
-<blockquote>
-<p>Groovy - An agile dynamic language for the Java Platform<br>(GroovyDoc for Groovy and Java classes)</p>
-</blockquote>
-<p>上面说的是<code>Groovy and Java classes</code>文档，包括<code>Groovy</code>类和原生<code>Java</code>类(可通过文档中的类的链接查看)。尤其要注意，这个文档中的<code>JDK API</code>点击后都会链接到原始的Java类，而不是Groovy化的Java类。<br>查看某个API详情的方法与上面的相同，略。</p>
-<hr>
-<p><br></p>
-<h1 id="示例-Map语法"><a href="#示例-Map语法" class="headerlink" title="示例-Map语法"></a>示例-Map语法</h1><p>创建Gradle项目，并添加名为groovySyntax的任务<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir groovy-syntax</span><br><span class="line">$ <span class="built_in">cd</span> groovy-syntax</span><br><span class="line">$ vi build.gradle</span><br></pre></td></tr></table></figure></p>
-<p><code>build.gradle</code>文件<br><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">task(groovySyntax).doLast &#123;</span><br><span class="line">    println <span class="string">'start groovy syntax task'</span></span><br><span class="line">    doMap()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> doMap() &#123;</span><br><span class="line">    <span class="keyword">def</span> emptyMap = [:]</span><br><span class="line">    <span class="keyword">def</span> test = [<span class="string">"id"</span>:<span class="number">1</span>, <span class="string">"name"</span>:<span class="string">"zhangliang"</span>, <span class="string">"isMale"</span>:<span class="literal">true</span>]</span><br><span class="line">    test[<span class="string">"id"</span>] = <span class="number">2</span></span><br><span class="line">    test.id = <span class="number">900</span></span><br><span class="line">    println test.id</span><br><span class="line">    println test.isMale</span><br><span class="line">    println test</span><br><span class="line"></span><br><span class="line">    test.each &#123; key ,value -&gt;</span><br><span class="line">        println <span class="string">"key=$key, value=$value"</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    test.each &#123; entry -&gt;</span><br><span class="line">        println <span class="string">"entry-&gt;$entry,$&#123;entry.key&#125;, $&#123;entry.value&#125;"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>执行<code>gradle groovySyntax</code>，输出如下<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Starting a Gradle Daemon (subsequent builds will be faster)</span><br><span class="line"></span><br><span class="line">&gt; Task :groovySyntax</span><br><span class="line">start groovy syntax task</span><br><span class="line">900</span><br><span class="line"><span class="literal">true</span></span><br><span class="line">&#123;id=900, name=zhangliang, isMale=<span class="literal">true</span>&#125;</span><br><span class="line">key=id, value=900</span><br><span class="line">key=name, value=zhangliang</span><br><span class="line">key=isMale, value=<span class="literal">true</span></span><br><span class="line">entry-&gt;id=900,id, 900</span><br><span class="line">entry-&gt;name=zhangliang,name, zhangliang</span><br><span class="line">entry-&gt;isMale=<span class="literal">true</span>,isMale, <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">BUILD SUCCESSFUL <span class="keyword">in</span> 2s</span><br><span class="line">1 actionable task: 1 executed</span><br></pre></td></tr></table></figure></p>
-<p>上面的代码和输出结果不难理解，分析如下：</p>
-<ol>
-<li>方法没有嵌套时，括号可以省略。<code>println &#39;start groovy syntax task&#39;</code>和<code>test.each{...}</code>写全就是<code>println(&#39;start groovy syntax task)&#39;</code>和<code>test.each({...})</code></li>
-<li><code>Map</code>的定义参见<a href="http://www.groovy-lang.org/syntax.html#_maps" target="_blank" rel="noopener">语言规范-Map</a>。</li>
-<li><code>Map</code>的方法<code>each(Closure closure)</code>的API文档说明如下<blockquote>
-<p>Allows a Map to be iterated through using a closure. If the closure takes one parameter then it will be passed the Map.Entry otherwise if the closure takes two parameters then it will be passed the key and the value.<br>可以用一个闭包来迭代<code>Map</code>，闭包的参数如果是一个就作为<code>Map.Entry</code>，如果两个参数就作为<code>key</code>和<code>value</code>。</p>
-</blockquote>
-</li>
-</ol>
-<hr>
-<p><br></p>
-<h1 id="示例-修改Android项目输出的APK名称"><a href="#示例-修改Android项目输出的APK名称" class="headerlink" title="示例-修改Android项目输出的APK名称"></a>示例-修改Android项目输出的APK名称</h1><p>Android开发中，打包完后修改apk的名称是一个比较常见的做法。之前开发的Android项目中，在<code>app/build.gradle</code>中加入了几行代码，每次打包后自动修改apk的名称，相关代码如下：<br><code>app/build.gradle</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">// 利用git commit count 作为构建号</span><br><span class="line">static def gitBuildCode() &#123;</span><br><span class="line">    def cmd = &apos;git rev-list HEAD --first-parent --count&apos;</span><br><span class="line">    cmd.execute().text.trim().toInteger()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">static def appName() &#123;</span><br><span class="line">    return &quot;youchat&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 修改输出文件的名称</span><br><span class="line">android.applicationVariants.all &#123; variant -&gt;</span><br><span class="line">    variant.outputs.all &#123;</span><br><span class="line">        if (outputFileName != null &amp;&amp; outputFileName.endsWith(&apos;.apk&apos;)) &#123;</span><br><span class="line">            def endStr = outputFileName</span><br><span class="line">            if (outputFileName.contains(&quot;debug&quot;)) &#123;</span><br><span class="line">                endStr = &quot;debug.apk&quot;</span><br><span class="line">            &#125; else if (outputFileName.contains(&quot;preRelease&quot;)) &#123;</span><br><span class="line">                endStr = &quot;preRelease.apk&quot;</span><br><span class="line">            &#125; else if (outputFileName.contains(&quot;release&quot;)) &#123;</span><br><span class="line">                endStr = &quot;release.apk&quot;</span><br><span class="line">            &#125;</span><br><span class="line">            outputFileName = &quot;$&#123;appName()&#125;_$&#123;android.defaultConfig.versionName&#125;_$&#123;gitBuildCode()&#125;_$&#123;endStr&#125;&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<p>打包完后，可以得到类似下面的文件<br><code>app/build/outputs/apk/preRelease/youchat_7.5.0_999_preRelease.apk</code><br>上面的代码逻辑比较简单，简单分析如下：</p>
-<ol>
-<li>定义了两个方法。<code>gitBuildCode ()</code>方法没有写<code>return</code>关键字，因为在<code>Groovy</code>中，方法总会返回值的，如果没有写<code>return</code>，就返回最后一行产生的值。参见<a href="http://www.groovy-lang.org/objectorientation.html#_methods" target="_blank" rel="noopener">语言规范-Object orientation-Method</a><blockquote>
-<p>Methods in Groovy always return some value. If no return statement is provided, the value evaluated in the last line executed will be returned</p>
-</blockquote>
-</li>
-<li><code>android.applicationVariants.all(Closure var1)</code>和<code>variant.outputs.all(Closure var1)</code>是Gradle DSL语法，可以查看它的<a href="https://docs.gradle.org/current/javadoc/" target="_blank" rel="noopener">javadoc</a><blockquote>
-<p>Executes the given closure against all objects in this collection, and any objects subsequently added to this collection. The object is passed to the closure as the closure delegate. Alternatively, it is also passed as a parameter.<br>迭代容器中所有的对象，并传递给闭包进行处理。</p>
-</blockquote>
-</li>
-<li><code>variant.outputs.all(Closure var1)</code>闭包中的代码逻辑是很简单的，只说下最后一行<code>outputFileName</code>的赋值语句，它使用了<a href="http://groovy-lang.org/syntax.html#all-strings" target="_blank" rel="noopener">字符串插值</a>语法<code>${}</code>，与kotlin里字符串模板是类似的。</li>
-</ol>
-<hr>
-<p><br></p>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
-<li><a href="http://www.groovy-lang.org/" target="_blank" rel="noopener">Groovy 官网</a></li>
-<li><a href="http://docs.groovy-lang.org/" target="_blank" rel="noopener">Apache Groovy Documentation</a></li>
-<li><a href="https://blog.csdn.net/singwhatiwanna/article/details/76084580" target="_blank" rel="noopener">任玉刚 Gradle从入门到实战 - Groovy基础</a></li>
-<li><a href="https://docs.gradle.org/current/javadoc/" target="_blank" rel="noopener">Gradle DSL Javadoc</a></li>
-<li><a href="https://www.jianshu.com/p/ba55dc163dfd" target="_blank" rel="noopener">使用Groovy开发之新特性</a></li>
-</ol>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/27/Android构建01-前言/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="章亮">
-      <meta itemprop="description" content="code android ios web h5">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="永恒的码流">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/27/Android构建01-前言/" itemprop="url">
-                  Android构建01-前言
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-08-27 14:52:48" itemprop="dateCreated datePublished" datetime="2018-08-27T14:52:48+08:00">2018-08-27</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2018-10-17 14:52:48" itemprop="dateModified" datetime="2018-10-17T14:52:48+08:00">2018-10-17</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习Android构建系统/" itemprop="url" rel="index"><span itemprop="name">学习Android构建系统</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h1><p>开发Android应用，就离不开基于Gradle的Android构建系统。刚开始做Android开发的时候，遇到编译问题，一般上网搜索解决之。但一般很难知道问题产生的深层次原因，也不知道以后如何避免，更不知道如何快速解决一般性的编译异常问题。想去学习，但一般的博客或书籍的内容与Android开发者官网介绍的内容相似，没有关于Groovy和Gradle的内容，让人很难理解，只知道是这样，而不知道为什么是这样。于是，一直想对Android构建系统做一个系统性的学习和总结，最近终于能够抽出一些空来做这件事。</p>
-<p>本来只想写一篇文章，但写到Gradle之后，发现篇幅太长，故分开写，当做一个系列。</p>
-<p><strong>核心问题</strong></p>
-<p>当我执行<code>./gradlew assemble</code>命令时，我需要知道Gradle做了哪些事情？它是如何做的（即源码是如何写的）？</p>
-<p><strong>学习目标</strong><br>对于Android Build System，我们应该掌握哪些知识或技能点呢？</p>
-<ol>
-<li>Groovy。语言基础，尤其是闭包概念，API快速查阅等。</li>
-<li>Gradle。项目构建流程、基础概念、基本命令行指令、插件、API和Reference的查阅等。</li>
-<li>Android Plugin。基础概念、Reference的查阅等。</li>
-<li>Android应用构建（编译和打包）流程。</li>
-</ol>
-<p>文章也将主要按照这个学习流程来写。</p>
-<p><strong>参考资料</strong><br>主要参考官方文档</p>
-<ol>
-<li><a href="http://www.groovy-lang.org/learn.html" target="_blank" rel="noopener">Groovy 官网</a></li>
-<li><a href="https://gradle.org/" target="_blank" rel="noopener">Gradle官网</a></li>
-<li><a href="https://developer.android.com/studio/build/" target="_blank" rel="noopener">Android开发者官网-Configure your build</a></li>
-</ol>
-<p><br></p>
-<h1 id="Android构建系统与三大知识块"><a href="#Android构建系统与三大知识块" class="headerlink" title="Android构建系统与三大知识块"></a>Android构建系统与三大知识块</h1><p><strong>Android构建系统</strong><br>Android构建系统，即Android Build System，它的作用是编译app资源和源代码，并将它们打包成APK。之后我们可以对APK进行测试、部署、签名和发布。</p>
-<blockquote>
-<p>The Android build system compiles app resources and source code, and packages them into APKs that you can test, deploy, sign, and distribute</p>
-</blockquote>
-<p><br><strong>三大知识块</strong><br>整个Android Build System基于三大知识块：</p>
-<ul>
-<li><a href="http://groovy-lang.org/" target="_blank" rel="noopener">Apache Groovy</a><br>一种功能强大的JVM语言，包含脚本编写、DSL（特定领域语言）创建、运行时和编译时元编程以及函数编程等功能。</li>
-<li><p><a href="https://gradle.org/" target="_blank" rel="noopener">Gradle</a><br>一种项目自动化构建工具。综合了Ant和Maven的一些特点，并使用Groovy的DSL来声明项目设置，而不是传统的XML。包含插件（Plugin）等功能。</p>
-<blockquote>
-<p>提示：目前Gradle可以使用Kotlin语言来编写脚本，但建议初学者以Groovy为主，毕竟遗留项目以及当前大多数项目的Gradle脚本都是使用Groovy来编写的。</p>
-</blockquote>
-</li>
-<li><p><a href="http://google.github.io/android-gradle-dsl/current/" target="_blank" rel="noopener">Android Plugin</a><br>Gradle的插件，用于增加一些特定于构建Android应用的功能。</p>
-</li>
-</ul>
-<p><br></p>
-<h1 id="开发环境"><a href="#开发环境" class="headerlink" title="开发环境"></a>开发环境</h1><ol>
-<li><p>主流操作系统。Gradle能够运行在所有的主流操作系统上，我的系统是<code>masOS High Sierra Version 10.13.6</code> 。</p>
-</li>
-<li><p><a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html" target="_blank" rel="noopener">Java JDK</a> 7+。Gradle基于Groovy，Groovy需要Java开发环境，Gradle官网说Gradle运行的最低Java JDK版本是7。</p>
-<p>我的Java版本如下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ java -version</span><br><span class="line">java version &quot;1.8.0_91&quot;</span><br><span class="line">Java(TM) SE Runtime Environment (build 1.8.0_91-b14)</span><br><span class="line">Java HotSpot(TM) 64-Bit Server VM (build 25.91-b14, mixed mode)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>Gradle。Gradle环境中包含Groovy，因此安装Gradle之后就不需要单独安装Groovy了。各平台以及不同安装方式见官网 <a href="https://docs.gradle.org/current/userguide/installation.html" target="_blank" rel="noopener">Installing Gradle</a>。macOS上可以使用<code>Homebrew</code>快速安装<code>$ brew install gradle</code>，安装成功后，查看版本信息如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ gradle -v</span><br><span class="line">------------------------------------------------------------</span><br><span class="line">Gradle 4.8.1</span><br><span class="line">------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">Build time:   2018-06-21 07:53:06 UTC</span><br><span class="line">Revision:     0abdea078047b12df42e7750ccba34d69b516a22</span><br><span class="line"></span><br><span class="line">Groovy:       2.4.12</span><br><span class="line">Ant:          Apache Ant(TM) version 1.9.11 compiled on March 23 2018</span><br><span class="line">JVM:          1.8.0_91 (Oracle Corporation 25.91-b14)</span><br><span class="line">OS:           Mac OS X 10.13.6 x86_64</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p><br></p>
-<h1 id="Hello-World示例"><a href="#Hello-World示例" class="headerlink" title="Hello World示例"></a>Hello World示例</h1><p>创建一个简单的Gradle项目：包含一个<code>build.gradle</code>文件的目录。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir hello-world</span><br><span class="line">$ <span class="built_in">cd</span> hello-world</span><br><span class="line">$ vim build.gradle</span><br></pre></td></tr></table></figure></p>
-<p><code>build.gradle</code>文件</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">task helloworld &#123;</span><br><span class="line">  doLast &#123;</span><br><span class="line">      println<span class="string">'Hello World!'</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>执行任务<br><figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ gradle helloworld</span><br><span class="line"><span class="comment"># 输出如下：</span></span><br><span class="line">Starting a Gradle Daemon (subsequent builds will be faster)</span><br><span class="line">&gt; Task :helloworld</span><br><span class="line">Hello World!</span><br><span class="line">BUILD SUCCESSFUL <span class="keyword">in</span> 2s</span><br><span class="line">1 actionable task: 1 executed</span><br></pre></td></tr></table></figure></p>
-<p>简单解释下 <code>build.gradle</code>文件：</p>
-<ol>
-<li><code>build.gradle</code>是Gradle的编译脚本，在构建过程中Gradle会据此生成一个<code>Project</code>的Java实例。</li>
-<li><code>task</code>是<code>Gradle DSL</code>的关键字，用于添加任务到当前那项目中。<code>helloworld</code>是任务的名称。后面连接的一个Groovy闭包，构建时，会返回一个名为‘helloworld’的任务。</li>
-<li>闭包中的<code>doLast</code>是<code>Task</code>的方法，根据闭包的语法，省略了方法的对象，写全的话是<code>owner.doLast</code>。表示向任务中添加一个打印’Hello World!’字符串的<code>Action</code>到任务的<code>Action</code>列表的最后。</li>
-<li>一个任务（<code>Task</code>）可以包含很多<code>Action</code>，执行任务的时候，顺序执行<code>Action</code>。</li>
-</ol>
-<p><br></p>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
-<li><a href="http://www.groovy-lang.org/learn.html" target="_blank" rel="noopener">Groovy 官网</a></li>
-<li><a href="https://gradle.org/" target="_blank" rel="noopener">Gradle官网</a></li>
-<li><a href="https://developer.android.com/studio/build/" target="_blank" rel="noopener">Android开发者官网-Configure your build</a></li>
-</ol>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2831,7 +2845,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">11</span>
+                    <span class="site-state-item-count">13</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -2850,7 +2864,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">3</span>
+                      
+                    
+                    <span class="site-state-item-count">4</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -2877,7 +2893,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">7</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">9</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

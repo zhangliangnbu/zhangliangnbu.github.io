@@ -108,25 +108,25 @@
 
 
 
-  <meta name="description" content="说明开发Android应用，就离不开基于Gradle的Android构建系统。刚开始做Android开发的时候，遇到编译问题，一般上网搜索解决之。但一般很难知道问题产生的深层次原因，也不知道以后如何避免，更不知道如何快速解决一般性的编译异常问题。想去学习，但一般的博客或书籍的内容与Android开发者官网介绍的内容相似，没有关于Groovy和Gradle的内容，让人很难理解，只知道是这样，而不知道">
-<meta name="keywords" content="Android,Build,Gradle,Groovy">
+  <meta name="description" content="文件分布简述详情请见官方文档Directory Layout。 之前官方文档并没有这方面的说明，现在却单独用一个章节来做说明，可能考虑到许多开发者都遇到过这方面的疑惑吧：项目的依赖包在哪里？我去掉了项目里gradle.properties和IDE（如Android Studio）里的代理设置之后，会什么代理还会生效？等等。 Gradle相关文件包括Wrapper文件、Gradle各版本包、依赖包等">
+<meta name="keywords" content="Build,Gradle">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Android构建01-前言">
-<meta property="og:url" content="http://yoursite.com/2018/08/27/Android构建01-前言/index.html">
+<meta property="og:title" content="Android构建05-Gradle最佳实践">
+<meta property="og:url" content="http://yoursite.com/2018/10/22/Android构建05-Gradle最佳实践/index.html">
 <meta property="og:site_name" content="永恒的码流">
-<meta property="og:description" content="说明开发Android应用，就离不开基于Gradle的Android构建系统。刚开始做Android开发的时候，遇到编译问题，一般上网搜索解决之。但一般很难知道问题产生的深层次原因，也不知道以后如何避免，更不知道如何快速解决一般性的编译异常问题。想去学习，但一般的博客或书籍的内容与Android开发者官网介绍的内容相似，没有关于Groovy和Gradle的内容，让人很难理解，只知道是这样，而不知道">
+<meta property="og:description" content="文件分布简述详情请见官方文档Directory Layout。 之前官方文档并没有这方面的说明，现在却单独用一个章节来做说明，可能考虑到许多开发者都遇到过这方面的疑惑吧：项目的依赖包在哪里？我去掉了项目里gradle.properties和IDE（如Android Studio）里的代理设置之后，会什么代理还会生效？等等。 Gradle相关文件包括Wrapper文件、Gradle各版本包、依赖包等">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-10-17T06:52:48.000Z">
+<meta property="og:updated_time" content="2018-10-24T01:10:54.735Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Android构建01-前言">
-<meta name="twitter:description" content="说明开发Android应用，就离不开基于Gradle的Android构建系统。刚开始做Android开发的时候，遇到编译问题，一般上网搜索解决之。但一般很难知道问题产生的深层次原因，也不知道以后如何避免，更不知道如何快速解决一般性的编译异常问题。想去学习，但一般的博客或书籍的内容与Android开发者官网介绍的内容相似，没有关于Groovy和Gradle的内容，让人很难理解，只知道是这样，而不知道">
+<meta name="twitter:title" content="Android构建05-Gradle最佳实践">
+<meta name="twitter:description" content="文件分布简述详情请见官方文档Directory Layout。 之前官方文档并没有这方面的说明，现在却单独用一个章节来做说明，可能考虑到许多开发者都遇到过这方面的疑惑吧：项目的依赖包在哪里？我去掉了项目里gradle.properties和IDE（如Android Studio）里的代理设置之后，会什么代理还会生效？等等。 Gradle相关文件包括Wrapper文件、Gradle各版本包、依赖包等">
 
 
 
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/08/27/Android构建01-前言/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/10/22/Android构建05-Gradle最佳实践/"/>
 
 
 
@@ -136,7 +136,7 @@
   };
 </script>
 
-  <title>Android构建01-前言 | 永恒的码流</title>
+  <title>Android构建05-Gradle最佳实践 | 永恒的码流</title>
   
 
 
@@ -318,7 +318,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/27/Android构建01-前言/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/22/Android构建05-Gradle最佳实践/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="章亮">
@@ -335,7 +335,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Android构建01-前言
+          <h1 class="post-title" itemprop="name headline">Android构建05-Gradle最佳实践
               
             
           </h1>
@@ -360,7 +360,7 @@
                 
               
 
-              <time title="创建时间：2018-08-27 14:52:48" itemprop="dateCreated datePublished" datetime="2018-08-27T14:52:48+08:00">2018-08-27</time>
+              <time title="创建时间：2018-10-22 09:09:26" itemprop="dateCreated datePublished" datetime="2018-10-22T09:09:26+08:00">2018-10-22</time>
             
 
             
@@ -377,7 +377,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-10-17 14:52:48" itemprop="dateModified" datetime="2018-10-17T14:52:48+08:00">2018-10-17</time>
+                <time title="修改时间：2018-10-24 09:10:54" itemprop="dateModified" datetime="2018-10-24T09:10:54+08:00">2018-10-24</time>
               
             
           </span>
@@ -436,69 +436,72 @@
       
 
       
-        <h1 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h1><p>开发Android应用，就离不开基于Gradle的Android构建系统。刚开始做Android开发的时候，遇到编译问题，一般上网搜索解决之。但一般很难知道问题产生的深层次原因，也不知道以后如何避免，更不知道如何快速解决一般性的编译异常问题。想去学习，但一般的博客或书籍的内容与Android开发者官网介绍的内容相似，没有关于Groovy和Gradle的内容，让人很难理解，只知道是这样，而不知道为什么是这样。于是，一直想对Android构建系统做一个系统性的学习和总结，最近终于能够抽出一些空来做这件事。</p>
-<p>本来只想写一篇文章，但写到Gradle之后，发现篇幅太长，故分开写，当做一个系列。</p>
-<p><strong>核心问题</strong></p>
-<p>当我执行<code>./gradlew assemble</code>命令时，我需要知道Gradle做了哪些事情？它是如何做的（即源码是如何写的）？</p>
-<p><strong>学习目标</strong><br>对于Android Build System，我们应该掌握哪些知识或技能点呢？</p>
+        <h1 id="文件分布简述"><a href="#文件分布简述" class="headerlink" title="文件分布简述"></a>文件分布简述</h1><p>详情请见官方文档<a href="https://docs.gradle.org/current/userguide/directory_layout.html" target="_blank" rel="noopener">Directory Layout</a>。</p>
+<p>之前官方文档并没有这方面的说明，现在却单独用一个章节来做说明，可能考虑到许多开发者都遇到过这方面的疑惑吧：项目的依赖包在哪里？我去掉了项目里<code>gradle.properties</code>和IDE（如Android Studio）里的代理设置之后，会什么代理还会生效？等等。</p>
+<p>Gradle相关文件包括Wrapper文件、Gradle各版本包、依赖包等。它们并不都存放在项目目录里，如依赖包，你在项目根目录下是找不到的。</p>
+<p>Gradle相关文件分布在两个地方：</p>
 <ol>
-<li>Groovy。语言基础，尤其是闭包概念，API快速查阅等。</li>
-<li>Gradle。项目构建流程、基础概念、基本命令行指令、插件、API和Reference的查阅等。</li>
-<li>Android Plugin。基础概念、Reference的查阅等。</li>
-<li>Android应用构建（编译和打包）流程。</li>
+<li>项目根目录。这个目录下的gradle相关文件只对当前项目生效。包括Wrapper配置和可执行命令文件、项目的<code>gradle.properties</code>、<code>build.gradle</code>等构建和配置文件。</li>
+<li>用户目录。<code>$USER_HOME/.gradle</code>，macOS中执行<code>$ cd ~/.gradle/</code>即可进入，该目录下的配置对所有的项目生效。包括配置文件<code>gradle.properties</code>、Gradle各版本、项目依赖包等。</li>
 </ol>
-<p>文章也将主要按照这个学习流程来写。</p>
-<p><strong>参考资料</strong><br>主要参考官方文档</p>
-<ol>
-<li><a href="http://www.groovy-lang.org/learn.html" target="_blank" rel="noopener">Groovy 官网</a></li>
-<li><a href="https://gradle.org/" target="_blank" rel="noopener">Gradle官网</a></li>
-<li><a href="https://developer.android.com/studio/build/" target="_blank" rel="noopener">Android开发者官网-Configure your build</a></li>
-</ol>
+<hr>
 <p><br></p>
-<h1 id="Android构建系统与三大知识块"><a href="#Android构建系统与三大知识块" class="headerlink" title="Android构建系统与三大知识块"></a>Android构建系统与三大知识块</h1><p><strong>Android构建系统</strong><br>Android构建系统，即Android Build System，它的作用是编译app资源和源代码，并将它们打包成APK。之后我们可以对APK进行测试、部署、签名和发布。</p>
-<blockquote>
-<p>The Android build system compiles app resources and source code, and packages them into APKs that you can test, deploy, sign, and distribute</p>
-</blockquote>
-<p><br><strong>三大知识块</strong><br>整个Android Build System基于三大知识块：</p>
-<ul>
-<li><a href="http://groovy-lang.org/" target="_blank" rel="noopener">Apache Groovy</a><br>一种功能强大的JVM语言，包含脚本编写、DSL（特定领域语言）创建、运行时和编译时元编程以及函数编程等功能。</li>
-<li><p><a href="https://gradle.org/" target="_blank" rel="noopener">Gradle</a><br>一种项目自动化构建工具。综合了Ant和Maven的一些特点，并使用Groovy的DSL来声明项目设置，而不是传统的XML。包含插件（Plugin）等功能。</p>
-<blockquote>
-<p>提示：目前Gradle可以使用Kotlin语言来编写脚本，但建议初学者以Groovy为主，毕竟遗留项目以及当前大多数项目的Gradle脚本都是使用Groovy来编写的。</p>
-</blockquote>
-</li>
-<li><p><a href="http://google.github.io/android-gradle-dsl/current/" target="_blank" rel="noopener">Android Plugin</a><br>Gradle的插件，用于增加一些特定于构建Android应用的功能。</p>
-</li>
+<h1 id="问题排查"><a href="#问题排查" class="headerlink" title="问题排查"></a>问题排查</h1><p><strong>获取帮助</strong></p>
+<ol>
+<li><a href="https://discuss.gradle.org/c/help-discuss" target="_blank" rel="noopener">Gradle Forums</a>。更新缓慢，回复率很低。</li>
+<li><a href="https://stackoverflow.com/questions/tagged/gradle" target="_blank" rel="noopener">StackOverflow #gradle</a> 。在StackOverFlow上一般能找到所需要的解答。</li>
+<li><a href="https://help.gradle.org/" target="_blank" rel="noopener">help.gradle.org</a>。没用过，估计和Gradle论坛一样吧。</li>
+</ol>
+<p><strong>安装问题</strong></p>
+<p>详情请见官网<a href="https://docs.gradle.org/current/userguide/troubleshooting.html#sec:troubleshooting_installation" target="_blank" rel="noopener">Troubleshooting Gradle installation</a>，按照官网的教程安装，一般没有什么问题。</p>
+<p><strong>定位一般构建问题</strong></p>
+<ol>
+<li>执行<code>$ ./gradlew [task name] -s</code>。打印栈信息，一般可以定位问题出现在哪里，否则执行下一步操作。</li>
+<li>执行<code>$ ./gradlew assembleDebug -d &gt; gradle.log</code>。打印所有的构建信息到<code>gradle.log</code>文件，通过搜索<code>WARNING</code>或<code>ERROR</code>定位错误。</li>
+</ol>
+<p><strong>依赖解析问题</strong></p>
+<p>参考官网<a href="https://docs.gradle.org/current/userguide/troubleshooting_dependency_resolution.html" target="_blank" rel="noopener">Troubleshooting Dependency Resolution</a>，补充如下：</p>
+<ol>
+<li>版本冲突。升级低版本或在某个依赖里排除掉(<code>exclude</code>)低版本。</li>
+<li>依赖下载失败。一般会报错<code>Could not resolve xxx....xxxx timed out</code>，有以下两种解决方法：<ul>
+<li>设置HTTP代理或国内镜像仓库。HTTP代理可在<code>$USER_HOME/.gradle/gradle.properties</code>或项目根目录<code>gradle.properties</code>里设置。镜像仓库可使用<a href="http://maven.aliyun.com/mvn/view" target="_blank" rel="noopener">阿里云的仓库</a>，包括google、Maven Central和jcenter等的镜像仓库。</li>
+<li>下载依赖并从缓存执行构建。从官网下载依赖并放在缓存(<code>$USER_HOME/.gradle/caches/jars-3或modules-2</code>)里，然后使用命令行构建时添加<code>--offline</code>可选项。</li>
 </ul>
-<p><br></p>
-<h1 id="开发环境"><a href="#开发环境" class="headerlink" title="开发环境"></a>开发环境</h1><ol>
-<li><p>主流操作系统。Gradle能够运行在所有的主流操作系统上，我的系统是<code>masOS High Sierra Version 10.13.6</code> 。</p>
-</li>
-<li><p><a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html" target="_blank" rel="noopener">Java JDK</a> 7+。Gradle基于Groovy，Groovy需要Java开发环境，Gradle官网说Gradle运行的最低Java JDK版本是7。</p>
-<p>我的Java版本如下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ java -version</span><br><span class="line">java version &quot;1.8.0_91&quot;</span><br><span class="line">Java(TM) SE Runtime Environment (build 1.8.0_91-b14)</span><br><span class="line">Java HotSpot(TM) 64-Bit Server VM (build 25.91-b14, mixed mode)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>Gradle。Gradle环境中包含Groovy，因此安装Gradle之后就不需要单独安装Groovy了。各平台以及不同安装方式见官网 <a href="https://docs.gradle.org/current/userguide/installation.html" target="_blank" rel="noopener">Installing Gradle</a>。macOS上可以使用<code>Homebrew</code>快速安装<code>$ brew install gradle</code>，安装成功后，查看版本信息如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ gradle -v</span><br><span class="line">------------------------------------------------------------</span><br><span class="line">Gradle 4.8.1</span><br><span class="line">------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">Build time:   2018-06-21 07:53:06 UTC</span><br><span class="line">Revision:     0abdea078047b12df42e7750ccba34d69b516a22</span><br><span class="line"></span><br><span class="line">Groovy:       2.4.12</span><br><span class="line">Ant:          Apache Ant(TM) version 1.9.11 compiled on March 23 2018</span><br><span class="line">JVM:          1.8.0_91 (Oracle Corporation 25.91-b14)</span><br><span class="line">OS:           Mac OS X 10.13.6 x86_64</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
+<hr>
 <p><br></p>
-<h1 id="Hello-World示例"><a href="#Hello-World示例" class="headerlink" title="Hello World示例"></a>Hello World示例</h1><p>创建一个简单的Gradle项目：包含一个<code>build.gradle</code>文件的目录。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir hello-world</span><br><span class="line">$ <span class="built_in">cd</span> hello-world</span><br><span class="line">$ vim build.gradle</span><br></pre></td></tr></table></figure></p>
-<p><code>build.gradle</code>文件</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">task helloworld &#123;</span><br><span class="line">  doLast &#123;</span><br><span class="line">      println<span class="string">'Hello World!'</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>执行任务<br><figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ gradle helloworld</span><br><span class="line"><span class="comment"># 输出如下：</span></span><br><span class="line">Starting a Gradle Daemon (subsequent builds will be faster)</span><br><span class="line">&gt; Task :helloworld</span><br><span class="line">Hello World!</span><br><span class="line">BUILD SUCCESSFUL <span class="keyword">in</span> 2s</span><br><span class="line">1 actionable task: 1 executed</span><br></pre></td></tr></table></figure></p>
-<p>简单解释下 <code>build.gradle</code>文件：</p>
-<ol>
-<li><code>build.gradle</code>是Gradle的编译脚本，在构建过程中Gradle会据此生成一个<code>Project</code>的Java实例。</li>
-<li><code>task</code>是<code>Gradle DSL</code>的关键字，用于添加任务到当前那项目中。<code>helloworld</code>是任务的名称。后面连接的一个Groovy闭包，构建时，会返回一个名为‘helloworld’的任务。</li>
-<li>闭包中的<code>doLast</code>是<code>Task</code>的方法，根据闭包的语法，省略了方法的对象，写全的话是<code>owner.doLast</code>。表示向任务中添加一个打印’Hello World!’字符串的<code>Action</code>到任务的<code>Action</code>列表的最后。</li>
-<li>一个任务（<code>Task</code>）可以包含很多<code>Action</code>，执行任务的时候，顺序执行<code>Action</code>。</li>
-</ol>
+<h1 id="代理设置"><a href="#代理设置" class="headerlink" title="代理设置"></a>代理设置</h1><p>Gradle的代理一般用于解决Gradle版本和依赖下载失败的问题，代理参数可以设置在两个地方：</p>
+<ul>
+<li>项目根目录下的<code>gradle.properties</code>。仅对当前项目生效。</li>
+<li>用户目录下的<code>$USER_HOME/.gradle/gradle.properties</code>。对所有的Gradle项目生效。</li>
+</ul>
+<p>我的代理策略是使用<a href="https://www.privoxy.org/" target="_blank" rel="noopener">Privoxy</a>做HTTP代理，再让Privoxy监听Shadowsocks端口，真正实现代理的是本地Shadowsocks与远程代理服务中Shadowsocks的通信。</p>
+<blockquote>
+<p>因为Shadowsocks走的是Socks协议，而有些资源一定需要HTTP代理才生效，故需要使用Privoxy做一下转换。</p>
+</blockquote>
+<p>我一般的做法是在<code>$USER_HOME/.gradle/gradle.properties</code>下设置代理，代理参数及说明如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># https代理</span><br><span class="line"># 代理主机地址。本地，因为是先要走本地Privoxy。</span><br><span class="line">systemProp.https.proxyHost=127.0.0.1</span><br><span class="line"># 代理端口号。Privoxy的端口号</span><br><span class="line">systemProp.https.proxyPort=8118</span><br><span class="line"># 不走代理的地址。公司内部Maven库、内网、本地、阿里云OSS文件服务、个推、eclipse资源等，不用走代理，否则连接缓慢或者失败</span><br><span class="line">systemProp.https.nonProxyHosts=maven.xxxx.com|192.168.*|localhost|oss.sonatype.org|mvn.gt.igexin.com|repo.eclipse.org</span><br><span class="line"></span><br><span class="line"># http代理。与https代理参数一直。</span><br><span class="line">systemProp.http.proxyHost=127.0.0.1</span><br><span class="line">systemProp.http.proxyPort=8118</span><br><span class="line">systemProp.http.nonProxyHosts=maven.xxxx.com|192.168.*|localhost|oss.sonatype.org|mvn.gt.igexin.com|repo.eclipse.org</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>IDE以Andorid Studio 为例，其代理设置（在<code>Preferences-&gt;System Settings-&gt;HTTP Proxy</code>中）仅仅对IDE更新、下载SDK等生效，不会影响到Gradle构建时下载依赖。</p>
+<p>需要注意的是，Andorid Studio中设置了代理后，一般会弹出对话框，问是否要把Studio的代理设置到用户目录下的<code>$USER_HOME/.gradle/gradle.properties</code>中，如果你点击了确定，则Studio会把自己的代理配置更新到用户目录的<code>gradle.properties</code>文件中，这样代理就对Gradle生效了。一般不建议点确定，因为Studio和Gradle的代理的资源不一样，配置也会不一致，有时候一个可能需要代理，而另一个却不需要代理。</p>
+<p>IDE和Gradle的代理应该分别配置。</p>
+</blockquote>
+<hr>
+<p><br></p>
+<h1 id="待续"><a href="#待续" class="headerlink" title="待续"></a>待续</h1><p>撰写可维护的构建脚本</p>
+<p><a href="https://docs.gradle.org/current/userguide/authoring_maintainable_build_scripts.html" target="_blank" rel="noopener">Authoring Maintainable Build Scripts</a></p>
+<p>搭建Gradle项目</p>
+<p><a href="https://docs.gradle.org/current/userguide/organizing_gradle_projects.html" target="_blank" rel="noopener">Organizing Gradle Projects</a></p>
+<p>提高构建性能</p>
+<p><a href="https://guides.gradle.org/performance/" target="_blank" rel="noopener">Improving the Performance of Gradle Builds</a></p>
+<p>使用缓存</p>
+<p><a href="https://guides.gradle.org/using-build-cache/" target="_blank" rel="noopener">https://guides.gradle.org/using-build-cache/</a></p>
+<hr>
 <p><br></p>
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
-<li><a href="http://www.groovy-lang.org/learn.html" target="_blank" rel="noopener">Groovy 官网</a></li>
-<li><a href="https://gradle.org/" target="_blank" rel="noopener">Gradle官网</a></li>
-<li><a href="https://developer.android.com/studio/build/" target="_blank" rel="noopener">Android开发者官网-Configure your build</a></li>
+<li><a href="https://docs.gradle.org/current/userguide/troubleshooting.html" target="_blank" rel="noopener">Troubleshooting</a></li>
+<li><a href="https://docs.gradle.org/current/userguide/troubleshooting_dependency_resolution.html" target="_blank" rel="noopener">Troubleshooting Dependency Resolution</a></li>
 </ol>
 
       
@@ -520,13 +523,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Android/" rel="tag"># Android</a>
-          
             <a href="/tags/Build/" rel="tag"># Build</a>
           
             <a href="/tags/Gradle/" rel="tag"># Gradle</a>
-          
-            <a href="/tags/Groovy/" rel="tag"># Groovy</a>
           
         </div>
       
@@ -539,8 +538,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/08/27/hello-world/" rel="next" title="Hello World">
-                <i class="fa fa-chevron-left"></i> Hello World
+              <a href="/2018/10/21/开发笔记-理解FileProvider/" rel="next" title="开发笔记-理解FileProvider">
+                <i class="fa fa-chevron-left"></i> 开发笔记-理解FileProvider
               </a>
             
           </div>
@@ -549,8 +548,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/08/27/Android构建02-Groovy基础/" rel="prev" title="Android构建02-Groovy基础">
-                Android构建02-Groovy基础 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/10/23/Git基础与命令/" rel="prev" title="Git基础与命令">
+                Git基础与命令 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -709,7 +708,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#说明"><span class="nav-number">1.</span> <span class="nav-text">说明</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Android构建系统与三大知识块"><span class="nav-number">2.</span> <span class="nav-text">Android构建系统与三大知识块</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#开发环境"><span class="nav-number">3.</span> <span class="nav-text">开发环境</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Hello-World示例"><span class="nav-number">4.</span> <span class="nav-text">Hello World示例</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#文件分布简述"><span class="nav-number">1.</span> <span class="nav-text">文件分布简述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#问题排查"><span class="nav-number">2.</span> <span class="nav-text">问题排查</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#代理设置"><span class="nav-number">3.</span> <span class="nav-text">代理设置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#待续"><span class="nav-number">4.</span> <span class="nav-text">待续</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
             
 
           </div>

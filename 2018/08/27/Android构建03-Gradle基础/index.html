@@ -500,7 +500,7 @@
 </li>
 </ol>
 <p>一般的IDE创建项目时都会自动生产Wrapper文件，如Android Studio。</p>
-<p><strong>使用Wrapper执行任务</strong> 用Wrapper脚本替换掉<code>gradle</code>来执行任务即可。以macOS平台为例，在项目根目录下执行<code>./gradlew [task name]</code>即可，如列出当前项目的所有任务，项目根目录下执行：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> ./gradlew tasks</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>使用Wrapper执行任务</strong> 用Wrapper脚本替换掉<code>gradle</code>来执行任务即可。以macOS平台为例，在项目根目录下执行<code>./gradlew [task name]</code>即可，如列出当前项目的所有任务，项目根目录下执行：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> ./gradlew tasks</span><br></pre></td></tr></table></figure></p>
 <p><strong>更新Wrapper</strong> 有两种方式更新Wrapper</p>
 <ol>
 <li>命令行方法。<code>.gradlew wrapper --gradle-version [要更新的版本号]</code>。</li>
@@ -509,7 +509,7 @@
 <p>关于Gradle Wrapper的详细说明请见官方手册<a href="https://docs.gradle.org/current/userguide/gradle_wrapper.html" target="_blank" rel="noopener">The Gradle Wrapper</a></p>
 <hr>
 <p><br></p>
-<h1 id="命令行"><a href="#命令行" class="headerlink" title="命令行"></a>命令行</h1><p><strong>指令形式</strong> Gradle命令行指令由三部分组成: 可执行文件<code>gradle</code>或<code>./gradlew</code>、一个或多个任务名、零或多个选项名，如下所示：。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> gradle [taskName...] [--option-name...]</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="命令行"><a href="#命令行" class="headerlink" title="命令行"></a>命令行</h1><p><strong>指令形式</strong> Gradle命令行指令由三部分组成: 可执行文件<code>gradle</code>或<code>./gradlew</code>、一个或多个任务名、零或多个选项名，如下所示：。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> gradle [taskName...] [--option-name...]</span><br></pre></td></tr></table></figure></p>
 <p>指令的详细说明请见官方手册<a href="https://docs.gradle.org/current/userguide/command_line_interface.html" target="_blank" rel="noopener">Command-Line Interface</a>，这里我只介绍学习或调试中常用的指令。部分常见命令行选项说明如下：</p>
 <p><strong>固有任务类</strong></p>
 <ul>
@@ -543,6 +543,40 @@
 <li>环境变量。运行Gradle环境的变量，如JAVA_HOME等。</li>
 </ol>
 <p>具体参数的配置请见官方手册<a href="https://docs.gradle.org/current/userguide/build_environment.html" target="_blank" rel="noopener">Build Environment</a></p>
+<hr>
+<p><br></p>
+<h1 id="依赖管理"><a href="#依赖管理" class="headerlink" title="依赖管理"></a>依赖管理</h1><p>现在的项目基本上都需要使用第三方库，一般称其为依赖，这样说并不准确，<a href="(https://docs.gradle.org/current/userguide/dependency_management_terminology.html#sub:terminology_module">官方的定义</a>)是:</p>
+<blockquote>
+<p>A dependency is a pointer to another piece of software required to build, test or run a module</p>
+<p>依赖是指向软件模块的指针，而非模块本身</p>
+</blockquote>
+<p>依赖管理是一种以自动方式声明、解析和使用项目所需的依赖的技术。</p>
+<p><strong>依赖管理流程</strong> </p>
+<ol>
+<li>声明。在构建脚本中声明依赖和对应的仓库。 </li>
+<li>解析。项目构建时，Gradle会定位依赖的本地路径或远程服务器路径并下载依赖（有必须要的话）。 </li>
+<li>缓存。依赖解析后，Gradle会将从远程服务下载的依赖缓存到本地，避免下次构建时重复下载。 </li>
+</ol>
+<p><strong>依赖的类型</strong></p>
+<ul>
+<li>模块依赖（Module dependencies）。指向一个库中的模块，这是最常见的依赖类型。</li>
+<li>文件依赖。指向无需仓库的一系列文件。</li>
+<li>项目依赖。指向多项目工程主项目需要用到的其他项目。</li>
+<li>特定分发的依赖。如API依赖、TestKit依赖和本地Groovy依赖等。 </li>
+</ul>
+<p><strong>常见的仓库</strong></p>
+<ul>
+<li>文件系统仓库。通过查找文件目录以解析依赖。</li>
+<li>Maven Central 仓库。一般默认的Maven仓库。</li>
+<li>JCenter Maven 仓库。Android默认的Maven仓库。</li>
+<li>Google Maven 仓库。Google的支持库所在的Maven仓库。</li>
+<li>本地 Maven仓库。就是你开发项目所用的主机中的仓库。</li>
+<li>自定义Maven仓库。一些公司，如阿里，喜欢把阿里云OSS服务SDK等存储在自己搭建的Maven仓库中。</li>
+<li>Ivy仓库。不常用。</li>
+</ul>
+<blockquote>
+<p>Maven仓库是用<a href="javascript:void%200" target="_blank" rel="noopener">Apache Maven</a>工具搭建的存储不同类型资源的本地或远程资源服务。Maven Central仓库、JCenter Maven仓库和Google Maven仓库都是Maven仓库，区别在于存储的服务器和管理的机构不一样。 </p>
+</blockquote>
 <hr>
 <p><br></p>
 <h1 id="插件-Plugin"><a href="#插件-Plugin" class="headerlink" title="插件(Plugin)"></a>插件(Plugin)</h1><p><strong>插件简介</strong> Gradle的一个非常大的特点就是灵活或者说可扩展性，它本身没有提供多少构建具体任务的逻辑，构建各类具体的项目都是通过增加插件实现的。插件可以添加新任务（例如JavaCompile），新的域对象（例如SourceSet），新的规定（例如Java源位于src/main/java）以及继承其他插件而获得的功能。<br>Gradle本身提供了一些基础的插件，只需要配置id即可使用，如<code>Java Plugin</code>。</p>
@@ -763,7 +797,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">11</span>
+                    <span class="site-state-item-count">13</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -782,7 +816,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">3</span>
+                      
+                    
+                    <span class="site-state-item-count">4</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -809,7 +845,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">7</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">9</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -845,7 +885,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Gradle简介"><span class="nav-number">2.</span> <span class="nav-text">Gradle简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Gradle-Docs的使用"><span class="nav-number">3.</span> <span class="nav-text">Gradle Docs的使用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#基础概念"><span class="nav-number">4.</span> <span class="nav-text">基础概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#脚本-Script"><span class="nav-number">4.1.</span> <span class="nav-text">脚本(Script)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#项目-Project"><span class="nav-number">4.2.</span> <span class="nav-text">项目(Project)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#任务-Task"><span class="nav-number">4.3.</span> <span class="nav-text">任务(Task)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Gradle-Wrapper"><span class="nav-number">5.</span> <span class="nav-text">Gradle Wrapper</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#命令行"><span class="nav-number">6.</span> <span class="nav-text">命令行</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#环境配置"><span class="nav-number">7.</span> <span class="nav-text">环境配置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#插件-Plugin"><span class="nav-number">8.</span> <span class="nav-text">插件(Plugin)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#示例-单项目构建"><span class="nav-number">9.</span> <span class="nav-text">示例-单项目构建</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#示例-多项目构建"><span class="nav-number">10.</span> <span class="nav-text">示例-多项目构建</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#示例-Android项目根目录-build-gradle语法分析"><span class="nav-number">11.</span> <span class="nav-text">示例-Android项目根目录 build.gradle语法分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">12.</span> <span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Gradle简介"><span class="nav-number">2.</span> <span class="nav-text">Gradle简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Gradle-Docs的使用"><span class="nav-number">3.</span> <span class="nav-text">Gradle Docs的使用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#基础概念"><span class="nav-number">4.</span> <span class="nav-text">基础概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#脚本-Script"><span class="nav-number">4.1.</span> <span class="nav-text">脚本(Script)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#项目-Project"><span class="nav-number">4.2.</span> <span class="nav-text">项目(Project)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#任务-Task"><span class="nav-number">4.3.</span> <span class="nav-text">任务(Task)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Gradle-Wrapper"><span class="nav-number">5.</span> <span class="nav-text">Gradle Wrapper</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#命令行"><span class="nav-number">6.</span> <span class="nav-text">命令行</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#环境配置"><span class="nav-number">7.</span> <span class="nav-text">环境配置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#依赖管理"><span class="nav-number">8.</span> <span class="nav-text">依赖管理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#插件-Plugin"><span class="nav-number">9.</span> <span class="nav-text">插件(Plugin)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#示例-单项目构建"><span class="nav-number">10.</span> <span class="nav-text">示例-单项目构建</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#示例-多项目构建"><span class="nav-number">11.</span> <span class="nav-text">示例-多项目构建</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#示例-Android项目根目录-build-gradle语法分析"><span class="nav-number">12.</span> <span class="nav-text">示例-Android项目根目录 build.gradle语法分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">13.</span> <span class="nav-text">参考</span></a></li></ol></div>
             
 
           </div>
