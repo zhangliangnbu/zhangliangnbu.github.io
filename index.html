@@ -381,7 +381,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-10-28 17:57:58" itemprop="dateModified" datetime="2018-10-28T17:57:58+08:00">2018-10-28</time>
+                <time title="修改时间：2018-10-29 09:10:40" itemprop="dateModified" datetime="2018-10-29T09:10:40+08:00">2018-10-29</time>
               
             
           </span>
@@ -443,7 +443,7 @@
 <li>打包并签名。将上述DEX文件和资源文件合并成APK，之后进行签名生成最终可以用于安装、测试或发布的APK。</li>
 </ol>
 <p>在许多博客中，都提到一个详细的流程图，说是来自官网，但我没有找到，可能以前存在，现在已经删除了，如下：</p>
-
+<p><img src="/images/android_build_process_detail.png" alt="Android构建流程"></p>
 <p>上述流程分为七个步骤，涉及许多工具，如AAPT、AIDL等，有些工具现在已经升级或改变名称了，如AAPT现在升级为AAPT2。</p>
 <blockquote>
 <p>AAPT等工具位于{Android SDK}/build-tools/{版本号}。</p>
@@ -2134,7 +2134,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">WARNING: Configuration <span class="string">'compile'</span> is obsolete and has been replaced with <span class="string">'implementation'</span> and <span class="string">'api'</span>.</span><br><span class="line">It will be removed at the end of 2018. For more information see: http://d.android.com/r/tools/update-dependency-configurations.html</span><br></pre></td></tr></table></figure>
 <p>但我检查了APP项目以及所有的Module，都没有发现<code>compile</code>关键字，用全局搜索（command + shift + f）也没有查到，所以应该是某个远程依赖或插件中使用了<code>compile</code>关键字，但如何定位是哪一个呢？</p>
 <p>通过IDE<code>Sync</code>后的提示如下：</p>
-<img src="/2018/09/10/开发笔记-Complie关键字过时WARNING解决/warning1.png" title="Sync后的Warning提示">
+
 <p><br></p>
 <h1 id="问题分析和解决"><a href="#问题分析和解决" class="headerlink" title="问题分析和解决"></a>问题分析和解决</h1><p>IDE给的提示太简略，只能通过Gradle命令和<a href="https://docs.gradle.org/current/userguide/command_line_interface.html#sec:command_line_debugging" target="_blank" rel="noopener">Logging options</a>来打印详细的构建信息来定位问题。Logging级别从简略到详细依次为<code>-q</code>、<code>-w</code> 、<code>-i</code>、<code>-d</code>。IDE默认应该是使用<code>-q</code>的，可以逐级打印信息，也可以直接使用<code>-d</code>级别日志打印信息。</p>
 <p>在项目根目录下，执行命令</p>
