@@ -397,7 +397,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/学习Android构建系统/" itemprop="url" rel="index"><span itemprop="name">学习Android构建系统</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Android构建系统/" itemprop="url" rel="index"><span itemprop="name">Android构建系统</span></a></span>
 
                 
                 
@@ -500,7 +500,7 @@
 </li>
 </ol>
 <p>一般的IDE创建项目时都会自动生产Wrapper文件，如Android Studio。</p>
-<p><strong>使用Wrapper执行任务</strong> 用Wrapper脚本替换掉<code>gradle</code>来执行任务即可。以macOS平台为例，在项目根目录下执行<code>./gradlew [task name]</code>即可，如列出当前项目的所有任务，项目根目录下执行：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> ./gradlew tasks</span><br></pre></td></tr></table></figure></p>
+<p><strong>使用Wrapper执行任务</strong> 用Wrapper脚本替换掉<code>gradle</code>来执行任务即可。以macOS平台为例，在项目根目录下执行<code>./gradlew [task name]</code>即可，如列出当前项目的所有任务，项目根目录下执行：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> ./gradlew tasks</span></span><br></pre></td></tr></table></figure></p>
 <p><strong>更新Wrapper</strong> 有两种方式更新Wrapper</p>
 <ol>
 <li>命令行方法。<code>.gradlew wrapper --gradle-version [要更新的版本号]</code>。</li>
@@ -509,7 +509,7 @@
 <p>关于Gradle Wrapper的详细说明请见官方手册<a href="https://docs.gradle.org/current/userguide/gradle_wrapper.html" target="_blank" rel="noopener">The Gradle Wrapper</a></p>
 <hr>
 <p><br></p>
-<h1 id="命令行"><a href="#命令行" class="headerlink" title="命令行"></a>命令行</h1><p><strong>指令形式</strong> Gradle命令行指令由三部分组成: 可执行文件<code>gradle</code>或<code>./gradlew</code>、一个或多个任务名、零或多个选项名，如下所示：。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> gradle [taskName...] [--option-name...]</span><br></pre></td></tr></table></figure></p>
+<h1 id="命令行"><a href="#命令行" class="headerlink" title="命令行"></a>命令行</h1><p><strong>指令形式</strong> Gradle命令行指令由三部分组成: 可执行文件<code>gradle</code>或<code>./gradlew</code>、一个或多个任务名、零或多个选项名，如下所示：。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> gradle [taskName...] [--option-name...]</span></span><br></pre></td></tr></table></figure></p>
 <p>指令的详细说明请见官方手册<a href="https://docs.gradle.org/current/userguide/command_line_interface.html" target="_blank" rel="noopener">Command-Line Interface</a>，这里我只介绍学习或调试中常用的指令。部分常见命令行选项说明如下：</p>
 <p><strong>固有任务类</strong></p>
 <ul>
