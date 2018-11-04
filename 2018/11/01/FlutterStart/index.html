@@ -108,25 +108,25 @@
 
 
 
-  <meta name="description" content="文件分布简述详情请见官方文档Directory Layout。 之前官方文档并没有这方面的说明，现在却单独用一个章节来做说明，可能考虑到许多开发者都遇到过这方面的疑惑吧：项目的依赖包在哪里？我去掉了项目里gradle.properties和IDE（如Android Studio）里的代理设置之后，会什么代理还会生效？等等。 Gradle相关文件包括Wrapper文件、Gradle各版本包、依赖包等">
-<meta name="keywords" content="Build,Gradle">
+  <meta name="description" content="前言照着官方get-started教程做，略作补充。   入门1 下载SDK安装包并解压 2 使用$ flutter doctor做检查并安装相关工具 安装IOS相关工具时，如果报错 1configure: error: Package requirements (libusbmuxd &amp;gt;= 1.1.0) were not met: 可以使用如下方法解决IOS toolchain安装异常解决">
+<meta name="keywords" content="Flutter,入门">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Android构建05-Gradle最佳实践">
-<meta property="og:url" content="http://yoursite.com/2018/10/22/Android构建05-Gradle最佳实践/index.html">
+<meta property="og:title" content="Flutter入门">
+<meta property="og:url" content="http://yoursite.com/2018/11/01/FlutterStart/index.html">
 <meta property="og:site_name" content="永恒的码流">
-<meta property="og:description" content="文件分布简述详情请见官方文档Directory Layout。 之前官方文档并没有这方面的说明，现在却单独用一个章节来做说明，可能考虑到许多开发者都遇到过这方面的疑惑吧：项目的依赖包在哪里？我去掉了项目里gradle.properties和IDE（如Android Studio）里的代理设置之后，会什么代理还会生效？等等。 Gradle相关文件包括Wrapper文件、Gradle各版本包、依赖包等">
+<meta property="og:description" content="前言照着官方get-started教程做，略作补充。   入门1 下载SDK安装包并解压 2 使用$ flutter doctor做检查并安装相关工具 安装IOS相关工具时，如果报错 1configure: error: Package requirements (libusbmuxd &amp;gt;= 1.1.0) were not met: 可以使用如下方法解决IOS toolchain安装异常解决">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-10-28T09:57:09.459Z">
+<meta property="og:updated_time" content="2018-11-02T01:40:36.239Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Android构建05-Gradle最佳实践">
-<meta name="twitter:description" content="文件分布简述详情请见官方文档Directory Layout。 之前官方文档并没有这方面的说明，现在却单独用一个章节来做说明，可能考虑到许多开发者都遇到过这方面的疑惑吧：项目的依赖包在哪里？我去掉了项目里gradle.properties和IDE（如Android Studio）里的代理设置之后，会什么代理还会生效？等等。 Gradle相关文件包括Wrapper文件、Gradle各版本包、依赖包等">
+<meta name="twitter:title" content="Flutter入门">
+<meta name="twitter:description" content="前言照着官方get-started教程做，略作补充。   入门1 下载SDK安装包并解压 2 使用$ flutter doctor做检查并安装相关工具 安装IOS相关工具时，如果报错 1configure: error: Package requirements (libusbmuxd &amp;gt;= 1.1.0) were not met: 可以使用如下方法解决IOS toolchain安装异常解决">
 
 
 
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/10/22/Android构建05-Gradle最佳实践/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/11/01/FlutterStart/"/>
 
 
 
@@ -136,7 +136,7 @@
   };
 </script>
 
-  <title>Android构建05-Gradle最佳实践 | 永恒的码流</title>
+  <title>Flutter入门 | 永恒的码流</title>
   
 
 
@@ -318,7 +318,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/22/Android构建05-Gradle最佳实践/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/01/FlutterStart/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="章亮">
@@ -335,7 +335,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Android构建05-Gradle最佳实践
+          <h1 class="post-title" itemprop="name headline">Flutter入门
               
             
           </h1>
@@ -360,7 +360,7 @@
                 
               
 
-              <time title="创建时间：2018-10-22 09:09:26" itemprop="dateCreated datePublished" datetime="2018-10-22T09:09:26+08:00">2018-10-22</time>
+              <time title="创建时间：2018-11-01 09:04:21" itemprop="dateCreated datePublished" datetime="2018-11-01T09:04:21+08:00">2018-11-01</time>
             
 
             
@@ -377,7 +377,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-10-28 17:57:09" itemprop="dateModified" datetime="2018-10-28T17:57:09+08:00">2018-10-28</time>
+                <time title="修改时间：2018-11-02 09:40:36" itemprop="dateModified" datetime="2018-11-02T09:40:36+08:00">2018-11-02</time>
               
             
           </span>
@@ -394,7 +394,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Android构建系统/" itemprop="url" rel="index"><span itemprop="name">Android构建系统</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a></span>
 
                 
                 
@@ -409,10 +409,10 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/10/22/Android构建05-Gradle最佳实践/#comments" itemprop="discussionUrl">
+                <a href="/2018/11/01/FlutterStart/#comments" itemprop="discussionUrl">
                 
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/10/22/Android构建05-Gradle最佳实践/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2018/11/01/FlutterStart/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -442,7 +442,7 @@
                 
                   <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="本文字数">2.8k</span>
+                <span title="本文字数">600</span>
               
 
               
@@ -456,7 +456,7 @@
                 
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
-                <span title="阅读时长">3 分钟</span>
+                <span title="阅读时长">1 分钟</span>
               
             </div>
           
@@ -476,72 +476,27 @@
       
 
       
-        <h1 id="文件分布简述"><a href="#文件分布简述" class="headerlink" title="文件分布简述"></a>文件分布简述</h1><p>详情请见官方文档<a href="https://docs.gradle.org/current/userguide/directory_layout.html" target="_blank" rel="noopener">Directory Layout</a>。</p>
-<p>之前官方文档并没有这方面的说明，现在却单独用一个章节来做说明，可能考虑到许多开发者都遇到过这方面的疑惑吧：项目的依赖包在哪里？我去掉了项目里<code>gradle.properties</code>和IDE（如Android Studio）里的代理设置之后，会什么代理还会生效？等等。</p>
-<p>Gradle相关文件包括Wrapper文件、Gradle各版本包、依赖包等。它们并不都存放在项目目录里，如依赖包，你在项目根目录下是找不到的。</p>
-<p>Gradle相关文件分布在两个地方：</p>
-<ol>
-<li>项目根目录。这个目录下的gradle相关文件只对当前项目生效。包括Wrapper配置和可执行命令文件、项目的<code>gradle.properties</code>、<code>build.gradle</code>等构建和配置文件。</li>
-<li>用户目录。<code>$USER_HOME/.gradle</code>，macOS中执行<code>$ cd ~/.gradle</code>即可进入，该目录下的配置对所有的项目生效。包括配置文件<code>gradle.properties</code>、Gradle各版本<code>wrapper/dists/</code>、项目依赖包<code>~/.gradle/caches/modules-2/files-2.1/</code>等。</li>
-</ol>
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>照着官方<code>get-started</code>教程做，略作补充。</p>
 <hr>
 <p><br></p>
-<h1 id="问题排查"><a href="#问题排查" class="headerlink" title="问题排查"></a>问题排查</h1><p><strong>获取帮助</strong></p>
-<ol>
-<li><a href="https://discuss.gradle.org/c/help-discuss" target="_blank" rel="noopener">Gradle Forums</a>。更新缓慢，回复率很低。</li>
-<li><a href="https://stackoverflow.com/questions/tagged/gradle" target="_blank" rel="noopener">StackOverflow #gradle</a> 。在StackOverFlow上一般能找到所需要的解答。</li>
-<li><a href="https://help.gradle.org/" target="_blank" rel="noopener">help.gradle.org</a>。没用过，估计和Gradle论坛一样吧。</li>
-</ol>
-<p><strong>安装问题</strong></p>
-<p>详情请见官网<a href="https://docs.gradle.org/current/userguide/troubleshooting.html#sec:troubleshooting_installation" target="_blank" rel="noopener">Troubleshooting Gradle installation</a>，按照官网的教程安装，一般没有什么问题。</p>
-<p><strong>定位一般构建问题</strong></p>
-<ol>
-<li>执行<code>$ ./gradlew [task name] -s</code>。打印栈信息，一般可以定位问题出现在哪里，否则执行下一步操作。</li>
-<li>执行<code>$ ./gradlew assembleDebug -d &gt; gradle.log</code>。打印所有的构建信息到<code>gradle.log</code>文件，通过搜索<code>WARNING</code>或<code>ERROR</code>定位错误。</li>
-</ol>
-<p><strong>依赖解析问题</strong></p>
-<p>参考官网<a href="https://docs.gradle.org/current/userguide/troubleshooting_dependency_resolution.html" target="_blank" rel="noopener">Troubleshooting Dependency Resolution</a>，补充如下：</p>
-<ol>
-<li>版本冲突。升级低版本或在某个依赖里排除掉(<code>exclude</code>)低版本。</li>
-<li>依赖下载失败。一般会报错<code>Could not resolve xxx....xxxx timed out</code>，有以下两种解决方法：<ul>
-<li>设置HTTP代理或国内镜像仓库。HTTP代理可在<code>$USER_HOME/.gradle/gradle.properties</code>或项目根目录<code>gradle.properties</code>里设置。镜像仓库可使用<a href="http://maven.aliyun.com/mvn/view" target="_blank" rel="noopener">阿里云的仓库</a>，包括google、Maven Central和jcenter等的镜像仓库。</li>
-<li>下载依赖并从缓存执行构建。从官网下载依赖并放在缓存(<code>$USER_HOME/.gradle/caches/jars-3或modules-2</code>)里，然后使用命令行构建时添加<code>--offline</code>可选项。</li>
-</ul>
-</li>
-</ol>
-<hr>
-<p><br></p>
-<h1 id="代理设置"><a href="#代理设置" class="headerlink" title="代理设置"></a>代理设置</h1><p>Gradle的代理一般用于解决Gradle版本和依赖下载失败的问题，代理参数可以设置在两个地方：</p>
-<ul>
-<li>项目根目录下的<code>gradle.properties</code>。仅对当前项目生效。</li>
-<li>用户目录下的<code>$USER_HOME/.gradle/gradle.properties</code>。对所有的Gradle项目生效。</li>
-</ul>
-<p>我的代理策略是使用<a href="https://www.privoxy.org/" target="_blank" rel="noopener">Privoxy</a>做HTTP代理，再让Privoxy监听Shadowsocks端口，真正实现代理的是本地Shadowsocks与远程代理服务中Shadowsocks的通信。</p>
-<blockquote>
-<p>因为Shadowsocks走的是Socks协议，而有些资源一定需要HTTP代理才生效，故需要使用Privoxy做一下转换。</p>
-</blockquote>
-<p>我一般的做法是在<code>$USER_HOME/.gradle/gradle.properties</code>下设置代理，代理参数及说明如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># https代理</span><br><span class="line"># 代理主机地址。本地，因为是先要走本地Privoxy。</span><br><span class="line">systemProp.https.proxyHost=127.0.0.1</span><br><span class="line"># 代理端口号。Privoxy的端口号</span><br><span class="line">systemProp.https.proxyPort=8118</span><br><span class="line"># 不走代理的地址。公司内部Maven库、内网、本地、阿里云OSS文件服务、个推、eclipse资源等，不用走代理，否则连接缓慢或者失败</span><br><span class="line">systemProp.https.nonProxyHosts=maven.xxxx.com|192.168.*|localhost|oss.sonatype.org|mvn.gt.igexin.com|repo.eclipse.org</span><br><span class="line"></span><br><span class="line"># http代理。与https代理参数一直。</span><br><span class="line">systemProp.http.proxyHost=127.0.0.1</span><br><span class="line">systemProp.http.proxyPort=8118</span><br><span class="line">systemProp.http.nonProxyHosts=maven.xxxx.com|192.168.*|localhost|oss.sonatype.org|mvn.gt.igexin.com|repo.eclipse.org</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>IDE以Andorid Studio 为例，其代理设置（在<code>Preferences-&gt;System Settings-&gt;HTTP Proxy</code>中）仅仅对IDE更新、下载SDK等生效，不会影响到Gradle构建时下载依赖。</p>
-<p>需要注意的是，Andorid Studio中设置了代理后，一般会弹出对话框，问是否要把Studio的代理设置到用户目录下的<code>$USER_HOME/.gradle/gradle.properties</code>中，如果你点击了确定，则Studio会把自己的代理配置更新到用户目录的<code>gradle.properties</code>文件中，这样代理就对Gradle生效了。一般不建议点确定，因为Studio和Gradle的代理的资源不一样，配置也会不一致，有时候一个可能需要代理，而另一个却不需要代理。</p>
-<p>IDE和Gradle的代理应该分别配置。</p>
-</blockquote>
-<hr>
-<p><br></p>
-<h1 id="待续"><a href="#待续" class="headerlink" title="待续"></a>待续</h1><p>撰写可维护的构建脚本</p>
-<p><a href="https://docs.gradle.org/current/userguide/authoring_maintainable_build_scripts.html" target="_blank" rel="noopener">Authoring Maintainable Build Scripts</a></p>
-<p>搭建Gradle项目</p>
-<p><a href="https://docs.gradle.org/current/userguide/organizing_gradle_projects.html" target="_blank" rel="noopener">Organizing Gradle Projects</a></p>
-<p>提高构建性能</p>
-<p><a href="https://guides.gradle.org/performance/" target="_blank" rel="noopener">Improving the Performance of Gradle Builds</a></p>
-<p>使用缓存</p>
-<p><a href="https://guides.gradle.org/using-build-cache/" target="_blank" rel="noopener">https://guides.gradle.org/using-build-cache/</a></p>
+<h1 id="入门"><a href="#入门" class="headerlink" title="入门"></a>入门</h1><p><strong>1 下载SDK安装包并解压</strong></p>
+<p><strong>2 使用<code>$ flutter doctor</code>做检查并安装相关工具</strong></p>
+<p>安装IOS相关工具时，如果报错</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">configure: error: Package requirements (libusbmuxd &gt;= 1.1.0) were not met:</span><br></pre></td></tr></table></figure>
+<p>可以使用如下方法解决<a href="https://stackoverflow.com/questions/52602425/libusbmuxd-version-error-during-flutter-install/52604913#52604913" target="_blank" rel="noopener">IOS toolchain安装异常解决</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">brew update</span><br><span class="line">brew uninstall --ignore-dependencies libimobiledevice</span><br><span class="line">brew uninstall --ignore-dependencies usbmuxd</span><br><span class="line">brew install --HEAD usbmuxd</span><br><span class="line">brew unlink usbmuxd</span><br><span class="line">brew link usbmuxd</span><br><span class="line">brew install --HEAD libimobiledevice</span><br></pre></td></tr></table></figure>
+<p><strong>3 配置IDE，安装插件</strong></p>
+<p><strong>4 尝试运行项目</strong></p>
+<p>创建、在Android和IOS模拟器上运行、修改字符串并热加载。</p>
+<p><strong>5  写第一个APP</strong> </p>
+<p>分为两部分，入门文档主要介绍第一部分。这两部分的内容都可以在<a href="https://codelabs.developers.google.com/?cat=Flutter" target="_blank" rel="noopener">Google Codelas</a>中找到。</p>
 <hr>
 <p><br></p>
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
-<li><a href="https://docs.gradle.org/current/userguide/troubleshooting.html" target="_blank" rel="noopener">Troubleshooting</a></li>
-<li><a href="https://docs.gradle.org/current/userguide/troubleshooting_dependency_resolution.html" target="_blank" rel="noopener">Troubleshooting Dependency Resolution</a></li>
+<li><a href="https://flutter.io/get-started/install/" target="_blank" rel="noopener">Flutter官网</a></li>
+<li><a href="https://flutterchina.club/get-started/install/" target="_blank" rel="noopener">Flutter官网中文翻译</a></li>
+<li><a href="http://www.infoq.com/cn/articles/why-is-flutter-revolutionary" target="_blank" rel="noopener">为什么说Flutter是革命性的？</a></li>
+<li><a href="https://stackoverflow.com/questions/52602425/libusbmuxd-version-error-during-flutter-install/52604913#52604913" target="_blank" rel="noopener">IOS toolchain安装异常解决</a></li>
 </ol>
 
       
@@ -563,9 +518,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Build/" rel="tag"># Build</a>
+            <a href="/tags/Flutter/" rel="tag"># Flutter</a>
           
-            <a href="/tags/Gradle/" rel="tag"># Gradle</a>
+            <a href="/tags/入门/" rel="tag"># 入门</a>
           
         </div>
       
@@ -578,8 +533,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/10/21/开发笔记-理解FileProvider/" rel="next" title="开发笔记-理解FileProvider">
-                <i class="fa fa-chevron-left"></i> 开发笔记-理解FileProvider
+              <a href="/2018/10/24/Android构建06-Android应用构建基础/" rel="next" title="Android构建06-Android应用构建基础">
+                <i class="fa fa-chevron-left"></i> Android构建06-Android应用构建基础
               </a>
             
           </div>
@@ -587,10 +542,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/10/23/Git基础与命令/" rel="prev" title="Git基础与命令">
-                Git基础与命令 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -789,7 +740,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#文件分布简述"><span class="nav-number">1.</span> <span class="nav-text">文件分布简述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#问题排查"><span class="nav-number">2.</span> <span class="nav-text">问题排查</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#代理设置"><span class="nav-number">3.</span> <span class="nav-text">代理设置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#待续"><span class="nav-number">4.</span> <span class="nav-text">待续</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#入门"><span class="nav-number">2.</span> <span class="nav-text">入门</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">3.</span> <span class="nav-text">参考</span></a></li></ol></div>
             
 
           </div>
@@ -978,9 +929,9 @@
   
     <script type="text/javascript">
       var disqus_config = function () {
-        this.page.url = 'http://yoursite.com/2018/10/22/Android构建05-Gradle最佳实践/';
-        this.page.identifier = '2018/10/22/Android构建05-Gradle最佳实践/';
-        this.page.title = 'Android构建05-Gradle最佳实践';
+        this.page.url = 'http://yoursite.com/2018/11/01/FlutterStart/';
+        this.page.identifier = '2018/11/01/FlutterStart/';
+        this.page.title = 'Flutter入门';
         };
       function loadComments () {
         var d = document, s = d.createElement('script');
