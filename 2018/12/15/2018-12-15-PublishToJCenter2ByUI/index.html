@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zhangliangnbu.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="前言本文主要说明如何生成项目构件，并手动上传构件文件到Bintray平台，最后发布到JCenter仓库这一流程。 发布流程。参考上一篇文章，完整发布流程如下：  准备工作。定义参数；准备本地待发布项目；配置Bintray平台账号、仓库、Package、版本。 生成构件文件。本地生成待发布的构件文件(包括POM文件)。 发布到Bintray。上传和发布本地构件文件到Bintray平台。 发布到JCe">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Bintray项目发布-手动">
+<meta property="og:url" content="https://zhangliangnbu.github.io/2018/12/15/2018-12-15-PublishToJCenter2ByUI/index.html">
+<meta property="og:site_name" content="永恒的码流">
+<meta property="og:description" content="前言本文主要说明如何生成项目构件，并手动上传构件文件到Bintray平台，最后发布到JCenter仓库这一流程。 发布流程。参考上一篇文章，完整发布流程如下：  准备工作。定义参数；准备本地待发布项目；配置Bintray平台账号、仓库、Package、版本。 生成构件文件。本地生成待发布的构件文件(包括POM文件)。 发布到Bintray。上传和发布本地构件文件到Bintray平台。 发布到JCe">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-12-15T13:09:18.000Z">
+<meta property="article:modified_time" content="2021-06-29T01:13:08.951Z">
+<meta property="article:author" content="章亮">
+<meta property="article:tag" content="Maven">
+<meta property="article:tag" content="Jcenter">
+<meta property="article:tag" content="Bintray">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://zhangliangnbu.github.io/2018/12/15/2018-12-15-PublishToJCenter2ByUI/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Bintray项目发布-手动 | 永恒的码流</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">永恒的码流</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">万物皆流，无物常驻</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2018/12/15/2018-12-15-PublishToJCenter2ByUI/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Bintray项目发布-手动
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-12-15 21:09:18" itemprop="dateCreated datePublished" datetime="2018-12-15T21:09:18+08:00">2018-12-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-29 09:13:08" itemprop="dateModified" datetime="2021-06-29T09:13:08+08:00">2021-06-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%A1%B9%E7%9B%AE%E5%8F%91%E5%B8%83/" itemprop="url" rel="index"><span itemprop="name">项目发布</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本文主要说明如何生成项目构件，并手动上传构件文件到Bintray平台，最后发布到JCenter仓库这一流程。</p>
+<p><strong>发布流程</strong>。参考上一篇文章，完整发布流程如下：</p>
+<ol>
+<li>准备工作。定义参数；准备本地待发布项目；配置Bintray平台账号、仓库、Package、版本。</li>
+<li>生成构件文件。本地生成待发布的构件文件(包括POM文件)。</li>
+<li>发布到Bintray。上传和发布本地构件文件到Bintray平台。</li>
+<li>发布到JCenter。发布Bintray平台上的项目到JCenter。</li>
+</ol>
+<p><strong>源码地址</strong>。本文涉及到的<code>nicelogger</code>项目Github地址：<a target="_blank" rel="noopener" href="https://github.com/zhangliangnbu/nice-logger">https://github.com/zhangliangnbu/nice-logger</a></p>
+<hr>
+<h1 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h1><p>参考上一篇文章，如果已经做了，可以跳过。默认你已经有了一个本地项目，已经创建了Bintray平台账号和Maven仓库。</p>
+<p><strong>定义参数</strong></p>
+<ul>
+<li>Bintray平台仓库名称。<code>android</code>。</li>
+<li>Bintray平台Package名称。<code>nicelogger</code>。</li>
+<li>POM文件<code>groupId</code>。<code>com.liang.android</code>。</li>
+<li>POM文件<code>artifactId</code>。<code>nicelogger</code>。</li>
+<li>POM文件<code>version</code>。取<code>0.0.1</code>。</li>
+</ul>
+<p><strong>准备本地项目</strong>。略。</p>
+<p><strong>配置Bintray平台</strong>。根据参数创建Package和版本。</p>
+<br>
+
+<hr>
+<h1 id="生成构件"><a href="#生成构件" class="headerlink" title="生成构件"></a>生成构件</h1><p>生成需要上传到Maven库的四个文件：</p>
+<ul>
+<li><code>nicelogger-0.0.1.aar</code></li>
+<li><code>nicelogger-0.0.1-sources.jar</code></li>
+<li><code>nicelogger-0.0.1-javadoc.jar</code></li>
+<li><code>nicelogger-0.0.1.pom</code></li>
+</ul>
+<p><strong>生成<code>nicelogger-0.0.1.aar</code>文件</strong></p>
+<p>在<code>nicelogger</code>的<code>build.gradle</code>最后中添加如下代码，用于重命名生成的aar文件：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义pom文件参数</span></span><br><span class="line"><span class="keyword">def</span> groupIdDefined = <span class="string">&quot;com.liang.android&quot;</span></span><br><span class="line"><span class="keyword">def</span> artifactIdDefined = <span class="string">&quot;nicelogger&quot;</span></span><br><span class="line"><span class="keyword">def</span> versionDefined = <span class="string">&quot;0.0.1&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 重命名生成的arr文件</span></span><br><span class="line">android.libraryVariants.all &#123; variant -&gt;</span><br><span class="line">    variant.outputs.all &#123; output -&gt;</span><br><span class="line">        <span class="keyword">if</span> (outputFile != <span class="literal">null</span> &amp;&amp; outputFileName.endsWith(<span class="string">&#x27;.aar&#x27;</span>)) &#123;</span><br><span class="line">            outputFileName = <span class="string">&quot;$&#123;artifactIdDefined&#125;-$&#123;versionDefined&#125;.aar&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>执行<code>./gradlew nicelogger:assembleRelease</code>生成arr文件，位于<code>library/build/outputs/aar/</code>中。</p>
+<p><strong>生成<code>nicelogger-0.0.1-sources.jar</code>文件</strong></p>
+<p>接着在<code>nicelogger</code>的<code>build.gradle</code>最后添加如下代码，建立生成所需文件的任务</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 生成Java源码文件</span></span><br><span class="line">task sourcesJar(<span class="attr">type:</span> Jar) &#123;</span><br><span class="line">    from android.sourceSets.main.java.srcDirs</span><br><span class="line">    baseName = <span class="string">&quot;$&#123;artifactIdDefined&#125;-$&#123;versionDefined&#125;&quot;</span></span><br><span class="line">    classifier = <span class="string">&#x27;sources&#x27;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后执行<code>./gradlew nicelogger:sourcesJar</code>，就可以生成Java源码文件，位于<code>nicelogger/build/libs/</code>中。</p>
+<p><strong>生成<code>nicelogger-0.0.1-javadoc.jar</code>文件</strong></p>
+<p>接着在<code>nicelogger</code>的<code>build.gradle</code>最后添加如下代码，建立生成所需文件的任务</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 生成Javadoc文件</span></span><br><span class="line">task javadoc(<span class="attr">type:</span> Javadoc) &#123;</span><br><span class="line">    failOnError <span class="literal">false</span></span><br><span class="line">    source = android.sourceSets.main.java.sourceFiles</span><br><span class="line">    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))</span><br><span class="line">    classpath += configurations.compile</span><br><span class="line">&#125;</span><br><span class="line">task javadocJar(<span class="attr">type:</span> Jar, <span class="attr">dependsOn:</span> javadoc) &#123;</span><br><span class="line">    baseName = <span class="string">&quot;$&#123;artifactIdDefined&#125;-$&#123;versionDefined&#125;&quot;</span></span><br><span class="line">    classifier = <span class="string">&#x27;javadoc&#x27;</span></span><br><span class="line">    from javadoc.destinationDir</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后执行<code>./gradlew nicelogger:javadocJar</code>，就可以生成Javadoc文件，位于<code>nicelogger/build/libs/</code>中。</p>
+<p><strong>生成<code>nicelogger-0.0.1.pom</code>文件</strong></p>
+<p>有两种方式创建POM文件：</p>
+<p>一，参考<a target="_blank" rel="noopener" href="http://maven.apache.org/pom.html">POM Reference</a>手动创建POM文件，填入相关参数。</p>
+<p>二，使用<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/maven_plugin.html">Gradle Maven Plugin</a>生成POM，接着在<code>nicelogger</code>的<code>build.gradle</code>最后中添加如下代码</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 生成pom文件</span></span><br><span class="line">apply <span class="attr">plugin:</span> <span class="string">&#x27;maven&#x27;</span></span><br><span class="line"></span><br><span class="line">task createPom &#123;</span><br><span class="line">    doLast &#123;</span><br><span class="line">        pom &#123;</span><br><span class="line">            project &#123;</span><br><span class="line">                groupId <span class="string">&quot;$&#123;groupIdDefined&#125;&quot;</span></span><br><span class="line">                artifactId <span class="string">&quot;$&#123;artifactIdDefined&#125;&quot;</span></span><br><span class="line">                version <span class="string">&quot;$&#123;versionDefined&#125;&quot;</span></span><br><span class="line">                packaging <span class="string">&quot;aar&quot;</span></span><br><span class="line">                licenses &#123;</span><br><span class="line">                    license &#123;</span><br><span class="line">                        name <span class="string">&#x27;The Apache Software License, Version 2.0&#x27;</span></span><br><span class="line">                        url <span class="string">&#x27;http://www.apache.org/licenses/LICENSE-2.0.txt&#x27;</span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;.writeTo(<span class="string">&quot;$libsDir/$&#123;artifactIdDefined&#125;-$&#123;versionDefined&#125;.pom&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>后执行<code>./gradlew nicelogger:createPom</code>，就可以生成所需的POM文件，位于<code>nicelogger/build/libs/</code>中，内容如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">project</span> <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://maven.apache.org/POM/4.0.0&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="name">modelVersion</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.liang.android<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>nicelogger<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>0.0.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">packaging</span>&gt;</span>aar<span class="tag">&lt;/<span class="name">packaging</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">licenses</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">license</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">name</span>&gt;</span>The Apache Software License, Version 2.0<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://www.apache.org/licenses/LICENSE-2.0.txt<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">license</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">licenses</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>生成四个文件后，可以把它们放在一个文件夹里，方面之后的上传操作。</p>
+<hr>
+<h1 id="发布到Bintray"><a href="#发布到Bintray" class="headerlink" title="发布到Bintray"></a>发布到Bintray</h1><p><strong>上传文件</strong></p>
+<ul>
+<li>进入上传文件页。在Bintray官网上，进入<code>&#123;usrname&#125;/android/nicelogger/0.0.1</code>版本页，点击“Upload Files”进入上传文件页。</li>
+<li>上传文件。点击“Click to Add Files” 上传四个文件， “Target Repository Path”填<code>com/liang/android/nicelogger/0.0.1</code>，一般上传了POM文件后，就会有提示。然后点击“Save Changes”即可。</li>
+</ul>
+<blockquote>
+<p>Target Repository Path为{groupId}/{artifactId}/{version}，其中“.”都需要替换为“/”。</p>
+</blockquote>
+<p><strong>发布到Bintray仓库</strong></p>
+<p>上传文件完成后，会提示如何处理文件：“Discard”还是“Publish”。选择“Publish”，就会发布文件到Bintray平台的Maven仓库，这样我们就能解析，只不过要带上用户自己的仓库地址而已。</p>
+<blockquote>
+<p>发布到Bintray仓库后，会自动生成<code>maven-metadata.xml</code>文件。</p>
+</blockquote>
+<p>用户Bintray仓库地址。发布后的项目在<code>https://dl.bintray.com/&#123;username&#125;/&#123;repository_name&#125;</code>下可查看，我刚才发布的项目在<code>https://dl.bintray.com/zhangliang/android/com/liang/android/nicelogger/</code>。</p>
+<p><strong>Bintray仓库依赖解析</strong></p>
+<p>Gradle项目使用<code>nicelogger</code>依赖方式如下：</p>
+<p>一，添加仓库地址。</p>
+<p>在需要此依赖的项目<code>build.gradle</code>配置仓库地址：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">repositories &#123;</span><br><span class="line">    maven &#123;</span><br><span class="line">        url <span class="string">&quot;https://dl.bintray.com/zhangliang/android&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>或工程目录<code>build.gradle</code>下添加配置：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">allprojects &#123;</span><br><span class="line">    repositories &#123;</span><br><span class="line">        maven &#123;</span><br><span class="line">            url <span class="string">&quot;https://dl.bintray.com/zhangliang/android&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>二，添加依赖。在项目<code>build.gradle</code>配置依赖</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    implementation <span class="string">&#x27;com.liang.android:nicelogger:0.0.1&#x27;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h1 id="发布到JCenter"><a href="#发布到JCenter" class="headerlink" title="发布到JCenter"></a>发布到JCenter</h1><p>进入<code>nicelogger</code>的package页面，点击“Add to JCenter”，进入下一页，点击“Send”即可。</p>
+<p>发布到JCenter仓库需要审核，主要审核文件格式是否符合规范和以及名称是否唯一等，没有问题的话，一般一个工作日以内都会通过。通过后，可以直接用jcenter作为仓库地址，无需配置用户自己的Bintray仓库地址。</p>
+<p>JCenter仓库地址。<code>http://jcenter.bintray.com/&#123;地址化的groupId&#125;</code>，<code>地址化的groupId</code>即用“/”代替“.”。</p>
+<p>具体详情请见用户指南<a target="_blank" rel="noopener" href="https://www.jfrog.com/confluence/display/BT/Central+Repositories#CentralRepositories-JCenter">发布到JCenter</a>。</p>
+<p><strong>可能遇到的问题</strong></p>
+<p>一，点击“Add to JCenter”报错：</p>
+<blockquote>
+<p>Please fix the following before submitting a JCenter inclusion request: the POM is invalid or was uploaded to the wrong coordinates</p>
+</blockquote>
+<p>我之前是因为文件名不一致才出现这个错误提示。必须为<code>&#123;artifactId&#125;-&#123;version&#125;xxx</code>等。</p>
+<p>终于写完了一个完整的流程，O(∩_∩)O。</p>
+<hr>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://bintray.com/">Bintray官网</a></li>
+<li><a target="_blank" rel="noopener" href="https://jcenter.bintray.com/">JCenter仓库</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jfrog.com/confluence/display/BT/Introduction">JFrog用户指南</a></li>
+</ol>
+<hr>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Maven/" rel="tag"># Maven</a>
+              <a href="/tags/Jcenter/" rel="tag"># Jcenter</a>
+              <a href="/tags/Bintray/" rel="tag"># Bintray</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/12/13/2018-12-13-PublishToJCenter1Base/" rel="prev" title="Bintray项目发布-基础">
+      <i class="fa fa-chevron-left"></i> Bintray项目发布-基础
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/12/16/2018-12-16-PublishToJCenter3ByGradlePlugin/" rel="next" title="Bintray项目发布-BintrayRelease">
+      Bintray项目发布-BintrayRelease <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="nav-number">2.</span> <span class="nav-text">准备工作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%94%9F%E6%88%90%E6%9E%84%E4%BB%B6"><span class="nav-number">3.</span> <span class="nav-text">生成构件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%91%E5%B8%83%E5%88%B0Bintray"><span class="nav-number">4.</span> <span class="nav-text">发布到Bintray</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%91%E5%B8%83%E5%88%B0JCenter"><span class="nav-number">5.</span> <span class="nav-text">发布到JCenter</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="章亮"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">章亮</p>
+  <div class="site-description" itemprop="description">Developer For Android</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">47</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">56</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zhangliangnbu" title="GitHub → https://github.com/zhangliangnbu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhangliangnbu@qq.com" title="E-Mail → mailto:zhangliangnbu@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">章亮</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">166k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:31</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

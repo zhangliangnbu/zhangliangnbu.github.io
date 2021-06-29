@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zhangliangnbu.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="前言发布项目的定义。发布项目到远程JCenter仓库，准确的说是发布项目构件到JCenter仓库，用英语说是Publishing artifacts to the JCenter。本文所说的发布项目都是指发布项目构建后的生成物，即构件(Artifacts)。 简介。JCenter是JFrog公司旗下Bintray平台上一个公开的Java仓库。要发布项目到JCenter，首先需要发布项目到Bintr">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Bintray项目发布-基础">
+<meta property="og:url" content="https://zhangliangnbu.github.io/2018/12/13/2018-12-13-PublishToJCenter1Base/index.html">
+<meta property="og:site_name" content="永恒的码流">
+<meta property="og:description" content="前言发布项目的定义。发布项目到远程JCenter仓库，准确的说是发布项目构件到JCenter仓库，用英语说是Publishing artifacts to the JCenter。本文所说的发布项目都是指发布项目构建后的生成物，即构件(Artifacts)。 简介。JCenter是JFrog公司旗下Bintray平台上一个公开的Java仓库。要发布项目到JCenter，首先需要发布项目到Bintr">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-12-13T01:42:50.000Z">
+<meta property="article:modified_time" content="2021-06-29T01:13:08.950Z">
+<meta property="article:author" content="章亮">
+<meta property="article:tag" content="Maven">
+<meta property="article:tag" content="Jcenter">
+<meta property="article:tag" content="Bintray">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://zhangliangnbu.github.io/2018/12/13/2018-12-13-PublishToJCenter1Base/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Bintray项目发布-基础 | 永恒的码流</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">永恒的码流</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">万物皆流，无物常驻</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2018/12/13/2018-12-13-PublishToJCenter1Base/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Bintray项目发布-基础
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-12-13 09:42:50" itemprop="dateCreated datePublished" datetime="2018-12-13T09:42:50+08:00">2018-12-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-29 09:13:08" itemprop="dateModified" datetime="2021-06-29T09:13:08+08:00">2021-06-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%A1%B9%E7%9B%AE%E5%8F%91%E5%B8%83/" itemprop="url" rel="index"><span itemprop="name">项目发布</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p><strong>发布项目的定义</strong>。发布项目到远程JCenter仓库，准确的说是发布项目构件到JCenter仓库，用英语说是<em>Publishing artifacts to the JCenter</em>。本文所说的发布项目都是指发布项目构建后的生成物，即构件(Artifacts)。</p>
+<p><strong>简介</strong>。JCenter是JFrog公司旗下Bintray平台上一个公开的Java仓库。要发布项目到JCenter，首先需要发布项目到Bintray平台，然后才能发布到它的公开库——JCenter。</p>
+<ul>
+<li>Bintray官网： <a target="_blank" rel="noopener" href="https://bintray.com/">https://bintray.com/</a></li>
+<li>JCenter仓库地址：<a target="_blank" rel="noopener" href="https://jcenter.bintray.com/">https://jcenter.bintray.com/</a></li>
+</ul>
+<p>Bintray平台上可以托管多种类型的库，如比较流行的Maven和npm。</p>
+<p><strong>本文写作目的</strong>。本文目的是介绍如何上传Android Library项目构件到Bintray Maven库，并最终发布到JCenter这一整个流程。其实关于发布项目到JCenter这方面的介绍，网上已经有许多文章了，官网也有用户指南，那为什么我还有写这篇文章呢？</p>
+<ul>
+<li>博客介绍不全。一般博客只是介绍如何使用Gradle插件如<em>gradle-bintray-plugin</em>等上传项目Artifacts，但参数为什么要那样配置？上传失败如何定位问题？等等都没有介绍。如果不使用插件，又该如何做？</li>
+<li>官方用户指南较凌乱。</li>
+</ul>
+<p><strong>源码地址</strong>。本文涉及到的<code>nicelogger</code>项目Github地址：<a target="_blank" rel="noopener" href="https://github.com/zhangliangnbu/nice-logger">https://github.com/zhangliangnbu/nice-logger</a></p>
+<hr>
+<h1 id="Maven相关"><a href="#Maven相关" class="headerlink" title="Maven相关"></a>Maven相关</h1><p>详细介绍请见<a target="_blank" rel="noopener" href="https://maven.apache.org/index.html">Apach Maven</a>。简单讲，Maven就是项目构建和管理的工具，Maven仓库就是利用Maven来管理项目的仓库。</p>
+<p><strong>Maven仓库文件规范</strong></p>
+<p>上传文件到Maven仓库有一定的规范。</p>
+<p>对于Android项目，必须上传的文件包括：</p>
+<ul>
+<li><code>.aar</code>文件。<a target="_blank" rel="noopener" href="https://developer.android.com/studio/projects/android-library">Android ARchive</a>，Android构件特有文件，类似于<code>.jar</code>文件<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/JAR_(file_format)">Java ARchive</a>，但包含一些资源文件。</li>
+<li><code>.pom</code>文件。Maven仓库中必须有的文件，XML格式，包含项目的所有信息，详情请见<a target="_blank" rel="noopener" href="https://maven.apache.org/pom.html">POM Reference</a>。</li>
+</ul>
+<p>有些Maven仓库审核比较严格，需要上传另外的两个文件：</p>
+<ul>
+<li><code>-sources.jar</code>文件。Java源码文件。</li>
+<li><code>-javadoc.jar</code>文件。Java文档文件。</li>
+</ul>
+<p><strong>POM文件</strong></p>
+<p>有四个必填的参数，以著名的<a target="_blank" rel="noopener" href="http://square.github.io/okhttp/">OkHttp项目</a>作为示例进行说明如下：</p>
+<ol>
+<li><code>modelVersion</code>。<code>POM</code>版本，一般都写<code>4.0.0</code>，支持Maven 2和3。</li>
+<li><code>groupId</code>。项目所在的项目组标识，如OkHttp所在的项目组标识是<code>com.squareup.okhttp3</code>。</li>
+<li><code>artifactId</code>。项目的标识，如<code>okhttp</code>。</li>
+<li><code>version</code>。项目当前版本号，如OkHttp项目的<code>3.12.0</code>。</li>
+</ol>
+<p>另外还有一个参数<code>packaging</code>，对于Android项目来一般不能缺少，它表示打包方式，默认是<code>jar</code>，Android项目一般为<code>aar</code>。</p>
+<blockquote>
+<p>我们用Gradle解析依赖的时候，会这样写：<code>implementation &#39;com.squareup.okhttp3:okhttp:3.12.0&#39;</code>，其中<code>com.squareup.okhttp3</code>就是当前依赖的<code>groupId</code>，<code>okhttp</code>是依赖的<code>artifactId</code>,<code>3.12.0</code>是当前要解析的版本<code>version</code>。</p>
+<p>注意：<code>groupId</code>、<code>artifactId</code>和<code>version</code>都是非常重要的参数，在上传文件之前必须先定义好，在之后的过程中会用到。</p>
+</blockquote>
+<p>Android项目基本<code>POM</code>文件如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">project</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://maven.apache.org/POM/4.0.0&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://maven.apache.org/POM/4.0.0</span></span></span><br><span class="line"><span class="string"><span class="tag">                      http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="name">modelVersion</span>&gt;</span></span><br><span class="line"> </span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.squareup.okhttp3<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>okhttp<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.12.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">packaging</span>&gt;</span>aar<span class="tag">&lt;/<span class="name">packaging</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>文件名统一</strong></p>
+<p>发布到JCenter里的四个文件名称必须统一如下：</p>
+<ul>
+<li><code>&#123;artifactId&#125;-&#123;version&#125;.aar</code></li>
+<li><code>&#123;artifactId&#125;-&#123;version&#125;-sources.jar</code></li>
+<li><code>&#123;artifactId&#125;-&#123;version&#125;-javadoc.jar</code></li>
+<li><code>&#123;artifactId&#125;-&#123;version&#125;.pom</code></li>
+</ul>
+<hr>
+<h1 id="用户手册"><a href="#用户手册" class="headerlink" title="用户手册"></a>用户手册</h1><p>见<a target="_blank" rel="noopener" href="https://www.jfrog.com/confluence/display/BT/Introduction">JFrog用户指南</a>。里面详细介绍各种概念、使用、操作等。浏览一遍即可，有许多是用不上的。主要章节如下：</p>
+<ul>
+<li>了解核心概念：仓库、包和版本。见章节：<a target="_blank" rel="noopener" href="https://www.jfrog.com/confluence/display/BT/Key+Concepts">Key Concepts</a>。</li>
+<li>了解发布的三个步骤：创建版本、上传、发布。见章节：<a target="_blank" rel="noopener" href="https://www.jfrog.com/confluence/display/BT/Uploading">Uploading</a>、<a target="_blank" rel="noopener" href="https://www.jfrog.com/confluence/display/BT/Uploads">Uploads</a></li>
+<li>了解上传的方法：UI手动、cURL、Maven、Gradle。见章节：<a target="_blank" rel="noopener" href="https://www.jfrog.com/confluence/display/BT/Maven+Repositories">Maven Repositories</a></li>
+</ul>
+<blockquote>
+<p>任何个人博客和文章都不能代替官方用户手册，这是必须要读的，它应当是一切非官方文档的参考。</p>
+</blockquote>
+<hr>
+<h1 id="发布流程"><a href="#发布流程" class="headerlink" title="发布流程"></a>发布流程</h1><p>一般发布流程如下：</p>
+<ol>
+<li>准备工作。定义参数；准备本地待发布项目；配置Bintray平台账号、仓库、Package、版本。</li>
+<li>生成构件文件。本地生成待发布的构件文件(包括POM文件)。</li>
+<li>发布到Bintray。上传和发布本地构件文件到Bintray平台。</li>
+<li>发布到JCenter。发布Bintray平台上的项目到JCenter。</li>
+</ol>
+<br>
+
+<hr>
+<h1 id="发布方式"><a href="#发布方式" class="headerlink" title="发布方式"></a>发布方式</h1><p>发布项目到JCenter有许多方式：</p>
+<ol>
+<li>UI手动上传。通过Bintray网站UI，手动上传项目构件文件。</li>
+<li>cURL上传。通过cURL调用REST API接口上传。</li>
+<li>Maven上传。使用Maven客户端上传项目构件文件到Bintray平台的maven仓库。</li>
+<li>Gradle插件上传。通<a target="_blank" rel="noopener" href="https://github.com/bintray/gradle-bintray-plugin#readme">gradle-bintray-plugin</a>和<a target="_blank" rel="noopener" href="https://github.com/novoda/bintray-release">bintray-release</a>等Gradle插件上传。</li>
+</ol>
+<p>不同的方式会导致发布流程略微有所不同，有些操作可以合并在一起。比如Gradle插件上传方式中，创建pacakge、版本、创建构件文件和上传操作可以一起执行。</p>
+<br>
+
+<hr>
+<h1 id="准备工作说明"><a href="#准备工作说明" class="headerlink" title="准备工作说明"></a>准备工作说明</h1><p>主要描述定义参数、准备本地项目和配置Bintray平台这三步操作。</p>
+<p><strong>定义参数</strong></p>
+<ul>
+<li>Bintray平台仓库名称。你要发布到哪个仓库，当然要知道它的名称了。我这里是<code>android</code>。</li>
+<li>Bintray平台Package名称。没有规定，我这里取为<code>nicelogger</code>。</li>
+<li>POM文件<code>groupId</code>。没有规定，一般为<code>xxx.xxx.xxx</code>，我这里取<code>com.liang.android</code>。</li>
+<li>POM文件<code>artifactId</code>。没有规定，我这里取<code>nicelogger</code>。</li>
+<li>POM文件<code>version</code>。版本号，我这里取<code>0.0.1</code>，作为第一个版本。</li>
+</ul>
+<blockquote>
+<p>注意：Bintray平台Package名称和POM文件<code>artifactId</code>不必取相同的名称，可以不一致。为了方便说明和记忆，我取为一致。</p>
+</blockquote>
+<p><strong>准备项目</strong></p>
+<p>可以创建一个然后发布到GitHub或者从GitHub fork一个。为了描述方便工程名称为<code>NiceLoggerDemo</code>, Library Module名称为<code>nicelogger</code>。</p>
+<p>项目的GitHub地址在之后的配置中，需要用到。</p>
+<p><strong>配置Bintray平台</strong></p>
+<ul>
+<li>创建账户。如果已经有账户了，就不用创建。在<a target="_blank" rel="noopener" href="https://bintray.com/">Bintray官网</a>注册账号，参考<a target="_blank" rel="noopener" href="https://www.jfrog.com/confluence/display/BT/Getting+Started">官网指南-Creating an Account</a>。</li>
+<li>创建Maven库。如果已经创建过Maven仓库，可以不用创建。进入个人中心主页，点击“Add New Repository”，进入填写仓库信息页。填写信息：“Name”，看其他博客许多人写了“maven”，我写了“android”，表示是一个用于存储Android项目的Maven仓库，这个名字需要记住，以后使用Gradle插件上传项目的时候用得着。“Type”选择“Maven”。其他选填。点击“Create”就可以创建一个Maven仓库了。</li>
+<li>创建Package。用Gradle插件方式时可以不用手动创建。进入Maven仓库，点击“Add New Package”，进入仓库信息填写页。信息填写：“Name”填之前规定的<code>nicelogger</code>，“Version control”填你上传到Github上的项目地址，其他选填。点击“Create Package”即可。</li>
+<li>创建版本。用Gradle插件方式时可以不用手动创建。从Package页面进入“Create New Version”页面，“Name”填写定义好的<code>0.0.1</code>，其他选填，点击“Create Version”即可。</li>
+</ul>
+<p>准备工作做好后，接下来就可以通过不同的方式进行后续操作了。</p>
+<br>
+
+<hr>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://www.geekhub.cn/a/1295.html">JCenter是什么</a></li>
+<li><a target="_blank" rel="noopener" href="https://bintray.com/">Bintray官网</a></li>
+<li><a target="_blank" rel="noopener" href="https://jcenter.bintray.com/">JCenter仓库</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jfrog.com/confluence/display/BT/Introduction">JFrog用户指南</a></li>
+<li><a target="_blank" rel="noopener" href="https://maven.apache.org/index.html">Apach Maven</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/novoda/bintray-release">bintray-release</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/bintray/gradle-bintray-plugin#readme">使用Gradle插件上传Artifacts到Bintrary</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/bintray/bintray-examples/tree/master/gradle-bintray-plugin-examples">使用Gradle插件上传示例</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/xiangzhihong8/article/details/53869957">博客-上传Gradle项目到Maven仓库</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/905411bf4f8f">从Travis到Bintray</a></li>
+</ol>
+<br>
+
+<hr>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Maven/" rel="tag"># Maven</a>
+              <a href="/tags/Jcenter/" rel="tag"># Jcenter</a>
+              <a href="/tags/Bintray/" rel="tag"># Bintray</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/12/08/2018-12-08-ZeroCICEPreliminaryUse/" rel="prev" title="ZeroCICE使用初步">
+      <i class="fa fa-chevron-left"></i> ZeroCICE使用初步
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/12/15/2018-12-15-PublishToJCenter2ByUI/" rel="next" title="Bintray项目发布-手动">
+      Bintray项目发布-手动 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Maven%E7%9B%B8%E5%85%B3"><span class="nav-number">2.</span> <span class="nav-text">Maven相关</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E6%89%8B%E5%86%8C"><span class="nav-number">3.</span> <span class="nav-text">用户手册</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%91%E5%B8%83%E6%B5%81%E7%A8%8B"><span class="nav-number">4.</span> <span class="nav-text">发布流程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%91%E5%B8%83%E6%96%B9%E5%BC%8F"><span class="nav-number">5.</span> <span class="nav-text">发布方式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C%E8%AF%B4%E6%98%8E"><span class="nav-number">6.</span> <span class="nav-text">准备工作说明</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">7.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="章亮"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">章亮</p>
+  <div class="site-description" itemprop="description">Developer For Android</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">47</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">56</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zhangliangnbu" title="GitHub → https://github.com/zhangliangnbu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhangliangnbu@qq.com" title="E-Mail → mailto:zhangliangnbu@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">章亮</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">166k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:31</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

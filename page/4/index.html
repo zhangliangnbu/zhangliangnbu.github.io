@@ -1,0 +1,1727 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zhangliangnbu.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Developer For Android">
+<meta property="og:type" content="website">
+<meta property="og:title" content="永恒的码流">
+<meta property="og:url" content="https://zhangliangnbu.github.io/page/4/index.html">
+<meta property="og:site_name" content="永恒的码流">
+<meta property="og:description" content="Developer For Android">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="章亮">
+<meta property="article:tag" content="Andriod">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://zhangliangnbu.github.io/page/4/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : true,
+    isPost : false,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>永恒的码流</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">永恒的码流</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">万物皆流，无物常驻</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content index posts-expand">
+            
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2018/12/02/2018-12-02-GithubPagesHexo/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/12/02/2018-12-02-GithubPagesHexo/" class="post-title-link" itemprop="url">GithubPages&Hexo&Next部署个人博客</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-12-02 11:05:16" itemprop="dateCreated datePublished" datetime="2018-12-02T11:05:16+08:00">2018-12-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-29 09:13:08" itemprop="dateModified" datetime="2021-06-29T09:13:08+08:00">2021-06-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%85%B6%E4%BB%96/" itemprop="url" rel="index"><span itemprop="name">其他</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="GitHub-Pages"><a href="#GitHub-Pages" class="headerlink" title="GitHub Pages"></a>GitHub Pages</h1><p><strong>简介</strong>。一种利用GitHub项目建立的静态主页，一般用来介绍GitHub开发者自己和某个项目，但也可以利用它来建立自己的免费个人博客。</p>
+<p><strong>两种主页</strong>。可以建立两种GitHub Pages，一种是个人或组织主页，一个账号只能有一个；一种是项目主页，每个项目又可以有一个。</p>
+<p><strong>建立主页</strong>。建立主页比较简单：具体可以查阅<a target="_blank" rel="noopener" href="https://pages.github.com/">GitHub Pages官网介绍</a>，更加详细的说明请见<a target="_blank" rel="noopener" href="https://help.github.com/categories/github-pages-basics/">GitHub Pages帮助文档</a></p>
+<p><strong>博客框架</strong>。建立GitHub Pages后，默认使用<a target="_blank" rel="noopener" href="https://help.github.com/articles/using-jekyll-with-pages">Jekyll</a>框架，目前比较流行的是Hexo。</p>
+<hr>
+<br>
+
+<h1 id="Hexo"><a href="#Hexo" class="headerlink" title="Hexo"></a>Hexo</h1><p><strong>简介</strong>。快速、简洁且高效的博客框架。详情请见<a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/">官网-Hexo</a>，</p>
+<p><strong>主题</strong>。Hexo有许多不同的主题，比较流行的有Next。</p>
+<hr>
+<br>
+
+<h1 id="NexT"><a href="#NexT" class="headerlink" title="NexT"></a>NexT</h1><p>一种Hexo主题，源码和安装请见<a target="_blank" rel="noopener" href="https://github.com/theme-next/hexo-theme-next">GitHub Next Theme</a>，相关配置请见<a target="_blank" rel="noopener" href="http://theme-next.iissnan.com/theme-settings.html#categories-page">Hexo主题配置</a>。</p>
+<blockquote>
+<p>主题配置的那个网站是针对低版本Next的，除了安装部分要参考<a target="_blank" rel="noopener" href="https://github.com/theme-next/hexo-theme-next">GitHub Next Theme</a>，其余部分如增加标签和分类功能等，都是有用的。</p>
+</blockquote>
+<hr>
+<br>
+
+<h1 id="实践-搭建个人博客"><a href="#实践-搭建个人博客" class="headerlink" title="实践-搭建个人博客"></a>实践-搭建个人博客</h1><h2 id="GitHub上创建Github-Pages项目"><a href="#GitHub上创建Github-Pages项目" class="headerlink" title="GitHub上创建Github Pages项目"></a>GitHub上创建Github Pages项目</h2><ul>
+<li>用户或组织主页。创建一个名称为<code>&#123;用户名称&#125;.github.io</code>的新项目。然后就可以用<code>https://&#123;用户名称&#125;.github.io</code>去访问了。</li>
+<li>项目主页。创建任意名称的项目，在项目<code>Settings-&gt;GitHub Pages</code>中设置<code>Source</code>为<code>master</code>分支。然后就可以用<code>http://&#123;用户名称&#125;.github.io/&#123;项目名称&#125;</code>去访问了。</li>
+<li>创建<code>blog-src</code>分支。由于有两份代码需要处理，一份是博客源代码，一份是部署后生成的静态网站的代码，所以需要开分支用于分别存储，这里我们用<code>master</code>分支存储部署后的代码，用<code>blog-src</code>分支存储源代码。</li>
+</ul>
+<h2 id="本地生成Hexo项目"><a href="#本地生成Hexo项目" class="headerlink" title="本地生成Hexo项目"></a>本地生成Hexo项目</h2><ul>
+<li>安装Hexo。见<a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/">官网-安装Hexo</a>。</li>
+<li>生成Hexo项目。进入博客所在的文件目录中，<code>hexo init &#123;博客名&#125;</code>，</li>
+<li>测试。<code>hexo server</code>查看是否在本地生成静态站点。</li>
+</ul>
+<p>详细命令如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-cli -g</span><br><span class="line">hexo init &#123;博客名&#125;</span><br><span class="line"><span class="built_in">cd</span> blog</span><br><span class="line">npm install</span><br><span class="line">hexo server</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="管理和配置"><a href="#管理和配置" class="headerlink" title="管理和配置"></a>管理和配置</h2><p><strong>关联GitHub Pages和Hexo项目</strong>。初始化Hexo项目为<code>git</code>项目，然后添加GitHub Pages项目作为远程链接。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> &#123;博客名&#125;</span><br><span class="line">git init</span><br><span class="line"><span class="comment"># 在blog-src分支上编辑</span></span><br><span class="line">git checkout -b blog-src</span><br><span class="line"><span class="comment"># 个人或组织主页</span></span><br><span class="line">git remote add origin git@github.com:&#123;用户名&#125;.git</span><br><span class="line"><span class="comment"># 项目主页</span></span><br><span class="line">git remote add origin git@github.com:&#123;用户名&#125;/&#123;项目名&#125;.git</span><br></pre></td></tr></table></figure>
+
+<p><strong>初始化配置</strong>。在站点<code>_config.yml</code>里修改<code>url</code>、<code>root</code>和<code>deploy</code>项。</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 如果是个人或组织主页</span></span><br><span class="line"><span class="attr">url</span>: <span class="string">https://&#123;用户名称&#125;.github.io</span></span><br><span class="line"><span class="attr">root</span>: <span class="string">/</span></span><br><span class="line"><span class="comment"># 如果项目主页</span></span><br><span class="line"><span class="attr">url</span>: <span class="string">https://&#123;用户名称&#125;.github.io/&#123;项目名称&#125;</span></span><br><span class="line"><span class="attr">root</span>: <span class="string">/&#123;项目名称&#125;/</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"># 下面的&#123;项目名称&#125;指的是管理GitHub Pages的项目名称，不论是个人主页还是项目主页，都有一个项目与之对应。个人主页的项目名称是：&#123;用户名&#125;.github.io。</span></span><br><span class="line"><span class="attr">deploy</span>:<span class="string"></span></span><br><span class="line">  <span class="attr">type</span>: <span class="string">git</span></span><br><span class="line">  <span class="attr">repo</span>: <span class="string">git@github.com:&#123;用户名称&#125;/&#123;项目名&#125;.git</span></span><br><span class="line">  <span class="attr">branch</span>: <span class="string">gh-pages</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>部署</strong>。利用<code>hexo g -d</code>命令生成并发布静态网页内容到GitHub Pages服务中，然后用相对应的配置的<code>url</code>去浏览器查看。</p>
+<h2 id="生成标签和分类页面"><a href="#生成标签和分类页面" class="headerlink" title="生成标签和分类页面"></a>生成标签和分类页面</h2><p>详情请见<a target="_blank" rel="noopener" href="http://theme-next.iissnan.com/theme-settings.html#tags-page">主题配置文档</a></p>
+<h2 id="配置主题"><a href="#配置主题" class="headerlink" title="配置主题"></a>配置主题</h2><p>默认主题是<code>landscape</code>,可以配置<code>NexT</code>主题，详细操作请见<a target="_blank" rel="noopener" href="http://theme-next.iissnan.com/getting-started.html">主题配置文档</a></p>
+<h2 id="版权声明"><a href="#版权声明" class="headerlink" title="版权声明"></a>版权声明</h2><p>请见<a target="_blank" rel="noopener" href="http://stevenshi.me/2017/05/26/hexo-add-copyright/">Hexo文章末尾添加版权信息</a></p>
+<hr>
+<br>
+
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://pages.github.com/">官网-GitHub Pages</a></li>
+<li><a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/">官网-Hexo</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/theme-next/hexo-theme-next">NexT</a></li>
+<li><a target="_blank" rel="noopener" href="http://theme-next.iissnan.com/theme-settings.html#categories-page">NexT配置</a></li>
+<li><a target="_blank" rel="noopener" href="http://stevenshi.me/2017/05/26/hexo-add-copyright/">Hexo文章末尾添加版权信息</a></li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2018/11/04/2018-11-04-WebViewGlobalProperty/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/11/04/2018-11-04-WebViewGlobalProperty/" class="post-title-link" itemprop="url">WebView全局属性设置问题</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-11-04 11:58:42" itemprop="dateCreated datePublished" datetime="2018-11-04T11:58:42+08:00">2018-11-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-29 09:13:08" itemprop="dateModified" datetime="2021-06-29T09:13:08+08:00">2021-06-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h1><p>两个Activity A和B里都使用了WebView控件。</p>
+<ol>
+<li>先进入A，webview可以正常加载；然后进入B，WebView也可以正常加载。</li>
+<li>先进入B，webview可以正常加载；然后进入A，WebView不能正常加载！</li>
+</ol>
+<hr>
+<br>
+
+<h1 id="查找原因"><a href="#查找原因" class="headerlink" title="查找原因"></a>查找原因</h1><p>刚开始遇到这个问题，一脸懵。A Activity是我写的，B Activity是我的小伙伴写的，经过对比两个WebView的设置后，发现B Activity的生命周期里多了两行代码<code>wbv_video.resumeTimers()</code>和<code>wbv_video.pauseTimers()</code>，如下所示：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onResume</span><span class="params">()</span></span> &#123;</span><br><span class="line">     <span class="keyword">super</span>.onResume()</span><br><span class="line">     wbv_video.resumeTimers()</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onPause</span><span class="params">()</span></span> &#123;</span><br><span class="line">     <span class="keyword">super</span>.onPause()</span><br><span class="line">     wbv_video.pauseTimers()</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>查看方法文档，如下：</p>
+<blockquote>
+<p><code>wbv_video.resumeTimers()</code> Resumes all layout, parsing, and JavaScript timers for all WebViews. This will resume dispatching all timers.(resume所有WebView的布局、解析、JS的任务计时器)<br><code>wbv_video.pauseTimers()</code>Pauses all layout, parsing, and JavaScript timers for all WebViews. This is a global requests, not restricted to just this WebView. This can be useful if the application has been paused.(暂停所有WebView的布局、解析、JS的任务计时器。<strong>这是全局设置，不仅仅针对当前WebView</strong>。在应用暂停后使用这个方法比较有用，可以减少CPU的使用，省电)</p>
+</blockquote>
+<p>坑，就是这里设置的问题，<code>wbv_video.resumeTimers()</code>和<code>wbv_video.pauseTimers()</code>影响的是应用里所有的WebView，不只是当前WebView。<br>回到前面遇到的问题，当进入B Activity时，然后离开时，会调用<code>wbv_video.pauseTimers()</code>，此时会停止所有的WebView的布局和解析，所以再进入A Activity时，WebView当然就不能正常加载了。</p>
+<hr>
+<br>
+
+<h1 id="解决问题"><a href="#解决问题" class="headerlink" title="解决问题"></a>解决问题</h1><p>在B Activity里删掉<code>wbv_video.resumeTimers()</code>和<code>wbv_video.pauseTimers()</code>这两行代码即可</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2018/11/04/2018-11-04-SpannableStringClickEvent/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/11/04/2018-11-04-SpannableStringClickEvent/" class="post-title-link" itemprop="url">SpannableString点击事件异常问题</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-11-04 11:42:17" itemprop="dateCreated datePublished" datetime="2018-11-04T11:42:17+08:00">2018-11-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-29 09:13:08" itemprop="dateModified" datetime="2021-06-29T09:13:08+08:00">2021-06-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h1><ol>
+<li>注册页里需要用户同意两个协议《用户注册协议》和《隐私声明》，要求用户点击协议名称时分别进入对应的详细页面。如图所示。<br><img src="/images/spannablestring_click_event.jpg" alt="情景图"></li>
+<li>点击图中区域1时，进入《用户注册协议》页面；点击区域2时，进入《隐私声明》页面；但点击区域3时却进入了《隐私声明》页面，这是不应该出现的，区域3是空白区域，不应该有点击效果。</li>
+</ol>
+<hr>
+<br>
+
+<h1 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h1><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onViewCreated</span><span class="params">(view: <span class="type">View</span>, savedInstanceState: <span class="type">Bundle</span>?)</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.onViewCreated(view, savedInstanceState)</span><br><span class="line">        <span class="comment">// ...省略其他代码</span></span><br><span class="line">        <span class="comment">// 构造SpannableString</span></span><br><span class="line">        <span class="keyword">val</span> userProtocol = getString(R.string.protocol_cdam_user)</span><br><span class="line">        <span class="keyword">val</span> privacyProtocol = getString(R.string.protocol_cdam_privacy)</span><br><span class="line">        <span class="keyword">val</span> protocols = getString(R.string.protocol_reception, userProtocol, privacyProtocol) + aidText</span><br><span class="line">        <span class="keyword">val</span> userProtocolStart = protocols.indexOf(userProtocol)</span><br><span class="line">        <span class="keyword">val</span> userProtocolEnd = userProtocolStart + userProtocol.length</span><br><span class="line">        <span class="keyword">val</span> privacyProtocolStart = protocols.indexOf(privacyProtocol)</span><br><span class="line">        <span class="keyword">val</span> privacyProtocolEnd = privacyProtocolStart + privacyProtocol.length</span><br><span class="line">        <span class="keyword">val</span> spsb = SpannableStringBuilder(protocols)</span><br><span class="line">        <span class="comment">// 设置“《用户注册协议》”点击事件</span></span><br><span class="line">        spsb.setSpan(<span class="keyword">object</span> : ProtocolClickableSpan() &#123;</span><br><span class="line">            <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onClick</span><span class="params">(widget: <span class="type">View</span>?)</span></span> &#123;</span><br><span class="line">                WebHelper.toWebFragment((activity <span class="keyword">as</span> BaseActivity), DisplayWebFragment(),</span><br><span class="line">                        H5URL.USER_PROTOCOL, getString(R.string.auth_user_protocol), <span class="literal">true</span>)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;, userProtocolStart, userProtocolEnd, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)</span><br><span class="line">        <span class="comment">// 设置“《隐私声明》”点击事件</span></span><br><span class="line">        spsb.setSpan(<span class="keyword">object</span> : ProtocolClickableSpan() &#123;</span><br><span class="line">            <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onClick</span><span class="params">(widget: <span class="type">View</span>?)</span></span> &#123;</span><br><span class="line">                WebHelper.toWebFragment((activity <span class="keyword">as</span> BaseActivity), DisplayWebFragment(), H5URL.PRIVACY_PROTOCOL, isAddStack = <span class="literal">true</span>)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;, privacyProtocolStart, privacyProtocolEnd, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)</span><br><span class="line">        tv_registration_protocols.movementMethod = LinkMovementMethod.getInstance()</span><br><span class="line">        tv_registration_protocols.text = spsb</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// ClickableSpan实现</span></span><br><span class="line">    <span class="keyword">abstract</span> <span class="keyword">inner</span> <span class="class"><span class="keyword">class</span> <span class="title">ProtocolClickableSpan</span>: <span class="type">ClickableSpan</span></span>() &#123;</span><br><span class="line">        <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">updateDrawState</span><span class="params">(ds: <span class="type">TextPaint</span>?)</span></span> &#123;</span><br><span class="line">            <span class="keyword">super</span>.updateDrawState(ds)</span><br><span class="line">            ds?.color = AppHelper.getColor(R.color.color_accent)</span><br><span class="line">            ds?.textSize = activity!!.resources.getDimension(R.dimen.font_primary_normal)</span><br><span class="line">            ds?.isUnderlineText = <span class="literal">false</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<br>
+
+<h1 id="问题分析与解决"><a href="#问题分析与解决" class="headerlink" title="问题分析与解决"></a>问题分析与解决</h1><p>从代码来看，并不能找出什么问题。最近时间有限，没有深究SpannableString设置点击事件机制，猜测可能区域3延续了区域2的效果，因此可以在区域2后增加一个空格，并对空格附加空实现的点击事件，经过实践，可行。并最终姑且这样解决这个Bug。代码实现如下：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onViewCreated</span><span class="params">(view: <span class="type">View</span>, savedInstanceState: <span class="type">Bundle</span>?)</span></span> &#123;</span><br><span class="line">    <span class="keyword">super</span>.onViewCreated(view, savedInstanceState)</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// ...省略的代码</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> userProtocol = getString(R.string.protocol_cdam_user)</span><br><span class="line">    <span class="keyword">val</span> privacyProtocol = getString(R.string.protocol_cdam_privacy)</span><br><span class="line">    <span class="comment">// 增加一个空格</span></span><br><span class="line">    <span class="keyword">val</span> aidText = <span class="string">&quot; &quot;</span> </span><br><span class="line">    <span class="keyword">val</span> protocols = getString(R.string.protocol_reception, userProtocol, privacyProtocol) + aidText</span><br><span class="line">    <span class="keyword">val</span> userProtocolStart = protocols.indexOf(userProtocol)</span><br><span class="line">    <span class="keyword">val</span> userProtocolEnd = userProtocolStart + userProtocol.length</span><br><span class="line">    <span class="keyword">val</span> privacyProtocolStart = protocols.indexOf(privacyProtocol)</span><br><span class="line">    <span class="keyword">val</span> privacyProtocolEnd = privacyProtocolStart + privacyProtocol.length</span><br><span class="line">    <span class="keyword">val</span> aidTextStart = privacyProtocolEnd</span><br><span class="line">    <span class="keyword">val</span> aidTextEnd = protocols.length - <span class="number">1</span></span><br><span class="line">    <span class="keyword">val</span> spsb = SpannableStringBuilder(protocols)</span><br><span class="line">    spsb.setSpan(<span class="keyword">object</span> : ProtocolClickableSpan() &#123;</span><br><span class="line">        <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onClick</span><span class="params">(widget: <span class="type">View</span>?)</span></span> &#123;</span><br><span class="line">            WebHelper.toWebFragment((activity <span class="keyword">as</span> BaseActivity), DisplayWebFragment(),</span><br><span class="line">                    H5URL.USER_PROTOCOL, getString(R.string.auth_user_protocol), <span class="literal">true</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;, userProtocolStart, userProtocolEnd, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)</span><br><span class="line">    spsb.setSpan(<span class="keyword">object</span> : ProtocolClickableSpan() &#123;</span><br><span class="line">        <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onClick</span><span class="params">(widget: <span class="type">View</span>?)</span></span> &#123;</span><br><span class="line">            WebHelper.toWebFragment((activity <span class="keyword">as</span> BaseActivity), DisplayWebFragment(), H5URL.PRIVACY_PROTOCOL, isAddStack = <span class="literal">true</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;, privacyProtocolStart, privacyProtocolEnd, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)</span><br><span class="line">    <span class="comment">// 为空格增加空实现的点击事件，防止后面的空余部分延续之前的点击事件</span></span><br><span class="line">    spsb.setSpan(<span class="keyword">object</span> : ProtocolClickableSpan()&#123;</span><br><span class="line">        <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onClick</span><span class="params">(widget: <span class="type">View</span>?)</span></span> &#123;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,aidTextStart, aidTextEnd, Spannable.SPAN_INCLUSIVE_INCLUSIVE)</span><br><span class="line">    tv_registration_protocols.movementMethod = LinkMovementMethod.getInstance()</span><br><span class="line">    tv_registration_protocols.text = spsb</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<br>
+
+<h1 id="深入研究-SpannableString设置ClickableSpan内部实现分析"><a href="#深入研究-SpannableString设置ClickableSpan内部实现分析" class="headerlink" title="深入研究-SpannableString设置ClickableSpan内部实现分析"></a>深入研究-SpannableString设置ClickableSpan内部实现分析</h1><p>先挖坑，以后有时间再填</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2018/11/04/2018-11-04-GridLayoutManagerEvenDistribution/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/11/04/2018-11-04-GridLayoutManagerEvenDistribution/" class="post-title-link" itemprop="url">GridLayoutManager实现均匀分布</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-11-04 11:11:16" itemprop="dateCreated datePublished" datetime="2018-11-04T11:11:16+08:00">2018-11-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-29 09:13:08" itemprop="dateModified" datetime="2021-06-29T09:13:08+08:00">2021-06-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="背景描述"><a href="#背景描述" class="headerlink" title="背景描述"></a>背景描述</h1><p>最近开发中遇到需求，需要实现图片的格子分布效果，如下图所示</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/2658578-22632ab28c5aedd6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="格子图片"></p>
+<p>其中要求：</p>
+<ol>
+<li>图片与图片的间隔，图片与屏幕的左边距，以及图片与屏幕的右边距，都为固定大小，比如<code>10dp</code>。</li>
+<li>图片宽高相等。</li>
+</ol>
+<hr>
+<br>
+
+<h1 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h1><p>主要代码如下</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> : <span class="type">AppCompatActivity</span></span>() &#123;</span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onCreate</span><span class="params">(savedInstanceState: <span class="type">Bundle</span>?)</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState)</span><br><span class="line">        setContentView(R.layout.activity_main)</span><br><span class="line">        <span class="keyword">val</span> images = listOf(...)</span><br><span class="line">        <span class="keyword">val</span> imageAdapter = ImageAdapter(images)</span><br><span class="line">        rv_images.apply &#123;</span><br><span class="line">            layoutManager = GridLayoutManager(context, <span class="number">4</span>, RecyclerView.VERTICAL, <span class="literal">false</span>)</span><br><span class="line">            addItemDecoration(EvenItemDecoration(dp2px(context, <span class="number">10</span>), <span class="number">4</span>))</span><br><span class="line">            adapter = imageAdapter</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">ImageAdapter</span></span>(<span class="keyword">private</span> <span class="keyword">val</span> images: List&lt;<span class="built_in">Int</span>&gt; = listOf()) : RecyclerView.Adapter&lt;ImageAdapter.ViewHolder&gt;() &#123;</span><br><span class="line">        <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onCreateViewHolder</span><span class="params">(parent: <span class="type">ViewGroup</span>, viewType: <span class="type">Int</span>)</span></span>: ViewHolder &#123;</span><br><span class="line">            <span class="keyword">val</span> view = LayoutInflater.from(parent.context).inflate(R.layout.item_image, parent, <span class="literal">false</span>)</span><br><span class="line">            <span class="comment">// 动态设置图片大小 保证宽高相等</span></span><br><span class="line">            <span class="keyword">val</span> ivSize = (getScreenContentWidth(parent.context) - dp2px(parent.context, <span class="number">10</span>) * <span class="number">5</span>) / <span class="number">4</span></span><br><span class="line">            view.iv_image.layoutParams.height = ivSize</span><br><span class="line">            <span class="keyword">return</span> ViewHolder(view)</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onBindViewHolder</span><span class="params">(holder: <span class="type">ViewHolder</span>, position: <span class="type">Int</span>)</span></span> &#123;</span><br><span class="line">            holder.view.iv_image.setImageResource(images[position])</span><br><span class="line">        &#125;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">EvenItemDecoration</span></span>(<span class="keyword">private</span> <span class="keyword">val</span> space: <span class="built_in">Int</span>, <span class="keyword">private</span> <span class="keyword">val</span> column: <span class="built_in">Int</span>) : RecyclerView.ItemDecoration() &#123;</span><br><span class="line">        <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">getItemOffsets</span><span class="params">(outRect: <span class="type">Rect</span>, view: <span class="type">View</span>, parent: <span class="type">RecyclerView</span>, state: <span class="type">RecyclerView</span>.<span class="type">State</span>)</span></span> &#123;</span><br><span class="line">            <span class="keyword">val</span> position = parent.getChildAdapterPosition(view)</span><br><span class="line">            <span class="comment">// 每列分配的间隙大小，包括左间隙和右间隙</span></span><br><span class="line">            <span class="keyword">val</span> colPadding = space * (column + <span class="number">1</span>) / column</span><br><span class="line">            <span class="comment">// 列索引</span></span><br><span class="line">            <span class="keyword">val</span> colIndex = position % column</span><br><span class="line">            <span class="comment">// 列左、右空隙。右间隙=space-左间隙</span></span><br><span class="line">            outRect.left = space * (colIndex + <span class="number">1</span>) - colPadding * colIndex</span><br><span class="line">            outRect.right = colPadding * (colIndex + <span class="number">1</span>) - space * (colIndex + <span class="number">1</span>)</span><br><span class="line">            <span class="comment">// 行间距</span></span><br><span class="line">            <span class="keyword">if</span> (position &gt;= column) &#123;</span><br><span class="line">                outRect.top = space</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>布局<code>item_image.xml</code>如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">ImageView</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:id</span>=<span class="string">&quot;@+id/iv_image&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:android</span>=<span class="string">&quot;http://schemas.android.com/apk/res/android&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:tools</span>=<span class="string">&quot;http://schemas.android.com/tools&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_width</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_height</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:scaleType</span>=<span class="string">&quot;fitXY&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">tools:src</span>=<span class="string">&quot;@mipmap/ic_launcher&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:background</span>=<span class="string">&quot;#ffccff&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<p>其中需要注意是</p>
+<ol>
+<li>图片的宽度在布局和代码中不能写死，需要自适应。</li>
+<li>在代码（Adapter）中根据屏幕宽度来计算图片高度。</li>
+<li>在ItemDecoration中计算每列的左右间隙。</li>
+</ol>
+<hr>
+<br>
+
+<h1 id="分析-GridLayoutManger分配Item空间的机制"><a href="#分析-GridLayoutManger分配Item空间的机制" class="headerlink" title="分析-GridLayoutManger分配Item空间的机制"></a>分析-GridLayoutManger分配Item空间的机制</h1><p><strong>GridLayoutManger在绘制子View的时候，会先为它们分配固定的空间</strong>。<br>比如，我们这里是4列，则每列分配父布局宽度（这里是屏幕宽度） / 4的宽度大小的空间，每列占据的宽度相等。</p>
+<ol>
+<li>每列由图片和空隙组成。空隙包括左空隙和右空隙，分布在图片的左右。</li>
+<li>每列中的图片会局限在列分配的空间内，不会超出这个空间。如果图片宽度小于列宽，则剩余的宽度会分配给空隙；如果图片的宽度大于列宽，则不会有空隙，且图片超出列的部分会被遮盖。</li>
+<li>如果使用ItemDecoration设置间隙，则间隙不会被压缩，如果图片过宽，则会占用当前图片的空间，图片会被压缩。</li>
+</ol>
+<p><strong>示例一-设置固定大宽度</strong><br>在Adapter代码中设置图片的宽度并在去掉ItemDecoration</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ImageAdapter</span></span><br><span class="line">...</span><br><span class="line"><span class="keyword">val</span> ivSize = (getScreenContentWidth(parent.context) - dp2px(parent.context, <span class="number">10</span>) * <span class="number">5</span>) / <span class="number">4</span></span><br><span class="line">view.iv_image.layoutParams.width = <span class="number">1000</span></span><br><span class="line">view.iv_image.layoutParams.height = ivSize</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="comment">// MainActivity 中注释掉EvenItemDecoration</span></span><br><span class="line">...</span><br><span class="line"><span class="comment">// addItemDecoration(EvenItemDecoration(dp2px(context, 10), 4))</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>结果如下：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/2658578-0d38e5c7cf5fd001.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="宽度设置为1000px的图片"></p>
+<p>通过Studio自带<code>Layout Inspector</code>可以查看每个图片的左右位置，第一行图片的<code>mLeft</code>分为0、360、720、1080，对应的<code>mRight</code>是<code>mLeft</code> + 1000。<br>以上示例说明</p>
+<ol>
+<li>每个图片占据的父布局的宽度是一样的，为父布局宽度除以列数，这里是1440 / 4 = 360。</li>
+<li>每个图片超出所占据空间宽度后的部分会被后面的图片或屏幕遮盖。</li>
+</ol>
+<p><strong>示例二-设置较大的左右间隔</strong><br>修改EvenItemDecoration代码如下：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// MainActivity中，设置间隙为20dp</span></span><br><span class="line">        rv_items.apply &#123;</span><br><span class="line">            layoutManager = GridLayoutManager(context, <span class="number">4</span>, RecyclerView.VERTICAL, <span class="literal">false</span>)</span><br><span class="line">            addItemDecoration(EvenItemDecoration(dp2px(context, <span class="number">20</span>), <span class="number">4</span>))</span><br><span class="line">            adapter = imageAdapter</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 修改EvenItemDecoration</span></span><br><span class="line">	<span class="class"><span class="keyword">class</span> <span class="title">EvenItemDecoration</span></span>(<span class="keyword">private</span> <span class="keyword">val</span> space: <span class="built_in">Int</span>, <span class="keyword">private</span> <span class="keyword">val</span> column: <span class="built_in">Int</span>) : RecyclerView.ItemDecoration() &#123;</span><br><span class="line">        <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">getItemOffsets</span><span class="params">(outRect: <span class="type">Rect</span>, view: <span class="type">View</span>, parent: <span class="type">RecyclerView</span>, state: <span class="type">RecyclerView</span>.<span class="type">State</span>)</span></span> &#123;</span><br><span class="line">            outRect.left = space</span><br><span class="line">            outRect.right = space</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果如下：</p>
+<p><img src="/images/gridlayout_even_example2.png" alt="有间隔的Grid"></p>
+<p>通过<code>Layout Inspector</code>查看每个图片的左右位置，每个图片的大小为220，左右间隙都为70(px/dp=3.5)，说明设置的间隙会占用图片之前分配的空间。</p>
+<p>最后，根据以上机制，不难理解<code>EvenItemDecoration</code>中的代码。</p>
+<p>Github源代码地址:<a target="_blank" rel="noopener" href="https://github.com/zhangliangnbu/gridlayout-demo">https://github.com/zhangliangnbu/gridlayout-demo</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2018/11/01/2018-11-01-FlutterStart/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/11/01/2018-11-01-FlutterStart/" class="post-title-link" itemprop="url">Flutter入门</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-11-01 09:04:21" itemprop="dateCreated datePublished" datetime="2018-11-01T09:04:21+08:00">2018-11-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-29 09:13:08" itemprop="dateModified" datetime="2021-06-29T09:13:08+08:00">2021-06-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%85%B6%E4%BB%96/" itemprop="url" rel="index"><span itemprop="name">其他</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>照着官方<a target="_blank" rel="noopener" href="https://flutter.io/get-started/install/">get-started</a>教程做，略作补充。</p>
+<hr>
+<h1 id="入门"><a href="#入门" class="headerlink" title="入门"></a>入门</h1><p><strong>1 下载SDK安装包并解压</strong></p>
+<p><strong>2 使用<code>$ flutter doctor</code>做检查并安装相关工具</strong></p>
+<p>安装IOS相关工具时，如果报错</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">configure: error: Package requirements (libusbmuxd &gt;= 1.1.0) were not met:</span><br></pre></td></tr></table></figure>
+
+<p>可以使用如下方法解决<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/52602425/libusbmuxd-version-error-during-flutter-install/52604913#52604913">IOS toolchain安装异常解决</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">brew update</span><br><span class="line">brew uninstall --ignore-dependencies libimobiledevice</span><br><span class="line">brew uninstall --ignore-dependencies usbmuxd</span><br><span class="line">brew install --HEAD usbmuxd</span><br><span class="line">brew unlink usbmuxd</span><br><span class="line">brew link usbmuxd</span><br><span class="line">brew install --HEAD libimobiledevice</span><br></pre></td></tr></table></figure>
+
+<p><strong>3 配置IDE，安装插件</strong></p>
+<p><strong>4 尝试运行项目</strong></p>
+<p>创建、在Android和IOS模拟器上运行、修改字符串并热加载。</p>
+<p><strong>5  写第一个APP</strong> </p>
+<p>分为两部分，入门文档主要介绍第一部分。这两部分的内容都可以在<a target="_blank" rel="noopener" href="https://codelabs.developers.google.com/?cat=Flutter">Google Codelas</a>中找到。</p>
+<hr>
+<h1 id="入门之坑"><a href="#入门之坑" class="headerlink" title="入门之坑"></a>入门之坑</h1><ul>
+<li>使用命令行方式<code>flutter upgrade</code>升级需要谨慎，有一次升级后，flutter直接挂了。</li>
+</ul>
+<hr>
+<h1 id="移动端开发演进"><a href="#移动端开发演进" class="headerlink" title="移动端开发演进"></a>移动端开发演进</h1><p>详细请看文章<a target="_blank" rel="noopener" href="http://www.infoq.com/cn/articles/why-is-flutter-revolutionary">为什么说Flutter是革命性的？</a></p>
+<p>**传统(Android&amp;IOS)**。APP直接调用平台控件和服务。</p>
+<p><img src="/images/mobile_dev_oem.png" alt="传统构架"></p>
+<p><strong>WebView</strong>。APP直接调用平台的WebView以及通过桥接的方式调用服务。</p>
+<p><img src="/images/mobile_dev_webview.png" alt="WebView"></p>
+<p><strong>ReactNative</strong>。JS代码通过桥接的方式调用平台控件和服务。桥接的转化效率较低。</p>
+<p><img src="/images/mobile_dev_rn.png" alt="WebView"></p>
+<p><strong>Flutter</strong>。APP端通过接口直接调用平台的Canvas、Events和服务，转化效率较桥接的方式快几个数量。</p>
+<p><img src="/images/mobile_dev_flutter.png" alt="WebView"></p>
+<blockquote>
+<p>上面的图皆来自文章<a target="_blank" rel="noopener" href="http://www.infoq.com/cn/articles/why-is-flutter-revolutionary">为什么说Flutter是革命性的？</a></p>
+</blockquote>
+<hr>
+<br>
+
+
+
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><p>一切皆控件。所有的组成部分都是控件，包括位置、补白、主题、导航等。</p>
+<p>Flutter运行机制。请看文章</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/CQQXD0TrlbaNWjoClIcDtw">Flutter原理解析</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/e6cd8584fdbb">Flutter原理与美团的实践</a></li>
+</ul>
+<h1 id="Flutter视图"><a href="#Flutter视图" class="headerlink" title="Flutter视图"></a>Flutter视图</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://juejin.im/post/5b4c6054e51d4519475f1d5d#heading-1">Flutter，什么是 Widgets、RenderObjects 和 Elements</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.stephenw.cc/2018/05/28/flutter-dart-framework/">Flutter Dart Framework原理简解</a></li>
+</ul>
+<h1 id="Flutter异步编程"><a href="#Flutter异步编程" class="headerlink" title="Flutter异步编程"></a>Flutter异步编程</h1><p>大纲：</p>
+<ul>
+<li>概念澄清：线程进程、并行并发、同步异步、阻塞非阻塞、单线程模型</li>
+<li>单线程异步事件模型</li>
+<li>API使用及场景实践：本地编写、本地资源读写、网络请求等。</li>
+</ul>
+<p><strong>单线程模型</strong></p>
+<p>仅仅指代码在一个线程里执行，但可以通过工作线程调度某段代码在其他时刻异步触发。</p>
+<p><strong>事件机制</strong></p>
+<p><img src="https://segmentfault.com/img/bVxLvF"></p>
+<p>参考</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000014396421">异步async、await和Future的使用技巧</a></li>
+<li><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000004322358">JavaScript：彻底理解同步、异步和事件循环(Event Loop)</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/27035708">JavaScript单线程异步的背后——事件循环机制</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2014/10/event-loop.html">JavaScript 运行机制详解：再谈Event Loop</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.im/post/5c4875f86fb9a049ff4e78cf">Flutter/Dart中的异步</a></li>
+<li><a target="_blank" rel="noopener" href="https://medium.com/dartlang/dart-asynchronous-programming-isolates-and-event-loops-bffc3e296a6a">Dart asynchronous programming: Isolates and event loops</a></li>
+</ul>
+<h1 id="混合开发实践"><a href="#混合开发实践" class="headerlink" title="混合开发实践"></a>混合开发实践</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/flutter/flutter/wiki/Add-Flutter-to-existing-apps#experiment-turn-the-flutter-project-into-a-module">官方-Add Flutter to existing apps</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.kikt.top/posts/flutter/exists/android-as-aar-to-maven/">把flutter项目作为aar添加到已有的Android工程上</a></li>
+<li><a target="_blank" rel="noopener" href="https://allenwu.itscoder.com/add-flutter-in-android">Android 工程中集成 Flutter Module</a></li>
+</ul>
+<p>这里考虑将flutter项目作为AAR添加到已有的Android工程里，可以将AAR文件作为本地文件依赖，或者发布AAR作为远程仓库依赖。</p>
+<h3 id="将flutter项目作为本地AAR依赖"><a href="#将flutter项目作为本地AAR依赖" class="headerlink" title="将flutter项目作为本地AAR依赖"></a>将flutter项目作为本地AAR依赖</h3><ul>
+<li>创建flutter module项目</li>
+<li>执行<code>flutter build apk</code>，生成aar文件<code>./.android/Flutter/build/outputs/flutter-release.aar</code></li>
+<li>将上述aar文件放入已有Android工程<code>app/libs</code>中，并使用<code>api fileTree(dir: &#39;libs&#39;, include: [&#39;*.jar&#39;, &#39;*.aar&#39;])</code>依赖</li>
+<li>在已有Android工程添加flutter初始化代码以及集成FlutterActivity的容器。</li>
+</ul>
+<p>关于有三方控件不能使用的情况，我使用的是flutter版本为1.7.8+hotfix.4，直接打包成AAR作为依赖，就可以直接使用，可能flutter当前的版本已经修复了这个问题：在打包aar的时候，会将其依赖的第三方代码也一起打进aar文件里。</p>
+<p>另外，<a target="_blank" rel="noopener" href="https://github.com/flutter/flutter/wiki/Add-Flutter-to-existing-apps#experiment-turn-the-flutter-project-into-a-module">官方-Add Flutter to existing apps</a> 这篇文章里说将来稳定版flutter发布本地aar仓库非常简单。</p>
+<h1 id="Flutter应用框架BLoC"><a href="#Flutter应用框架BLoC" class="headerlink" title="Flutter应用框架BLoC"></a>Flutter应用框架BLoC</h1><p>纲要：</p>
+<ul>
+<li>概念</li>
+<li>stream bloc</li>
+<li>bloc框架</li>
+</ul>
+<p>参考</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.didierboelens.com/2018/08/reactive-programming---streams---bloc/">Reactive Programming Streams BLoC</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.im/post/5ca396b5518825440563e0f5">Reactive Programming Streams BLoC中文版：Flutter-BLoC-第一讲</a></li>
+<li><a href="%5Bhttps://silencezhou.github.io/2019/03/14/Flutter-BLoC-%E7%AC%AC%E4%BA%8C%E8%AE%B2/%5D(https://silencezhou.github.io/2019/03/14/Flutter-BLoC-%E7%AC%AC%E4%BA%8C%E8%AE%B2/)">Reactive Programming Streams BLoC中文版：Flutter-BLoC-第二讲</a></li>
+<li><a href="%5Bhttps://silencezhou.github.io/2019/04/03/Flutter-BLoC-%E7%AC%AC%E4%B8%89%E8%AE%B2/%5D(https://silencezhou.github.io/2019/04/03/Flutter-BLoC-%E7%AC%AC%E4%B8%89%E8%AE%B2/)">Reactive Programming Streams BLoC中文版：Flutter-BLoC-第三讲</a></li>
+<li><a target="_blank" rel="noopener" href="https://felangel.github.io/bloc/#/gettingstarted">Bloc框架官方文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=PLHln7wHgPE">谷歌官方视频介绍</a></li>
+</ul>
+<hr>
+<br>
+
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://flutter.io/get-started/install/">Flutter官网</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/flutter/flutter">Flutter Github</a></li>
+<li><a target="_blank" rel="noopener" href="https://flutter-io.cn/#section-keynotes">Flutter中文社区</a></li>
+<li><a target="_blank" rel="noopener" href="https://flutterchina.club/get-started/install/">Flutter官网中文翻译</a></li>
+<li><a target="_blank" rel="noopener" href="https://book.flutterchina.club/">书籍-Flutter实战</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/AweiLoveAndroid/Flutter-learning/blob/master/readme/Flutter%E4%BB%8E%E9%85%8D%E7%BD%AE%E5%AE%89%E8%A3%85%E5%88%B0%E5%A1%AB%E5%9D%91%E6%8C%87%E5%8D%97%E8%AF%A6%E8%A7%A3.md">Flutter从配置安装到填坑指南详解</a></li>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/52602425/libusbmuxd-version-error-during-flutter-install/52604913#52604913">IOS toolchain安装异常解决</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.infoq.com/cn/articles/why-is-flutter-revolutionary">为什么说Flutter是革命性的？</a></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/CQQXD0TrlbaNWjoClIcDtw">Flutter原理解析</a></li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2018/10/24/android-build-06-application-start/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/10/24/android-build-06-application-start/" class="post-title-link" itemprop="url">Android构建06-Android应用构建基础</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-10-24 17:29:48" itemprop="dateCreated datePublished" datetime="2018-10-24T17:29:48+08:00">2018-10-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-29 09:13:08" itemprop="dateModified" datetime="2021-06-29T09:13:08+08:00">2021-06-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android%E6%9E%84%E5%BB%BA%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">Android构建系统</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>Android构建流程是指将Android源代码转换成Apk（Android Application Package）这一过程，里面涉及到许多步骤和<a target="_blank" rel="noopener" href="https://developer.android.com/studio/command-line/">工具</a>。构建流程由Gradle和Android Gradle Plugin插件来管理，既可以通过IDE方式，也可以通过命令行方式来进行。</p>
+<hr>
+<br>
+
+
+
+<h1 id="构建流程"><a href="#构建流程" class="headerlink" title="构建流程"></a>构建流程</h1><p>官网有一个简单的<a target="_blank" rel="noopener" href="https://developer.android.com/studio/build/#build-process">流程图</a>，比较简略，图中主要展示了两步，且都是由Gradle和Andorid插件管理的：</p>
+<ol>
+<li>编译。编译器将源代码编译成DEX文件和供前者直接使用的资源文件。</li>
+<li>打包并签名。将上述DEX文件和资源文件合并成APK，之后进行签名生成最终可以用于安装、测试或发布的APK。</li>
+</ol>
+<p>在许多博客中，都提到一个详细的流程图，说是来自官网，但我没有找到，可能以前存在，现在已经删除了，如下：</p>
+<p><img src="/images/android_build_process_detail.png" alt="Android构建流程"></p>
+<p>上述流程分为七个步骤，涉及许多工具，如AAPT、AIDL等，有些工具现在已经升级或改变名称了，如AAPT现在升级为AAPT2。</p>
+<blockquote>
+<p>AAPT等工具位于{Android SDK}/build-tools/{版本号}。</p>
+</blockquote>
+<p>七个步骤具体如下：</p>
+<p><strong>1. 编译资源文件</strong></p>
+<p>利用<code>aapt</code>编译资源文件生成<code>R.java</code>和<code>resources.arsc</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># R.java</span></span><br><span class="line">$ aapt p -f -m -J app/out/R \</span><br><span class="line">-M app/src/main/AndroidManifest.xml \</span><br><span class="line">-S app/src/main/res \</span><br><span class="line">-I <span class="variable">$SDK</span>/platforms/android-28/android.jar </span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 生成包含resources.arsc的apk，之后添加dex文件</span></span><br><span class="line">$ aapt p -f -F app/out/res/resource.apk \</span><br><span class="line">-M app/src/main/AndroidManifest.xml \</span><br><span class="line">-S app/src/main/res \</span><br><span class="line">-I <span class="variable">$SDK</span>/platforms/android-28/android.jar </span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>说明:</p>
+<ul>
+<li>上面的示例工程是利用Android Studio生成的，并去掉了自动引入的第三方依赖。</li>
+<li>需要生成必要的文件夹<code>$ mkdir -p app/out/R</code>和<code>$ mkdir -p app/out/res</code></li>
+<li><code>\</code>表示命令行换行。</li>
+<li><code>$SDK</code>可用命令<code>$ export SDK=~/Library/Android/sdk</code>设置。</li>
+<li>命令的参数说明请见<a target="_blank" rel="noopener" href="https://elinux.org/Android_aapt">Android AAPT</a>，或<code>$ aapt</code>查看输出信息。</li>
+<li>如果有第三方依赖，用-I继续添加， 可参考<a target="_blank" rel="noopener" href="https://amorypepelu.github.io/2016/02/10/bash-Compile-Android/">命令行编译Android</a>。但我添加了com.android.support.constraint依赖，并用-I添加进命令行，执行命令后报错。</li>
+</ul>
+</blockquote>
+<p><strong>2. 编译AIDL文件</strong></p>
+<p>略</p>
+<p><strong>3. 编译Java文件</strong></p>
+<p>利用<code>javac</code>编译<code>.java</code>文件为<code>.class</code>文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ javac -target 1.8 -<span class="built_in">source</span> 1.8 \</span><br><span class="line">-bootclasspath <span class="variable">$SDK</span>/platforms/android-28/android.jar \</span><br><span class="line">-d app/out/class \</span><br><span class="line">app/out/R/com/liang/clidemo/R.java app/src/main/java/com/liang/clidemo/*.java </span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>生成<code>class</code>文件夹<code>$ mkdir app/out/class</code></p>
+</blockquote>
+<p><strong>4. 生成Dex文件</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ dx --dex --output=app/out/dex app/out/class</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>需要生成<code>dex</code>文件夹<code>$ mkdir app/out/dex</code></p>
+</blockquote>
+<p><strong>5. 打包生成apk</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ java -classpath <span class="variable">$SDK</span>/tools/lib/sdklib-26.0.0-dev.jar com.android.sdklib.build.ApkBuilderMain app/out/demo.apk \</span><br><span class="line">-v -u -z app/out/res/resource.apk \</span><br><span class="line">-f app/out/dex/classes.dex</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>6. 签名</strong></p>
+<p>签名debug版本的秘钥</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ jarsigner -verbose -keystore ~/.android/debug.keystore \</span><br><span class="line">-storepass android \</span><br><span class="line">-keypass android \</span><br><span class="line">app/out/demo.apk androiddebugkey</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>7. 对齐</strong></p>
+<p>略</p>
+<p>以上七个命令可以用来手动打包，但比较繁琐，而Gradle将这些命令封装起来作为任务，只需要执行<code>$ ./gradlew assemleDebug</code>等即可，提高了工作效率。当然了，Gradle的功能不止如此。</p>
+<p>执行<code>./gradlew assembleDebug --console=plain</code>，可以看Gradle的任务执行顺序与用命令行打包顺序基本是一致的：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">:app:checkDebugClasspath UP-TO-DATE</span><br><span class="line">:app:preBuild UP-TO-DATE</span><br><span class="line">:app:preDebugBuild UP-TO-DATE</span><br><span class="line"><span class="comment"># 编译aidl</span></span><br><span class="line">:app:compileDebugAidl NO-SOURCE</span><br><span class="line">:app:compileDebugRenderscript UP-TO-DATE</span><br><span class="line">:app:checkDebugManifest UP-TO-DATE</span><br><span class="line"><span class="comment"># 编译BuildConfig.java</span></span><br><span class="line">:app:generateDebugBuildConfig UP-TO-DATE</span><br><span class="line">:app:prepareLintJar UP-TO-DATE</span><br><span class="line">:app:mainApkListPersistenceDebug UP-TO-DATE</span><br><span class="line"><span class="comment"># 生成R.java和res资源文件</span></span><br><span class="line">:app:generateDebugResValues UP-TO-DATE</span><br><span class="line">:app:generateDebugResources UP-TO-DATE</span><br><span class="line">:app:mergeDebugResources UP-TO-DATE</span><br><span class="line">:app:createDebugCompatibleScreenManifests UP-TO-DATE</span><br><span class="line">:app:processDebugManifest UP-TO-DATE</span><br><span class="line">:app:splitsDiscoveryTaskDebug UP-TO-DATE</span><br><span class="line">:app:processDebugResources UP-TO-DATE</span><br><span class="line">:app:generateDebugSources UP-TO-DATE</span><br><span class="line">:app:javaPreCompileDebug UP-TO-DATE</span><br><span class="line"><span class="comment"># javac编译java文件为class文件</span></span><br><span class="line">:app:compileDebugJavaWithJavac UP-TO-DATE</span><br><span class="line">:app:compileDebugNdk NO-SOURCE</span><br><span class="line">:app:compileDebugSources UP-TO-DATE</span><br><span class="line">:app:mergeDebugShaders UP-TO-DATE</span><br><span class="line">:app:compileDebugShaders UP-TO-DATE</span><br><span class="line">:app:generateDebugAssets UP-TO-DATE</span><br><span class="line">:app:mergeDebugAssets UP-TO-DATE</span><br><span class="line"><span class="comment"># 生成dex文件</span></span><br><span class="line">:app:transformClassesWithDexBuilderForDebug UP-TO-DATE</span><br><span class="line">:app:transformDexArchiveWithExternalLibsDexMergerForDebug UP-TO-DATE</span><br><span class="line">:app:transformDexArchiveWithDexMergerForDebug UP-TO-DATE</span><br><span class="line">:app:mergeDebugJniLibFolders UP-TO-DATE</span><br><span class="line">:app:transformNativeLibsWithMergeJniLibsForDebug UP-TO-DATE</span><br><span class="line">:app:transformNativeLibsWithStripDebugSymbolForDebug UP-TO-DATE</span><br><span class="line">:app:checkDebugLibraries UP-TO-DATE</span><br><span class="line">:app:processDebugJavaRes NO-SOURCE</span><br><span class="line">:app:transformResourcesWithMergeJavaResForDebug UP-TO-DATE</span><br><span class="line">:app:validateSigningDebug UP-TO-DATE</span><br><span class="line"><span class="comment"># 打包</span></span><br><span class="line">:app:packageDebug UP-TO-DATE</span><br><span class="line">:app:assembleDebug UP-TO-DATE</span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<br>
+
+
+
+<h1 id="Android-Plugin-DSL-Reference"><a href="#Android-Plugin-DSL-Reference" class="headerlink" title="Android Plugin DSL Reference"></a>Android Plugin DSL Reference</h1><p><a target="_blank" rel="noopener" href="http://google.github.io/android-gradle-dsl/current/index.html">Android Plugin DSL Reference</a>详细描述了Android module构建脚本<code>build.gradle</code>所用到的参数。</p>
+<p>包括四个扩展内容，下面以应用型项目的<code>build.gradle</code>为例，说下<code>AppExtension</code>的语法。</p>
+<p>简单的应用型项目的<code>build.gradle</code>脚本：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">apply <span class="attr">plugin:</span> <span class="string">&#x27;com.android.application&#x27;</span></span><br><span class="line"></span><br><span class="line">android &#123;</span><br><span class="line">    compileSdkVersion <span class="number">28</span></span><br><span class="line">    defaultConfig &#123;</span><br><span class="line">        applicationId <span class="string">&quot;com.liang.clidemo&quot;</span></span><br><span class="line">        minSdkVersion <span class="number">21</span></span><br><span class="line">        targetSdkVersion <span class="number">28</span></span><br><span class="line">        versionCode <span class="number">1</span></span><br><span class="line">        versionName <span class="string">&quot;1.0&quot;</span></span><br><span class="line">        testInstrumentationRunner <span class="string">&quot;android.support.test.runner.AndroidJUnitRunner&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">    buildTypes &#123;</span><br><span class="line">        release &#123;</span><br><span class="line">            minifyEnabled <span class="literal">false</span></span><br><span class="line">            proguardFiles getDefaultProguardFile(<span class="string">&#x27;proguard-android.txt&#x27;</span>), <span class="string">&#x27;proguard-rules.pro&#x27;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">dependencies &#123;</span><br><span class="line">    implementation fileTree(<span class="attr">dir:</span> <span class="string">&#x27;libs&#x27;</span>, <span class="attr">include:</span> [<span class="string">&#x27;*.jar&#x27;</span>])</span><br><span class="line">    implementation <span class="string">&#x27;com.android.support.constraint:constraint-layout:1.1.3&#x27;</span></span><br><span class="line">    testImplementation <span class="string">&#x27;junit:junit:4.12&#x27;</span></span><br><span class="line">    androidTestImplementation <span class="string">&#x27;com.android.support.test:runner:1.0.2&#x27;</span></span><br><span class="line">    androidTestImplementation <span class="string">&#x27;com.android.support.test.espresso:espresso-core:3.0.2&#x27;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>解释如下：</p>
+<ul>
+<li><code>Project</code>实例的三个方法。最外层的<code>apply</code>、<code>android</code>和<code>dependencies</code>都是<code>Project</code>实例的方法。</li>
+<li><code>apply</code>方法。全称为<code>void apply(Map&lt;String, ?&gt; options)</code>，位于接口<code>PluginAware.java</code>中（<code>Project</code>实现了<code>PluginAware</code>），用于增加插件。示例中表示当前项目为应用型项目。</li>
+<li><code>android</code>方法。原始的<code>Project</code>中并没有这个方法，应该位于Android插件的<code>Project</code>的实例中，可以看源码。闭包里的参数设置详细说明位于Reference的<code>AppExtension</code>中<ul>
+<li><code>ompileSdkVersion</code>。编译版本。很奇怪的是<code>AppExtension</code>中说它是<code>String</code>类型的，但如果赋值为字符串，则又报错。</li>
+<li><code>defaultConfig</code>。接收<code>DefaultConfig</code>作为参数，其闭包里的参数说明见Reference的<a target="_blank" rel="noopener" href="http://google.github.io/android-gradle-dsl/current/com.android.build.gradle.internal.dsl.DefaultConfig.html">DefaultConfig</a></li>
+<li><code>buildTypes</code>。闭包里的参数设置请见<a target="_blank" rel="noopener" href="http://google.github.io/android-gradle-dsl/current/com.android.build.gradle.internal.dsl.BuildType.html">BuildType</a></li>
+</ul>
+</li>
+<li><code>dependencies</code>方法。位于<code>Project</code>中<code>void dependencies(Closure configureClosure);</code>，参数说明详见闭包的代理<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/dsl/org.gradle.api.artifacts.dsl.DependencyHandler.html">DependencyHandler</a></li>
+</ul>
+<p>:p，还是看源码比较直接。</p>
+<hr>
+<br>
+
+
+
+<h1 id="待研究"><a href="#待研究" class="headerlink" title="待研究"></a>待研究</h1><ul>
+<li><code>aapt</code>命令中添加第三方依赖问题</li>
+<li><code>aapt2</code>命令</li>
+<li>Android构建脚本配置。<a target="_blank" rel="noopener" href="https://developer.android.com/studio/build/">官网-Configure your build</a>写的比较详细，目前不准备写。</li>
+<li>Android构建最佳实践。<a target="_blank" rel="noopener" href="https://developer.android.com/studio/build/">官网-Configure your build</a>上写了许多，以后可以做些补充。</li>
+<li>Gradle和Android Plugin源码阅读和分析。非常值得研究，但需要花费很多时间，以后有时间加上。</li>
+</ul>
+<hr>
+<br>
+
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://developer.android.com/studio/build/">官网-Configure your build</a></li>
+<li><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000008071324">Android APK 编译打包流程</a></li>
+<li><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000004916563">APK打包安装过程</a></li>
+<li><a target="_blank" rel="noopener" href="https://cdn-images-1.medium.com/max/1600/1*LbKGyabN6vr-9iR-rvnzPg.png">详细打包流程图</a></li>
+<li><a target="_blank" rel="noopener" href="https://amorypepelu.github.io/2016/02/10/bash-Compile-Android/">命令行编译Android</a></li>
+<li><a target="_blank" rel="noopener" href="https://medium.com/@authmane512/how-to-build-an-apk-from-command-line-without-ide-7260e1e22676">How to make Android apps without IDE from command line</a></li>
+<li><a target="_blank" rel="noopener" href="https://elinux.org/Android_aapt">Android AAPT</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.com/studio/command-line/aapt2">AAPT2官方文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://fucknmb.com/2017/10/31/aapt2%E8%B5%84%E6%BA%90compile%E8%BF%87%E7%A8%8B/">aapt2 资源 compile 过程</a></li>
+<li><a target="_blank" rel="noopener" href="http://google.github.io/android-gradle-dsl/current/">官网-Android Plugin DSL Reference</a></li>
+<li><a target="_blank" rel="noopener" href="https://fucknmb.com/2017/06/01/Android-Gradle-Plugin%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E4%B8%8E%E7%BC%96%E8%AF%91/">Android Gradle Plugin 源码阅读与编译</a></li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2018/10/23/git-base-command/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/10/23/git-base-command/" class="post-title-link" itemprop="url">Git-基础与命令</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-10-23 10:18:06" itemprop="dateCreated datePublished" datetime="2018-10-23T10:18:06+08:00">2018-10-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-29 09:13:08" itemprop="dateModified" datetime="2021-06-29T09:13:08+08:00">2021-06-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">版本管理</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>使用Git也有几年了，涉及场景较多的是：</p>
+<p><strong>学习开源库</strong>。从GitHub上克隆代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git clone ...</span><br></pre></td></tr></table></figure>
+<p><strong>公司开发</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// 分支相关</span><br><span class="line">$ git branch</span><br><span class="line">$ git checkout -b dev</span><br><span class="line">$ git checkout dev</span><br><span class="line"></span><br><span class="line">// 提交代码</span><br><span class="line">$ git status</span><br><span class="line">$ git add .</span><br><span class="line">$ git commit -m &quot;...&quot;</span><br><span class="line">$ git pull</span><br><span class="line">$ git push origin dev</span><br></pre></td></tr></table></figure>
+<p>其他情况使用命令行如<code>git merge</code>等较少，多用IDE（如 Android Studio）自带的版本控制GUI工具。一般情况下，记得上面几个命令就足以应付日常工作了，如果需要使用其他的命令，网上搜一下即可。</p>
+<p>最近开始管理小团队，需要管理分支的创建、代码审核、分支合并、删除、冲突解决等等，开发的人数开始增多，以前不常用的命令，现在也要常用了，因此有必要全面的总结下Git的使用。</p>
+<p>可能有人会问，为什么要学习命令行，熟悉GUI不就可以了吗？答案是不可以的。</p>
+<blockquote>
+<p>只有在命令行模式下你才能执行 Git 的 所有 命令，而大多数的 GUI 软件只实现了 Git 所有功能的一个子集以降低操作难度。 如果你学会了在命令行下如何操作，那么你在操作 GUI 软件时应该也不会遇到什么困难，但是，反之则不成立。 此外，由于每个人的想法与侧重点不同，不同的人常常会安装不同的GUI 软件，但所有人一定会有命令行工具。</p>
+</blockquote>
+<p>本文主要资料参考<a target="_blank" rel="noopener" href="https://git-scm.com/book/zh/v2">Git官网-Pro Git教程</a>和<a target="_blank" rel="noopener" href="https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000">廖雪峰的Git教程</a>。廖写的东西通俗易懂，非常值得一读。我的总结尽可能精简，初学者可以看廖的教程，了解更详细的可以看<a target="_blank" rel="noopener" href="https://git-scm.com/book/zh/v2">Git官网-Pro Git教程</a>，说的非常详细，里面有中文文档。</p>
+<hr>
+<br>
+
+
+
+<h1 id="Git基础"><a href="#Git基础" class="headerlink" title="Git基础"></a>Git基础</h1><p><strong>三个工作区域</strong><br>一个Git项目包括：工作目录、暂存区（stage或index）和仓库目录。基本的 Git 工作流程如下：</p>
+<ol>
+<li>在工作目录中修改文件。如通过<code>$ git clone</code>命令将项目克隆到本地，然后做一些修改。</li>
+<li>暂存文件，将文件的快照放入暂存区域。如通过<code>$ git add .</code>命令进行操作。</li>
+<li>提交更新，找到暂存区域的文件，将快照永久性存储到 Git 仓库目录。如通过<code>$ git commit</code>命令进行操作。</li>
+</ol>
+<p><img src="http://upload-images.jianshu.io/upload_images/2658578-0a3c6479055e37b5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="来源Git官网"></p>
+<p><strong>三种状态</strong><br>工作目录下的文件分为两种状态：已跟踪或未跟踪。</p>
+<ol>
+<li>未跟踪。没有纳入版本控制的文件。</li>
+<li>已跟踪。已跟踪的文件是指那些被纳入了版本控制的文件，在上一次快照中有它们的记录，在工作一段时间后，它们的状态可能处于未修改，已修改或已放入暂存区。</li>
+</ol>
+<p>已跟踪的文件分为三种：</p>
+<ol>
+<li>已提交（committed）。表示数据已经安全的保存在本地仓库目录中。 </li>
+<li>已修改（modified）。表示修改了文件，但还没保存到暂存区中。 </li>
+<li>已暂存（staged）。表示对一个已修改文件的当前版本做了标记，即已经放到了暂存区，使之包含在下次提交的快照中。</li>
+</ol>
+<p><img src="https://upload-images.jianshu.io/upload_images/2658578-dd8bea81c4b8c82f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Git项目文件生命周期"></p>
+<p><strong>分支结构变更示意</strong><br><code>master</code>指向自己分支的最新提交，<code>HEAD</code>指向当前分支</p>
+<ol>
+<li><p>只有一个主分支时<br><img src="https://upload-images.jianshu.io/upload_images/2658578-3d9b499d978d52fa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="只有一个主分支master"></p>
+</li>
+<li><p>创建并切换到分支dev。即创建一个dev指针指向当前提交，同时HEAD也指向dev分支<br><img src="https://upload-images.jianshu.io/upload_images/2658578-0e4b492bab51186d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="创建并切换分支dev"></p>
+</li>
+<li><p>修改并提交分支dev<br><img src="https://upload-images.jianshu.io/upload_images/2658578-7ddb24059a53d93e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="修改并提交分支dev"></p>
+</li>
+<li><p>合并分支dev到master(默认的快速模式)<br><img src="https://upload-images.jianshu.io/upload_images/2658578-6028d4eab1c70d1f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="合并分支-ff"><br><img src="https://upload-images.jianshu.io/upload_images/2658578-12b3c045442d59b4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="合并分支-no-ff"></p>
+</li>
+<li><p>删除分支dev<br><img src="https://upload-images.jianshu.io/upload_images/2658578-c9396e94563a2cfd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="删除分支dev"></p>
+</li>
+</ol>
+<hr>
+<br>
+
+
+
+<h1 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h1><h2 id="使用较多的6个命令"><a href="#使用较多的6个命令" class="headerlink" title="使用较多的6个命令"></a>使用较多的6个命令</h2><p><img src="https://upload-images.jianshu.io/upload_images/2658578-5bf3855193087be8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="日常使用的命令"></p>
+<h2 id="创建"><a href="#创建" class="headerlink" title="创建"></a>创建</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建版本库。在当前文件件创建版本库。</span></span><br><span class="line">$ git init</span><br><span class="line"><span class="comment"># 添加文件。修改文件后，需要把修改后内容添加到暂存区以备提交。“.” 代表所有文件，也可以添加指定的文件。</span></span><br><span class="line">$ git add .</span><br><span class="line"><span class="comment"># 提交到本地版本库。</span></span><br><span class="line">$ git commit -m <span class="string">&quot;本次提交的信息&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 关联远程服务器</span></span><br><span class="line">$ git remote add origin <span class="string">&quot;远程仓库链接&quot;</span></span><br><span class="line"><span class="comment"># 推送当前分支信息到远程服务器。“origin”代表默认的远程服务，“master”代表分支。</span></span><br><span class="line">$ git push -u origin master</span><br></pre></td></tr></table></figure>
+
+<h2 id="查看"><a href="#查看" class="headerlink" title="查看"></a>查看</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看状态。当前版本目录的状态</span></span><br><span class="line">$ git status</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看提交历史</span></span><br><span class="line">$ git <span class="built_in">log</span></span><br><span class="line">$ git <span class="built_in">log</span> --pretty=oneline</span><br><span class="line">$ git <span class="built_in">log</span> --graph</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看命令历史：checkout、commit、reset等</span></span><br><span class="line">$ git reflog</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="回退、撤销与删除"><a href="#回退、撤销与删除" class="headerlink" title="回退、撤销与删除"></a>回退、撤销与删除</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 版本回退。回退到历史版本</span></span><br><span class="line"><span class="comment"># 其中“HEAD^”表示上一个版本，“HEAD^^”表示上上个版本</span></span><br><span class="line"><span class="comment"># 回退到当前版本，会清除所有修改</span></span><br><span class="line">$ git reset --hard HEAD^</span><br><span class="line"><span class="comment"># 回退到上个版本</span></span><br><span class="line">$ git reset --hard HEAD^</span><br><span class="line"><span class="comment"># 版本切换。回退到历史版本或跳到最新版本。</span></span><br><span class="line"><span class="comment"># “1094a”表示指定commit id的版本</span></span><br><span class="line"><span class="comment"># 可以通过“git log”命令查看历史版本commit id</span></span><br><span class="line"><span class="comment"># 或通过通过“git reflog”查看提交记录</span></span><br><span class="line">$ git reset --hard 1094a</span><br><span class="line"></span><br><span class="line"><span class="comment"># 撤销已修改的文件。恢复到最近一次git commit或git add时的状态</span></span><br><span class="line">$ git checkout -- &lt;file&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 撤销已暂存的文件。恢复到已修改状态。</span></span><br><span class="line"><span class="comment"># 然后通过“git checkout -- &lt;file&gt;”，恢复到最近一次git commit或git add时的状态</span></span><br><span class="line">$ git reset HEAD &lt;file&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="分支管理"><a href="#分支管理" class="headerlink" title="分支管理"></a>分支管理</h2><p><strong>命令-创建和切换</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建并切换分支</span></span><br><span class="line">$ git checkout -b dev</span><br><span class="line"><span class="comment"># 查看本地分支</span></span><br><span class="line">$ git branch</span><br><span class="line"><span class="comment"># 查看远程分支</span></span><br><span class="line">$ git branch -a</span><br><span class="line"><span class="comment"># 切换分支</span></span><br><span class="line">$ git checkout dev</span><br><span class="line">$ git checkout tag-v1.0 -b hotfix-v10-xxx</span><br></pre></td></tr></table></figure>
+
+<p><strong>命令-合并</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在其他分支上合并dev分支</span></span><br><span class="line"><span class="comment"># 默认是Fast-forward模式，直接把master指向dev的当前提交，这种模式下，删除分支后，会丢掉分支信息</span></span><br><span class="line">$ git merge dev</span><br><span class="line"><span class="comment"># no-ff模式，合并后会保存分支信息</span></span><br><span class="line">$ git merge dev --no-ff</span><br></pre></td></tr></table></figure>
+
+<p><strong>命令-保存和恢复工作现场</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 保存当前工作现场。不提交情况下，可保存当前工作现场，再并切换到其他分支。</span></span><br><span class="line">$ git stash</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看保存的当前工作现场</span></span><br><span class="line">$ git stash list</span><br><span class="line"></span><br><span class="line"><span class="comment"># 恢复并删除当前工作现场。如果stash有很多，则默认操作最新的一个。</span></span><br><span class="line">$ git stash pop</span><br><span class="line"><span class="comment"># 恢复当前工作现场。仅恢复，不删除</span></span><br><span class="line">$ git stash apply</span><br><span class="line"><span class="comment"># 删除工作现场</span></span><br><span class="line">$ git stash drop</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>命令-删除分支</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 删除本地分支`dev`。</span></span><br><span class="line">$ git branch -d dev</span><br><span class="line"><span class="comment"># 删除本地分支。强行删除没有合并的分支</span></span><br><span class="line">$ git branch -D dev</span><br><span class="line"><span class="comment"># 删除远程分支`dev`。</span></span><br><span class="line">$ git push origin --delete dev</span><br></pre></td></tr></table></figure>
+
+<h2 id="标签管理"><a href="#标签管理" class="headerlink" title="标签管理"></a>标签管理</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 增加标签。默认为HEAD</span></span><br><span class="line">$ git tag v1.0</span><br><span class="line"><span class="comment"># 增加标签。针对历史版本</span></span><br><span class="line">$ git tag v1.0 &lt;commit id&gt;</span><br><span class="line"><span class="comment"># 增加标签。附带说明</span></span><br><span class="line">$ git tag -a v1.0 -m <span class="string">&quot;version 1.0 release&quot;</span> &lt;commit id&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看所有标签</span></span><br><span class="line">$ git tag</span><br><span class="line"><span class="comment"># 查看某个标签</span></span><br><span class="line">$ git show v1.0</span><br><span class="line"></span><br><span class="line"><span class="comment"># 推送标签。增加标签存储在本地，如有必要可以推送到远程。</span></span><br><span class="line">$ git push origin v1.0</span><br><span class="line"><span class="comment"># 推送所有标签。</span></span><br><span class="line">$ git push origin --tags</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除本地标签</span></span><br><span class="line">$ git tag -d v1.0</span><br><span class="line"><span class="comment"># 删除远程标签。先从本地删除，再推送到远程。</span></span><br><span class="line">$ git push origin :refs/tags/v1.0</span><br></pre></td></tr></table></figure>
+<h2 id="远程仓库"><a href="#远程仓库" class="headerlink" title="远程仓库"></a>远程仓库</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 克隆远程库。本地没有建立项目时，使用这个</span></span><br><span class="line">$ git <span class="built_in">clone</span> &lt;远程仓库地址&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 关联本地项目到远程服务。本地有Git项目时，使用这个。</span></span><br><span class="line">$ git remote add origin &lt;远程仓库地址&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 从远程库更新本地库。多人协作，远程有更新时</span></span><br><span class="line"><span class="comment"># 会自动合并</span></span><br><span class="line">$ git pull</span><br><span class="line"><span class="comment"># 不会自动合并</span></span><br><span class="line">$ git fetch</span><br><span class="line"></span><br><span class="line"><span class="comment"># 推动本地内容到远程</span></span><br><span class="line">$ git push -u origin master</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="配置信息"><a href="#配置信息" class="headerlink" title="配置信息"></a>配置信息</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 配置别名</span></span><br><span class="line">$ git config --global alias.st status</span><br><span class="line">$ git config --global alias.co checkout</span><br><span class="line">$ git config --global alias.ci commit</span><br><span class="line">$ git config --global alias.br branch</span><br><span class="line">$ git config --global alias.lg <span class="string">&quot;log --color --graph --pretty=format:&#x27;%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)&lt;%an&gt;%Creset&#x27; --abbrev-commit&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置颜色</span></span><br><span class="line">$ git config --global color.ui <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置用户名和邮件</span></span><br><span class="line">$ git config --global user.name <span class="string">&quot;Your Name&quot;</span></span><br><span class="line">$ git config --global user.email <span class="string">&quot;email@example.com&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看配置</span></span><br><span class="line">$ git config --list</span><br></pre></td></tr></table></figure>
+
+<p>Git配置信息存储在配置文件中，可以在配置文件中直接修改或删除配置信息。</p>
+<ol>
+<li>当期仓库的配置信息在<code>.git/config</code>中</li>
+<li><code>--global</code>的配置信息在用户主目录下的<code>.gitconfig</code>中</li>
+<li><code>--system</code>的配置信息在<code>/etc/gitconfig</code>中</li>
+</ol>
+<p>其中，每一个级别覆盖上一级别的配置</p>
+<h2 id="其他实用命令"><a href="#其他实用命令" class="headerlink" title="其他实用命令"></a>其他实用命令</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看使用手册。&lt;verb&gt;表示要查看的命令名</span></span><br><span class="line">$ git <span class="built_in">help</span> &lt;verb&gt;</span><br><span class="line">$ git &lt;verb&gt; --<span class="built_in">help</span></span><br><span class="line">$ man git-&lt;verb&gt;</span><br></pre></td></tr></table></figure>
+<hr>
+<br>
+
+
+
+<h1 id="常见场景"><a href="#常见场景" class="headerlink" title="常见场景"></a>常见场景</h1><p><strong>创建、提交、推送</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 本地没有项目，远程有Git项目</span></span><br><span class="line">$ git <span class="built_in">clone</span> &lt;远程仓库地址&gt;</span><br><span class="line">$ git add .</span><br><span class="line">$ git commit -m <span class="string">&quot;初始化&quot;</span></span><br><span class="line">$ git push origin master</span><br><span class="line"></span><br><span class="line"><span class="comment"># 本地有项目，远程新创建空Git项目</span></span><br><span class="line">$ git init</span><br><span class="line"><span class="comment"># 修改.gitignore文件</span></span><br><span class="line">$ git add .</span><br><span class="line">$ git commit -m <span class="string">&quot;&quot;</span></span><br><span class="line">$ git remote add origin &lt;远程仓库地址&gt;</span><br><span class="line">$ git push -u origin master</span><br></pre></td></tr></table></figure>
+
+<p><strong>多人协作</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 合并他人分支、解决冲突</span></span><br><span class="line"><span class="comment"># 新建一个分支，与指定的远程分支建立追踪关系</span></span><br><span class="line">$ git branch --track dev origin/dev</span><br><span class="line">$ git checkout dev</span><br><span class="line">$ git pull</span><br><span class="line">$ git checkout master</span><br><span class="line">$ git merge dev --no-ff</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果没有冲突，直接就合并好了，如果有冲突，先解决冲突，然后提交</span></span><br><span class="line"><span class="comment"># 如果冲突没有解决好，希望撤销这次合并</span></span><br><span class="line">$ git merge --abort</span><br><span class="line"></span><br><span class="line"><span class="comment"># 其他待续</span></span><br></pre></td></tr></table></figure>
+<hr>
+<br>
+
+
+
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li>说明。图中图片皆来自参考链接</li>
+<li><a target="_blank" rel="noopener" href="https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000">廖雪峰Git教程</a></li>
+<li><a target="_blank" rel="noopener" href="https://git-scm.com/book/zh/v2">Git官网-Pro Git教程</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2015/12/git-cheat-sheet.html">阮一峰-常用Git命令清单</a></li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2018/10/22/android-build-05-gradle-practise/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/10/22/android-build-05-gradle-practise/" class="post-title-link" itemprop="url">Android构建05-Gradle最佳实践</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-10-22 09:09:26" itemprop="dateCreated datePublished" datetime="2018-10-22T09:09:26+08:00">2018-10-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-29 09:13:08" itemprop="dateModified" datetime="2021-06-29T09:13:08+08:00">2021-06-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android%E6%9E%84%E5%BB%BA%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">Android构建系统</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="文件分布简述"><a href="#文件分布简述" class="headerlink" title="文件分布简述"></a>文件分布简述</h1><p>详情请见官方文档<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/directory_layout.html">Directory Layout</a>。</p>
+<p>之前官方文档并没有这方面的说明，现在却单独用一个章节来做说明，可能考虑到许多开发者都遇到过这方面的疑惑吧：项目的依赖包在哪里？我去掉了项目里<code>gradle.properties</code>和IDE（如Android Studio）里的代理设置之后，会什么代理还会生效？等等。</p>
+<p>Gradle相关文件包括Wrapper文件、Gradle各版本包、依赖包等。它们并不都存放在项目目录里，如依赖包，你在项目根目录下是找不到的。</p>
+<p>Gradle相关文件分布在两个地方：</p>
+<ol>
+<li>项目根目录。这个目录下的gradle相关文件只对当前项目生效。包括Wrapper配置和可执行命令文件、项目的<code>gradle.properties</code>、<code>build.gradle</code>等构建和配置文件。</li>
+<li>用户目录。<code>$USER_HOME/.gradle</code>，macOS中执行<code>$ cd ~/.gradle</code>即可进入，该目录下的配置对所有的项目生效。包括配置文件<code>gradle.properties</code>、Gradle各版本<code>wrapper/dists/</code>、项目依赖包<code>~/.gradle/caches/modules-2/files-2.1/</code>等。</li>
+</ol>
+<hr>
+<br>
+
+
+
+<h1 id="问题排查"><a href="#问题排查" class="headerlink" title="问题排查"></a>问题排查</h1><p><strong>获取帮助</strong></p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://discuss.gradle.org/c/help-discuss">Gradle Forums</a>。更新缓慢，回复率很低。</li>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/tagged/gradle">StackOverflow #gradle</a> 。在StackOverFlow上一般能找到所需要的解答。</li>
+<li><a target="_blank" rel="noopener" href="https://help.gradle.org/">help.gradle.org</a>。没用过，估计和Gradle论坛一样吧。</li>
+</ol>
+<p><strong>安装问题</strong></p>
+<p>详情请见官网<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/troubleshooting.html#sec:troubleshooting_installation">Troubleshooting Gradle installation</a>，按照官网的教程安装，一般没有什么问题。</p>
+<p><strong>定位一般构建问题</strong></p>
+<ol>
+<li>执行<code>$ ./gradlew [task name] -s</code>。打印栈信息，一般可以定位问题出现在哪里，否则执行下一步操作。</li>
+<li>执行<code>$ ./gradlew assembleDebug -d &gt; gradle.log </code>。打印所有的构建信息到<code>gradle.log </code>文件，通过搜索<code>WARNING</code>或<code>ERROR</code>定位错误。</li>
+</ol>
+<p><strong>依赖解析问题</strong></p>
+<p>参考官网<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/troubleshooting_dependency_resolution.html">Troubleshooting Dependency Resolution</a>，补充如下：</p>
+<ol>
+<li>版本冲突。升级低版本或在某个依赖里排除掉(<code>exclude</code>)低版本。</li>
+<li>依赖下载失败。一般会报错<code>Could not resolve xxx....xxxx timed out</code>，有以下两种解决方法：<ul>
+<li>设置HTTP代理或国内镜像仓库。HTTP代理可在<code>$USER_HOME/.gradle/gradle.properties</code>或项目根目录<code>gradle.properties</code>里设置。镜像仓库可使用<a target="_blank" rel="noopener" href="http://maven.aliyun.com/mvn/view">阿里云的仓库</a>，包括google、Maven Central和jcenter等的镜像仓库。</li>
+<li>下载依赖并从缓存执行构建。从官网下载依赖并放在缓存(<code>$USER_HOME/.gradle/caches/jars-3或modules-2</code>)里，然后使用命令行构建时添加<code>--offline</code>可选项。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<br>
+
+
+
+<h1 id="代理设置"><a href="#代理设置" class="headerlink" title="代理设置"></a>代理设置</h1><p>Gradle的代理一般用于解决Gradle版本和依赖下载失败的问题，代理参数可以设置在两个地方：</p>
+<ul>
+<li>项目根目录下的<code>gradle.properties</code>。仅对当前项目生效。</li>
+<li>用户目录下的<code>$USER_HOME/.gradle/gradle.properties</code>。对所有的Gradle项目生效。</li>
+</ul>
+<p>我的代理策略是使用<a target="_blank" rel="noopener" href="https://www.privoxy.org/">Privoxy</a>做HTTP代理，再让Privoxy监听Shadowsocks端口，真正实现代理的是本地Shadowsocks与远程代理服务中Shadowsocks的通信。</p>
+<blockquote>
+<p>因为Shadowsocks走的是Socks协议，而有些资源一定需要HTTP代理才生效，故需要使用Privoxy做一下转换。</p>
+</blockquote>
+<p>我一般的做法是在<code>$USER_HOME/.gradle/gradle.properties</code>下设置代理，代理参数及说明如下：</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># https代理</span></span><br><span class="line"><span class="comment"># 代理主机地址。本地，因为是先要走本地Privoxy。</span></span><br><span class="line"><span class="meta">systemProp.https.proxyHost</span>=<span class="string">127.0.0.1</span></span><br><span class="line"><span class="comment"># 代理端口号。Privoxy的端口号</span></span><br><span class="line"><span class="meta">systemProp.https.proxyPort</span>=<span class="string">8118</span></span><br><span class="line"><span class="comment"># 不走代理的地址。公司内部Maven库、内网、本地、阿里云OSS文件服务、个推、eclipse资源等，不用走代理，否则连接缓慢或者失败</span></span><br><span class="line"><span class="meta">systemProp.https.nonProxyHosts</span>=<span class="string">maven.xxxx.com|192.168.*|localhost|oss.sonatype.org|mvn.gt.igexin.com|repo.eclipse.org</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"># http代理。与https代理参数一直。</span></span><br><span class="line"><span class="meta">systemProp.http.proxyHost</span>=<span class="string">127.0.0.1</span></span><br><span class="line"><span class="meta">systemProp.http.proxyPort</span>=<span class="string">8118</span></span><br><span class="line"><span class="meta">systemProp.http.nonProxyHosts</span>=<span class="string">maven.xxxx.com|192.168.*|localhost|oss.sonatype.org|mvn.gt.igexin.com|repo.eclipse.org</span></span><br></pre></td></tr></table></figure>
+
+
+
+<blockquote>
+<p>IDE以Andorid Studio 为例，其代理设置（在<code>Preferences-&gt;System Settings-&gt;HTTP Proxy</code>中）仅仅对IDE更新、下载SDK等生效，不会影响到Gradle构建时下载依赖。</p>
+<p>需要注意的是，Andorid Studio中设置了代理后，一般会弹出对话框，问是否要把Studio的代理设置到用户目录下的<code>$USER_HOME/.gradle/gradle.properties</code>中，如果你点击了确定，则Studio会把自己的代理配置更新到用户目录的<code>gradle.properties</code>文件中，这样代理就对Gradle生效了。一般不建议点确定，因为Studio和Gradle的代理的资源不一样，配置也会不一致，有时候一个可能需要代理，而另一个却不需要代理。</p>
+<p>IDE和Gradle的代理应该分别配置。</p>
+</blockquote>
+<hr>
+<br>
+
+
+
+<h1 id="待续"><a href="#待续" class="headerlink" title="待续"></a>待续</h1><p>撰写可维护的构建脚本</p>
+<p><a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/authoring_maintainable_build_scripts.html">Authoring Maintainable Build Scripts</a></p>
+<p>搭建Gradle项目</p>
+<p><a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/organizing_gradle_projects.html">Organizing Gradle Projects</a></p>
+<p>提高构建性能</p>
+<p><a target="_blank" rel="noopener" href="https://guides.gradle.org/performance/">Improving the Performance of Gradle Builds</a></p>
+<p>使用缓存</p>
+<p><a target="_blank" rel="noopener" href="https://guides.gradle.org/using-build-cache/">https://guides.gradle.org/using-build-cache/</a></p>
+<hr>
+<br>
+
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/troubleshooting.html">Troubleshooting</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/troubleshooting_dependency_resolution.html">Troubleshooting Dependency Resolution</a></li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2018/10/21/2018-10-21-%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0-%E7%90%86%E8%A7%A3FileProvider/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/10/21/2018-10-21-%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0-%E7%90%86%E8%A7%A3FileProvider/" class="post-title-link" itemprop="url">开发笔记-理解FileProvider</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2018-10-21 11:53:40 / 修改时间：17:52:48" itemprop="dateCreated datePublished" datetime="2018-10-21T11:53:40+08:00">2018-10-21</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>用于更安全地在APP之间实现文件共享的一种机制，适用于Android 7.0及以上。</p>
+<p>当应用A（如相册）允许其他应用（以应用B为例）调用自己并获取自己的文件时，应用A需要使用<code>FileProvider</code>来转化自己的文件路径为<code>content://Uri</code>，并提供给需要文件的应用B。其中</p>
+<ol>
+<li>Android 7.0以上如果不使用<code>FileProvider</code>，应用A将返回<code>file:///</code> <code>Uri</code>，而报错。</li>
+<li>返回的<code>content://Uri</code>有生命周期，即应用B接收文件的<code>Activity</code>的生命周期，如果这个<code>Activity</code>被销毁了，则返回的<code>content://Uri</code>也将失效而不能获取文件。</li>
+</ol>
+<hr>
+<br>
+
+
+
+<h1 id="场景-从相册获取图片"><a href="#场景-从相册获取图片" class="headerlink" title="场景-从相册获取图片"></a>场景-从相册获取图片</h1><p>这是经常遇到的场景。当我们的APP（开发者APP）需要从相册获取图片时，一般使用如下代码</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">getPicture</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">val</span> intent = Intent()</span><br><span class="line">    intent.type = <span class="string">&quot;image/*&quot;</span></span><br><span class="line">    intent.action = Intent.ACTION_GET_CONTENT</span><br><span class="line">    intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, <span class="literal">true</span>)</span><br><span class="line">    startActivityForResult(Intent.createChooser(intent, <span class="string">&quot;Select Picture&quot;</span>), REQUEST_CODE_ADD_PICTURE)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>并在<code>onActivityResult</code>处理获取到Uri，但需要记住的是，这个Uri是相册应用使用<code>FileProvider</code>处理后的<code>content://Uri</code>，其获取图片的权限是暂时的。</p>
+<p>这个场景中，是开发者APP从相册获取图片，无需在开发者APP中配置<code>FileProvider</code>。</p>
+<hr>
+<br>
+
+
+
+<h1 id="场景-拍照"><a href="#场景-拍照" class="headerlink" title="场景-拍照"></a>场景-拍照</h1><p>开发者APP调用相机拍照并获取照片，官方文档<a target="_blank" rel="noopener" href="https://developer.android.com/training/camera/photobasics#kotlin">TakePhoto</a>对这一块有详细的说明。</p>
+<p>开发者APP调用相机拍照后需要保存在一个文件中，这个文件地址由开发者APP规定。也就是说，相机在拍照后需要读写开发者APP规定的文件，那么这个时候，开发者APP就需要提供文件共享功能，这就需要用到<code>FileProvider</code>了。</p>
+<p>在这个场景中，开发者APP中需要配置<code>FileProvider</code>。</p>
+<hr>
+<br>
+
+
+
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://developer.android.com/reference/android/support/v4/content/FileProvider">FileProvider</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.com/training/camera/photobasics#kotlin">TakePhoto</a></li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2018/10/20/2018-10-20-%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0-Uri%E8%BF%87%E6%9C%9F%E5%AF%BC%E8%87%B4%E5%9B%BE%E7%89%87%E4%B8%8D%E6%98%BE%E7%A4%BA%E7%9A%84%E9%97%AE%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/10/20/2018-10-20-%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0-Uri%E8%BF%87%E6%9C%9F%E5%AF%BC%E8%87%B4%E5%9B%BE%E7%89%87%E4%B8%8D%E6%98%BE%E7%A4%BA%E7%9A%84%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">开发笔记-Uri过期导致图片不显示的问题</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-10-20 09:50:22" itemprop="dateCreated datePublished" datetime="2018-10-20T09:50:22+08:00">2018-10-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2018-10-21 17:52:48" itemprop="dateModified" datetime="2018-10-21T17:52:48+08:00">2018-10-21</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h1><p>最近做APP开发时，需要从相册选取图片后在APP的<code>PictureActivity</code>中显示，且每次都需要把获取到的图片URI缓存起来，用以下次进入页面时显示之前选择的图片。但这样偶尔会出现问题：用缓存的Uri并不能获取图片，并报错如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java.lang.SecurityException: Permission Denial: opening provider com.android.providers.media.MediaDocumentsProvider from ProcessRecord&#123;9ebe048 23462:cn.com.xxxx.xxxxx/u0a209&#125; (pid=23462, uid=10209) requires android.permission.MANAGE_DOCUMENTS or android.permission.MANAGE_DOCUMENTS</span><br></pre></td></tr></table></figure>
+
+<p><code>PictureActivity</code>相关代码如下：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">   <span class="comment">// </span></span><br><span class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">addPicture</span><span class="params">()</span></span> &#123;</span><br><span class="line">       <span class="keyword">val</span> intent = Intent()</span><br><span class="line">       intent.type = <span class="string">&quot;image/*&quot;</span></span><br><span class="line">       intent.action = Intent.ACTION_GET_CONTENT</span><br><span class="line">       intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE)</span><br><span class="line">       startActivityForResult(Intent.createChooser(intent, <span class="string">&quot;Select Picture&quot;</span>), REQUEST_CODE_ADD_PICTURE)</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onActivityResult</span><span class="params">(requestCode: <span class="type">Int</span>, resultCode: <span class="type">Int</span>, <span class="keyword">data</span>: <span class="type">Intent</span>?)</span></span> &#123;</span><br><span class="line">       <span class="keyword">super</span>.onActivityResult(requestCode, resultCode, <span class="keyword">data</span>)</span><br><span class="line">       <span class="keyword">if</span>(REQUEST_CODE_ADD_PICTURE == requestCode) &#123;</span><br><span class="line">           <span class="comment">// cacheUri是APP全局静态变量，用于缓存到Memory里</span></span><br><span class="line">           cacheUri = <span class="keyword">data</span>?.<span class="keyword">data</span>?:<span class="keyword">return</span></span><br><span class="line">           <span class="comment">// 使用Glide显示图片</span></span><br><span class="line">           Glide.with(<span class="keyword">this</span>).load(<span class="keyword">data</span>?.<span class="keyword">data</span>).into(iv_picture)</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<hr>
+<br>
+
+
+
+<h1 id="分析和解决"><a href="#分析和解决" class="headerlink" title="分析和解决"></a>分析和解决</h1><p><strong>Uri有生命周期</strong></p>
+<p>查了一下官网以及相关文章，说是用Uri获取图片的权限是暂时赋予的，有生命周期，即选择图片的当前Activity的生命周期。当Activity销毁后，之前的Uri就不能用来获取图片了，否则就会上面的报错。</p>
+<p>上面的例子中，我的应用从相册应用选择图片后，相册会返回图片的Uri，这些Uri获取相册图片的权限是暂时的，即只能在接收这些Uri的<code>PictureActivity</code>中使用，当<code>PictureActivity</code>销毁后，Uri权限即失效，不能用来获取图片。</p>
+<p><strong>Glide有缓存</strong></p>
+<p>Glide默认会有缓存，因此才会导致问题不容易复现，只是偶尔出现。去掉磁盘缓存和内存缓存后，每次回退后再次进入<code>PictureActivity</code>，就一定会复现这个问题。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Glide.with(<span class="keyword">this</span>)</span><br><span class="line">     .applyDefaultRequestOptions(RequestOptions()</span><br><span class="line">           .diskCacheStrategy(DiskCacheStrategy.NONE)</span><br><span class="line">           .skipMemoryCache(<span class="literal">true</span>))</span><br><span class="line">     .load(item).into(iv_picture)</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>解决</strong></p>
+<p>知道问题的原因所在，就可以对症下药了。既然Uri的生命周期是短暂的，那么就不要缓存Uri了，缓存图片的绝对路径就可以了。</p>
+<p>获取图片Uri后，将其转换为绝对路径形式，代码如下（参考了网上他人的代码，网上相关的代码有很多）：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">getFilePathByUri</span><span class="params">(Context context, Uri uri)</span> </span>&#123;</span><br><span class="line">    String path = <span class="keyword">null</span>;</span><br><span class="line">    <span class="comment">// 以 file:// 开头的</span></span><br><span class="line">    <span class="keyword">if</span> (ContentResolver.SCHEME_FILE.equals(uri.getScheme())) &#123;</span><br><span class="line">        path = uri.getPath();</span><br><span class="line">        <span class="keyword">return</span> path;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 以 content:// 开头的，比如 content://media/extenral/images/media/17766</span></span><br><span class="line">    <span class="keyword">if</span> (ContentResolver.SCHEME_CONTENT.equals(uri.getScheme()) &amp;&amp; Build.VERSION.SDK_INT &lt; Build.VERSION_CODES.KITKAT) &#123;</span><br><span class="line">        Cursor cursor = context.getContentResolver().query(uri, <span class="keyword">new</span> String[]&#123;MediaStore.Images.Media.DATA&#125;, <span class="keyword">null</span>, <span class="keyword">null</span>, <span class="keyword">null</span>);</span><br><span class="line">        <span class="keyword">if</span> (cursor != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (cursor.moveToFirst()) &#123;</span><br><span class="line">                <span class="keyword">int</span> columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);</span><br><span class="line">                <span class="keyword">if</span> (columnIndex &gt; -<span class="number">1</span>) &#123;</span><br><span class="line">                    path = cursor.getString(columnIndex);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            cursor.close();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> path;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 4.4及之后的 是以 content:// 开头的，比如 content://com.android.providers.media.documents/document/image%3A235700</span></span><br><span class="line">    <span class="keyword">if</span> (ContentResolver.SCHEME_CONTENT.equals(uri.getScheme()) &amp;&amp; Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.KITKAT) &#123;</span><br><span class="line">        <span class="keyword">if</span> (DocumentsContract.isDocumentUri(context, uri)) &#123;</span><br><span class="line">            <span class="keyword">if</span> (isExternalStorageDocument(uri)) &#123;</span><br><span class="line">                <span class="comment">// ExternalStorageProvider</span></span><br><span class="line">                <span class="keyword">final</span> String docId = DocumentsContract.getDocumentId(uri);</span><br><span class="line">                <span class="keyword">final</span> String[] split = docId.split(<span class="string">&quot;:&quot;</span>);</span><br><span class="line">                <span class="keyword">final</span> String type = split[<span class="number">0</span>];</span><br><span class="line">                <span class="keyword">if</span> (<span class="string">&quot;primary&quot;</span>.equalsIgnoreCase(type)) &#123;</span><br><span class="line">                    path = Environment.getExternalStorageDirectory() + <span class="string">&quot;/&quot;</span> + split[<span class="number">1</span>];</span><br><span class="line">                    <span class="keyword">return</span> path;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isDownloadsDocument(uri)) &#123;</span><br><span class="line">                <span class="comment">// DownloadsProvider</span></span><br><span class="line">                <span class="keyword">final</span> String id = DocumentsContract.getDocumentId(uri);</span><br><span class="line">                <span class="keyword">final</span> Uri contentUri = ContentUris.withAppendedId(Uri.parse(<span class="string">&quot;content://downloads/public_downloads&quot;</span>),</span><br><span class="line">                        Long.valueOf(id));</span><br><span class="line">                path = getDataColumn(context, contentUri, <span class="keyword">null</span>, <span class="keyword">null</span>);</span><br><span class="line">                <span class="keyword">return</span> path;</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isMediaDocument(uri)) &#123;</span><br><span class="line">                <span class="comment">// MediaProvider</span></span><br><span class="line">                <span class="keyword">final</span> String docId = DocumentsContract.getDocumentId(uri);</span><br><span class="line">                <span class="keyword">final</span> String[] split = docId.split(<span class="string">&quot;:&quot;</span>);</span><br><span class="line">                <span class="keyword">final</span> String type = split[<span class="number">0</span>];</span><br><span class="line">                Uri contentUri = <span class="keyword">null</span>;</span><br><span class="line">                <span class="keyword">if</span> (<span class="string">&quot;image&quot;</span>.equals(type)) &#123;</span><br><span class="line">                    contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;</span><br><span class="line">                &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="string">&quot;video&quot;</span>.equals(type)) &#123;</span><br><span class="line">                    contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;</span><br><span class="line">                &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="string">&quot;audio&quot;</span>.equals(type)) &#123;</span><br><span class="line">                    contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">final</span> String selection = <span class="string">&quot;_id=?&quot;</span>;</span><br><span class="line">                <span class="keyword">final</span> String[] selectionArgs = <span class="keyword">new</span> String[]&#123;split[<span class="number">1</span>]&#125;;</span><br><span class="line">                path = getDataColumn(context, contentUri, selection, selectionArgs);</span><br><span class="line">                <span class="keyword">return</span> path;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            String[] projection = &#123; MediaStore.Images.Media.DATA &#125;;</span><br><span class="line">            Cursor cursor = <span class="keyword">null</span>;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                cursor = context.getContentResolver().query(uri, projection, <span class="keyword">null</span>, <span class="keyword">null</span>, <span class="keyword">null</span>);</span><br><span class="line">                <span class="keyword">int</span> column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);</span><br><span class="line">                <span class="keyword">if</span> (cursor.moveToFirst()) &#123;</span><br><span class="line">                    <span class="keyword">return</span> cursor.getString(column_index);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> (cursor != <span class="keyword">null</span>) &#123;</span><br><span class="line">                    cursor.close();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<br>
+
+
+
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://commonsware.com/blog/2016/08/10/uri-access-lifetime-shorter-than-you-might-think.html">Uri Access Lifetime: Shorter Than You Might Think</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.com/reference/android/support/v4/content/FileProvider">FileProvider</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.com/training/camera/photobasics#kotlin">TakePhoto</a></li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+  </nav>
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="章亮"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">章亮</p>
+  <div class="site-description" itemprop="description">Developer For Android</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">47</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">56</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zhangliangnbu" title="GitHub → https://github.com/zhangliangnbu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhangliangnbu@qq.com" title="E-Mail → mailto:zhangliangnbu@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">章亮</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">166k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:31</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

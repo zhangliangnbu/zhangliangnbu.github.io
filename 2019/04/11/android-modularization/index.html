@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zhangliangnbu.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="#导引 主要参考以下两种组件化方案  知乎 Android 客户端组件化实践  多工程多仓库。主工程通过 aar 依赖各个组件。 组件划分：主工程、业务组件（完整业务）、基础组件（基础业务）、基础SDK（业务无关） 组件解耦：公用代码处理、初始化（任务依赖）、通信（路由、接口、EventBus、组件 API 模块）。 组件半自动拆分。 联合编译完整包。动态引入组件。 包含子业务线的组件的处理。子业">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android组件化实践">
+<meta property="og:url" content="https://zhangliangnbu.github.io/2019/04/11/android-modularization/index.html">
+<meta property="og:site_name" content="永恒的码流">
+<meta property="og:description" content="#导引 主要参考以下两种组件化方案  知乎 Android 客户端组件化实践  多工程多仓库。主工程通过 aar 依赖各个组件。 组件划分：主工程、业务组件（完整业务）、基础组件（基础业务）、基础SDK（业务无关） 组件解耦：公用代码处理、初始化（任务依赖）、通信（路由、接口、EventBus、组件 API 模块）。 组件半自动拆分。 联合编译完整包。动态引入组件。 包含子业务线的组件的处理。子业">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-04-11T01:02:21.000Z">
+<meta property="article:modified_time" content="2021-06-29T01:13:08.968Z">
+<meta property="article:author" content="章亮">
+<meta property="article:tag" content="Android">
+<meta property="article:tag" content="组件化">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://zhangliangnbu.github.io/2019/04/11/android-modularization/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Android组件化实践 | 永恒的码流</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">永恒的码流</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">万物皆流，无物常驻</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2019/04/11/android-modularization/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Android组件化实践
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-04-11 09:02:21" itemprop="dateCreated datePublished" datetime="2019-04-11T09:02:21+08:00">2019-04-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-29 09:13:08" itemprop="dateModified" datetime="2021-06-29T09:13:08+08:00">2021-06-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>#导引</p>
+<p>主要参考以下两种组件化方案</p>
+<p> <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/45374964">知乎 Android 客户端组件化实践</a></p>
+<ul>
+<li>多工程多仓库。主工程通过 aar 依赖各个组件。</li>
+<li>组件划分：主工程、业务组件（完整业务）、基础组件（基础业务）、基础SDK（业务无关）</li>
+<li>组件解耦：公用代码处理、初始化（任务依赖）、通信（路由、接口、EventBus、组件 API 模块）。</li>
+<li>组件半自动拆分。</li>
+<li>联合编译完整包。动态引入组件。</li>
+<li>包含子业务线的组件的处理。子业务模块独立配置、编译和运行，组合发布。</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/59245063">网易友品 Android 客户端组件化演进</a></p>
+<ul>
+<li>通信：路由、服务和全局通知</li>
+<li>路由。公共路由表、注解路由地址</li>
+<li>接口。</li>
+<li>拆分流程：建Module -&gt; 移动业务代码到Module -&gt; 根据编译报错修改 -&gt; 接口解耦 -&gt; 配置独立编译功能。</li>
+<li>组件库的独立发布和维护；本地开发调试模式，开发时使用本地Module依赖，发布时使用远程ARR依赖。</li>
+</ul>
+<hr>
+<h1 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h1><p>组件划分。主工程；业务组件（Home、Login、Wisdomsite、Attendance、PersonCenter）及其相对应的API组件；基础业务层（Common、Design等）；基础SDK（Tools、Net等）。</p>
+<p>重构。从最底层开始抽离。</p>
+<p>路由。使用Arouter。</p>
+<p>业务组件间调用。使用相对应的API组件。</p>
+<p>本地module与AAR依赖切换：当依赖无需改变时使用AAR依赖，当依赖需要更改时使用源码依赖。</p>
+<h3 id="通信-接口组件实现"><a href="#通信-接口组件实现" class="headerlink" title="通信-接口组件实现"></a>通信-接口组件实现</h3><ul>
+<li>创建业务组件A和对应的接口组件A-API，且组件A依赖组件A-API</li>
+<li>在组件A-API里定义A需要对外暴露的接口，并用单例维护所有的接口变量</li>
+<li>在组件A里实现组件A-API里的接口，并赋给A-API里的单例</li>
+<li>其他组件B需要使用组件A的方法，则依赖组件A-API，并调用对应接口即可。</li>
+</ul>
+<p>之前项目里有一个wisdomsite业务组件，以及对应的wisdomsite-api组件，现在其他业务组件需要跳转进入wisdomsite组件里，相关代码如下：</p>
+<p>组件wisdomsite相关代码</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// build.gradle</span></span><br><span class="line">dependencies &#123;</span><br><span class="line">  	<span class="comment">// 依赖wisdomsite-api组件</span></span><br><span class="line">    implementation deps.business.wisdomsite_api</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 初始化器，在组件初始化时调用init方法</span></span><br><span class="line"><span class="keyword">object</span> WisdomsiteInitializer &#123;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">lateinit</span> <span class="keyword">var</span> app: Application</span><br><span class="line">    <span class="meta">@JvmStatic</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">init</span><span class="params">(app: <span class="type">Application</span>)</span></span> &#123;</span><br><span class="line">        <span class="keyword">this</span>.app = app</span><br><span class="line">      	<span class="comment">// 初始化A-API组件里的接口</span></span><br><span class="line">        initProvider()</span><br><span class="line">      	<span class="comment">// 其他...</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">initProvider</span><span class="params">()</span></span> &#123;</span><br><span class="line">      	<span class="comment">// 实现A-API组件里的接口</span></span><br><span class="line">        WisdomsiteProvider.wi = WisdomsiteInterfaceImpl()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  	<span class="comment">// 实现A-API组件里的接口</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">WisdomsiteInterfaceImpl</span> : <span class="type">WisdomsiteInterface &#123;</span></span></span><br><span class="line">        <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">toWisdomsiteHome</span><span class="params">(userId: <span class="type">Long</span>)</span></span> &#123;</span><br><span class="line">            ARouter.getInstance()</span><br><span class="line">                .build(WisdomsiteRoute.PATH_WISDOM_SITE_MAIN)</span><br><span class="line">                .withLong(<span class="string">&quot;_userId&quot;</span>, projectId)</span><br><span class="line">                .navigation()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>组件wisdomsite-api相关代码</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 组件wisdomsite需要对外暴露的接口</span></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">WisdomsiteInterface</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 主页</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">toWisdomsiteHome</span><span class="params">(projectId: <span class="type">Long</span>)</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 用一个单例维护接口</span></span><br><span class="line"><span class="keyword">object</span> WisdomsiteProvider &#123;</span><br><span class="line">    <span class="keyword">var</span> wi: WisdomsiteInterface? = <span class="literal">null</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其他组件，需要进入wisdomsite组件</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// build.gradle</span></span><br><span class="line">dependencies &#123;</span><br><span class="line">  	<span class="comment">// 依赖wisdomsite-api组件</span></span><br><span class="line">    implementation deps.business.wisdomsite_api</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 跳转代码</span></span><br><span class="line">WisdomsiteProvider.wi?.toWisdomsiteHome(<span class="number">123456789L</span>);</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="动态依赖"><a href="#动态依赖" class="headerlink" title="动态依赖"></a>动态依赖</h3><p>新建名为<code>deps.gradle</code>的Gradle文件，在其中添加组件与AAR的对应关系；并在每个Module里引入该文件。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">// 其中key为各module的名称，value为上传至Maven仓库里AAR全称</span><br><span class="line">// com.xxx.xxx为公司和部门名称，yyy为项目名称</span><br><span class="line">// 项目基础模块</span><br><span class="line">def xxx = [</span><br><span class="line">				// ---</span><br><span class="line">        net         : &#x27;com.xxx.xxx:android-net:1.0.1&#x27;,</span><br><span class="line">        utils       : &#x27;com.xxx.xxx:android-utils:1.1.1&#x27;,</span><br><span class="line">        common  		: &#x27;com.xxx.xxx:android-yyy-common:1.0.5&#x27;,</span><br><span class="line">        design  		: &#x27;com.xxx.xxx:android-yyy-design:1.0.1&#x27;,</span><br><span class="line">        // ---</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">// 项目业务模块</span><br><span class="line">def xxxBusiness = [</span><br><span class="line">				// ---</span><br><span class="line">        login     	: &#x27;com.xxx.xxx:android-login:1.0.0&#x27;,</span><br><span class="line">        login_api		: &#x27;com.xxx.xxx:android-login-api:1.0.0&#x27;,</span><br><span class="line">        news    		: &#x27;com.xxx.xxx:android-wisdomsite:1.0.0&#x27;,</span><br><span class="line">        news-api		: &#x27;com.xxx.xxx:android-wisdomsite-api:1.0.0&#x27;,</span><br><span class="line">        // ---</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">ext.deps = [</span><br><span class="line">        &#x27;xxx&#x27;        : xxx,</span><br><span class="line">        &#x27;xxxBusiness&#x27;: xxxBusiness,</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+
+
+<p><code>Settings.gradle</code>文件配置如下</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">include <span class="string">&#x27;:app&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/** -----------组件化-动态构建----------- */</span></span><br><span class="line">apply <span class="attr">from:</span> getRootDir().getAbsolutePath() + <span class="string">&#x27;/deps.gradle&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 构建中使用源码的组件配置  默认依赖的组件都使用AAR</span></span><br><span class="line"><span class="keyword">def</span> useSource(String prj, String artifact) &#123;</span><br><span class="line">    include <span class="string">&quot;$prj&quot;</span></span><br><span class="line">    ext.useSourceModuleConfigs.put(<span class="string">&quot;$prj&quot;</span>, <span class="string">&quot;$artifact&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 构建中使用源码的组件配置  默认依赖的组件都使用AAR</span></span><br><span class="line">ext.useSourceModuleConfigs = [:]</span><br><span class="line"><span class="comment">// 业务层</span></span><br><span class="line">useSource(<span class="string">&#x27;:wisdomsite_api&#x27;</span>, deps.xxxBusiness.wisdomsite_api)</span><br><span class="line">useSource(<span class="string">&#x27;:wisdomsite&#x27;</span>, deps.xxxBusiness.wisdomsite)</span><br><span class="line">useSource(<span class="string">&#x27;:login_api&#x27;</span>, deps.xxxBusiness.login_api)</span><br><span class="line">useSource(<span class="string">&#x27;:login&#x27;</span>, deps.xxxBusiness.login)</span><br><span class="line"><span class="comment">// 基础组件</span></span><br><span class="line">useSource(<span class="string">&#x27;:net&#x27;</span>, deps.xxx.net)</span><br><span class="line">useSource(<span class="string">&#x27;:common&#x27;</span>, deps.xxx.common)</span><br><span class="line">useSource(<span class="string">&#x27;:design&#x27;</span>, deps.xxx.design)</span><br><span class="line">useSource(<span class="string">&#x27;:utils&#x27;</span>, deps.xxx.utils)</span><br><span class="line">println <span class="string">&quot;use source modules -&gt; $&#123;ext.useSourceModuleConfigs.keySet()&#125;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 这一步是使用源码替换AAR依赖</span></span><br><span class="line"><span class="comment">// 注释上面的某一行就可以使用其对应组件的AAR依赖</span></span><br><span class="line">gradle.allprojects &#123; project -&gt;</span><br><span class="line">    <span class="keyword">if</span> (project == project.rootProject) &#123;</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    project.configurations.all &#123;</span><br><span class="line">        resolutionStrategy.dependencySubstitution &#123;</span><br><span class="line">            settings.ext.useSourceModuleConfigs.each &#123; prj, artifact -&gt;</span><br><span class="line">                substitute module(artifact) with it.project(prj)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="其他注意事项"><a href="#其他注意事项" class="headerlink" title="其他注意事项"></a>其他注意事项</h3><p>各组件需要单独维护，能生成AAR文件并上传至Maven仓库。</p>
+<p>各模块之间的资源名不能相同，需要配置<code>resourcePrefix</code>。</p>
+<h3 id="简单开发规范"><a href="#简单开发规范" class="headerlink" title="简单开发规范"></a>简单开发规范</h3><p>以wisdomsite组件为例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">## 组件结构</span><br><span class="line">-- data 本地和远程数据层</span><br><span class="line">-- feature 业务层</span><br><span class="line">-- helper 公共业务相关辅助类，如果仅仅是单个业务使用则写在那个业务的包里</span><br><span class="line">-- utils 公共业务无关工具类</span><br><span class="line">-- widgets 公共控件，如果仅仅是单个业务使用则写在那个业务的包里</span><br><span class="line"></span><br><span class="line">## 业务模块划分</span><br><span class="line">- main、video、machine、labor、environment、safety、quality</span><br><span class="line"></span><br><span class="line">## 切图规范</span><br><span class="line">- 只需要放@3x一张图片到drawable-xxhdpi文件即可</span><br><span class="line">- 切图名称：module名称_ic/bg_业务模块名_功能名，如：wisdomsite_ic_home_empty</span><br><span class="line"></span><br><span class="line">## 资源规范-string</span><br><span class="line">- 命名：module名称_业务模块名_功能名，如：wisdomsite_labor_title</span><br><span class="line"></span><br><span class="line">## 资源规范-color</span><br><span class="line">- colors.xml中定义业务无关的颜色值，colors_feature.xml中使用前者的颜色定义业务相关的颜色值</span><br><span class="line">- colors_feature.xml中的命名：module名称_业务模块名_功能名，如：wisdomsite_machine_error</span><br><span class="line"></span><br><span class="line">## 空值展示</span><br><span class="line">- *默认空值*定义在 `@string/wisdomsite_empty_text_filler`</span><br><span class="line">- 在布局中，如果TextView的值可能为空，则默认展示*默认空值*</span><br><span class="line">- 在代码中，给TextView赋值时必须要考虑到空值问题，Kotlin代码使用`EmptyTextFiller.kt`中的扩展函数进行空值处理。</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://juejin.im/post/5b44a0d76fb9a04f932fe147#heading-25">Android模块化实践</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/guiying712/article/details/55213884">Android组件化方案</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.im/post/5b5f17976fb9a04fa775658d">Android 组件化最佳实践</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/23147164">从零开始的Android新项目11 - 组件化实践（1）</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.im/post/5bb9c0d55188255c7566e1e2">AppJoint</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/alibaba/ARouter">ARouter</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.im/post/58f79130a0bb9f006abb066b">使用ARouter实现组件化</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Android/" rel="tag"># Android</a>
+              <a href="/tags/%E7%BB%84%E4%BB%B6%E5%8C%96/" rel="tag"># 组件化</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/03/28/material-effective-java-2rd/" rel="prev" title="书籍-Effective Java 2rd">
+      <i class="fa fa-chevron-left"></i> 书籍-Effective Java 2rd
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/04/11/android-source-not-match/" rel="next" title="Android源码与字节码不匹配问题">
+      Android源码与字节码不匹配问题 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%9E%E8%B7%B5"><span class="nav-number">1.</span> <span class="nav-text">实践</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%9A%E4%BF%A1-%E6%8E%A5%E5%8F%A3%E7%BB%84%E4%BB%B6%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.0.1.</span> <span class="nav-text">通信-接口组件实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E4%BE%9D%E8%B5%96"><span class="nav-number">1.0.2.</span> <span class="nav-text">动态依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">1.0.3.</span> <span class="nav-text">其他注意事项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83"><span class="nav-number">1.0.4.</span> <span class="nav-text">简单开发规范</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">2.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="章亮"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">章亮</p>
+  <div class="site-description" itemprop="description">Developer For Android</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">47</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">56</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zhangliangnbu" title="GitHub → https://github.com/zhangliangnbu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhangliangnbu@qq.com" title="E-Mail → mailto:zhangliangnbu@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">章亮</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">166k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:31</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

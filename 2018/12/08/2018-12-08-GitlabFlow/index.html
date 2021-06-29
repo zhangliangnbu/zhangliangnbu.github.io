@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zhangliangnbu.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="原文链接 Introduction to GitLab Flow   在分支管理和合并方面，用Git做版本管理比用以前的版本管理系统如SVN更容易。Git版本管理允许各种各样的分支策略和工作流程。这些策略和流程是对以前的版本管理方法上的一种改进和提升。但是许多企业的工作流程或者不清晰，或者过于复杂，或者未集成问题跟踪系统（issue tracking systems）。鉴于此，我们提出Gitla">
+<meta property="og:type" content="article">
+<meta property="og:title" content="翻译-GitlabFlow简介">
+<meta property="og:url" content="https://zhangliangnbu.github.io/2018/12/08/2018-12-08-GitlabFlow/index.html">
+<meta property="og:site_name" content="永恒的码流">
+<meta property="og:description" content="原文链接 Introduction to GitLab Flow   在分支管理和合并方面，用Git做版本管理比用以前的版本管理系统如SVN更容易。Git版本管理允许各种各样的分支策略和工作流程。这些策略和流程是对以前的版本管理方法上的一种改进和提升。但是许多企业的工作流程或者不清晰，或者过于复杂，或者未集成问题跟踪系统（issue tracking systems）。鉴于此，我们提出Gitla">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2658578-4fbe838c70462bed.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2658578-5050f3e3155da858.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2658578-e88141fe2d2ee890.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2658578-215fdb1fb9e423c2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2658578-341bb1faacc1e34f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2658578-1df9470b1c257e6a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2658578-69c8a8b6177f39ad.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2658578-7d01159cf93fa25a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="article:published_time" content="2018-12-08T12:36:59.000Z">
+<meta property="article:modified_time" content="2021-06-29T01:13:08.946Z">
+<meta property="article:author" content="章亮">
+<meta property="article:tag" content="Git">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/2658578-4fbe838c70462bed.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+<link rel="canonical" href="https://zhangliangnbu.github.io/2018/12/08/2018-12-08-GitlabFlow/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>翻译-GitlabFlow简介 | 永恒的码流</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">永恒的码流</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">万物皆流，无物常驻</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2018/12/08/2018-12-08-GitlabFlow/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          翻译-GitlabFlow简介
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-12-08 20:36:59" itemprop="dateCreated datePublished" datetime="2018-12-08T20:36:59+08:00">2018-12-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-29 09:13:08" itemprop="dateModified" datetime="2021-06-29T09:13:08+08:00">2021-06-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">版本管理</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p><strong>原文链接</strong> <a target="_blank" rel="noopener" href="https://docs.gitlab.com/ee/workflow/gitlab_flow.html">Introduction to GitLab Flow</a></p>
+</blockquote>
+<p><img src="https://upload-images.jianshu.io/upload_images/2658578-4fbe838c70462bed.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"></p>
+<p>在分支管理和合并方面，用Git做版本管理比用以前的版本管理系统如SVN更容易。Git版本管理允许各种各样的分支策略和工作流程。这些策略和流程是对以前的版本管理方法上的一种改进和提升。但是许多企业的工作流程或者不清晰，或者过于复杂，或者未集成问题跟踪系统（issue tracking systems）。鉴于此，我们提出Gitlab工作流(GitLab flow)，作为定义清晰的最佳实践模式。它结合了<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Feature-driven_development">功能驱动开发模式</a>和<a target="_blank" rel="noopener" href="https://martinfowler.com/bliki/FeatureBranch.html">功能分支模式</a>，并集成了问题跟踪功能。</p>
+<p>从其他版本管理系统迁移到Git的团队一般很难用高效的流程进行开发。本文介绍Gitlab工作流，它结合了Git工作流和问题追踪系统，是一种简单、透明和有效的使用Git进行版本管理的工作方式。</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/2658578-5050f3e3155da858.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"></p>
+<p>将工作副本提交到远程服务，大多数版本管理系统只需要一步，而Git需要三步：从工作区添加文件到暂存区（staging area）、提交暂存区内容到本地库、推动本地库信息到远程库。熟悉这三步后，开发人员又面临另一个挑战——Git的分支模型。</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/2658578-e88141fe2d2ee890.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"></p>
+<p>由于许多刚接触Git的团队并没有约定如何使用它，就会导致之后的开发变得一团糟。 他们遇到的最大问题是许多长期运行的分支都包含部分变更，这就很难确定应该在哪个分支上开发，在哪个分支上部署生产版本。 对此问题的解决方法通常是采用标准化模式，例如Git flow和GitHub流。 我们认为仍有改进的余地，并将详细介绍我们称之为最佳实践的GitLab流。</p>
+<h1 id="Git-Flow和它的问题"><a href="#Git-Flow和它的问题" class="headerlink" title="Git Flow和它的问题"></a>Git Flow和它的问题</h1><p><img src="https://upload-images.jianshu.io/upload_images/2658578-215fdb1fb9e423c2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Git Flow"></p>
+<p>Git Flow是最早提出的分支工作模型之一，引起了广泛的关注。它包含两个长期分支，master主分支和开发分支，以及其他的暂时分支，功能分支、发布分支以及程序修复分支。工作流程是，在开发分支上开发，之后转移动发布分支，最后合并到master分支。Git Flow的分支模型定义清晰、明确，但过于复杂，存在两个问题。</p>
+<ol>
+<li>开发使用开发分支而不是master分支。master分支的作用仅仅是存储生产版本的代码，没有发挥更大的作用。一般的开发惯例是在默认分支上开发，在此分支上创建分支以及合并。由于大多数工具会自动将主分支设置为默认分支，并且默认显示该分支，因此每次必须切换到另一个分支上开发是很烦人的事情。</li>
+<li>过于复杂。引入了程序修复分支和发布分支，导致Git Flow过于复杂。这些分支对某些项目来说可能是必要的，但对绝大多数项目来说则是没有必要的。如今大多数项目都是持续发布的，这意味着你的默认分支会被发布。这样就没有必要引入修复分支和发布分支，以及相关的复杂操作。这些操作的一个例子是发布分支的合并，通常开发人员会犯错误，例如，更改只合并到master中，而忘记合并到develop分支中，但执行发布并不意味着也会执行修补程序。这些错误的根本原因是Git Flow的使用相对较复杂。</li>
+</ol>
+<br>
+# GitHub Flow，一个简单的替代者
+
+<p><img src="https://upload-images.jianshu.io/upload_images/2658578-341bb1faacc1e34f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>针对Git Flow的简单替代方案是<a target="_blank" rel="noopener" href="https://guides.github.com/introduction/flow/index.html">GitHub Flow</a>。这个流程只包含一个主分支和一些功能分支，简单、干净。许多企业已经都在采用这个工作流，并取得了巨大的成功。Atlassian推荐了一个类似的流程，只是修改了功能分支( rebase feature branches)。 将所有内容合并到主分支并部署，这会让你的代码库更简洁，符合持续交付的最佳实践。 但是这个流程仍然存在很多关于部署、环境、发布和议题集成(integrations with issues)的问题。 而GitLab Flow会解决这些问题。<br><br></p>
+<h1 id="GitLab-Flow的Production分支策略"><a href="#GitLab-Flow的Production分支策略" class="headerlink" title="GitLab Flow的Production分支策略"></a>GitLab Flow的Production分支策略</h1><p><img src="https://upload-images.jianshu.io/upload_images/2658578-1df9470b1c257e6a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="GitLab Flow的Production分支"></p>
+<p>GitHub Flow是假设你每次合并功能分支后都能部署到生产环境。这可以用于像SaaS之类的应用程序，但在许多情况下并不能这样做。一种情况是你自己无法控制确切的发布时间，例如IOS应用程序，需要通过App Store审核。另一种情况是你有部署的窗口期（如工作日的上午10点到下午4点，运营团队才帮助你部署），但是你也需要在其他时间合并其他的代码（不能傻等）。在这些情况下，您可以创建一个反映需要部署的代码的生产分支。您可以通过将master分支合并到生产分支来部署新版本。如果你需要知道生产中的代码，您可以查看生产分支。在版本控制系统中，合并提交都有记录，很容易看到部署的大致时间。如果你自动部署生产分支，则这个时间会非常准确。如果你需要更加准确的时间，则可以利用脚本文件在每个部署版本上创建标记。此流程无需Git Flow中常见的发布、标记和合并操作。</p>
+<blockquote>
+<p>这句话怎么理解？原文:This flow prevents the overhead of releasing, tagging and merging that is common to git flow</p>
+</blockquote>
+<br>
+
+<h1 id="GitLab-Flow的Environment分支策略"><a href="#GitLab-Flow的Environment分支策略" class="headerlink" title="GitLab Flow的Environment分支策略"></a>GitLab Flow的Environment分支策略</h1><p><img src="https://upload-images.jianshu.io/upload_images/2658578-69c8a8b6177f39ad.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="GitLab Flow的Environment分支"></p>
+<p>可以在master分支上自动更新环境(开发、测试、生产等)，在这种情况下环境名和分支名可能不一致。假设你有一个开发环境(staging environment)，一个预生产环境(pre-production environment)和一个生产环境(production environment)。在这种情况下，master分支部署在开发环境中，当要部署到预生产时，创建从master分支到预生产分支的合并请求，之后再将预生产分支合并到生产分支中用于发布生产版本。这种只向下游做提交的工作流程(master-&gt;pre-production-&gt;production)可确保代码在所有环境中都经过测试。如果您需<code>cherry-pick</code>一个热修复提交，通常是在功能分支上开发它，之后将其合并到master分支中，但不要删除该功能分支。如果master分支运行良好（假设你正在开发持续部署类项目），然后你需要将修复补丁分支合并到其他分支中。</p>
+<blockquote>
+<p>疑问：这和Git Flow中打紧急修复补丁的做法有什么区别吗？都是需要在开发分支和生产分支上合并修复的代码啊？<br>这段感觉他说的不是很清楚，或者我翻译的太糟。我看阮一峰的<a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2015/12/git-workflow.html">Git 工作流程</a>，也有些迷惑，如下:</p>
+<blockquote>
+<p>开发分支是预发分支的”上游”，预发分支又是生产分支的”上游”。代码的变化，必须由”上游”向”下游”发展。比如，生产环境出现了bug，这时就要新建一个功能分支，先把它合并到<code>master</code>，确认没有问题，再<code>cherry-pick</code>到<code>pre-production</code>，这一步也没有问题，才进入<code>production</code>。</p>
+</blockquote>
+</blockquote>
+<blockquote>
+<p>这里“新建一个功能分支”是在哪里创建？master的最新提交还是对应的创建生产分支的那个提交？。<code>herry-pick</code>哪个分支上的提交？功能分支还是master分支？<br>正文中说“不要删除该功能分支”，加上实践，只能是在master对应的创建生产分支的那个提交上新建分功能分支，然后<code>cherry-pick</code>功能分支上提交到预生产和生产分支上。</p>
+</blockquote>
+<p>如果由于需要许多手动测试而无法实现，则可以发送合并请求，将功能分支合并到下游分支。</p>
+<blockquote>
+<p>这句话不甚理解。原文: If this is not possible because more manual testing is required you can send merge requests from the feature branch to the downstream branches</p>
+</blockquote>
+<br>
+
+<h1 id="GitLab-Flow的发布分支策略"><a href="#GitLab-Flow的发布分支策略" class="headerlink" title="GitLab Flow的发布分支策略"></a>GitLab Flow的发布分支策略</h1><p><img src="https://upload-images.jianshu.io/upload_images/2658578-7d01159cf93fa25a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="GitLab Flow的Release分支"></p>
+<p>只有在你向外界发布软件时，才需要使用发布分支。在这种情况下，每个分支包含较小的版本（2-3-stable, 2-4-stable等）。stable分支从master分支检出，并尽可能晚地创建。越晚创建stable分支，错误越少，最大限度地避免将错误修复补丁应用于多个分支。在创建发布分支后，发布分支中仅允许修复严重的错误。如果需要修复，那么这些错误修复要首先合并到master分支中，然后<code>cherry-pick</code>到发布分支中，这样能避免在后续版本中遇到相同的bug。这就是所谓的“上游优先”策略，也是Google和Red Hat实施的策略。每次在发布分支中增加错误修复补丁时，都会通过设置新标记来发布补丁版本（以符合语义版本控制）。有些项目还有一个稳定的分支，指向与最新发布的分支相同的提交。在此流程中，拥有生产分支（或git flow master分支）并不常见。</p>
+<blockquote>
+<p>这是向外发布软件的工作流，需要维护历史版本的时候，可以利用这个。软件的每个版本都有一个对应的分支来维护。</p>
+</blockquote>
+<blockquote>
+<p>修复历史版本的Bug的工作流程是怎样的？我的理解如下：当发现历史版本如v1.3中有错误需要修复的时候，首先在master分支中对应v1.3的提交上创建hotfix分支，测试无误后提交，首先合并到master分支（以后在maser分支上创建的发布分支就不会出现这个Bug），然后<code>cherry-pick</code>hotfix分支上的提交到v1.3及以后的所有的发布分支上。<br>是不是如此呢？我想不出其他的。</p>
+</blockquote>
+<blockquote>
+<p>上游优先策略。master是所有发布分支的上游，要改动发布分支上的代码，必须先改动<code>master</code>，然后<code>cherry-pick</code>到发布分支上。<br>问题：<code>cherry-pick</code>的提交一定是在<code>master</code>分支上的吗？不是的，只是说先改动<code>master</code>，并不是说一定<code>cherry-pick</code> <code>master</code>分支上的提交。</p>
+</blockquote>
+<br>
+
+<h1 id="待续"><a href="#待续" class="headerlink" title="待续"></a>待续</h1><p>翻译得心累(⊙o⊙)，待以后完全理解了GitlabFlow再把接下来的几节翻译完。</p>
+<ul>
+<li>GitLab Flow的Merge/pull requests</li>
+<li>GitLab Flow的议题追踪</li>
+<li>在merge requests中关联或关闭议题</li>
+<li>使用<code>rebase</code>合并<code>commits</code></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Git/" rel="tag"># Git</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/12/08/2018-12-08-NetworkPractice/" rel="prev" title="使用Rxjava&Retrofit搭建网络层">
+      <i class="fa fa-chevron-left"></i> 使用Rxjava&Retrofit搭建网络层
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/12/08/2018-12-08-GitFlow/" rel="next" title="GitFlow">
+      GitFlow <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Git-Flow%E5%92%8C%E5%AE%83%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">Git Flow和它的问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GitLab-Flow%E7%9A%84Production%E5%88%86%E6%94%AF%E7%AD%96%E7%95%A5"><span class="nav-number">2.</span> <span class="nav-text">GitLab Flow的Production分支策略</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GitLab-Flow%E7%9A%84Environment%E5%88%86%E6%94%AF%E7%AD%96%E7%95%A5"><span class="nav-number">3.</span> <span class="nav-text">GitLab Flow的Environment分支策略</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GitLab-Flow%E7%9A%84%E5%8F%91%E5%B8%83%E5%88%86%E6%94%AF%E7%AD%96%E7%95%A5"><span class="nav-number">4.</span> <span class="nav-text">GitLab Flow的发布分支策略</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BE%85%E7%BB%AD"><span class="nav-number">5.</span> <span class="nav-text">待续</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="章亮"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">章亮</p>
+  <div class="site-description" itemprop="description">Developer For Android</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">47</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">56</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zhangliangnbu" title="GitHub → https://github.com/zhangliangnbu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhangliangnbu@qq.com" title="E-Mail → mailto:zhangliangnbu@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">章亮</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">166k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:31</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

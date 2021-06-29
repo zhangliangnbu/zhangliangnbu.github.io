@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zhangliangnbu.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="前言Gradle是Android构建系统的重点，需要花费时间用心学习。学习资料主要是官方的Gradle Docs，有个社区版的中文翻译资料，英语不好的同学可以看看，但不全。 这章首先对Gradle做一个简单的介绍，然后讲如何使用官方文档和API，接着讲解Gradle的基本概念、Wrapper和学习中需要使用到的命令行指令、插件等。有些知识点如插件应该放在之后的章节讲解，但为了保持文章的完整性，我放">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android构建03-Gradle基础">
+<meta property="og:url" content="https://zhangliangnbu.github.io/2018/08/27/android-build-03-gradle-start/index.html">
+<meta property="og:site_name" content="永恒的码流">
+<meta property="og:description" content="前言Gradle是Android构建系统的重点，需要花费时间用心学习。学习资料主要是官方的Gradle Docs，有个社区版的中文翻译资料，英语不好的同学可以看看，但不全。 这章首先对Gradle做一个简单的介绍，然后讲如何使用官方文档和API，接着讲解Gradle的基本概念、Wrapper和学习中需要使用到的命令行指令、插件等。有些知识点如插件应该放在之后的章节讲解，但为了保持文章的完整性，我放">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2658578-f4b3e247a668231b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2658578-df8c01595c625c03.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="article:published_time" content="2018-08-27T10:02:47.000Z">
+<meta property="article:modified_time" content="2018-10-17T06:52:48.000Z">
+<meta property="article:author" content="章亮">
+<meta property="article:tag" content="Android">
+<meta property="article:tag" content="Gradle">
+<meta property="article:tag" content="Build">
+<meta property="article:tag" content="Groovy">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/2658578-f4b3e247a668231b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+<link rel="canonical" href="https://zhangliangnbu.github.io/2018/08/27/android-build-03-gradle-start/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Android构建03-Gradle基础 | 永恒的码流</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">永恒的码流</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">万物皆流，无物常驻</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2018/08/27/android-build-03-gradle-start/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Android构建03-Gradle基础
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-08-27 18:02:47" itemprop="dateCreated datePublished" datetime="2018-08-27T18:02:47+08:00">2018-08-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2018-10-17 14:52:48" itemprop="dateModified" datetime="2018-10-17T14:52:48+08:00">2018-10-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android%E6%9E%84%E5%BB%BA%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">Android构建系统</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>Gradle是Android构建系统的重点，需要花费时间用心学习。学习资料主要是官方的<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/userguide.html">Gradle Docs</a>，有个社区版的<a target="_blank" rel="noopener" href="https://dongchuan.gitbooks.io/gradle-user-guide-/">中文翻译资料</a>，英语不好的同学可以看看，但不全。</p>
+<p>这章首先对Gradle做一个简单的介绍，然后讲如何使用官方文档和API，接着讲解Gradle的基本概念、Wrapper和学习中需要使用到的命令行指令、插件等。有些知识点如插件应该放在之后的章节讲解，但为了保持文章的完整性，我放在了这一章，学习的过程中可能不能完全理解，没有关系，在以后的章节中如果有涉及的话，会具体解释。</p>
+<hr>
+<br>
+
+
+
+<h1 id="Gradle简介"><a href="#Gradle简介" class="headerlink" title="Gradle简介"></a>Gradle简介</h1><p>Gradle是一个注重灵活性和性能的开源构建自动化工具，使用Groovy或Kotlin DSL来编写构建脚本。</p>
+<blockquote>
+<p>虽然支持Kotlin，但还是建议学习Groovy。因为：一，目前官方示例里有许多还没有kotlin方式；二，目前大多数项目的Gradle脚本都是用Groovy编写的。</p>
+</blockquote>
+<p>Gradle特点如下：</p>
+<ol>
+<li>高度可定制。Gradle使用了可定制和可扩展的设计思想，如使用插件。</li>
+<li>快速。Gradle通过重用先前执行的输出，仅处理已更改的输入以及并行执行任务来快速完成任务。</li>
+<li>强大。Gradle是Android的官方构建工具，并支持许多主流的编程语言和技术。</li>
+</ol>
+<p><strong>图形界面和命令行</strong> Gradle支持IDE或命令行两种方式来构建工程。支持主流的IDE，如Android Studio, Eclipse, IntelliJ IDEA, Visual Studio 2017, 和XCode等。</p>
+<blockquote>
+<p>提示：命令行方式构建是必须掌握的，因为命令行方式包含所有的功能，而图形界面方式却未必。在调试时，命令行方式尤其重要。</p>
+</blockquote>
+<p><strong>典型的工程目录</strong> 一个典型Gradle项目一般会包括两个脚本文件（<code>settings.gradle</code>和<code>build.gradle</code>）和Wrapper文件（gradle文件目录和gradlew、gradlew.bat可执行文件）。如下所示</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">├── settings.gradle </span><br><span class="line">├── build.gradle</span><br><span class="line">├── gradle</span><br><span class="line">│   └── wrapper</span><br><span class="line">│       ├── gradle-wrapper.jar  </span><br><span class="line">│       └── gradle-wrapper.properties  </span><br><span class="line">├── gradlew  </span><br><span class="line">└── gradlew.bat</span><br></pre></td></tr></table></figure>
+<p>其中<code>settings.gradle</code>和<code>build.gradle</code>是项目构建时所需的脚本，Gradle会据此创建相应的Java实例。Wrapper文件用于管理<code>gradle</code>版本，一个终端上不同的项目可以使用不同配置和版本的Gradle，具体项目中使用<code>./gradlew</code>或<code>gradlew.bat</code>来替代<code>gradle</code>命令。</p>
+<hr>
+<br>
+
+
+
+<h1 id="Gradle-Docs的使用"><a href="#Gradle-Docs的使用" class="headerlink" title="Gradle Docs的使用"></a>Gradle Docs的使用</h1><p><a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/userguide.html">Gradle Docs</a>资料中，最重要的是User Manual（用户手册）和API文档（DSL Reference和Javadoc），其余的可以不用看。</p>
+<p><strong>Gradle User Manual</strong> User Manual中最关键的一部分当属“Build Configuration Scripts”（官网经常换名字，可能已经不叫这个标题了）。这一部分内容相当多，内容也比较杂。可以先看<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/build_lifecycle.html">Build Lifecycle</a>和<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/multi_project_builds.html">Configuring Multi-Project Build</a>这两节，看懂这两节，就可以对Gradle构建的流程有一个清晰的了解了，之后再看其他章节就非常容易了。</p>
+<p><strong>API文档</strong> API文档包括<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/dsl/">Gradle DSL Reference（Gradle特定语言指南）</a> 和 <a target="_blank" rel="noopener" href="https://docs.gradle.org/current/javadoc/">Javadoc（Java文档）</a>。Reference包含主要的接口和类，并做了描述和分类以利于学习，Javadoc包含所有的API，主要用于检索。就内容的覆盖面而言，Javadoc完全包含Reference。学习时可以看Reference，使用中具体查找Gradle的某个API文档时，用Javadoc。</p>
+<hr>
+<br>
+
+
+
+<h1 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h1><p>使用Gradle构建项目时，会经常涉及到几个重要的概念：脚本(Script)、项目(Project)和任务(Task)。这几个概念出现的顺序如下：</p>
+<ol>
+<li>开发者编写脚本，如<code>settings.gradle</code>和<code>build.gradle</code>；</li>
+<li>构建项目时，Gradle会根据构建脚本创建对应的Java实例，如<code>settings.gradle</code>对应<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/dsl/org.gradle.api.initialization.Settings.html">Setting</a>，<code>build.gradle</code>对应<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/dsl/org.gradle.api.Project.html">Project</a>，其中<code>Project</code>包含构建需要的任务集。然后，Gradle根据这些实例依次执行初始化、项目配置和任务执行等来构建项目。</li>
+</ol>
+<h2 id="脚本-Script"><a href="#脚本-Script" class="headerlink" title="脚本(Script)"></a><a target="_blank" rel="noopener" href="https://docs.gradle.org/current/dsl/org.gradle.api.Script.html">脚本(Script)</a></h2><p>利用Gradle构建项目时，与开发者直接交互的就是脚本了。<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/dsl/">Gradle脚本有以下特点</a>：</p>
+<ol>
+<li>每个脚本都有一个对应的Java实例，称为代理对象，在脚本中可以直接使用代理对象的属性和方法。</li>
+<li>Gradle脚本实现了<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/dsl/org.gradle.api.Script.html"><code>Script</code></a>接口。此接口定义了许多属性和方法，可以在脚本中直接使用。</li>
+<li>Gradle脚本由零或多个语句和脚本块组成（statements and script blocks）。 语句包括方法调用、属性赋值和局部变量定义等。 脚本块是一种方法调用，它以闭包作为方法的参数，而闭包用来配置代理对象。</li>
+</ol>
+<h2 id="项目-Project"><a href="#项目-Project" class="headerlink" title="项目(Project)"></a><a target="_blank" rel="noopener" href="https://docs.gradle.org/current/dsl/org.gradle.api.Project.html">项目(Project)</a></h2><p>项目是Gradle的最基本的概念之一。<br>Gradle通过<code>build.gradle</code>脚本生成实现了<code>Project</code>接口的项目实例，每个Gradle构建都由一个或多个项目组成。<code>Project</code>接口是脚本文件与Gradle交互的主要API，可以通过<code>Project</code>实例访问Gradle的所有功能。</p>
+<h2 id="任务-Task"><a href="#任务-Task" class="headerlink" title="任务(Task)"></a><a target="_blank" rel="noopener" href="https://docs.gradle.org/current/dsl/org.gradle.api.Task.html">任务(Task)</a></h2><p>项目由一个或多个任务组成。 每个任务执行一些基本工作，例如编译类、运行单元测试或压缩WAR文件等。<br>任务由一系列Action对象组成。 执行任务时，通过调用<code>Action.execute（T）</code>依次执行每个<code>Action</code>。 可以通过调用<code>Task.doFirst（org.gradle.api.Action）</code>或<code>Task.doLast（org.gradle.api.Action）</code>向任务添加<code>Action</code>。</p>
+<p><strong>概念之间的关系</strong> Gradle中项目和任务、Action的关系如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">A[Gradle构建]</span><br><span class="line">A --&gt;B1(项目1)</span><br><span class="line">A --&gt;B2(项目2)</span><br><span class="line">A --&gt;B3(项目 ...)</span><br><span class="line">B1 --&gt; T11[任务 ...]</span><br><span class="line">T11 --&gt; A111[Action ...]</span><br><span class="line">B2 --&gt; T21[任务 ...]</span><br><span class="line">T21 --&gt; A211[Action ...]</span><br><span class="line">B3 --&gt; T31[任务 ...]</span><br><span class="line">T31 --&gt; A311[Action ...]</span><br></pre></td></tr></table></figure>
+
+<p><strong>浏览官方文档</strong> 以上概念详细说明和使用，请见官方手册和指南：</p>
+<ol>
+<li>脚本。<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/writing_build_scripts.html">Writing Build Scripts</a>、<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/dsl/org.gradle.api.Script.html">Script Reference</a></li>
+<li>项目。<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/dsl/org.gradle.api.Project.html">Project Reference</a></li>
+<li>任务。<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/tutorial_using_tasks.html">Build Script Basics</a>、<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/more_about_tasks.html">Authoring Tasks</a>、<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/custom_tasks.html">Writing Custom Task Classes</a>、<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/dsl/org.gradle.api.Task.html">Task Reference</a></li>
+</ol>
+<p>以上文档可以不用深读，但需要浏览一遍，知道大概。</p>
+<hr>
+<br>
+
+
+
+<h1 id="Gradle-Wrapper"><a href="#Gradle-Wrapper" class="headerlink" title="Gradle Wrapper"></a>Gradle Wrapper</h1><p>前言中已经提到了Wrapper，即一种管理当前项目的Gradle版本的工具。多人协作时，每个人安装的Gradle环境可能不一致（也没有必要一致），需要使用Wrapper管理项目的版本。官方强烈推荐使用Wrapper管理具体的项目，并以<code>./gradlew</code>(macOS)代替<code>gradle</code>执行命令。<br>Wrapper目录中有一个<code>gradle-wrapper.properties</code>文件，配置Gradle的版本号、本地存储地址等。</p>
+<p><strong>引入Wrapper</strong> 使用命令行添加Wrapper有两种方式：</p>
+<ol>
+<li>使用<code>gradle init</code>创建新项目，则会初始化一个带有Wrapper的Gradle项目。</li>
+<li>使用<code>gradle wrapper</code>在旧的项目中添加Wrapper。<blockquote>
+<p><code>wrapper</code>是Gradle的内建任务</p>
+</blockquote>
+</li>
+</ol>
+<p>一般的IDE创建项目时都会自动生产Wrapper文件，如Android Studio。</p>
+<p><strong>使用Wrapper执行任务</strong> 用Wrapper脚本替换掉<code>gradle</code>来执行任务即可。以macOS平台为例，在项目根目录下执行<code>./gradlew [task name] </code>即可，如列出当前项目的所有任务，项目根目录下执行：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> ./gradlew tasks</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>更新Wrapper</strong> 有两种方式更新Wrapper</p>
+<ol>
+<li>命令行方法。<code>.gradlew wrapper --gradle-version [要更新的版本号]</code>。</li>
+<li>修改<code>gradle/wrapper/gradle-wrapper.properties</code>中的<code>distributionUrl</code>属性。</li>
+</ol>
+<p>关于Gradle Wrapper的详细说明请见官方手册<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/gradle_wrapper.html">The Gradle Wrapper</a></p>
+<hr>
+<br>
+
+
+
+<h1 id="命令行"><a href="#命令行" class="headerlink" title="命令行"></a>命令行</h1><p><strong>指令形式</strong> Gradle命令行指令由三部分组成: 可执行文件<code>gradle</code>或<code>./gradlew</code>、一个或多个任务名、零或多个选项名，如下所示：。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> gradle [taskName...] [--option-name...]</span></span><br></pre></td></tr></table></figure>
+<p>指令的详细说明请见官方手册<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/command_line_interface.html">Command-Line Interface</a>，这里我只介绍学习或调试中常用的指令。部分常见命令行选项说明如下：</p>
+<p><strong>固有任务类</strong></p>
+<ul>
+<li><code>gradle build</code>。生成所有的输出，并执行所有的检查。</li>
+<li><code>gradle clean</code>。删除build文件目录。</li>
+<li><code>gradle projects</code>。查看项目结构。</li>
+<li><code>gradle tasks</code>。查看任务列表。查看某个任务详细信息，可用<code>gradle help --task someTask</code></li>
+<li><code>gradle dependencies</code>。查看依赖列表。</li>
+</ul>
+<p><strong>调试类</strong></p>
+<ul>
+<li><code>-?</code>, <code>-h</code>, <code>--help</code>。查看帮助信息。</li>
+<li><code>-v</code>,<code> --version</code>。查看版本信息。</li>
+<li><code>-s</code>,<code> --stacktrace</code>。执行任务时，打印栈信息。如<code>gradle build -s</code></li>
+</ul>
+<p><strong>日志类</strong></p>
+<ul>
+<li><code>-q</code>, <code>--quiet</code>。只打印errors类信息。</li>
+<li><code>-i</code>, <code>--info</code>。打印详细的信息。</li>
+</ul>
+<p>其中在学习的过程中，经常会用到</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ gradle [taskName...] -i</span><br></pre></td></tr></table></figure>
+<p>这会打印比较详细的构建信息，用于帮助我们理解Gradle构建流程、项目配置和依赖、任务依赖等。</p>
+<hr>
+<br>
+
+
+
+<h1 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h1><p>配置构建环境，主要配置Gradle构建参数和对应的JVM参数，如代理策略等。其目的是为了多人协作时，保持在一致的环境下进行项目开发。</p>
+<p>配置环境有几种途径，优先级从高往低，列出如下：</p>
+<ol>
+<li>命令行。</li>
+<li><code>GRADLE_USER_HOME</code>目录中的<code>gradle.properties</code>文件。</li>
+<li>项目根目录中的<code>gradle.properties</code>文件。</li>
+<li>环境变量。运行Gradle环境的变量，如JAVA_HOME等。</li>
+</ol>
+<p>具体参数的配置请见官方手册<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/build_environment.html">Build Environment</a></p>
+<hr>
+<br>
+
+
+
+<h1 id="依赖管理"><a href="#依赖管理" class="headerlink" title="依赖管理"></a>依赖管理</h1><p>现在的项目基本上都需要使用第三方库，一般称其为依赖，这样说并不准确，<a href="(https://docs.gradle.org/current/userguide/dependency_management_terminology.html#sub:terminology_module)">官方的定义</a>是:</p>
+<blockquote>
+<p>A dependency is a pointer to another piece of software required to build, test or run a module</p>
+<p>依赖是指向软件模块的指针，而非模块本身</p>
+</blockquote>
+<p>依赖管理是一种以自动方式声明、解析和使用项目所需的依赖的技术。</p>
+<p><strong>依赖管理流程</strong> </p>
+<ol>
+<li>声明。在构建脚本中声明依赖和对应的仓库。 </li>
+<li>解析。项目构建时，Gradle会定位依赖的本地路径或远程服务器路径并下载依赖（有必须要的话）。 </li>
+<li>缓存。依赖解析后，Gradle会将从远程服务下载的依赖缓存到本地，避免下次构建时重复下载。 </li>
+</ol>
+<p><strong>依赖的类型</strong></p>
+<ul>
+<li>模块依赖（Module dependencies）。指向一个库中的模块，这是最常见的依赖类型。</li>
+<li>文件依赖。指向无需仓库的一系列文件。</li>
+<li>项目依赖。指向多项目工程主项目需要用到的其他项目。</li>
+<li>特定分发的依赖。如API依赖、TestKit依赖和本地Groovy依赖等。 </li>
+</ul>
+<p><strong>常见的仓库</strong></p>
+<ul>
+<li>文件系统仓库。通过查找文件目录以解析依赖。</li>
+<li>Maven Central 仓库。一般默认的Maven仓库。</li>
+<li>JCenter Maven 仓库。Android默认的Maven仓库。</li>
+<li>Google Maven 仓库。Google的支持库所在的Maven仓库。</li>
+<li>本地 Maven仓库。就是你开发项目所用的主机中的仓库。</li>
+<li>自定义Maven仓库。一些公司，如阿里，喜欢把阿里云OSS服务SDK等存储在自己搭建的Maven仓库中。</li>
+<li>Ivy仓库。不常用。</li>
+</ul>
+<blockquote>
+<p>Maven仓库是用<a href="javascript:void%200">Apache Maven</a>工具搭建的存储不同类型资源的本地或远程资源服务。Maven Central仓库、JCenter Maven仓库和Google Maven仓库都是Maven仓库，区别在于存储的服务器和管理的机构不一样。 </p>
+</blockquote>
+<hr>
+<br>
+
+
+
+<h1 id="插件-Plugin"><a href="#插件-Plugin" class="headerlink" title="插件(Plugin)"></a>插件(Plugin)</h1><p><strong>插件简介</strong> Gradle的一个非常大的特点就是灵活或者说可扩展性，它本身没有提供多少构建具体任务的逻辑，构建各类具体的项目都是通过增加插件实现的。插件可以添加新任务（例如JavaCompile），新的域对象（例如SourceSet），新的规定（例如Java源位于src/main/java）以及继承其他插件而获得的功能。<br>Gradle本身提供了一些基础的插件，只需要配置id即可使用，如<code> Java Plugin</code>。</p>
+<p><strong>二进制插件及配置</strong> 插件分为两种，本地脚本插件和远程发布的二进制插件，一般我们常用的是后者。如Android项目中我们用到的Android插件，就是一种远程二进制插件。<br>Android项目添加插件示例：<br>在根目录<code>build.gradle</code>中添加仓库和插件路径</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">buildscript &#123;</span><br><span class="line">    repositories &#123;</span><br><span class="line">        google()</span><br><span class="line">        jcenter()</span><br><span class="line">    &#125;</span><br><span class="line">    dependencies &#123;</span><br><span class="line">        classpath <span class="string">&#x27;com.android.tools.build:gradle:3.1.4&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在app目录<code>build.gradle</code>中应用插件</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apply <span class="attr">plugin:</span> <span class="string">&#x27;com.android.application&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>插件的使用</strong> Gradle使用插件里的构建逻辑分为两步</p>
+<ol>
+<li>解析插件。即获取插件的jar包。插件被解析后，就可以在脚本文件中直接使用它的API，如Android项目脚本文件中的配置<code>android</code>、方法<code>compileSdkVersion</code>等。本地脚本插件和Gradle固有插件会自动解析。</li>
+<li>应用插件。即执行插件的<code>Plugin.apply(T)</code>方法，这是插件的核心方法。在这个方法中，可以为当前项目添加一些新的任务。</li>
+</ol>
+<p>关于插件更详细的说明请见官方手册:</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/plugins.html#sec:using_plugins">Using Gradle Plugins</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/standard_plugins.html">Standard Gradle plugins</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/plugin_reference.html">Core Plugin</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/custom_plugins.html">Writing Custom Plugins</a></li>
+</ol>
+<p>如何你想查看Gradle源码，看看插件是如何实现的，链接如下：</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://github.com/gradle/gradle">Github上的Gradle源码</a></li>
+<li><a target="_blank" rel="noopener" href="https://source.android.com/setup/build/downloading">Android插件源码-AOSP</a></li>
+<li><a target="_blank" rel="noopener" href="http://repo.spring.io/libs-milestone/com/android/tools/build/gradle/">Andorid插件源码-repe.spring.io</a></li>
+<li><a target="_blank" rel="noopener" href="https://android.googlesource.com/platform/tools/build/+/e49dcf3e1edbe40d945a24fee85c6422eb6221b9/">Android源码-android.google.source</a></li>
+</ol>
+<hr>
+<br>
+
+
+
+<h1 id="示例-单项目构建"><a href="#示例-单项目构建" class="headerlink" title="示例-单项目构建"></a>示例-单项目构建</h1><p>官方示例 <a target="_blank" rel="noopener" href="https://guides.gradle.org/creating-new-gradle-builds/?_ga=2.262531468.1022039991.1532854446-1803358189.1525999794">Creating New Gradle Builds</a><br>主要练习：初始化项目、执行任务、移动文件、添加Plugin等。</p>
+<blockquote>
+<p>提示：示例中使用了<code>./gradlew</code>来执行命令，如果因为下载失败导致该命令不可用，使用<code>gradle</code>命令即可。</p>
+</blockquote>
+<hr>
+<br>
+
+
+
+<h1 id="示例-多项目构建"><a href="#示例-多项目构建" class="headerlink" title="示例-多项目构建"></a>示例-多项目构建</h1><p>官方示例 <a target="_blank" rel="noopener" href="https://guides.gradle.org/creating-multi-project-builds/?_ga=2.39430567.560526946.1533349009-1803358189.1525999794">Creating Multi-project Builds</a></p>
+<blockquote>
+<p>提示：示例中需要下载依赖，国内网络直接访问可能导致下载失败，需要设置国外代理服务。我的代理服务走的通道是<code>shadowsocks</code>，有的资源使用<code>shadowsocks</code>协议是访问不了的，需要使用<code>http</code>或<code>https</code>协议才行，可以使用<code>privoxy</code>切换<code>shadowsocks</code>协议为<code>http</code>和<code>https</code>协议（实际上是在本地<code>shadowsocks</code>端口上再加了一层<code>privoxy</code>代理）。<br><code>shadowsocks</code>代理设置请参考<a target="_blank" rel="noopener" href="https://github.com/shadowsocks/shadowsocks/blob/master/README.md">Github shadowsocks</a><br><code>privoxy</code>代理设置请参考 <a target="_blank" rel="noopener" href="https://www.privoxy.org/">Privoxy 官网</a>、<a target="_blank" rel="noopener" href="http://lazybios.com/2016/11/transter-socks5-to-http-by-privoxy/">使用Privoxy桥接Http代理到SOCKS5代理</a>、<a target="_blank" rel="noopener" href="https://blog.zfanw.com/privoxy-tutorial/">Privoxy 教程</a><br>Gradle项目代理设置如下：在电脑中设置好<code>http</code>协议代理后，在当前项目根目录下创建<code>gradle.properties</code>文件（如果有就不用创建），编辑文件如下:</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">systemProp.http.proxyHost=<span class="number">127.0</span>.<span class="number">0.1</span></span><br><span class="line">systemProp.http.nonProxyHosts=<span class="number">192.168</span>.*, &lt;localhost&gt;</span><br><span class="line">systemProp.http.proxyPort=<span class="number">8118</span></span><br><span class="line">systemProp.https.proxyHost=<span class="number">127.0</span>.<span class="number">0.1</span></span><br><span class="line">systemProp.https.nonProxyHosts=<span class="number">192.168</span>.*, &lt;localhost&gt;</span><br><span class="line">systemProp.https.proxyPort=<span class="number">8118</span></span><br></pre></td></tr></table></figure>
+
+<p>其中<code>8118</code>是<code>privoxy</code>的端口号<br>Gradle代理设置详细说明请参考官方文档<a target="_blank" rel="noopener" href="https://docs.gradle.org/4.0/userguide/build_environment.html#N10D07">Accessing the web via a proxy</a>（虽然也不够详细:p）</p>
+</blockquote>
+<hr>
+<br>
+
+
+
+<h1 id="示例-Android项目根目录-build-gradle语法分析"><a href="#示例-Android项目根目录-build-gradle语法分析" class="headerlink" title="示例-Android项目根目录 build.gradle语法分析"></a>示例-Android项目根目录 <code>build.gradle</code>语法分析</h1><p>利用<code>Android Studio</code>创建一个项目，根目录中<code>build.gradle</code>文件如下</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">buildscript &#123;</span><br><span class="line">    ext.kotlin_version = <span class="string">&#x27;1.2.50&#x27;</span></span><br><span class="line">    repositories &#123;</span><br><span class="line">        google()</span><br><span class="line">        jcenter()</span><br><span class="line">    &#125;</span><br><span class="line">    dependencies &#123;</span><br><span class="line">        classpath <span class="string">&#x27;com.android.tools.build:gradle:3.1.4&#x27;</span></span><br><span class="line">        classpath <span class="string">&quot;org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version&quot;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// <span class="doctag">NOTE:</span> Do not place your application dependencies here; they belong</span></span><br><span class="line">        <span class="comment">// in the individual module build.gradle files</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">allprojects &#123;</span><br><span class="line">    repositories &#123;</span><br><span class="line">        google()</span><br><span class="line">        jcenter()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">task clean(<span class="attr">type:</span> Delete) &#123;</span><br><span class="line">    delete rootProject.buildDir</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>直接使用API文档来分析上面的代码：</p>
+<ul>
+<li><p><code>Project</code>和方法。<code>build.gradle</code>脚本的代理对象是<code>Project</code>实例，<code>buildscript</code>、<code>allprojects</code>和<code>task</code>是<code>Project</code>中的三个方法（实际上，<code>task</code>在这里是关键字，不是方法，但<code>Project</code>中有方法与之对应）。</p>
+</li>
+<li><p><code>buildscript</code>。在<code>Android Studio</code>中(<code>Mac</code>平台 <code>Command+鼠标左键</code>)或者在文档中查看API详情，如下<br>￼￼<img src="https://upload-images.jianshu.io/upload_images/2658578-f4b3e247a668231b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="buildscript"><br>这个方法的作用是配置项目构建脚本的<code>classpath</code>，参数是一个闭包，闭包的代理对象是<code>ScriptHandler</code>，即如果<code>buildscript</code>代码块中的属性和方法，如果不能在<code>Project</code>中找到，就去<code>ScriptHandler</code>中去找。<br>再来分析下<code>buildscript</code>代码块里的内容。示例代码中，<code>repositories</code>和<code>dependencies</code>都是<code>ScriptHandler</code>的方法，可以直接在<code>Android Studio</code>中点击查看其API。但<code>ext</code>是什么，是谁的属性？<code>owner</code>（<code>Project</code>）的，还是<code>delegate</code>（<code>ScriptHandler</code>）的？由于不能在<code>Studio</code>里直接查看，我们先看看<code>Project</code>的API<br><img src="https://upload-images.jianshu.io/upload_images/2658578-df8c01595c625c03.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Project"><br>全局搜索<code>ext</code>或<code>setExt</code>、<code>getExt</code>，都没有结果。再看看其继承的接口，发现<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/javadoc/org/gradle/api/plugins/ExtensionAware.html">ExtensionAware</a>中可以搜索到，API文档说</p>
+</li>
+</ul>
+<blockquote>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// All extension aware objects have a special “ext” extension of type &gt;ExtraPropertiesExtension</span></span><br><span class="line"><span class="keyword">assert</span> project.hasProperty(<span class="string">&quot;myProperty&quot;</span>) == <span class="literal">false</span></span><br><span class="line">project.ext.myProperty = <span class="string">&quot;myValue&quot;</span></span><br><span class="line"><span class="comment">// Properties added to the “ext” extension are promoted to the owning &gt;object</span></span><br><span class="line"><span class="keyword">assert</span> project.myProperty == <span class="string">&quot;myValue&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>继承了<code>ExtensionAware</code>的对象都有一个特殊的<code>ext</code>扩展类型，可以直接添加属性<code>project.ext.myProperty = &quot;myValue&quot;</code>，之后使用属性<code>myProperty</code>时可以不用写<code>ext</code>，如<code>project.myProperty</code>。<br>因此示例代码中的<code>ext</code>是<code>owner</code>（<code>Project</code>）的属性。</p>
+</blockquote>
+<ul>
+<li><p><code>allprojects</code>。分析方法同上，略。</p>
+</li>
+<li><p><code>task</code>。<code>Project</code>中有四个<code>task</code>方法</p>
+</li>
+</ul>
+<blockquote>
+<p><code>Task task(String name)</code><br><code>Task task(String name, Closure configureClosure)</code><br><code>Task task(Map&lt;String, ?&gt; args, String name)</code><br><code>Task task(Map&lt;String, ?&gt; args, String name, Closure configureClosure)</code></p>
+</blockquote>
+<p><code>Studio</code>中链接的是<code>Task task(String name)</code>，但后面的<code>clean(type: Delete) &#123; ​    delete rootProject.buildDir &#125;</code>是什么呢？开始以为是方法，实际上并不是，一是在<code>Project</code>中没有<code>clean</code>方法，二是<a target="_blank" rel="noopener" href="http://www.groovy-lang.org/semantics.html#_optional_parentheses">Groovy语法中不允许嵌套的方法省略括号</a>。</p>
+<blockquote>
+<p>Parentheses are required for method calls without parameters or ambiguous method calls:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">println(Math.max(5, 10))</span><br></pre></td></tr></table></figure>
+
+<p>不是方法，但看起来又不是参数。查看<code>Task</code>API，有定义task的示例<br>You can also use the task keyword in your build file:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">task myTask</span><br><span class="line">task myTask &#123; configure closure &#125;</span><br><span class="line">task myTask(type: SomeType)</span><br><span class="line">task myTask(type: SomeType) &#123; configure closure &#125;</span><br></pre></td></tr></table></figure>
+
+<p>也就是说<code>task</code>可以是一个关键字！去看Gradle官方文档<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/more_about_tasks.html#sec:defining_tasks">Defining tasks</a><br>There are a few variations on this style, which you may need to use in certain situations. For example, the keyword style does not work in expressions.</p>
+</blockquote>
+<p>有很多方式定义task，有关键字格式：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">task copy(type: Copy) &#123;</span><br><span class="line">    from(file(&#x27;srcDir&#x27;))</span><br><span class="line">    into(buildDir)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们的示例就是这种格式的。<br>也有方法格式的：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">task(&#x27;copy&#x27;, type: Copy) &#123;</span><br><span class="line">    from(file(&#x27;srcDir&#x27;))</span><br><span class="line">    into(buildDir)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这对应<code>Project</code>的方法<code>Task task(Map&lt;String, ?&gt; args, String name, Closure configureClosure)</code>。Groovy方法中的参数似乎是可以改变顺序的，有人写的<a target="_blank" rel="noopener" href="https://blog.csdn.net/cckevincyh/article/details/75094293">博客</a>中提到了这件事，但我没有找到相关的官方文档。<br>终于分析完了，初学者学习这些估计要抓狂，:p。</p>
+<p>最后，把示例代码中省略的括号和<code>owner</code>、<code>delegate</code>补全，以提高可读性，如下</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">buildscript(&#123;</span><br><span class="line">    owner.ext.kotlin_version = <span class="string">&#x27;1.2.50&#x27;</span></span><br><span class="line">    delegate.repositories(&#123;</span><br><span class="line">        delegate.google()</span><br><span class="line">        delegate.jcenter()</span><br><span class="line">    &#125;)</span><br><span class="line">    dependencies(&#123;</span><br><span class="line">        delegate.add(<span class="string">&#x27;classpath&#x27;</span>, <span class="string">&#x27;com.android.tools.build:gradle:3.1.4&#x27;</span>)</span><br><span class="line">        delegate.add(<span class="string">&#x27;classpath&#x27;</span>, <span class="string">&quot;org.jetbrains.kotlin:kotlin-gradle-plugin:$&#123;owner.kotlin_version&#125;&quot;</span>)</span><br><span class="line">        <span class="comment">// <span class="doctag">NOTE:</span> Do not place your application dependencies here; they belong</span></span><br><span class="line">        <span class="comment">// in the individual module build.gradle files</span></span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">allprojects(&#123;</span><br><span class="line">    delegate.repositories(&#123;</span><br><span class="line">        delegate.google()</span><br><span class="line">        delegate.jcenter()</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">task clean(<span class="attr">type:</span> Delete) &#123;</span><br><span class="line">    delete rootProject.buildDir</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意: 其中的<code>classpath</code>，我暂时并没有理解清楚它是如何工作的，它不是方法，只能理解它是一个可以添加的配置属性。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Dependency add(String configurationName, Object &gt;dependencyNotation);</span><br></pre></td></tr></table></figure>
+</blockquote>
+<hr>
+<br>
+
+
+
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://gradle.org/">Gradle官网</a></li>
+<li><a target="_blank" rel="noopener" href="https://dongchuan.gitbooks.io/gradle-user-guide-/">Gradle User Guide 中文版(非官方)</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.groovy-lang.org/learn.html">Groovy官网</a></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Android/" rel="tag"># Android</a>
+              <a href="/tags/Gradle/" rel="tag"># Gradle</a>
+              <a href="/tags/Build/" rel="tag"># Build</a>
+              <a href="/tags/Groovy/" rel="tag"># Groovy</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/08/27/android-build-02-groovy/" rel="prev" title="Android构建02-Groovy基础">
+      <i class="fa fa-chevron-left"></i> Android构建02-Groovy基础
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/08/27/android-build-04-gradle-lifecycle/" rel="next" title="Android构建04-Gradle构建流程">
+      Android构建04-Gradle构建流程 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Gradle%E7%AE%80%E4%BB%8B"><span class="nav-number">2.</span> <span class="nav-text">Gradle简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Gradle-Docs%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-number">3.</span> <span class="nav-text">Gradle Docs的使用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5"><span class="nav-number">4.</span> <span class="nav-text">基础概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%84%9A%E6%9C%AC-Script"><span class="nav-number">4.1.</span> <span class="nav-text">脚本(Script)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE-Project"><span class="nav-number">4.2.</span> <span class="nav-text">项目(Project)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1-Task"><span class="nav-number">4.3.</span> <span class="nav-text">任务(Task)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Gradle-Wrapper"><span class="nav-number">5.</span> <span class="nav-text">Gradle Wrapper</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%E8%A1%8C"><span class="nav-number">6.</span> <span class="nav-text">命令行</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="nav-number">7.</span> <span class="nav-text">环境配置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86"><span class="nav-number">8.</span> <span class="nav-text">依赖管理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8F%92%E4%BB%B6-Plugin"><span class="nav-number">9.</span> <span class="nav-text">插件(Plugin)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B-%E5%8D%95%E9%A1%B9%E7%9B%AE%E6%9E%84%E5%BB%BA"><span class="nav-number">10.</span> <span class="nav-text">示例-单项目构建</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B-%E5%A4%9A%E9%A1%B9%E7%9B%AE%E6%9E%84%E5%BB%BA"><span class="nav-number">11.</span> <span class="nav-text">示例-多项目构建</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B-Android%E9%A1%B9%E7%9B%AE%E6%A0%B9%E7%9B%AE%E5%BD%95-build-gradle%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90"><span class="nav-number">12.</span> <span class="nav-text">示例-Android项目根目录 build.gradle语法分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">13.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="章亮"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">章亮</p>
+  <div class="site-description" itemprop="description">Developer For Android</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">47</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">56</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zhangliangnbu" title="GitHub → https://github.com/zhangliangnbu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhangliangnbu@qq.com" title="E-Mail → mailto:zhangliangnbu@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">章亮</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">166k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:31</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
