@@ -2,9 +2,9 @@
 title: 使用Rxjava&Retrofit搭建网络层
 date: 2018-12-08 19:57:18
 tags:
-- Android
-- Rxjava
-- Retrofit
+- android
+- rxjava
+- retrofit
 categories:
 - Android开发
 ---

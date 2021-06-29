@@ -2,8 +2,8 @@
 title: GithubPages&Hexo&Next部署个人博客
 date: 2018-12-02 11:05:16
 tags:
-- GitHub Pages
-- Hexo
+- gitHub
+- hexo
 categories:
 - 其他
 ---

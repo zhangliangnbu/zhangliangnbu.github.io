@@ -1,9 +1,9 @@
 ---
-title: 开发笔记-理解FileProvider
+title: 理解FileProvider
 date: 2018-10-21 11:53:40
 updated: 2018-10-21 17:52:48
 tags:
-- Android
+- android
 - FileProvider
 categories:
 - Android开发

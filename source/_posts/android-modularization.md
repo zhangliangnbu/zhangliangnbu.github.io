@@ -2,13 +2,13 @@
 title: Android组件化实践
 date: 2019-04-11 09:02:21
 tags:
-- Android
+- android
 - 组件化
 categories:
 - Android开发
 ---
 
-#导引
+# 导引
 
 主要参考以下两种组件化方案
 
@@ -125,32 +125,28 @@ WisdomsiteProvider.wi?.toWisdomsiteHome(123456789L);
 
 新建名为`deps.gradle`的Gradle文件，在其中添加组件与AAR的对应关系；并在每个Module里引入该文件。
 
-```
+```groovy
 // 其中key为各module的名称，value为上传至Maven仓库里AAR全称
 // com.xxx.xxx为公司和部门名称，yyy为项目名称
 // 项目基础模块
 def xxx = [
-				// ---
-        net         : 'com.xxx.xxx:android-net:1.0.1',
-        utils       : 'com.xxx.xxx:android-utils:1.1.1',
-        common  		: 'com.xxx.xxx:android-yyy-common:1.0.5',
-        design  		: 'com.xxx.xxx:android-yyy-design:1.0.1',
-        // ---
+    net         : 'com.xxx.xxx:android-net:1.0.1',
+    utils       : 'com.xxx.xxx:android-utils:1.1.1',
+    common  	: 'com.xxx.xxx:android-yyy-common:1.0.5',
+    design  	: 'com.xxx.xxx:android-yyy-design:1.0.1',
 ]
 
 // 项目业务模块
 def xxxBusiness = [
-				// ---
-        login     	: 'com.xxx.xxx:android-login:1.0.0',
-        login_api		: 'com.xxx.xxx:android-login-api:1.0.0',
-        news    		: 'com.xxx.xxx:android-wisdomsite:1.0.0',
-        news-api		: 'com.xxx.xxx:android-wisdomsite-api:1.0.0',
-        // ---
+    login     	: 'com.xxx.xxx:android-login:1.0.0',
+    login_api	: 'com.xxx.xxx:android-login-api:1.0.0',
+    news    	: 'com.xxx.xxx:android-wisdomsite:1.0.0',
+    news-api	: 'com.xxx.xxx:android-wisdomsite-api:1.0.0',
 ]
 
 ext.deps = [
-        'xxx'        : xxx,
-        'xxxBusiness': xxxBusiness,
+    'xxx'        : xxx,
+    'xxxBusiness': xxxBusiness,
 ]
 ```
 
@@ -214,7 +210,7 @@ gradle.allprojects { project ->
 
 以wisdomsite组件为例
 
-```
+```bash
 ## 组件结构
 -- data 本地和远程数据层
 -- feature 业务层

@@ -2,7 +2,7 @@
 title: Drawable和Mipmap资源的区别
 date: 2019-01-14 11:25:12
 tags:
-- Android
+- android
 - mipmap
 - drawable
 categories:

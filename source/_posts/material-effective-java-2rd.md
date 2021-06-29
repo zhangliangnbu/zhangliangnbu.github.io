@@ -1,11 +1,12 @@
 ---
-title: 书籍-Effective Java 2rd
+title: Effective Java 2rd
 date: 2019-03-28 09:01:14
 tags:
-  - java
-  - book
+- java
+- book
+- 书
 categories:
-  - 其他
+- Java
 ---
 
 # 前言

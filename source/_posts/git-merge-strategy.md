@@ -1,12 +1,12 @@
 ---
-title: 版本管理-Git分支合并方式和策略
+title: 版本管理之Git分支合并方式和策略
 date: 2019-03-27 09:47:58
 tags:
   - git
   - merge
   - rebase
 categories:
-  - 版本管理
+  - 其他
 ---
 
 # Merge和Rebase

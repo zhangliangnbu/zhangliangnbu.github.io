@@ -1,12 +1,12 @@
 ---
-title: Bintray项目发布-基础
+title: 项目发布-基础
 date: 2018-12-13 09:42:50
 tags:
-- Maven
-- Jcenter
-- Bintray
+- maven
+- jcenter
+- bintray
 categories:
-- 项目发布
+- 其他
 ---
 
 # 前言

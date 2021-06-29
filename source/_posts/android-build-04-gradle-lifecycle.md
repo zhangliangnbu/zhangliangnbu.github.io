@@ -3,10 +3,11 @@ title: Android构建04-Gradle构建流程
 date: 2018-08-27 20:24:50
 updated: 2018-10-17 14:52:48
 tags:
-- Build
-- Gradle
+- android
+- build
+- gradle
 categories:
-- Android构建系统
+- Android开发
 ---
 
 
@@ -209,17 +210,17 @@ BUILD SUCCESSFUL in 0s
 ```
 构建过程如下：
 1. 初始化阶段。
-  执行`settings.gradle`脚本，所以首先输出'settings.gradle -> this is executed during the initialization phase.'。
+    执行`settings.gradle`脚本，所以首先输出'settings.gradle -> this is executed during the initialization phase.'。
 
 2. 配置阶段。
-  由于`settings.gradle`没有定义项目，根项目即当前项目有`build.gradle`，因此只是执行这个文件。顺序执行：打印语句、三个task方法。
-  这里的三个task方法对应`Project`实例中`Task task(String name, Closure configureClosure)`，查看其[Reference文档](https://docs.gradle.org/current/dsl/org.gradle.api.Project.html#org.gradle.api.Project:task(java.lang.String,%20groovy.lang.Closure))，说是这个方法会产生一个任务对象并添加到当前`Project`实例中，并且在返回这个任务的时候会执行闭包以配置这个任务。也就说在配置我们这个项目时，三个`task`方法的闭包都会被执行。
-  以testBoth任务对应的`task`方法为例，它的闭包里包含`doFirst`、`doLast`和`println`三个方法。其中`doFirst`和`doLast`是`Task`的方法，查看`doFirst`的[Reference文档](https://docs.gradle.org/current/dsl/org.gradle.api.Task.html#org.gradle.api.Task:doFirst(groovy.lang.Closure))，说是添加闭包到任务的action列表中，当任务执行的时候，会执行这个闭包。在配置阶段，并不会去执行任务，也就是说不会去执行`doFirst`和`doLast`闭包里的内容。
-  因此，在配置阶段，Gradle会依次执行三个任务方法里的闭包，而不会执行闭包里添加action的闭包即`doFirst`和`doLast`的闭包，因此会依次输出
-  'build.gradle -> task configured -> ...' 和‘build.gradle -> task testBoth -...’
+    由于`settings.gradle`没有定义项目，根项目即当前项目有`build.gradle`，因此只是执行这个文件。顺序执行：打印语句、三个task方法。
+    这里的三个task方法对应`Project`实例中`Task task(String name, Closure configureClosure)`，查看其[Reference文档](https://docs.gradle.org/current/dsl/org.gradle.api.Project.html#org.gradle.api.Project:task(java.lang.String,%20groovy.lang.Closure))，说是这个方法会产生一个任务对象并添加到当前`Project`实例中，并且在返回这个任务的时候会执行闭包以配置这个任务。也就说在配置我们这个项目时，三个`task`方法的闭包都会被执行。
+    以testBoth任务对应的`task`方法为例，它的闭包里包含`doFirst`、`doLast`和`println`三个方法。其中`doFirst`和`doLast`是`Task`的方法，查看`doFirst`的[Reference文档](https://docs.gradle.org/current/dsl/org.gradle.api.Task.html#org.gradle.api.Task:doFirst(groovy.lang.Closure))，说是添加闭包到任务的action列表中，当任务执行的时候，会执行这个闭包。在配置阶段，并不会去执行任务，也就是说不会去执行`doFirst`和`doLast`闭包里的内容。
+    因此，在配置阶段，Gradle会依次执行三个任务方法里的闭包，而不会执行闭包里添加action的闭包即`doFirst`和`doLast`的闭包，因此会依次输出
+    'build.gradle -> task configured -> ...' 和‘build.gradle -> task testBoth -...’
 
 3. 执行阶段。
-  由于在命令行只构建testBoth任务，因此这个阶段只执行testBoth任务中的`Action`列表，依次执行`doFirst`和`doLast`的闭包。
+    由于在命令行只构建testBoth任务，因此这个阶段只执行testBoth任务中的`Action`列表，依次执行`doFirst`和`doLast`的闭包。
 
 -- -- --
 

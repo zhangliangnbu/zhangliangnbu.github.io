@@ -2,7 +2,7 @@
 title: Drawable分辨率适配
 date: 2019-01-15 15:10:24
 tags:
-- Android
+- android
 - drawable
 categories:
 - Android开发

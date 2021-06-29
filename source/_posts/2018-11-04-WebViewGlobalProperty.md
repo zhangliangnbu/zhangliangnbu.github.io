@@ -2,8 +2,7 @@
 title: WebView全局属性设置问题
 date: 2018-11-04 11:58:42
 tags:
-- Android
-- SpannableString
+- android
 categories:
 - Android开发
 ---

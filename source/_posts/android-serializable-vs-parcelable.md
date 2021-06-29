@@ -2,7 +2,7 @@
 title: Android序列化总结初步
 date: 2019-02-18 14:57:23
 tags:
-- Android
+- android
 - Serializable
 - Parcelable
 categories:
@@ -116,7 +116,7 @@ fun getParcelable(): Parcelable? {
 
 ---
 
-#总结
+# 总结
 
 本地IPC使用Parcelable，持久化到disk和网络传输使用Serializable
 

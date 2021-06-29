@@ -3,10 +3,10 @@ title: Gradle的Wrapper、命令行和环境配置
 date: 2018-10-18 16:12:25
 updated: 2018-10-18 17:52:48
 tags:
-- Gradle
-- Build
+- gradle
+- build
 categories:
-- 其他
+- Android开发
 ---
 
 # 前言

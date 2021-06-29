@@ -2,10 +2,10 @@
 title: Android开发进阶
 date: 2018-12-19 09:02:39
 tags:
-- Android
-- 进阶
+- android
+- study
 categories:
-- 其他
+- Android开发
 ---
 
 # 前言

@@ -3,12 +3,12 @@ title: Android构建02-Groovy基础
 date: 2018-08-27 17:52:09
 updated: 2018-10-17 14:52:48
 tags:
-- Android
-- Build
-- Gradle
-- Groovy
+- android
+- build
+- gradle
+- groovy
 categories:
-- Android构建系统
+- Android开发
 ---
 # 前言
 Groovy是JVM语言，与Java语法类似，如果你熟悉kotlin的话，你会发现它与kotlin更类似些。它可以作为Java平台的脚本语言使用。详细介绍请见[Groovy官网](http://groovy-lang.org/index.html)和[维基百科](https://zh.wikipedia.org/wiki/Groovy)。

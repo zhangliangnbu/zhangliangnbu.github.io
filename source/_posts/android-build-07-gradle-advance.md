@@ -1,12 +1,12 @@
 ---
-title: android-build-07-gradle-advance
+title: Android构建07-进阶
 date: 2019-05-15 14:51:42
 tags:
-- Android
-- Gradle
-- Build
+- android
+- build
+- gradle
 categories:
-- Android构建系统
+- Android开发
 ---
 
 # 脚本和对象
@@ -23,21 +23,20 @@ categories:
 
 可以使用方法和关键字定义。
 
-- ```groovy
-   // 关键字定义
-   task myTask
-   task myTask { configure closure } // 重点
-   task myTask(type: SomeType)
-   task myTask(type: SomeType) { configure closure } // 重点
-  
-  // 方法定义
-  Task task(String name)
-  Task task(String name,Closure configureClosure)
-  Task task(String name,Action<? super Task> configureAction)
-  Task task(Map<String,?> args,String name)
-  Task task(Map<String,?> args,String name,Closure configureClosure)
-  
-  ```
+```groovy
+// 关键字定义
+task myTask
+task myTask { configure closure } // 重点
+task myTask(type: SomeType)
+task myTask(type: SomeType) { configure closure } // 重点
+ 
+// 方法定义
+Task task(String name)
+Task task(String name,Closure configureClosure)
+Task task(String name,Action<? super Task> configureAction)
+Task task(Map<String,?> args,String name)
+Task task(Map<String,?> args,String name,Closure configureClosure)
+```
 
 
 

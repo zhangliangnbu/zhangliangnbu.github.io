@@ -1,10 +1,10 @@
 ---
-title: 翻译-GitlabFlow简介
+title: 版本管理之GitlabFlow简介
 date: 2018-12-08 20:36:59
 tags:
-- Git
+- git
 categories:
-- 版本管理
+- 其他
 ---
 
 > **原文链接** [Introduction to GitLab Flow](https://docs.gitlab.com/ee/workflow/gitlab_flow.html)

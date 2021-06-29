@@ -2,9 +2,9 @@
 title: 使用Token进行身份验证
 date: 2018-12-08 17:20:50
 tags:
-- Android
-- Authentication
-- Token
+- android
+- authentication
+- token
 categories:
 - Android开发
 ---

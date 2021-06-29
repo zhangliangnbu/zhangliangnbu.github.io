@@ -1,11 +1,9 @@
 ---
-layout: '[post]'
-title: 文档-Android Developer Guide 2019
+title: Android Developer Guide 2019
 date: 2019-01-19 09:13:38
 tags:
   - android
   - guide
-  - 文档
 categories:
   - Android开发
 ---

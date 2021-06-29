@@ -2,7 +2,7 @@
 title: Android集成TBS填坑记录
 date: 2019-11-15 09:01:50
 tags:
-- Android
+- android
 - tbs
 - x5
 - h5
@@ -10,7 +10,7 @@ categories:
 - Android开发
 ---
 
-#前言
+# 前言
 
 最近得空，记录下这几月Android开发中遇到的坑。
 

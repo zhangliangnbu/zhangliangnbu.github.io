@@ -1,12 +1,12 @@
 ---
-title: Git-基础与命令
+title: 版本管理之Git基础与命令
 date: 2018-10-23 10:18:06
 update: 2018-10-23 10:18:06
 tags:
-- Git
-- VCS
+- git
+- vcs
 categories:
-- 版本管理
+- 其他
 ---
 
 
@@ -78,20 +78,20 @@ $ git push origin dev
 `master`指向自己分支的最新提交，`HEAD`指向当前分支
 
 1. 只有一个主分支时
-  ![只有一个主分支master](https://upload-images.jianshu.io/upload_images/2658578-3d9b499d978d52fa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+    ![只有一个主分支master](https://upload-images.jianshu.io/upload_images/2658578-3d9b499d978d52fa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 2. 创建并切换到分支dev。即创建一个dev指针指向当前提交，同时HEAD也指向dev分支
-  ![创建并切换分支dev](https://upload-images.jianshu.io/upload_images/2658578-0e4b492bab51186d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+    ![创建并切换分支dev](https://upload-images.jianshu.io/upload_images/2658578-0e4b492bab51186d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 3. 修改并提交分支dev
-  ![修改并提交分支dev](https://upload-images.jianshu.io/upload_images/2658578-7ddb24059a53d93e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+    ![修改并提交分支dev](https://upload-images.jianshu.io/upload_images/2658578-7ddb24059a53d93e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 4. 合并分支dev到master(默认的快速模式)
-  ![合并分支-ff](https://upload-images.jianshu.io/upload_images/2658578-6028d4eab1c70d1f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-  ![合并分支-no-ff](https://upload-images.jianshu.io/upload_images/2658578-12b3c045442d59b4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+    ![合并分支-ff](https://upload-images.jianshu.io/upload_images/2658578-6028d4eab1c70d1f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+    ![合并分支-no-ff](https://upload-images.jianshu.io/upload_images/2658578-12b3c045442d59b4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 5. 删除分支dev
-  ![删除分支dev](https://upload-images.jianshu.io/upload_images/2658578-c9396e94563a2cfd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+    ![删除分支dev](https://upload-images.jianshu.io/upload_images/2658578-c9396e94563a2cfd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 -- -- --
 

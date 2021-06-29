@@ -1,12 +1,12 @@
 ---
-title: 开发笔记-Complie关键字过时警告问题
+title: Complie关键字过时警告问题
 date: 2018-09-10 16:29:15
 updated: 2018-10-17 14:52:48
 tags:
-- Android
-- Gradle
-- Build
-- 开发笔记
+- android
+- gradle
+- build
+- develop
 categories:
 - Android开发
 ---

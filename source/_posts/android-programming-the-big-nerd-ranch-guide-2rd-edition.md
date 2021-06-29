@@ -1,12 +1,11 @@
 ---
-title: 书籍-Android编程权威指南第2版
+title: Android编程权威指南第2版
 date: 2018-12-20 06:57:46
 tags:
-- Android
+- android
 - 书
-- Android编程权威指南
 categories:
-- 其他
+- Android开发
 ---
 
 # 前言

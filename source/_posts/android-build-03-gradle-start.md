@@ -3,12 +3,12 @@ title: Android构建03-Gradle基础
 date: 2018-08-27 18:02:47
 updated: 2018-10-17 14:52:48
 tags:
-- Android
-- Build
-- Gradle
-- Groovy
+- android
+- build
+- gradle
+- groovy
 categories:
-- Android构建系统
+- Android开发
 ---
 
 # 前言

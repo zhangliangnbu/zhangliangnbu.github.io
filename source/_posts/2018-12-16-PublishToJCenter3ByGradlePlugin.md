@@ -1,12 +1,12 @@
 ---
-title: Bintray项目发布-BintrayRelease
+title: 项目发布-BintrayRelease
 date: 2018-12-16 22:52:56
 tags:
-- Jcenter
-- Bintray
-- Gradle
+- maven
+- jcenter
+- bintray
 categories:
-- 项目发布
+- 其他
 ---
 
 # 前言

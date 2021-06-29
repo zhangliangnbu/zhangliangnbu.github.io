@@ -1,12 +1,12 @@
 ---
-title: Bintray项目发布-手动
+title: 项目发布-手动
 date: 2018-12-15 21:09:18
 tags:
-- Maven
-- Jcenter
-- Bintray
+- maven
+- jcenter
+- bintray
 categories:
-- 项目发布
+- 其他
 ---
 
 # 前言

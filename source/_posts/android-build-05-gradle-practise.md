@@ -3,10 +3,11 @@ title: Android构建05-Gradle最佳实践
 date: 2018-10-22 09:09:26
 update: 2018-10-22 09:09:26
 tags:
-- Build
-- Gradle
+- android
+- build
+- gradle
 categories:
-- Android构建系统
+- Android开发
 ---
 
 

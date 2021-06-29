@@ -2,7 +2,7 @@
 title: GridLayoutManager实现均匀分布
 date: 2018-11-04 11:11:16
 tags:
-- Android
+- android
 - GridLayoutManager
 categories:
 - Android开发

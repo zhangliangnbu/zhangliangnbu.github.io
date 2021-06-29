@@ -1,12 +1,12 @@
 ---
-title: Bintray项目发布-GradleBintrayPlugin
+title: 项目发布-GradleBintrayPlugin
 date: 2018-12-17 17:01:45
 tags:
-- Jcenter
-- Bintray
-- Gradle
+- maven
+- jcenter
+- bintray
 categories:
-- 项目发布
+- 其他
 ---
 
 # 前言

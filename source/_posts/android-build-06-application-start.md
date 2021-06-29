@@ -2,11 +2,11 @@
 title: Android构建06-Android应用构建基础
 date: 2018-10-24 17:29:48
 tags:
-- Android
-- Gradle
-- Build
+- android
+- build
+- gradle
 categories:
-- Android构建系统
+- Android开发
 ---
 
 

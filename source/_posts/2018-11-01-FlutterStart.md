@@ -2,8 +2,7 @@
 title: Flutter入门
 date: 2018-11-01 09:04:21
 tags:
-- Flutter
-- 入门
+- flutter
 categories:
 - 其他
 ---

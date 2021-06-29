@@ -2,7 +2,7 @@
 title: SpannableString点击事件异常问题
 date: 2018-11-04 11:42:17
 tags:
-- Android
+- android
 - SpannableString
 categories:
 - Android开发
@@ -11,7 +11,7 @@ categories:
 # 问题描述
 
 1. 注册页里需要用户同意两个协议《用户注册协议》和《隐私声明》，要求用户点击协议名称时分别进入对应的详细页面。如图所示。
-  ![情景图](/images/spannablestring_click_event.jpg)
+    ![情景图](/images/spannablestring_click_event.jpg)
 2. 点击图中区域1时，进入《用户注册协议》页面；点击区域2时，进入《隐私声明》页面；但点击区域3时却进入了《隐私声明》页面，这是不应该出现的，区域3是空白区域，不应该有点击效果。
 -- -- --
 

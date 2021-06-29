@@ -2,8 +2,8 @@
 title: EditText的ID相同而导致的冲突
 date: 2018-12-08 17:00:03
 tags:
-- Android
-- ID
+- android
+- id
 categories:
 - Android开发
 ---
