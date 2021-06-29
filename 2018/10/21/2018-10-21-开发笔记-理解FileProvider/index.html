@@ -22,7 +22,7 @@
 
   <meta name="description" content="介绍用于更安全地在APP之间实现文件共享的一种机制，适用于Android 7.0及以上。 当应用A（如相册）允许其他应用（以应用B为例）调用自己并获取自己的文件时，应用A需要使用FileProvider来转化自己的文件路径为content:&#x2F;&#x2F;Uri，并提供给需要文件的应用B。其中  Android 7.0以上如果不使用FileProvider，应用A将返回file:&#x2F;&#x2F;&#x2F; Uri，而报错。 返回">
 <meta property="og:type" content="article">
-<meta property="og:title" content="开发笔记-理解FileProvider">
+<meta property="og:title" content="理解FileProvider">
 <meta property="og:url" content="https://zhangliangnbu.github.io/2018/10/21/2018-10-21-%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0-%E7%90%86%E8%A7%A3FileProvider/index.html">
 <meta property="og:site_name" content="永恒的码流">
 <meta property="og:description" content="介绍用于更安全地在APP之间实现文件共享的一种机制，适用于Android 7.0及以上。 当应用A（如相册）允许其他应用（以应用B为例）调用自己并获取自己的文件时，应用A需要使用FileProvider来转化自己的文件路径为content:&#x2F;&#x2F;Uri，并提供给需要文件的应用B。其中  Android 7.0以上如果不使用FileProvider，应用A将返回file:&#x2F;&#x2F;&#x2F; Uri，而报错。 返回">
@@ -30,7 +30,7 @@
 <meta property="article:published_time" content="2018-10-21T03:53:40.000Z">
 <meta property="article:modified_time" content="2018-10-21T09:52:48.000Z">
 <meta property="article:author" content="章亮">
-<meta property="article:tag" content="Android">
+<meta property="article:tag" content="android">
 <meta property="article:tag" content="FileProvider">
 <meta name="twitter:card" content="summary">
 
@@ -47,7 +47,7 @@
   };
 </script>
 
-  <title>开发笔记-理解FileProvider | 永恒的码流</title>
+  <title>理解FileProvider | 永恒的码流</title>
   
 
 
@@ -181,7 +181,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          开发笔记-理解FileProvider
+          理解FileProvider
         </h1>
 
         <div class="post-meta">
@@ -257,7 +257,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/Android/" rel="tag"># Android</a>
+              <a href="/tags/android/" rel="tag"># android</a>
               <a href="/tags/FileProvider/" rel="tag"># FileProvider</a>
           </div>
 
@@ -267,8 +267,8 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2018/10/20/2018-10-20-%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0-Uri%E8%BF%87%E6%9C%9F%E5%AF%BC%E8%87%B4%E5%9B%BE%E7%89%87%E4%B8%8D%E6%98%BE%E7%A4%BA%E7%9A%84%E9%97%AE%E9%A2%98/" rel="prev" title="开发笔记-Uri过期导致图片不显示的问题">
-      <i class="fa fa-chevron-left"></i> 开发笔记-Uri过期导致图片不显示的问题
+    <a href="/2018/10/20/2018-10-20-%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0-Uri%E8%BF%87%E6%9C%9F%E5%AF%BC%E8%87%B4%E5%9B%BE%E7%89%87%E4%B8%8D%E6%98%BE%E7%A4%BA%E7%9A%84%E9%97%AE%E9%A2%98/" rel="prev" title="Uri过期导致图片不显示的问题">
+      <i class="fa fa-chevron-left"></i> Uri过期导致图片不显示的问题
     </a></div>
       <div class="post-nav-item">
     <a href="/2018/10/22/android-build-05-gradle-practise/" rel="next" title="Android构建05-Gradle最佳实践">
@@ -348,20 +348,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">46</span>
+          <span class="site-state-item-count">47</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">56</span>
+        <span class="site-state-item-count">48</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -405,12 +405,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">165k</span>
+    <span title="站点总字数">167k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:30</span>
+    <span title="站点阅读时长">2:32</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>

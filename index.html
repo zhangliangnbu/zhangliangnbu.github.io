@@ -164,6 +164,91 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2021/06/29/Java%E9%9B%86%E5%90%88%E4%B8%AD%E5%85%83%E7%B4%A0%E5%88%A0%E9%99%A4%E6%96%B9%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/06/29/Java%E9%9B%86%E5%90%88%E4%B8%AD%E5%85%83%E7%B4%A0%E5%88%A0%E9%99%A4%E6%96%B9%E5%BC%8F/" class="post-title-link" itemprop="url">Java集合中元素删除方式</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-06-29 12:03:45 / 修改时间：14:49:17" itemprop="dateCreated datePublished" datetime="2021-06-29T12:03:45+08:00">2021-06-29</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>删除集合中的元素，有两种删除的形式，一种是删除特定元素，一种是删除特定索引的元素。</p>
+<p>删除的方式有：使用Java API （java 8）、从后往前的循环、使用迭代器、使用新的集合。</p>
+<h1 id="Java-API"><a href="#Java-API" class="headerlink" title="Java API"></a>Java API</h1><ul>
+<li><code>List#remove(int index)</code>。最基本API，删除特定索引处元素，O(1)。</li>
+<li><code>List#remove(Object o)</code>。从前往后遍历，移除第一个与 <code>o</code> 相等的元素，O(n)。</li>
+<li><code>Collection#removeIf(Predicate&lt;? super E&gt; filter)</code>。移除所有特定元素，内部使用迭代器；Java 8；O(n)。</li>
+<li><code>ArrayList#removeIf(Predicate&lt;? super E&gt; filter)</code>。移除所有特定元素，内部使用<code>BitSet</code>标记待删除元素；Java 8；O(n)。</li>
+<li><code>List#subList(startIndex, endIndex).clear()</code>。删除特定索引区间的元素，O(n)。</li>
+</ul>
+<h1 id="从后往前循环"><a href="#从后往前循环" class="headerlink" title="从后往前循环"></a>从后往前循环</h1><p>适用两种形式：删除特定元素，以及删除特定索引的元素。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 删除所有特定元素</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> index = list.size() - <span class="number">1</span>; index &gt;= <span class="number">0</span>; index --) &#123;</span><br><span class="line">    Object element = list.get(index);</span><br><span class="line">    <span class="keyword">if</span> (special.equals(element)) &#123;</span><br><span class="line">        list.remove(index);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 删除多个特定索引的元素 比如，删除索引在[start, end]内的元素</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> index = end; index &gt;= start; index --) &#123;</span><br><span class="line">    list.remove(index);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="使用迭代器"><a href="#使用迭代器" class="headerlink" title="使用迭代器"></a>使用迭代器</h1><p>适用删除特定元素；部分（元素可标记）适用删除特定索引元素，先标记再迭代删除。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 删除所有特定元素</span></span><br><span class="line">Iterator&lt;Integer&gt; iterator = list.listIterator();</span><br><span class="line"><span class="keyword">while</span> (iterator.hasNext()) &#123;</span><br><span class="line">    Integer element = iterator.next();</span><br><span class="line">    <span class="keyword">if</span> (special.equals(element)) &#123;</span><br><span class="line">        iterator.remove();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 删除特定索引元素，元素可标记，比如元素里的ID不能为负数，标记为负数即为待删除元素</span></span><br><span class="line"><span class="comment">// 比如删除索引在[start, end]中的整数，如果集合不为负数，则可以标记待删除元素为负数。</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> index = start; index &lt;= end; index ++) &#123;</span><br><span class="line">    list.set(index, Integer.MIN_VALUE);</span><br><span class="line">&#125;</span><br><span class="line">Iterator&lt;Integer&gt; iterator = list.listIterator();</span><br><span class="line"><span class="keyword">while</span> (iterator.hasNext()) &#123;</span><br><span class="line">    Integer element = iterator.next();</span><br><span class="line">    <span class="keyword">if</span> (element == Integer.MIN_VALUE) &#123;</span><br><span class="line">        iterator.remove();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="使用新的集合"><a href="#使用新的集合" class="headerlink" title="使用新的集合"></a>使用新的集合</h1><p>创建新的集合，循环将旧集合中有效元素添加到新集合中。在实践中也较常用。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>实践中，各种方法的复杂度都相同，使用新的集合需要额外的空间，如果集合比较大则效率较低。</p>
+<p>优先考虑使用API，不能满足的情况下再考虑向前循环、迭代或创建新的集合。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2019/11/15/android-tbs-problem/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -195,7 +280,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 12:00:10" itemprop="dateModified" datetime="2021-06-29T12:00:10+08:00">2021-06-29</time>
+                <time title="修改时间：2021-06-29 14:49:17" itemprop="dateModified" datetime="2021-06-29T14:49:17+08:00">2021-06-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -218,8 +303,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>#前言</p>
-<p>最近得空，记录下这几月Android开发中遇到的坑。</p>
+          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>最近得空，记录下这几月Android开发中遇到的坑。</p>
 <p>这篇文章主要记录集成腾讯浏览服务（TBS Tencent Browse Server）时遇到的问题以及解决方案。</p>
 <hr>
 <h1 id="问题：H5加载异常"><a href="#问题：H5加载异常" class="headerlink" title="问题：H5加载异常"></a>问题：H5加载异常</h1><p><strong>具体情况</strong></p>
@@ -266,7 +350,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2019/05/15/android-build-07-gradle-advance/" class="post-title-link" itemprop="url">android-build-07-gradle-advance</a>
+            <a href="/2019/05/15/android-build-07-gradle-advance/" class="post-title-link" itemprop="url">Android构建07-进阶</a>
         </h2>
 
         <div class="post-meta">
@@ -283,7 +367,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 12:00:10" itemprop="dateModified" datetime="2021-06-29T12:00:10+08:00">2021-06-29</time>
+                <time title="修改时间：2021-06-29 14:49:17" itemprop="dateModified" datetime="2021-06-29T14:49:17+08:00">2021-06-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -291,7 +375,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android%E6%9E%84%E5%BB%BA%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">Android构建系统</span></a>
+                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
                 </span>
             </span>
 
@@ -313,10 +397,16 @@
 <li>其他gradle文件，没有定义为class的，会转换为一个实现了<code>Script</code>接口的对象</li>
 </ul>
 <h1 id="任务"><a href="#任务" class="headerlink" title="任务"></a>任务</h1><p>可以使用方法和关键字定义。</p>
-<ul>
-<li>```groovy<br> // 关键字定义<br> task myTask<br> task myTask { configure closure } // 重点<br> task myTask(type: SomeType)<br> task myTask(type: SomeType) { configure closure } // 重点// 方法定义<br>Task task(String name)<br>Task task(String name,Closure configureClosure)<br>Task task(String name,Action<? super Task> configureAction)
-Task task(Map<String,?> args,String name)<br>Task task(Map&lt;String,?&gt; args,String name,Closure configureClosure)<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 常用属性</span><br><span class="line"></span><br><span class="line">`Project`和`Settings`的常用属性</span><br><span class="line"></span><br><span class="line">**扩展属性（Ext属性）**</span><br><span class="line"></span><br><span class="line">```groovy</span><br><span class="line">// 定义</span><br><span class="line">[project.]ext.foo = &quot;bar&quot;</span><br><span class="line">[project.]ext &#123;</span><br><span class="line">		foo = &quot;bar&quot;</span><br><span class="line">&#125; // 命名空间方式定义 ？？</span><br><span class="line"></span><br><span class="line">// 使用</span><br><span class="line">println project.ext.foo</span><br><span class="line">println rootProject.ext.foo</span><br><span class="line"></span><br><span class="line">// 范围：有穿透性？gradle 4.10.* 没有穿透性。即rootProject.foo != projet.foo</span><br></pre></td></tr></table></figure></li>
-</ul>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 关键字定义</span></span><br><span class="line">task myTask</span><br><span class="line">task myTask &#123; configure closure &#125; <span class="comment">// 重点</span></span><br><span class="line">task myTask(<span class="attr">type:</span> SomeType)</span><br><span class="line">task myTask(<span class="attr">type:</span> SomeType) &#123; configure closure &#125; <span class="comment">// 重点</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">// 方法定义</span></span><br><span class="line">Task task(String name)</span><br><span class="line">Task task(String name,Closure configureClosure)</span><br><span class="line">Task task(String name,Action&lt;? super Task&gt; configureAction)</span><br><span class="line">Task task(Map&lt;String,?&gt; args,String name)</span><br><span class="line">Task task(Map&lt;String,?&gt; args,String name,Closure configureClosure)</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="常用属性"><a href="#常用属性" class="headerlink" title="常用属性"></a>常用属性</h1><p><code>Project</code>和<code>Settings</code>的常用属性</p>
+<p><strong>扩展属性（Ext属性）</strong></p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义</span></span><br><span class="line">[project.]ext.foo = <span class="string">&quot;bar&quot;</span></span><br><span class="line">[project.]ext &#123;</span><br><span class="line">		foo = <span class="string">&quot;bar&quot;</span></span><br><span class="line">&#125; <span class="comment">// 命名空间方式定义 ？？</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用</span></span><br><span class="line">println project.ext.foo</span><br><span class="line">println rootProject.ext.foo</span><br><span class="line"></span><br><span class="line"><span class="comment">// 范围：有穿透性？gradle 4.10.* 没有穿透性。即rootProject.foo != projet.foo</span></span><br></pre></td></tr></table></figure>
+
+
+
 <p><strong>文件<code>gradle.properites</code>属性</strong></p>
 <p>可以直接被<code>Project</code>/<code>Settings</code>使用</p>
 <figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// gradle.properties中</span></span><br><span class="line">test=<span class="string">&quot;test hw&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// build.gradle中</span></span><br><span class="line"><span class="keyword">assert</span> project.test == <span class="string">&quot;test hw&quot;</span></span><br><span class="line"><span class="keyword">assert</span> settings.test == <span class="string">&quot;test hw&quot;</span></span><br></pre></td></tr></table></figure>
@@ -394,7 +484,7 @@ Task task(Map<String,?> args,String name)<br>Task task(Map&lt;String,?&gt; args,
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 12:00:10" itemprop="dateModified" datetime="2021-06-29T12:00:10+08:00">2021-06-29</time>
+                <time title="修改时间：2021-06-29 14:49:17" itemprop="dateModified" datetime="2021-06-29T14:49:17+08:00">2021-06-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -482,7 +572,7 @@ Task task(Map<String,?> args,String name)<br>Task task(Map&lt;String,?&gt; args,
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 12:00:10" itemprop="dateModified" datetime="2021-06-29T12:00:10+08:00">2021-06-29</time>
+                <time title="修改时间：2021-06-29 14:49:17" itemprop="dateModified" datetime="2021-06-29T14:49:17+08:00">2021-06-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -585,7 +675,7 @@ Task task(Map<String,?> args,String name)<br>Task task(Map&lt;String,?&gt; args,
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 12:00:10" itemprop="dateModified" datetime="2021-06-29T12:00:10+08:00">2021-06-29</time>
+                <time title="修改时间：2021-06-29 14:49:17" itemprop="dateModified" datetime="2021-06-29T14:49:17+08:00">2021-06-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -608,8 +698,7 @@ Task task(Map<String,?> args,String name)<br>Task task(Map&lt;String,?&gt; args,
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>#导引</p>
-<p>主要参考以下两种组件化方案</p>
+          <h1 id="导引"><a href="#导引" class="headerlink" title="导引"></a>导引</h1><p>主要参考以下两种组件化方案</p>
 <p> <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/45374964">知乎 Android 客户端组件化实践</a></p>
 <ul>
 <li>多工程多仓库。主工程通过 aar 依赖各个组件。</li>
@@ -652,7 +741,7 @@ Task task(Map<String,?> args,String name)<br>Task task(Map&lt;String,?&gt; args,
 
 
 <h3 id="动态依赖"><a href="#动态依赖" class="headerlink" title="动态依赖"></a>动态依赖</h3><p>新建名为<code>deps.gradle</code>的Gradle文件，在其中添加组件与AAR的对应关系；并在每个Module里引入该文件。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">// 其中key为各module的名称，value为上传至Maven仓库里AAR全称</span><br><span class="line">// com.xxx.xxx为公司和部门名称，yyy为项目名称</span><br><span class="line">// 项目基础模块</span><br><span class="line">def xxx = [</span><br><span class="line">				// ---</span><br><span class="line">        net         : &#x27;com.xxx.xxx:android-net:1.0.1&#x27;,</span><br><span class="line">        utils       : &#x27;com.xxx.xxx:android-utils:1.1.1&#x27;,</span><br><span class="line">        common  		: &#x27;com.xxx.xxx:android-yyy-common:1.0.5&#x27;,</span><br><span class="line">        design  		: &#x27;com.xxx.xxx:android-yyy-design:1.0.1&#x27;,</span><br><span class="line">        // ---</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">// 项目业务模块</span><br><span class="line">def xxxBusiness = [</span><br><span class="line">				// ---</span><br><span class="line">        login     	: &#x27;com.xxx.xxx:android-login:1.0.0&#x27;,</span><br><span class="line">        login_api		: &#x27;com.xxx.xxx:android-login-api:1.0.0&#x27;,</span><br><span class="line">        news    		: &#x27;com.xxx.xxx:android-wisdomsite:1.0.0&#x27;,</span><br><span class="line">        news-api		: &#x27;com.xxx.xxx:android-wisdomsite-api:1.0.0&#x27;,</span><br><span class="line">        // ---</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">ext.deps = [</span><br><span class="line">        &#x27;xxx&#x27;        : xxx,</span><br><span class="line">        &#x27;xxxBusiness&#x27;: xxxBusiness,</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 其中key为各module的名称，value为上传至Maven仓库里AAR全称</span></span><br><span class="line"><span class="comment">// com.xxx.xxx为公司和部门名称，yyy为项目名称</span></span><br><span class="line"><span class="comment">// 项目基础模块</span></span><br><span class="line"><span class="keyword">def</span> xxx = [</span><br><span class="line">    <span class="attr">net         :</span> <span class="string">&#x27;com.xxx.xxx:android-net:1.0.1&#x27;</span>,</span><br><span class="line">    <span class="attr">utils       :</span> <span class="string">&#x27;com.xxx.xxx:android-utils:1.1.1&#x27;</span>,</span><br><span class="line">    <span class="attr">common  	:</span> <span class="string">&#x27;com.xxx.xxx:android-yyy-common:1.0.5&#x27;</span>,</span><br><span class="line">    <span class="attr">design  	:</span> <span class="string">&#x27;com.xxx.xxx:android-yyy-design:1.0.1&#x27;</span>,</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="comment">// 项目业务模块</span></span><br><span class="line"><span class="keyword">def</span> xxxBusiness = [</span><br><span class="line">    <span class="attr">login     	:</span> <span class="string">&#x27;com.xxx.xxx:android-login:1.0.0&#x27;</span>,</span><br><span class="line">    <span class="attr">login_api	:</span> <span class="string">&#x27;com.xxx.xxx:android-login-api:1.0.0&#x27;</span>,</span><br><span class="line">    <span class="attr">news    	:</span> <span class="string">&#x27;com.xxx.xxx:android-wisdomsite:1.0.0&#x27;</span>,</span><br><span class="line">    news-<span class="attr">api	:</span> <span class="string">&#x27;com.xxx.xxx:android-wisdomsite-api:1.0.0&#x27;</span>,</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">ext.deps = [</span><br><span class="line">    <span class="string">&#x27;xxx&#x27;</span>        : xxx,</span><br><span class="line">    <span class="string">&#x27;xxxBusiness&#x27;</span>: xxxBusiness,</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
 
 
 
@@ -664,7 +753,7 @@ Task task(Map<String,?> args,String name)<br>Task task(Map&lt;String,?&gt; args,
 <h3 id="其他注意事项"><a href="#其他注意事项" class="headerlink" title="其他注意事项"></a>其他注意事项</h3><p>各组件需要单独维护，能生成AAR文件并上传至Maven仓库。</p>
 <p>各模块之间的资源名不能相同，需要配置<code>resourcePrefix</code>。</p>
 <h3 id="简单开发规范"><a href="#简单开发规范" class="headerlink" title="简单开发规范"></a>简单开发规范</h3><p>以wisdomsite组件为例</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">## 组件结构</span><br><span class="line">-- data 本地和远程数据层</span><br><span class="line">-- feature 业务层</span><br><span class="line">-- helper 公共业务相关辅助类，如果仅仅是单个业务使用则写在那个业务的包里</span><br><span class="line">-- utils 公共业务无关工具类</span><br><span class="line">-- widgets 公共控件，如果仅仅是单个业务使用则写在那个业务的包里</span><br><span class="line"></span><br><span class="line">## 业务模块划分</span><br><span class="line">- main、video、machine、labor、environment、safety、quality</span><br><span class="line"></span><br><span class="line">## 切图规范</span><br><span class="line">- 只需要放@3x一张图片到drawable-xxhdpi文件即可</span><br><span class="line">- 切图名称：module名称_ic/bg_业务模块名_功能名，如：wisdomsite_ic_home_empty</span><br><span class="line"></span><br><span class="line">## 资源规范-string</span><br><span class="line">- 命名：module名称_业务模块名_功能名，如：wisdomsite_labor_title</span><br><span class="line"></span><br><span class="line">## 资源规范-color</span><br><span class="line">- colors.xml中定义业务无关的颜色值，colors_feature.xml中使用前者的颜色定义业务相关的颜色值</span><br><span class="line">- colors_feature.xml中的命名：module名称_业务模块名_功能名，如：wisdomsite_machine_error</span><br><span class="line"></span><br><span class="line">## 空值展示</span><br><span class="line">- *默认空值*定义在 `@string/wisdomsite_empty_text_filler`</span><br><span class="line">- 在布局中，如果TextView的值可能为空，则默认展示*默认空值*</span><br><span class="line">- 在代码中，给TextView赋值时必须要考虑到空值问题，Kotlin代码使用`EmptyTextFiller.kt`中的扩展函数进行空值处理。</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## 组件结构</span></span><br><span class="line">-- data 本地和远程数据层</span><br><span class="line">-- feature 业务层</span><br><span class="line">-- helper 公共业务相关辅助类，如果仅仅是单个业务使用则写在那个业务的包里</span><br><span class="line">-- utils 公共业务无关工具类</span><br><span class="line">-- widgets 公共控件，如果仅仅是单个业务使用则写在那个业务的包里</span><br><span class="line"></span><br><span class="line"><span class="comment">## 业务模块划分</span></span><br><span class="line">- main、video、machine、labor、environment、safety、quality</span><br><span class="line"></span><br><span class="line"><span class="comment">## 切图规范</span></span><br><span class="line">- 只需要放@3x一张图片到drawable-xxhdpi文件即可</span><br><span class="line">- 切图名称：module名称_ic/bg_业务模块名_功能名，如：wisdomsite_ic_home_empty</span><br><span class="line"></span><br><span class="line"><span class="comment">## 资源规范-string</span></span><br><span class="line">- 命名：module名称_业务模块名_功能名，如：wisdomsite_labor_title</span><br><span class="line"></span><br><span class="line"><span class="comment">## 资源规范-color</span></span><br><span class="line">- colors.xml中定义业务无关的颜色值，colors_feature.xml中使用前者的颜色定义业务相关的颜色值</span><br><span class="line">- colors_feature.xml中的命名：module名称_业务模块名_功能名，如：wisdomsite_machine_error</span><br><span class="line"></span><br><span class="line"><span class="comment">## 空值展示</span></span><br><span class="line">- *默认空值*定义在 `@string/wisdomsite_empty_text_filler`</span><br><span class="line">- 在布局中，如果TextView的值可能为空，则默认展示*默认空值*</span><br><span class="line">- 在代码中，给TextView赋值时必须要考虑到空值问题，Kotlin代码使用`EmptyTextFiller.kt`中的扩展函数进行空值处理。</span><br></pre></td></tr></table></figure>
 
 <hr>
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
@@ -709,7 +798,7 @@ Task task(Map<String,?> args,String name)<br>Task task(Map&lt;String,?&gt; args,
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2019/03/28/material-effective-java-2rd/" class="post-title-link" itemprop="url">书籍-Effective Java 2rd</a>
+            <a href="/2019/03/28/material-effective-java-2rd/" class="post-title-link" itemprop="url">Effective Java 2rd</a>
         </h2>
 
         <div class="post-meta">
@@ -726,7 +815,7 @@ Task task(Map<String,?> args,String name)<br>Task task(Map&lt;String,?&gt; args,
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 12:00:10" itemprop="dateModified" datetime="2021-06-29T12:00:10+08:00">2021-06-29</time>
+                <time title="修改时间：2021-06-29 14:49:17" itemprop="dateModified" datetime="2021-06-29T14:49:17+08:00">2021-06-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -734,7 +823,7 @@ Task task(Map<String,?> args,String name)<br>Task task(Map&lt;String,?&gt; args,
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%85%B6%E4%BB%96/" itemprop="url" rel="index"><span itemprop="name">其他</span></a>
+                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
                 </span>
             </span>
 
@@ -792,7 +881,7 @@ Task task(Map<String,?> args,String name)<br>Task task(Map&lt;String,?&gt; args,
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2019/03/27/git-merge-strategy/" class="post-title-link" itemprop="url">版本管理-Git分支合并方式和策略</a>
+            <a href="/2019/03/27/git-merge-strategy/" class="post-title-link" itemprop="url">版本管理之Git分支合并方式和策略</a>
         </h2>
 
         <div class="post-meta">
@@ -809,7 +898,7 @@ Task task(Map<String,?> args,String name)<br>Task task(Map&lt;String,?&gt; args,
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 12:00:10" itemprop="dateModified" datetime="2021-06-29T12:00:10+08:00">2021-06-29</time>
+                <time title="修改时间：2021-06-29 14:49:17" itemprop="dateModified" datetime="2021-06-29T14:49:17+08:00">2021-06-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -817,7 +906,7 @@ Task task(Map<String,?> args,String name)<br>Task task(Map&lt;String,?&gt; args,
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">版本管理</span></a>
+                  <a href="/categories/%E5%85%B6%E4%BB%96/" itemprop="url" rel="index"><span itemprop="name">其他</span></a>
                 </span>
             </span>
 
@@ -922,7 +1011,7 @@ Task task(Map<String,?> args,String name)<br>Task task(Map&lt;String,?&gt; args,
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 12:00:10" itemprop="dateModified" datetime="2021-06-29T12:00:10+08:00">2021-06-29</time>
+                <time title="修改时间：2021-06-29 14:49:17" itemprop="dateModified" datetime="2021-06-29T14:49:17+08:00">2021-06-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -930,7 +1019,7 @@ Task task(Map<String,?> args,String name)<br>Task task(Map&lt;String,?&gt; args,
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
+                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
                 </span>
             </span>
 
@@ -1010,7 +1099,7 @@ Task task(Map<String,?> args,String name)<br>Task task(Map&lt;String,?&gt; args,
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 12:00:10" itemprop="dateModified" datetime="2021-06-29T12:00:10+08:00">2021-06-29</time>
+                <time title="修改时间：2021-06-29 14:49:17" itemprop="dateModified" datetime="2021-06-29T14:49:17+08:00">2021-06-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1035,112 +1124,6 @@ Task task(Map<String,?> args,String name)<br>Task task(Map&lt;String,?&gt; args,
       
           <h1 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h1><p>流程图如下</p>
 <p><img src="/images/flow-audio-to-caption.png" alt="Android构建流程"></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2019/02/18/android-serializable-vs-parcelable/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="章亮">
-      <meta itemprop="description" content="Developer For Android">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="永恒的码流">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/02/18/android-serializable-vs-parcelable/" class="post-title-link" itemprop="url">Android序列化总结初步</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-02-18 14:57:23" itemprop="dateCreated datePublished" datetime="2019-02-18T14:57:23+08:00">2019-02-18</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 12:00:10" itemprop="dateModified" datetime="2021-06-29T12:00:10+08:00">2021-06-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>序列化概念请见<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%BA%8F%E5%88%97%E5%8C%96">wikipedia</a>。</p>
-<p>为什么需要序列化？</p>
-<ol>
-<li>IPC需要。多进程对应的是不同的内存区域，不能通过共享内存通信，因此传递数据的对象必须可序列化。</li>
-<li>持久化到本地和网络传输。</li>
-</ol>
-<hr>
-<h1 id="Serializable"><a href="#Serializable" class="headerlink" title="Serializable"></a>Serializable</h1><ol>
-<li>使用简单，开销大。</li>
-<li>serialVersionUID保证同一个对象。</li>
-<li>对象序列化，大量I/O操作，临时变量多，频繁GC。</li>
-</ol>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用</span></span><br><span class="line"><span class="keyword">data</span> <span class="class"><span class="keyword">class</span> <span class="title">SerializableUser</span></span>(<span class="keyword">var</span> userId: <span class="built_in">Int</span>, <span class="keyword">var</span> userName: String, <span class="keyword">var</span> isMale: <span class="built_in">Boolean</span>) : Serializable &#123;</span><br><span class="line">    <span class="keyword">companion</span> <span class="keyword">object</span> &#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">const</span> <span class="keyword">val</span> serialVersionUID = <span class="number">1L</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 序列化到disk</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">saveSerializable</span><span class="params">(so: <span class="type">Serializable</span>)</span></span> &#123;</span><br><span class="line">    <span class="keyword">val</span> <span class="keyword">out</span> = ObjectOutputStream(FileOutputStream(getFilePath(USER_CACHE_FILE)))</span><br><span class="line">    <span class="keyword">out</span>.writeObject(so)</span><br><span class="line">    <span class="keyword">out</span>.close()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 反序列化</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">getSerializable</span><span class="params">()</span></span>: Serializable &#123;</span><br><span class="line">    <span class="keyword">val</span> `<span class="keyword">in</span>` = ObjectInputStream(FileInputStream(getFilePath(USER_CACHE_FILE)))</span><br><span class="line">    <span class="keyword">val</span> so = `<span class="keyword">in</span>`.readObject() <span class="keyword">as</span> Serializable</span><br><span class="line">    `<span class="keyword">in</span>`.close()</span><br><span class="line">    <span class="keyword">return</span> so</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h1 id="Parcelable"><a href="#Parcelable" class="headerlink" title="Parcelable"></a>Parcelable</h1><ol>
-<li>使用略复杂，开销小。</li>
-<li>官方建议最好不要持久化到disk或网络传输，因为parceble数据一旦更改，反序列化就会失败，不能保持同一性。</li>
-<li>将一个完整的对象进行分解。</li>
-</ol>
-<p>Parcel与Parcelable的关系？// todo</p>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">data</span> <span class="class"><span class="keyword">class</span> <span class="title">ParcelableBook</span></span>(<span class="keyword">var</span> number: String?, <span class="keyword">var</span> name: String?, <span class="keyword">var</span> price: <span class="built_in">Float</span>): Parcelable &#123;</span><br><span class="line">    <span class="keyword">constructor</span>(parcel: Parcel) : <span class="keyword">this</span>(</span><br><span class="line">            parcel.readString(),</span><br><span class="line">            parcel.readString(),</span><br><span class="line">            parcel.readFloat())</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">writeToParcel</span><span class="params">(parcel: <span class="type">Parcel</span>, flags: <span class="type">Int</span>)</span></span> &#123;</span><br><span class="line">        parcel.writeString(number)</span><br><span class="line">        parcel.writeString(name)</span><br><span class="line">        parcel.writeFloat(price)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">describeContents</span><span class="params">()</span></span>: <span class="built_in">Int</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">companion</span> <span class="keyword">object</span> CREATOR : Parcelable.Creator&lt;ParcelableBook&gt; &#123;</span><br><span class="line">        <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">createFromParcel</span><span class="params">(parcel: <span class="type">Parcel</span>)</span></span>: ParcelableBook &#123;</span><br><span class="line">            <span class="keyword">return</span> ParcelableBook(parcel)</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">newArray</span><span class="params">(size: <span class="type">Int</span>)</span></span>: Array&lt;ParcelableBook?&gt; &#123;</span><br><span class="line">            <span class="keyword">return</span> arrayOfNulls(size)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 持久化Parcelable对象到disk, 但官方不建议这样做，理由如下：</span></span><br><span class="line"><span class="comment"> * changes in the underlying implementation of any of the data in the Parcel can render older data unreadable.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">saveParcelable</span><span class="params">(parcelable: <span class="type">Parcelable</span>)</span></span> &#123;</span><br><span class="line">    <span class="keyword">val</span> parcel = Parcel.obtain()</span><br><span class="line">    parcel.writeParcelable(parcelable, <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">val</span> <span class="keyword">out</span> = DataOutputStream(FileOutputStream(getFilePath(USER_CACHE_FILE2)))</span><br><span class="line">    <span class="keyword">out</span>.write(parcel.marshall())</span><br><span class="line">    parcel.recycle()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 反序列化</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">getParcelable</span><span class="params">()</span></span>: Parcelable? &#123;</span><br><span class="line">    <span class="keyword">val</span> ino = DataInputStream(FileInputStream(getFilePath(USER_CACHE_FILE2)))</span><br><span class="line">    <span class="keyword">val</span> <span class="keyword">data</span> = ino.readBytes()</span><br><span class="line">    <span class="keyword">val</span> parcel = Parcel.obtain()</span><br><span class="line">    parcel.unmarshall(<span class="keyword">data</span>, <span class="number">0</span>, <span class="keyword">data</span>.size)</span><br><span class="line">    parcel.setDataPosition(<span class="number">0</span>)</span><br><span class="line">    <span class="keyword">val</span> parcelable =  parcel.readParcelable&lt;Parcelable&gt;(Thread.currentThread().contextClassLoader)</span><br><span class="line">    ino.close()</span><br><span class="line">    parcel.recycle()</span><br><span class="line">    <span class="keyword">return</span> parcelable</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<hr>
-<p>#总结</p>
-<p>本地IPC使用Parcelable，持久化到disk和网络传输使用Serializable</p>
-<hr>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
-<li>《Android开发艺术探索》，任玉刚，电子工业出版社。</li>
-<li><a target="_blank" rel="noopener" href="https://gist.github.com/VladSumtsov/c4af1f4b8fe5099ca809">Cache your data with parcelable and disklrucache</a></li>
-<li><a target="_blank" rel="noopener" href="http://www.developerphil.com/parcelable-vs-serializable/">Parcelable vs Serializable</a></li>
-</ol>
-<hr>
 
       
     </div>
@@ -1227,20 +1210,20 @@ Task task(Map<String,?> args,String name)<br>Task task(Map&lt;String,?&gt; args,
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">46</span>
+          <span class="site-state-item-count">47</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">56</span>
+        <span class="site-state-item-count">48</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1284,12 +1267,12 @@ Task task(Map<String,?> args,String name)<br>Task task(Map&lt;String,?&gt; args,
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">165k</span>
+    <span title="站点总字数">167k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:30</span>
+    <span title="站点阅读时长">2:32</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>
