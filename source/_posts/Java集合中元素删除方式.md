@@ -22,6 +22,8 @@ categories:
 - `ArrayList#removeIf(Predicate<? super E> filter)`。移除所有特定元素，内部使用`BitSet`标记待删除元素；Java 8；O(n)。
 - `List#subList(startIndex, endIndex).clear()`。删除特定索引区间的元素，O(n)。
 
+>`BitSet`利用`long`数组来维护自身，数组中的每个长整型代表64个位元素，每个元素的值为`True`或`False`。常用于标记其他集合。
+
 # 从后往前循环
 
 适用两种形式：删除特定元素，以及删除特定索引的元素。
