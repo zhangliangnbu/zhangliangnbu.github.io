@@ -195,7 +195,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-12-03 15:57:09" itemprop="dateModified" datetime="2021-12-03T15:57:09+08:00">2021-12-03</time>
+                <time title="修改时间：2021-12-03 16:07:26" itemprop="dateModified" datetime="2021-12-03T16:07:26+08:00">2021-12-03</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -220,9 +220,7 @@
       
           <h1 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h1><p>Android服务框架包括Java服务框架（Java层）和本地服务框架（C++层），两层通过JNI交互。</p>
 <p>代码分析版本：Android 10</p>
-<h1 id="框架概览"><a href="#框架概览" class="headerlink" title="框架概览"></a>框架概览</h1><h3 id="Android服务框架结构图"><a href="#Android服务框架结构图" class="headerlink" title="Android服务框架结构图"></a><strong>Android服务框架结构图</strong></h3><p><img src="binder-java-service.drawio.svg"></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% binder-java-service.drawio.svg %&#125;</span><br></pre></td></tr></table></figure>
-
+<h1 id="框架概览"><a href="#框架概览" class="headerlink" title="框架概览"></a>框架概览</h1><h3 id="Android服务框架结构图"><a href="#Android服务框架结构图" class="headerlink" title="Android服务框架结构图"></a><strong>Android服务框架结构图</strong></h3><p><img src="/images/android-service-framwork-structure.svg"></p>
 <p>说明：Android服务框架可分为四层</p>
 <ol>
 <li>服务层：包含特定功能函数的服务层。IFooService规定服务提供的函数，继承IInterface；FooManager引用IFooService；FooService继承Binder和IFooService。</li>
@@ -230,8 +228,7 @@
 <li>IPC层：将RPC代码和数据封装为Binder IPC数据，并传递给Binder Driver。</li>
 <li>Binder Driver层：根据Binder IPC数据查找指定服务并返回。</li>
 </ol>
-<h3 id="Android系统服务框架各类相互作用"><a href="#Android系统服务框架各类相互作用" class="headerlink" title="Android系统服务框架各类相互作用"></a><strong>Android系统服务框架各类相互作用</strong></h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% java-service-framwork-work.drawio.svg %&#125;</span><br></pre></td></tr></table></figure>
-
+<h3 id="Android系统服务框架各类相互作用"><a href="#Android系统服务框架各类相互作用" class="headerlink" title="Android系统服务框架各类相互作用"></a><strong>Android系统服务框架各类相互作用</strong></h3><p><img src="/images/android-service-framwork-class-work.svg"></p>
 <ol>
 <li>注册服务。FooService发起服务注册请求，Java系统服务一般在SystemServer.run方法里实例化并注册。在Binder驱动里将服务注册为Binder节点，ContextManager持有该节点句柄。</li>
 <li>检索服务。用户使用Context.getSystemService获取FooService，实际上是通过IPC从ContextManager 获取FooService，返回的是FooService的句柄，但客户端不能直接使用FooService，最终返回的是通过FooService生成的代理类(BinderProxy)的包装类FooManager。注意这个过程中会生成客户端的BinderProxy实例以及本地BpBinder实例，FooManager间接持有BinderProxy引用，BinderProxy间接持有本地BpBinder指针，这些对象在客户端使用服务时会涉及到。</li>
