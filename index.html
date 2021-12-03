@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"zhangliangnbu.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"zhangliangnbu.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="Developer For Android">
@@ -103,7 +103,6 @@
 
   <div class="site-nav-right">
     <div class="toggle popup-trigger">
-        <i class="fa fa-search fa-fw fa-lg"></i>
     </div>
   </div>
 </div>
@@ -138,38 +137,11 @@
     <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
 
   </li>
-      <li class="menu-item menu-item-search">
-        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
-        </a>
-      </li>
   </ul>
 </nav>
 
 
 
-  <div class="search-pop-overlay">
-    <div class="popup search-popup">
-        <div class="search-header">
-  <span class="search-icon">
-    <i class="fa fa-search"></i>
-  </span>
-  <div class="search-input-container">
-    <input autocomplete="off" autocapitalize="off"
-           placeholder="搜索..." spellcheck="false"
-           type="search" class="search-input">
-  </div>
-  <span class="popup-btn-close">
-    <i class="fa fa-times-circle"></i>
-  </span>
-</div>
-<div id="search-result">
-  <div id="no-result">
-    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
-  </div>
-</div>
-
-    </div>
-  </div>
 
 </div>
     </header>
@@ -192,7 +164,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2021/06/29/hello-world/">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2021/12/02/android-service-framwork-guide/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -206,7 +178,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/06/29/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
+            <a href="/2021/12/02/android-service-framwork-guide/" class="post-title-link" itemprop="url">Android服务框架概览</a>
         </h2>
 
         <div class="post-meta">
@@ -217,7 +189,16 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-06-29 09:24:48 / 修改时间：09:04:57" itemprop="dateCreated datePublished" datetime="2021-06-29T09:24:48+08:00">2021-06-29</time>
+              <time title="创建时间：2021-12-02 17:59:47 / 修改时间：18:02:50" itemprop="dateCreated datePublished" datetime="2021-12-02T17:59:47+08:00">2021-12-02</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
+                </span>
             </span>
 
           
@@ -231,19 +212,346 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+          <h1 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h1><p>Android服务框架包括Java服务框架（Java层）和本地服务框架（C++层），两层通过JNI交互。</p>
+<p>代码分析版本：Android 10</p>
+<h1 id="框架概览"><a href="#框架概览" class="headerlink" title="框架概览"></a>框架概览</h1><h3 id="Android服务框架结构图"><a href="#Android服务框架结构图" class="headerlink" title="Android服务框架结构图"></a><strong>Android服务框架结构图</strong></h3><p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d038489a-1c01-4c03-981d-aa0caa5d1692/binder-java-service.drawio(2).svg" alt="binder-java-service.drawio(2).svg"></p>
+<p>说明：Android服务框架可分为四层</p>
+<ol>
+<li>服务层：包含特定功能函数的服务层。IFooService规定服务提供的函数，继承IInterface；FooManager引用IFooService；FooService继承Binder和IFooService。</li>
+<li>RPC层：客户端生成RPC代码和数据，服务端根据RPC代码查找对应函数并传递RPC数据。IFooService.Stub.Proxy持有BinderProxy引用，BinderProxy由用户检索服务时获得。IFooService.Stub为抽象类，由FooService或其成员实现。</li>
+<li>IPC层：将RPC代码和数据封装为Binder IPC数据，并传递给Binder Driver。</li>
+<li>Binder Driver层：根据Binder IPC数据查找指定服务并返回。</li>
+</ol>
+<h3 id="Android系统服务框架各类相互作用"><a href="#Android系统服务框架各类相互作用" class="headerlink" title="Android系统服务框架各类相互作用"></a><strong>Android系统服务框架各类相互作用</strong></h3><p><img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d585c004-fbe1-48b9-953d-543e9c578faf/java-service-framwork-work.drawio(1).svg" alt="java-service-framwork-work.drawio(1).svg"></p>
+<ol>
+<li>注册服务。FooService发起服务注册请求，Java系统服务一般在SystemServer.run方法里实例化并注册。在Binder驱动里将服务注册为Binder节点，ContextManager持有该节点句柄。</li>
+<li>检索服务。用户使用Context.getSystemService获取FooService，实际上是通过IPC从ContextManager 获取FooService，返回的是FooService的句柄，但客户端不能直接使用FooService，最终返回的是通过FooService生成的代理类(BinderProxy)的包装类FooManager。注意这个过程中会生成客户端的BinderProxy实例以及本地BpBinder实例，FooManager间接持有BinderProxy引用，BinderProxy间接持有本地BpBinder指针，这些对象在客户端使用服务时会涉及到。</li>
+<li>使用服务。FooManager调用foo()函数，实际上调用代理类BinderProxy.transact()函数，后者通过JNI与本地BpBinder交互，并将数据传给Binder驱动进行IPC通信，通过IPCThreadState会调用FooService对应的本地BBinder实例，实际为其实现类JavaBBinder，后者会调用Java层的FooService(继承IFooService.Stub，后者继承Binder)的execTransact()方法，最终根据RPC代码查找到指定函数并执行。</li>
+</ol>
+<h3 id="主要类和文件"><a href="#主要类和文件" class="headerlink" title="主要类和文件"></a>主要类和文件</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">java</span><br><span class="line">/frameworks/base/core/java/android/app/AlarmManager.java</span><br><span class="line">/frameworks/base/core/java/android/app/IAlarmManager.aidl</span><br><span class="line">- 包含IAlarmManager.Stub和IAlarmManager.Stub.Proxy类</span><br><span class="line">/frameworks/base/core/java/android/os/ServiceManagerNative.java</span><br><span class="line">- 包含ServiceManagerProxy类</span><br><span class="line">/frameworks/base/core/java/android/os/BinderProxy.java</span><br><span class="line">/frameworks/base/core/java/android/os/Binder.java</span><br><span class="line"></span><br><span class="line">c/c++</span><br><span class="line">/frameworks/base/core/jni/android_util_Binder.cpp</span><br><span class="line">- 包含JavaBBinder类</span><br><span class="line">/frameworks/native/libs/binder/BpBinder.cpp</span><br><span class="line">/frameworks/native/libs/binder/Binder.cpp  </span><br><span class="line">- 该文件包含BBinder类</span><br><span class="line">/frameworks/native/libs/binder/IPCThreadState.cpp</span><br><span class="line">/frameworks/native/cmds/servicemanager/service_manager.c</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<h1 id="示例分析-AlarmManagerService"><a href="#示例分析-AlarmManagerService" class="headerlink" title="示例分析-AlarmManagerService"></a>示例分析-AlarmManagerService</h1><p>以应用层使用Java系统服务AlarmManagerService为例，基于代码分析服务的注册、检索和使用三个流程。</p>
+<p>说明：代码流程分析中红色字体表示IPC过程</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1. SystemSever启动时，注册服务。</span></span><br><span class="line">mSystemServiceManager.startService(<span class="keyword">new</span> AlarmManagerService(context));</span><br><span class="line"></span><br><span class="line"><span class="comment">// SampleActivity.java</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">				...</span><br><span class="line">				<span class="comment">// 2. 检索服务。获取AlarmManager包装类，持有服务代理的引用</span></span><br><span class="line">        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);</span><br><span class="line">				<span class="comment">// 3. 使用服务。通过包装类调用服务的方法</span></span><br><span class="line">        am.setTime(<span class="number">1000L</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<h3 id="注册服务"><a href="#注册服务" class="headerlink" title="注册服务"></a>注册服务</h3><p>Java系统服务在SystemServer进程启动时开始实例化并注册。首先调用SystemServer.main()方法，该方法内部会实例化SystemServer并调用其run()方法，run()方法中接着调用startOtherServices()方法，该方法中会执行AlarmManagerService的服务实例化和注册操作。</p>
+<p>SystemServer.run()方法最后会调用Looper.loop()方法阻止线程退出，SystemServer实例会常住内存且持有SystemServiceManager实例引用，SystemServiceManager又持有系统服务集合，因此各个系统服务实例会常住系统内存，以供客户端调用。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 前置流程：SystemServer.main() -&gt; SystemServer.run() -&gt; startOtherServices()</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">startOtherServices</span><span class="params">()</span> </span>&#123; </span><br><span class="line">		<span class="comment">// SystemServiceManager.startService内部调用流程:</span></span><br><span class="line">		<span class="comment">// -&gt; SystemService.onStart(), 实际调用的是子类AlarmManagerService.onStart()</span></span><br><span class="line">		<span class="comment">// -&gt; SystemService.publishBinderService()</span></span><br><span class="line">		<span class="comment">// -&gt; ServiceManager.addService() </span></span><br><span class="line">		<span class="comment">//    先通过getIServiceManager构造ServiceManagerProxy，再调用其addService()方法</span></span><br><span class="line">		<span class="comment">// -&gt; ServiceManagerProxy.addService(), 方法内的mRemote为BinderProxy, 详情见(1)</span></span><br><span class="line">		<span class="comment">// -&gt; BinderProxy.transact() -&gt; native transactNative()</span></span><br><span class="line">		<span class="comment">// -&gt; android_os_BinderProxy_transact(), android_util_Binder.cpp</span></span><br><span class="line">		<span class="comment">// -&gt; BpBinder.transact(), BpBinder.cpp</span></span><br><span class="line">		<span class="comment">// -&gt; IPCThreadState.transact(mHandle, code, data, ...), IPCThreadState.cpp</span></span><br><span class="line">		<span class="comment">// -&gt; ...Binder Driver IPC... 最终进入ContextManager服务中...</span></span><br><span class="line">		<span class="comment">// -&gt; IPCThreadState::executeCommand(), IPCThreadState.cpp</span></span><br><span class="line">		<span class="comment">// -&gt; BBinder.transact() -&gt; onTransact() -&gt; ...??, Binder.cpp (2)</span></span><br><span class="line">		<span class="comment">// -&gt; binder_loop(), service_manager.c, loop()方法在main()方法里被调用并等待消息</span></span><br><span class="line">		<span class="comment">// -&gt; binder_parse(), service_manager.c, 进入BR_TRANSACTION分支</span></span><br><span class="line">		<span class="comment">//    func在service_manager.c:main()方法里预设为svcmgr_handler</span></span><br><span class="line">		<span class="comment">// -&gt; svcmgr_handler(bs, &amp;txn, &amp;msg, &amp;reply), service_manager.c</span></span><br><span class="line">		<span class="comment">//    进入分支：case SVC_MGR_ADD_SERVICE</span></span><br><span class="line">		<span class="comment">// -&gt; do_add_service(), service_manager.c, 保存服务名称、节点handle等数据到svclist</span></span><br><span class="line">		mSystemServiceManager.startService(<span class="keyword">new</span> AlarmManagerService(context));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>(1) mRemote初始化为BinderProxy流程</p>
+<p>mRemote被声明为IBinder，在ServiceManagerProxy构造方法内进行初始化，而ServiceManagerProxy是通过ServiceManager.getIServiceManager()内调用静态方法ServiceManagerNative.asInterface(IBinder b)进行构造的。</p>
+<p>ServiceManagerNative.asInterface(IBinder b)方法接收IBinder类型的参数，并最终赋值给ServiceManagerProxy里的mRemote变量。IBinder类型的参数由BinderInternal.getContextObject()通过JNI方式从本地获取。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> IServiceManager <span class="title">getIServiceManager</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">// BinderInternal.getContextObject() 返回的IBinder即为mRemote的值</span></span><br><span class="line">		sServiceManager = ServiceManagerNative</span><br><span class="line">                .asInterface(Binder.allowBlocking(BinderInternal.getContextObject()));</span><br><span class="line">    <span class="keyword">return</span> sServiceManager;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 通过JNI方式实例化BinderProxy流程:</span></span><br><span class="line"><span class="comment">// -&gt; android_util_Binder.cpp: android_os_BinderInternal_getContextObject()</span></span><br><span class="line"><span class="comment">// -&gt; android_util_Binder.cpp: javaObjectForIBinder()</span></span><br><span class="line"><span class="comment">// -&gt; android_util_Binder.cpp: jobject object = env-&gt;CallStaticObjectMethod(</span></span><br><span class="line"><span class="comment">// 		gBinderProxyOffsets.mClass,gBinderProxyOffsets.mGetInstance, ...);</span></span><br><span class="line"><span class="comment">//    即最终会待用Java层静态方法BinderProxy.getInstance()</span></span><br><span class="line"><span class="comment">// -&gt; BinderProxy.getInstance()</span></span><br><span class="line"><span class="comment">// -&gt; new BinderProxy(nativeData) 最终通过从本地服务获取的数据构造BinderProxy</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">native</span> IBinder <span class="title">getContextObject</span><span class="params">()</span></span></span><br></pre></td></tr></table></figure>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+<p>(2) 如何从BBinder进入service_manager.c的binder_loop()方法中?</p>
+<h3 id="检索服务"><a href="#检索服务" class="headerlink" title="检索服务"></a>检索服务</h3><p>调用Context.getSystemService()方法，具体是调用ContextImpl.getSystemService()方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ContextImpl.java 通过name获取ServiceFetcher</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">getSystemService</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">		<span class="comment">// 内部调用流程: </span></span><br><span class="line">		<span class="comment">// -&gt; ServiceFetcher.getService(),  最初会调用 createService()</span></span><br><span class="line">		<span class="comment">// -&gt; CachedServiceFetcher.createService(),</span></span><br><span class="line">		<span class="comment">//    CachedServiceFetcher是ServiceFetcher实现抽象类, 它是在</span></span><br><span class="line">		<span class="comment">//    SystemServiceRegistry中通过静态代码块调用静态方法registerService()时实例化的</span></span><br><span class="line">    <span class="keyword">return</span> SystemServiceRegistry.getSystemService(<span class="keyword">this</span>, name);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// SystemServiceRegistry.java</span></span><br><span class="line"><span class="keyword">static</span> &#123;</span><br><span class="line">		<span class="comment">// 注册服务Fetcher, 实例化CachedServiceFetcher</span></span><br><span class="line">		registerService(Context.ALARM_SERVICE, AlarmManager.class,</span><br><span class="line">				    <span class="keyword">new</span> CachedServiceFetcher&lt;AlarmManager&gt;() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> AlarmManager <span class="title">createService</span><span class="params">(ContextImpl ctx)</span> </span>&#123;</span><br><span class="line">            IBinder b = ServiceManager.getServiceOrThrow(Context.ALARM_SERVICE);</span><br><span class="line">            IAlarmManager service = IAlarmManager.Stub.asInterface(b);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> AlarmManager(service, ctx);</span><br><span class="line">        &#125;&#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// CachedServiceFetcher匿名子类</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> AlarmManager <span class="title">createService</span><span class="params">(ContextImpl ctx)</span> <span class="keyword">throws</span> ServiceNotFoundException </span>&#123;</span><br><span class="line">		<span class="comment">// 说明：此处获取的IBinder为BinderProxy</span></span><br><span class="line">		<span class="comment">// ServiceManager.getServiceOrThrow内部调用流程：</span></span><br><span class="line">		<span class="comment">// -&gt; IBinder binder = ServiceManager.getService()</span></span><br><span class="line">		<span class="comment">// -&gt; IBinder binder = ServiceManager.rawGetService()</span></span><br><span class="line">		<span class="comment">// -&gt; IBinder binder = getIServiceManager().getService(name)</span></span><br><span class="line">		<span class="comment">// -&gt; ServiceManagerProxy.getService(),  方法内mRemote为BinderProxy</span></span><br><span class="line">		<span class="comment">// -&gt; BinderProxy.transact() -&gt; native transactNative()</span></span><br><span class="line">		<span class="comment">// -&gt; BpBinder.transact()...ipc...BBinder.transact()..., 进入服务端, 最终会调用</span></span><br><span class="line">		<span class="comment">// -&gt; service_manager.c:do_find_service()并返回handle值, 结果存于reply</span></span><br><span class="line">		<span class="comment">// -&gt; 待BinderProxy.transact()调用完毕后，会接着调用</span></span><br><span class="line">		<span class="comment">//    IBinder binder = reply.readStrongBinder(), 此处会创建BinderProxy对象</span></span><br><span class="line">		<span class="comment">//    及其native对象BpBinder，之后使用服务时会用到</span></span><br><span class="line">    IBinder b = ServiceManager.getServiceOrThrow(Context.ALARM_SERVICE);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 此处的service为IAlarmManager.Stub.Proxy</span></span><br><span class="line">		<span class="comment">// -&gt; new android.app.IAlarmManager.Stub.Proxy(obj);</span></span><br><span class="line">		<span class="comment">// 即基于Service构造BinderProxy, 基于BinderProxy构造Stub.Proxy, </span></span><br><span class="line">		<span class="comment">// 基于Stub.Proxy构造Manager</span></span><br><span class="line">    IAlarmManager service = IAlarmManager.Stub.asInterface(b);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> AlarmManager(service, ctx);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用服务"><a href="#使用服务" class="headerlink" title="使用服务"></a>使用服务</h3><p>调用AlarmManager.setTime()</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTime</span><span class="params">(<span class="keyword">long</span> millis)</span> </span>&#123;</span><br><span class="line">		<span class="comment">// 由检索服务流程知mService为Stub.Proxy对象</span></span><br><span class="line">		<span class="comment">// mService.setTime()内部调用流程如下：</span></span><br><span class="line">		<span class="comment">// -&gt; IAlarmManager.Stub.Proxy.setTime()</span></span><br><span class="line">		<span class="comment">//    由检索服务流程知Stub.Proxy里的mRemote为BinderProxy对象</span></span><br><span class="line">		<span class="comment">// -&gt; BinderProxy.transact(Stub.TRANSACTION_setTime, _data, _reply, 0)</span></span><br><span class="line">	  	<span class="comment">// -&gt; native transactNative()</span></span><br><span class="line">		<span class="comment">// -&gt; android_os_BinderProxy_transact(), android_util_Binder.cpp</span></span><br><span class="line">		<span class="comment">// -&gt; BpBinder.transact(), BpBinder.cpp</span></span><br><span class="line">		<span class="comment">// -&gt; IPCThreadState.transact(mHandle, code, data, ...), IPCThreadState.cpp</span></span><br><span class="line">		<span class="comment">// -&gt; ...Binder Driver IPC... 最终进入服务中...</span></span><br><span class="line">		<span class="comment">// -&gt; IPCThreadState::executeCommand(), IPCThreadState.cpp</span></span><br><span class="line">		<span class="comment">// -&gt; BBinder.transact(), Binder.cpp</span></span><br><span class="line">		<span class="comment">// -&gt; JavaBBinder(子类).onTransact(), android_util_Binder.cpp (1)</span></span><br><span class="line">		<span class="comment">// -&gt; Binder.execTransact()</span></span><br><span class="line">		<span class="comment">// -&gt; IAlarmManager.Stub(子类).onTransact(), Stub为Binder的实现类</span></span><br><span class="line">		<span class="comment">// -&gt; AlarmManagerService.mService(子类).setTime(), mService为Stub的实现类</span></span><br><span class="line">		mService.setTime(millis);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>(1) JavaBBinder本地代码调用Java代码 Binder.execTransact()</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// android_util_Binder.cpp</span></span><br><span class="line"><span class="function">status_t <span class="title">onTransact</span><span class="params">()</span></span>&#123;</span><br><span class="line">		jboolean res = env-&gt;CallBooleanMethod(mObject, </span><br><span class="line">						gBinderOffsets.mExecTransact,  <span class="comment">// 调用 Binder.execTransact()</span></span><br><span class="line">						code, reinterpret_cast&lt;jlong&gt;(&amp;data), </span><br><span class="line">						reinterpret_cast&lt;jlong&gt;(reply), flags);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li>金泰廷等著《Android框架解密》，人民邮电出版社，2012。该书分析的代码较老，但框架机制基本不变，非常好的书籍。</li>
+<li>源码查看网站：<a target="_blank" rel="noopener" href="http://aospxref.com/%E3%80%82%E5%9F%BA%E4%BA%8EOpenGrok%E7%9A%84%E6%BA%90%E7%A0%81%E6%9F%A5%E7%9C%8B%E6%9C%8D%E5%8A%A1%E7%BD%91%E7%AB%99%EF%BC%8C%E9%80%9F%E5%BA%A6%E5%BE%88%E5%BF%AB%EF%BC%8C%E4%B8%BB%E8%A6%81%E7%94%A8%E6%9D%A5%E6%9F%A5%E7%9C%8BC/C++%E4%BB%A3%E7%A0%81%EF%BC%8CJava%E4%BB%A3%E7%A0%81%E5%8F%AF%E4%B8%8B%E8%BD%BD%E5%88%B0%E6%9C%AC%E5%9C%B0%E6%9F%A5%E7%9C%8B%E3%80%82">http://aospxref.com/。基于OpenGrok的源码查看服务网站，速度很快，主要用来查看C/C++代码，Java代码可下载到本地查看。</a></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2021/07/01/Android%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E6%83%85%E5%BD%A2%E5%8F%8A%E8%A7%A3%E5%86%B3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/07/01/Android%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E6%83%85%E5%BD%A2%E5%8F%8A%E8%A7%A3%E5%86%B3/" class="post-title-link" itemprop="url">Android内存泄漏情形及解决</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-07-01 11:34:22 / 修改时间：11:35:15" itemprop="dateCreated datePublished" datetime="2021-07-01T11:34:22+08:00">2021-07-01</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a><strong>前言</strong></h2><p>内存泄漏：对于Java来说，就是new出来的对象无法被GC回收。内存泄漏发生时的主要表现为内存抖动，可用内存慢慢变少。</p>
+<p><img src="C:\Users\zhang\Projects\blog\source_posts\Android内存泄漏情形及解决.assets\v2-4483280b8b2bab984b40251648f92222_720w.png" alt="https://pic3.zhimg.com/80/v2-4483280b8b2bab984b40251648f92222_720w.png"></p>
+<p>在Android中，造成内存泄漏的情形有：</p>
+<ol>
+<li>使用全局静态变量持有<code>Activity</code>的强引用，而没有及时清空。</li>
+<li>活在<code>Activity</code>生命周期之外的对象或线程，持有<code>Activity</code>的强引用，而没有及时清空。</li>
+<li>忘记释放资源，比如忘记关闭<code>Cursor</code>，或忘记反注册传感器等。</li>
+</ol>
+<h2 id="具体场景和解决方案"><a href="#具体场景和解决方案" class="headerlink" title="具体场景和解决方案"></a><strong>具体场景和解决方案</strong></h2><ul>
+<li>静态Activity。在类中定义了静态Activity变量，把当前Activity实例赋值给这个静态变量。解决方案，销毁时置空。</li>
+<li>静态View。如果一个View初始化耗费大量资源，而且在一个Activity生命周期内保持不变，那可以把它变成static，加载到视图树上(View Hierachy)，像这样，当Activity被销毁时，应当释放资源。</li>
+<li>内部类。Activity中有个内部类，如果一个静态变量持有该内部类实例就容易造成内存泄漏。解决方案，销毁时置空。</li>
+<li>匿名内部类。匿名内部类和内部类一样，都会持有外部类的强引用，其内存泄漏原理同内部类的错误使用一样。解决方案，销毁时置空。</li>
+<li>Handler。两种方式造成内存泄漏，一种是作为内部类或匿名内部类而被静态变量持有，一种是消息没有及时消费导致Activity实例不能被销毁，于是发生内存泄漏。解决方案，一，定义Handler为静态内部类或外部对象，二，对Activity的强引用改为弱引用。</li>
+<li>Thread。作为匿名内部类或内部类持有Activity的引用，线程没有结束时Activity都不能销毁。解决方案，销毁时停止并销毁线程，或改为持有Activity的弱引用。</li>
+<li>TimerTask。只要要是匿名类的实例，不管是不是在工作线程，都会持有Activity的引用，导致内存泄漏。</li>
+<li>传感器服务类。注册系统服务，销毁时需要反注册，否则导致内存泄漏。</li>
+</ul>
+<h2 id="使用Leakcanary检测"><a href="#使用Leakcanary检测" class="headerlink" title="使用Leakcanary检测"></a><strong>使用Leakcanary检测</strong></h2><p><strong>Leakcanary</strong>基本原理：</p>
+<ul>
+<li>在一个Activity执行完onDestroy()之后，将它放入WeakReference中，</li>
+<li>然后将这个WeakReference类型的Activity对象与ReferenceQueue关联。</li>
+<li>从ReferenceQueue中查看是否有没有该对象，如果还存在，执行gc，再次查看，还是有的话则判断发生内存泄露了。</li>
+<li>最后用HAHA这个开源库去分析dump之后的heap内存。</li>
+</ul>
+<h2 id="通常的解决方案"><a href="#通常的解决方案" class="headerlink" title="通常的解决方案"></a>通常的解决方案</h2><p>不管内存泄漏的代码表现形式如何，其核心问题在于：在Activity生命周期之外仍持有其引用。</p>
+<p>解决方法：</p>
+<ul>
+<li>static。Activity销毁之前置空即可。</li>
+<li>内部类或匿名内部类、Handler。将子类声明为静态内部类或外部类，对Activity的强引用改为弱引用。</li>
+<li>Thread、TimerTask。如果坚持使用匿名类，只要在生命周期结束时中断线程就可以。</li>
+<li>Sensor Manager。在Activity结束时注销监听器。</li>
+</ul>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a><strong>参考</strong></h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/ac00e370f83d">https://www.jianshu.com/p/ac00e370f83d</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.nimbledroid.com/2016/09/06/stop-memory-leaks.html">https://blog.nimbledroid.com/2016/09/06/stop-memory-leaks.html</a></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2021/06/30/Android%E4%B8%AD%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%AE%9E%E7%8E%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/06/30/Android%E4%B8%AD%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%AE%9E%E7%8E%B0/" class="post-title-link" itemprop="url">Android中多线程实现</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-06-30 15:42:53 / 修改时间：15:48:36" itemprop="dateCreated datePublished" datetime="2021-06-30T15:42:53+08:00">2021-06-30</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>Android中涉及线程操作的类或机制主要有：</p>
+<ul>
+<li>Thread。线程操作的最基本的类。</li>
+<li>ThreadPoolExecutor。基于线程池，处理并发多线程操作。</li>
+<li>Handler机制：Handler、Looper、MessageQueue等。Android中多线程处理的基本机制。</li>
+<li>HandlerThread。Thread的子类，维护了一个Looper，Handler机制的辅助类。</li>
+<li>AsyncTask。基于Handler机制。</li>
+<li>IntentService。基于Handler机制。</li>
+</ul>
+<h1 id="Handler机制"><a href="#Handler机制" class="headerlink" title="Handler机制"></a>Handler机制</h1><p>Handler 发消息到MessageQueue中，Looper 循环从MessageQueue中获取消息并消费（执行Handler的回调方法）。</p>
+<p>以线程B向线程A发消息为例，从时间顺序上说明如下：</p>
+<ul>
+<li>在线程A中，创建Looper，通过sThreadLocal与当前绑定，启动Looper的消息循环，线程处于活跃状态；创建Handler，在Looper进行消息循环之前创建，Handler会与当前线程的Looper建立联系。</li>
+<li>在线程B中，使用上面的Handler发送消息。</li>
+<li>在线程A中，Looper循环消息获取消息，由于消息持有Handler引用，最终会执行Handler的回调方法。</li>
+</ul>
+<p>代码示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span>  Handler handler;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testHandler</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 创建线程A 、Looper、Handler</span></span><br><span class="line">    Thread threadA = <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">        Looper.prepare();</span><br><span class="line">        <span class="comment">// 创建 Handler。</span></span><br><span class="line">        handler = <span class="keyword">new</span> Handler() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(<span class="meta">@NonNull</span> Message msg)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">super</span>.handleMessage(msg);</span><br><span class="line">                Log.d(<span class="string">&quot;handleMessage&quot;</span>, <span class="string">&quot;msg what == &quot;</span> + msg.what);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        Looper.loop();</span><br><span class="line">    &#125;);</span><br><span class="line">    threadA.start();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建线程B，并利用Handler 发送消息</span></span><br><span class="line">    Thread threadB = <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">        <span class="comment">// 防止ThreadA没有执行完而导致handler为空</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Thread.sleep(<span class="number">3000</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        handler.sendEmptyMessage(<span class="number">111</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">    threadB.start();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意：创建Handler有多种方式，以绑定线程A的Looper为例：</p>
+<ul>
+<li>在<code>Looper.prepare()</code>和<code>Looper.loop()</code> 之间创建，<code>handler = new Handler()</code>。Android中主线程的第一个Handler就是如此创建。</li>
+<li>在线程A的某个Handler的回调消息中创建，<code>handler = new Handler()</code>。一般开发时在Activity里创建的Handler就属于这种情况。</li>
+<li>在其他线程中直接利用与线程A绑定的Looper进行创建，<code>handler = new Handler(looper)</code>。IntentService里使用HandlerThread，属于这种情况。</li>
+</ul>
+<h1 id="HandlerThread"><a href="#HandlerThread" class="headerlink" title="HandlerThread"></a>HandlerThread</h1><p><code>Thread</code>的子类，维护了一个<code>Looper</code>，在<code>run()</code>中创建<code>Looper</code>实例、与线程绑定，开启消息循环。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    mTid = Process.myTid();</span><br><span class="line">		<span class="comment">// </span></span><br><span class="line">    Looper.prepare();</span><br><span class="line">    <span class="keyword">synchronized</span> (<span class="keyword">this</span>) &#123;</span><br><span class="line">        mLooper = Looper.myLooper();</span><br><span class="line">        notifyAll();</span><br><span class="line">    &#125;</span><br><span class="line">    Process.setThreadPriority(mPriority);</span><br><span class="line">    onLooperPrepared();</span><br><span class="line">    Looper.loop();</span><br><span class="line">    mTid = -<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>一般使用：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建线程A 、Looper</span></span><br><span class="line">HandlerThread threadA = <span class="keyword">new</span> HandlerThread(<span class="string">&quot;handler thread a&quot;</span>);</span><br><span class="line">threadA.start();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建Handler.</span></span><br><span class="line"><span class="comment">// threadA.getLooper() 中使用了wait()，保证looper不为空</span></span><br><span class="line">handler = <span class="keyword">new</span> Handler(threadA.getLooper()) &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(<span class="meta">@NonNull</span> Message msg)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.handleMessage(msg);</span><br><span class="line">        Log.d(<span class="string">&quot;handleMessage&quot;</span>, <span class="string">&quot;msg what == &quot;</span> + msg.what);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建线程B，并利用Handler 发送消息</span></span><br><span class="line">Thread threadB = <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">    handler.sendEmptyMessage(<span class="number">111</span>);</span><br><span class="line">&#125;);</span><br><span class="line">threadB.start();</span><br></pre></td></tr></table></figure>
+
+<h1 id="AsyncTask"><a href="#AsyncTask" class="headerlink" title="AsyncTask"></a>AsyncTask</h1><p>基于Handler机制。在工作线程执行任务<code>doInBackground</code>，通过Handler发送消息到ui线程，更新进度<code>onProgressUpdate</code>和结果<code>onPostExecute</code>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">MyAsyncTask</span> <span class="keyword">extends</span> <span class="title">AsyncTask</span>&lt;<span class="title">String</span>, <span class="title">Integer</span>, <span class="title">String</span>&gt; </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onPreExecute</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// on ui thread</span></span><br><span class="line">        <span class="keyword">super</span>.onPreExecute();</span><br><span class="line">        Log.d(<span class="string">&quot;MyAsyncTask&quot;</span>, <span class="string">&quot;onPreExecute&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> String <span class="title">doInBackground</span><span class="params">(String... strings)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// on work thread</span></span><br><span class="line">        publishProgress(<span class="number">0</span>);</span><br><span class="line">        Log.d(<span class="string">&quot;MyAsyncTask&quot;</span>, <span class="string">&quot;doInBackground ==&quot;</span> + Arrays.toString(strings));</span><br><span class="line">        publishProgress(<span class="number">100</span>);</span><br><span class="line">        <span class="keyword">return</span> Arrays.toString(strings);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onPostExecute</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// on ui thread</span></span><br><span class="line">        <span class="keyword">super</span>.onPostExecute(s);</span><br><span class="line">        Log.d(<span class="string">&quot;MyAsyncTask&quot;</span>, <span class="string">&quot;onPostExecute ==&quot;</span> + s);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onProgressUpdate</span><span class="params">(Integer... values)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// on ui thread</span></span><br><span class="line">        <span class="keyword">super</span>.onProgressUpdate(values);</span><br><span class="line">        Log.d(<span class="string">&quot;MyAsyncTask&quot;</span>, <span class="string">&quot;onProgressUpdate ==&quot;</span> + Arrays.toString(values));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testAsyncTask</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    MyAsyncTask asyncTask = <span class="keyword">new</span> MyAsyncTask();</span><br><span class="line">    asyncTask.execute(<span class="string">&quot;a&quot;</span>, <span class="string">&quot;b&quot;</span>, <span class="string">&quot;c&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="IntentService"><a href="#IntentService" class="headerlink" title="IntentService"></a>IntentService</h1><p>基于Handler，相关代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onCreate();</span><br><span class="line">    HandlerThread thread = <span class="keyword">new</span> HandlerThread(<span class="string">&quot;IntentService[&quot;</span> + mName + <span class="string">&quot;]&quot;</span>);</span><br><span class="line">    thread.start();</span><br><span class="line"></span><br><span class="line">    mServiceLooper = thread.getLooper();</span><br><span class="line">    mServiceHandler = <span class="keyword">new</span> ServiceHandler(mServiceLooper);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onStart</span><span class="params">(<span class="meta">@Nullable</span> Intent intent, <span class="keyword">int</span> startId)</span> </span>&#123;</span><br><span class="line">    Message msg = mServiceHandler.obtainMessage();</span><br><span class="line">    msg.arg1 = startId;</span><br><span class="line">    msg.obj = intent;</span><br><span class="line">    mServiceHandler.sendMessage(msg);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2021/06/29/Java%E9%9B%86%E5%90%88%E4%B8%AD%E5%85%83%E7%B4%A0%E5%88%A0%E9%99%A4%E6%96%B9%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/06/29/Java%E9%9B%86%E5%90%88%E4%B8%AD%E5%85%83%E7%B4%A0%E5%88%A0%E9%99%A4%E6%96%B9%E5%BC%8F/" class="post-title-link" itemprop="url">Java集合中元素删除方式</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-06-29 12:03:45 / 修改时间：16:30:42" itemprop="dateCreated datePublished" datetime="2021-06-29T12:03:45+08:00">2021-06-29</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>删除集合中的元素，有两种删除的形式，一种是删除特定元素，一种是删除特定索引的元素。</p>
+<p>删除的方式有：使用Java API （java 8）、从后往前的循环、使用迭代器、使用新的集合。</p>
+<h1 id="Java-API"><a href="#Java-API" class="headerlink" title="Java API"></a>Java API</h1><ul>
+<li><code>List#remove(int index)</code>。最基本API，删除特定索引处元素，O(1)。</li>
+<li><code>List#remove(Object o)</code>。从前往后遍历，移除第一个与 <code>o</code> 相等的元素，O(n)。</li>
+<li><code>Collection#removeIf(Predicate&lt;? super E&gt; filter)</code>。移除所有特定元素，内部使用迭代器；Java 8；O(n)。</li>
+<li><code>ArrayList#removeIf(Predicate&lt;? super E&gt; filter)</code>。移除所有特定元素，内部使用<code>BitSet</code>标记待删除元素；Java 8；O(n)。</li>
+<li><code>List#subList(startIndex, endIndex).clear()</code>。删除特定索引区间的元素，O(n)。</li>
+</ul>
+<blockquote>
+<p><code>BitSet</code>利用<code>long</code>数组来维护自身，数组中的每个长整型代表64个位元素，每个元素的值为<code>True</code>或<code>False</code>。常用于标记其他集合。</p>
+</blockquote>
+<h1 id="从后往前循环"><a href="#从后往前循环" class="headerlink" title="从后往前循环"></a>从后往前循环</h1><p>适用两种形式：删除特定元素，以及删除特定索引的元素。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 删除所有特定元素</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> index = list.size() - <span class="number">1</span>; index &gt;= <span class="number">0</span>; index --) &#123;</span><br><span class="line">    Object element = list.get(index);</span><br><span class="line">    <span class="keyword">if</span> (special.equals(element)) &#123;</span><br><span class="line">        list.remove(index);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 删除多个特定索引的元素 比如，删除索引在[start, end]内的元素</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> index = end; index &gt;= start; index --) &#123;</span><br><span class="line">    list.remove(index);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="使用迭代器"><a href="#使用迭代器" class="headerlink" title="使用迭代器"></a>使用迭代器</h1><p>适用删除特定元素；部分（元素可标记）适用删除特定索引元素，先标记再迭代删除。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 删除所有特定元素</span></span><br><span class="line">Iterator&lt;Integer&gt; iterator = list.listIterator();</span><br><span class="line"><span class="keyword">while</span> (iterator.hasNext()) &#123;</span><br><span class="line">    Integer element = iterator.next();</span><br><span class="line">    <span class="keyword">if</span> (special.equals(element)) &#123;</span><br><span class="line">        iterator.remove();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 删除特定索引元素，元素可标记，比如元素里的ID不能为负数，标记为负数即为待删除元素</span></span><br><span class="line"><span class="comment">// 比如删除索引在[start, end]中的整数，如果集合不为负数，则可以标记待删除元素为负数。</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> index = start; index &lt;= end; index ++) &#123;</span><br><span class="line">    list.set(index, Integer.MIN_VALUE);</span><br><span class="line">&#125;</span><br><span class="line">Iterator&lt;Integer&gt; iterator = list.listIterator();</span><br><span class="line"><span class="keyword">while</span> (iterator.hasNext()) &#123;</span><br><span class="line">    Integer element = iterator.next();</span><br><span class="line">    <span class="keyword">if</span> (element == Integer.MIN_VALUE) &#123;</span><br><span class="line">        iterator.remove();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="使用新的集合"><a href="#使用新的集合" class="headerlink" title="使用新的集合"></a>使用新的集合</h1><p>创建新的集合，循环将旧集合中有效元素添加到新集合中。在实践中也较常用。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>实践中，各种方法的复杂度都相同，使用新的集合需要额外的空间，如果集合比较大则效率较低。</p>
+<p>优先考虑使用API，不能满足的情况下再考虑向前循环、迭代或创建新的集合。</p>
 
       
     </div>
@@ -294,7 +602,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 09:13:08" itemprop="dateModified" datetime="2021-06-29T09:13:08+08:00">2021-06-29</time>
+                <time title="修改时间：2021-06-29 14:12:44" itemprop="dateModified" datetime="2021-06-29T14:12:44+08:00">2021-06-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -317,8 +625,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>#前言</p>
-<p>最近得空，记录下这几月Android开发中遇到的坑。</p>
+          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>最近得空，记录下这几月Android开发中遇到的坑。</p>
 <p>这篇文章主要记录集成腾讯浏览服务（TBS Tencent Browse Server）时遇到的问题以及解决方案。</p>
 <hr>
 <h1 id="问题：H5加载异常"><a href="#问题：H5加载异常" class="headerlink" title="问题：H5加载异常"></a>问题：H5加载异常</h1><p><strong>具体情况</strong></p>
@@ -365,7 +672,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2019/05/15/android-build-07-gradle-advance/" class="post-title-link" itemprop="url">android-build-07-gradle-advance</a>
+            <a href="/2019/05/15/android-build-07-gradle-advance/" class="post-title-link" itemprop="url">Android构建07-进阶</a>
         </h2>
 
         <div class="post-meta">
@@ -382,7 +689,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 09:13:08" itemprop="dateModified" datetime="2021-06-29T09:13:08+08:00">2021-06-29</time>
+                <time title="修改时间：2021-06-29 14:35:24" itemprop="dateModified" datetime="2021-06-29T14:35:24+08:00">2021-06-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -390,7 +697,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android%E6%9E%84%E5%BB%BA%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">Android构建系统</span></a>
+                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
                 </span>
             </span>
 
@@ -412,10 +719,16 @@
 <li>其他gradle文件，没有定义为class的，会转换为一个实现了<code>Script</code>接口的对象</li>
 </ul>
 <h1 id="任务"><a href="#任务" class="headerlink" title="任务"></a>任务</h1><p>可以使用方法和关键字定义。</p>
-<ul>
-<li>```groovy<br> // 关键字定义<br> task myTask<br> task myTask { configure closure } // 重点<br> task myTask(type: SomeType)<br> task myTask(type: SomeType) { configure closure } // 重点// 方法定义<br>Task task(String name)<br>Task task(String name,Closure configureClosure)<br>Task task(String name,Action<? super Task> configureAction)
-Task task(Map<String,?> args,String name)<br>Task task(Map&lt;String,?&gt; args,String name,Closure configureClosure)<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 常用属性</span><br><span class="line"></span><br><span class="line">`Project`和`Settings`的常用属性</span><br><span class="line"></span><br><span class="line">**扩展属性（Ext属性）**</span><br><span class="line"></span><br><span class="line">```groovy</span><br><span class="line">// 定义</span><br><span class="line">[project.]ext.foo = &quot;bar&quot;</span><br><span class="line">[project.]ext &#123;</span><br><span class="line">		foo = &quot;bar&quot;</span><br><span class="line">&#125; // 命名空间方式定义 ？？</span><br><span class="line"></span><br><span class="line">// 使用</span><br><span class="line">println project.ext.foo</span><br><span class="line">println rootProject.ext.foo</span><br><span class="line"></span><br><span class="line">// 范围：有穿透性？gradle 4.10.* 没有穿透性。即rootProject.foo != projet.foo</span><br></pre></td></tr></table></figure></li>
-</ul>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 关键字定义</span></span><br><span class="line">task myTask</span><br><span class="line">task myTask &#123; configure closure &#125; <span class="comment">// 重点</span></span><br><span class="line">task myTask(<span class="attr">type:</span> SomeType)</span><br><span class="line">task myTask(<span class="attr">type:</span> SomeType) &#123; configure closure &#125; <span class="comment">// 重点</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">// 方法定义</span></span><br><span class="line">Task task(String name)</span><br><span class="line">Task task(String name,Closure configureClosure)</span><br><span class="line">Task task(String name,Action&lt;? super Task&gt; configureAction)</span><br><span class="line">Task task(Map&lt;String,?&gt; args,String name)</span><br><span class="line">Task task(Map&lt;String,?&gt; args,String name,Closure configureClosure)</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="常用属性"><a href="#常用属性" class="headerlink" title="常用属性"></a>常用属性</h1><p><code>Project</code>和<code>Settings</code>的常用属性</p>
+<p><strong>扩展属性（Ext属性）</strong></p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义</span></span><br><span class="line">[project.]ext.foo = <span class="string">&quot;bar&quot;</span></span><br><span class="line">[project.]ext &#123;</span><br><span class="line">		foo = <span class="string">&quot;bar&quot;</span></span><br><span class="line">&#125; <span class="comment">// 命名空间方式定义 ？？</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用</span></span><br><span class="line">println project.ext.foo</span><br><span class="line">println rootProject.ext.foo</span><br><span class="line"></span><br><span class="line"><span class="comment">// 范围：有穿透性？gradle 4.10.* 没有穿透性。即rootProject.foo != projet.foo</span></span><br></pre></td></tr></table></figure>
+
+
+
 <p><strong>文件<code>gradle.properites</code>属性</strong></p>
 <p>可以直接被<code>Project</code>/<code>Settings</code>使用</p>
 <figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// gradle.properties中</span></span><br><span class="line">test=<span class="string">&quot;test hw&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// build.gradle中</span></span><br><span class="line"><span class="keyword">assert</span> project.test == <span class="string">&quot;test hw&quot;</span></span><br><span class="line"><span class="keyword">assert</span> settings.test == <span class="string">&quot;test hw&quot;</span></span><br></pre></td></tr></table></figure>
@@ -581,7 +894,7 @@ Task task(Map<String,?> args,String name)<br>Task task(Map&lt;String,?&gt; args,
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 09:13:08" itemprop="dateModified" datetime="2021-06-29T09:13:08+08:00">2021-06-29</time>
+                <time title="修改时间：2021-06-29 14:26:52" itemprop="dateModified" datetime="2021-06-29T14:26:52+08:00">2021-06-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -684,7 +997,7 @@ Task task(Map<String,?> args,String name)<br>Task task(Map&lt;String,?&gt; args,
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 09:13:08" itemprop="dateModified" datetime="2021-06-29T09:13:08+08:00">2021-06-29</time>
+                <time title="修改时间：2021-06-29 14:41:15" itemprop="dateModified" datetime="2021-06-29T14:41:15+08:00">2021-06-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -707,8 +1020,7 @@ Task task(Map<String,?> args,String name)<br>Task task(Map&lt;String,?&gt; args,
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>#导引</p>
-<p>主要参考以下两种组件化方案</p>
+          <h1 id="导引"><a href="#导引" class="headerlink" title="导引"></a>导引</h1><p>主要参考以下两种组件化方案</p>
 <p> <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/45374964">知乎 Android 客户端组件化实践</a></p>
 <ul>
 <li>多工程多仓库。主工程通过 aar 依赖各个组件。</li>
@@ -751,7 +1063,7 @@ Task task(Map<String,?> args,String name)<br>Task task(Map&lt;String,?&gt; args,
 
 
 <h3 id="动态依赖"><a href="#动态依赖" class="headerlink" title="动态依赖"></a>动态依赖</h3><p>新建名为<code>deps.gradle</code>的Gradle文件，在其中添加组件与AAR的对应关系；并在每个Module里引入该文件。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">// 其中key为各module的名称，value为上传至Maven仓库里AAR全称</span><br><span class="line">// com.xxx.xxx为公司和部门名称，yyy为项目名称</span><br><span class="line">// 项目基础模块</span><br><span class="line">def xxx = [</span><br><span class="line">				// ---</span><br><span class="line">        net         : &#x27;com.xxx.xxx:android-net:1.0.1&#x27;,</span><br><span class="line">        utils       : &#x27;com.xxx.xxx:android-utils:1.1.1&#x27;,</span><br><span class="line">        common  		: &#x27;com.xxx.xxx:android-yyy-common:1.0.5&#x27;,</span><br><span class="line">        design  		: &#x27;com.xxx.xxx:android-yyy-design:1.0.1&#x27;,</span><br><span class="line">        // ---</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">// 项目业务模块</span><br><span class="line">def xxxBusiness = [</span><br><span class="line">				// ---</span><br><span class="line">        login     	: &#x27;com.xxx.xxx:android-login:1.0.0&#x27;,</span><br><span class="line">        login_api		: &#x27;com.xxx.xxx:android-login-api:1.0.0&#x27;,</span><br><span class="line">        news    		: &#x27;com.xxx.xxx:android-wisdomsite:1.0.0&#x27;,</span><br><span class="line">        news-api		: &#x27;com.xxx.xxx:android-wisdomsite-api:1.0.0&#x27;,</span><br><span class="line">        // ---</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">ext.deps = [</span><br><span class="line">        &#x27;xxx&#x27;        : xxx,</span><br><span class="line">        &#x27;xxxBusiness&#x27;: xxxBusiness,</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 其中key为各module的名称，value为上传至Maven仓库里AAR全称</span></span><br><span class="line"><span class="comment">// com.xxx.xxx为公司和部门名称，yyy为项目名称</span></span><br><span class="line"><span class="comment">// 项目基础模块</span></span><br><span class="line"><span class="keyword">def</span> xxx = [</span><br><span class="line">    <span class="attr">net         :</span> <span class="string">&#x27;com.xxx.xxx:android-net:1.0.1&#x27;</span>,</span><br><span class="line">    <span class="attr">utils       :</span> <span class="string">&#x27;com.xxx.xxx:android-utils:1.1.1&#x27;</span>,</span><br><span class="line">    <span class="attr">common  	:</span> <span class="string">&#x27;com.xxx.xxx:android-yyy-common:1.0.5&#x27;</span>,</span><br><span class="line">    <span class="attr">design  	:</span> <span class="string">&#x27;com.xxx.xxx:android-yyy-design:1.0.1&#x27;</span>,</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="comment">// 项目业务模块</span></span><br><span class="line"><span class="keyword">def</span> xxxBusiness = [</span><br><span class="line">    <span class="attr">login     	:</span> <span class="string">&#x27;com.xxx.xxx:android-login:1.0.0&#x27;</span>,</span><br><span class="line">    <span class="attr">login_api	:</span> <span class="string">&#x27;com.xxx.xxx:android-login-api:1.0.0&#x27;</span>,</span><br><span class="line">    <span class="attr">news    	:</span> <span class="string">&#x27;com.xxx.xxx:android-wisdomsite:1.0.0&#x27;</span>,</span><br><span class="line">    news-<span class="attr">api	:</span> <span class="string">&#x27;com.xxx.xxx:android-wisdomsite-api:1.0.0&#x27;</span>,</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">ext.deps = [</span><br><span class="line">    <span class="string">&#x27;xxx&#x27;</span>        : xxx,</span><br><span class="line">    <span class="string">&#x27;xxxBusiness&#x27;</span>: xxxBusiness,</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
 
 
 
@@ -763,7 +1075,7 @@ Task task(Map<String,?> args,String name)<br>Task task(Map&lt;String,?&gt; args,
 <h3 id="其他注意事项"><a href="#其他注意事项" class="headerlink" title="其他注意事项"></a>其他注意事项</h3><p>各组件需要单独维护，能生成AAR文件并上传至Maven仓库。</p>
 <p>各模块之间的资源名不能相同，需要配置<code>resourcePrefix</code>。</p>
 <h3 id="简单开发规范"><a href="#简单开发规范" class="headerlink" title="简单开发规范"></a>简单开发规范</h3><p>以wisdomsite组件为例</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">## 组件结构</span><br><span class="line">-- data 本地和远程数据层</span><br><span class="line">-- feature 业务层</span><br><span class="line">-- helper 公共业务相关辅助类，如果仅仅是单个业务使用则写在那个业务的包里</span><br><span class="line">-- utils 公共业务无关工具类</span><br><span class="line">-- widgets 公共控件，如果仅仅是单个业务使用则写在那个业务的包里</span><br><span class="line"></span><br><span class="line">## 业务模块划分</span><br><span class="line">- main、video、machine、labor、environment、safety、quality</span><br><span class="line"></span><br><span class="line">## 切图规范</span><br><span class="line">- 只需要放@3x一张图片到drawable-xxhdpi文件即可</span><br><span class="line">- 切图名称：module名称_ic/bg_业务模块名_功能名，如：wisdomsite_ic_home_empty</span><br><span class="line"></span><br><span class="line">## 资源规范-string</span><br><span class="line">- 命名：module名称_业务模块名_功能名，如：wisdomsite_labor_title</span><br><span class="line"></span><br><span class="line">## 资源规范-color</span><br><span class="line">- colors.xml中定义业务无关的颜色值，colors_feature.xml中使用前者的颜色定义业务相关的颜色值</span><br><span class="line">- colors_feature.xml中的命名：module名称_业务模块名_功能名，如：wisdomsite_machine_error</span><br><span class="line"></span><br><span class="line">## 空值展示</span><br><span class="line">- *默认空值*定义在 `@string/wisdomsite_empty_text_filler`</span><br><span class="line">- 在布局中，如果TextView的值可能为空，则默认展示*默认空值*</span><br><span class="line">- 在代码中，给TextView赋值时必须要考虑到空值问题，Kotlin代码使用`EmptyTextFiller.kt`中的扩展函数进行空值处理。</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## 组件结构</span></span><br><span class="line">-- data 本地和远程数据层</span><br><span class="line">-- feature 业务层</span><br><span class="line">-- helper 公共业务相关辅助类，如果仅仅是单个业务使用则写在那个业务的包里</span><br><span class="line">-- utils 公共业务无关工具类</span><br><span class="line">-- widgets 公共控件，如果仅仅是单个业务使用则写在那个业务的包里</span><br><span class="line"></span><br><span class="line"><span class="comment">## 业务模块划分</span></span><br><span class="line">- main、video、machine、labor、environment、safety、quality</span><br><span class="line"></span><br><span class="line"><span class="comment">## 切图规范</span></span><br><span class="line">- 只需要放@3x一张图片到drawable-xxhdpi文件即可</span><br><span class="line">- 切图名称：module名称_ic/bg_业务模块名_功能名，如：wisdomsite_ic_home_empty</span><br><span class="line"></span><br><span class="line"><span class="comment">## 资源规范-string</span></span><br><span class="line">- 命名：module名称_业务模块名_功能名，如：wisdomsite_labor_title</span><br><span class="line"></span><br><span class="line"><span class="comment">## 资源规范-color</span></span><br><span class="line">- colors.xml中定义业务无关的颜色值，colors_feature.xml中使用前者的颜色定义业务相关的颜色值</span><br><span class="line">- colors_feature.xml中的命名：module名称_业务模块名_功能名，如：wisdomsite_machine_error</span><br><span class="line"></span><br><span class="line"><span class="comment">## 空值展示</span></span><br><span class="line">- *默认空值*定义在 `@string/wisdomsite_empty_text_filler`</span><br><span class="line">- 在布局中，如果TextView的值可能为空，则默认展示*默认空值*</span><br><span class="line">- 在代码中，给TextView赋值时必须要考虑到空值问题，Kotlin代码使用`EmptyTextFiller.kt`中的扩展函数进行空值处理。</span><br></pre></td></tr></table></figure>
 
 <hr>
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
@@ -808,7 +1120,7 @@ Task task(Map<String,?> args,String name)<br>Task task(Map&lt;String,?&gt; args,
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2019/03/28/material-effective-java-2rd/" class="post-title-link" itemprop="url">书籍-Effective Java 2rd</a>
+            <a href="/2019/03/28/material-effective-java-2rd/" class="post-title-link" itemprop="url">Effective Java 2rd</a>
         </h2>
 
         <div class="post-meta">
@@ -825,7 +1137,7 @@ Task task(Map<String,?> args,String name)<br>Task task(Map&lt;String,?&gt; args,
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 09:13:08" itemprop="dateModified" datetime="2021-06-29T09:13:08+08:00">2021-06-29</time>
+                <time title="修改时间：2021-06-29 14:29:06" itemprop="dateModified" datetime="2021-06-29T14:29:06+08:00">2021-06-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -833,7 +1145,7 @@ Task task(Map<String,?> args,String name)<br>Task task(Map&lt;String,?&gt; args,
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%85%B6%E4%BB%96/" itemprop="url" rel="index"><span itemprop="name">其他</span></a>
+                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
                 </span>
             </span>
 
@@ -858,282 +1170,6 @@ Task task(Map<String,?> args,String name)<br>Task task(Map&lt;String,?&gt; args,
 <blockquote>
 <p><em>通过对你导出的每个重要接口都提供一个抽象的骨架实现（skeletal implementation）类，把接口和抽象类的优点结合起来</em>。接口的作用仍然是定义类型，但是骨架实现接管了所有与接口实现相关的工作。</p>
 </blockquote>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2019/03/27/git-merge-strategy/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="章亮">
-      <meta itemprop="description" content="Developer For Android">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="永恒的码流">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/03/27/git-merge-strategy/" class="post-title-link" itemprop="url">版本管理-Git分支合并方式和策略</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-03-27 09:47:58" itemprop="dateCreated datePublished" datetime="2019-03-27T09:47:58+08:00">2019-03-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 09:13:08" itemprop="dateModified" datetime="2021-06-29T09:13:08+08:00">2021-06-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">版本管理</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Merge和Rebase"><a href="#Merge和Rebase" class="headerlink" title="Merge和Rebase"></a>Merge和Rebase</h1><p>区别。参考<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/c17472d704a0">闲谈 git merge 与 git rebase 的区别</a></p>
-<ul>
-<li>merge 合并两个分支的Head；提交历史忠实地记录了实际发生过什么，关注点在真实的提交历史上面。</li>
-<li>rebase 提取当前分支的修改，将其复制在了目标分支的最新提交后面；反映了项目过程中发生了什么，关注点在开发过程上面</li>
-<li>区别。<code>merge</code>会保留当前分支的历史记录，而<code>rebase</code>会改动当前分支的历史记录。</li>
-</ul>
-<hr>
-<h1 id="Merge合并方式"><a href="#Merge合并方式" class="headerlink" title="Merge合并方式"></a>Merge合并方式</h1><p>FAST-FORWARD 和非 FAST-FORWARD</p>
-<ul>
-<li>FAST-FORWARD：当前分支HEAD是欲合并入分支的一个祖先节点，无需创建额外的合并提交(create a merge commit)节点，直接更新HEAD指针。</li>
-<li>非FAST-FORWARD：合并后会创建额外的合并提交节点，这是TRUE MERGE，有几种合并策略。</li>
-</ul>
-<p>使用</p>
-<ul>
-<li>执行<code>git merge others</code>。如果系统认为当前分支HEAD是<code>others</code>分支的一个祖先节点，会使用<code>FAST-FORWARD</code>方式，否则使用<code>非FAST-FORWARD</code>方式。</li>
-<li>执行<code>git merge others --ff</code> 。同执行<code>git merge others</code>。</li>
-<li>执行<code>git merge others --no-ff</code>。都会创建一个额外合并提交节点。</li>
-<li>执行<code>git merge others --ff-only</code>。如果系统认为当前分支HEAD是<code>others</code>分支的一个祖先节点，会使用<code>FAST-FORWARD</code>方式，否则不执行合并。</li>
-</ul>
-<hr>
-<h1 id="Merge合并策略"><a href="#Merge合并策略" class="headerlink" title="Merge合并策略"></a>Merge合并策略</h1><p>非FAST-FORWARD的的几种合并策略：</p>
-<ul>
-<li>resolve。采用三路合并，当有多个共同祖先时，系统采用自认为合适的祖先。</li>
-<li>recursive。采用递归三路合并。</li>
-<li>octopus。合并超过两个分支时。</li>
-</ul>
-<blockquote>
-<p><strong>三路合并（3-way merge）算法</strong> 参考<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-hans/%E5%90%88%E5%B9%B6_(%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6)">维基百科-合并 (版本控制)</a></p>
-<ul>
-<li>简单三路合并。两个分支的文件和共同祖先文件做差异分析。</li>
-<li>递归三路合并。有多个共同祖先，先创建虚拟共同祖先。</li>
-</ul>
-</blockquote>
-<hr>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
-<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/c17472d704a0">闲谈 git merge 与 git rebase 的区别</a></li>
-<li><a target="_blank" rel="noopener" href="http://www.cis.upenn.edu/~bcpierce/papers/diff3-short.pdf">A Formal Investigation of Diff3</a></li>
-<li><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-hans/%E5%90%88%E5%B9%B6_(%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6)">维基百科-合并 (版本控制)</a></li>
-<li><a target="_blank" rel="noopener" href="http://blog.fedeoo.cn/2017/02/22/git-%E5%90%88%E5%B9%B6%E7%AD%96%E7%95%A5-%E4%B9%8B-recursive/">git 合并策略 之 recursive</a></li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2019/03/27/kotlin-reference-2019/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="章亮">
-      <meta itemprop="description" content="Developer For Android">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="永恒的码流">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/03/27/kotlin-reference-2019/" class="post-title-link" itemprop="url">文档-Kotlin Reference 2019</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-03-27 09:04:03" itemprop="dateCreated datePublished" datetime="2019-03-27T09:04:03+08:00">2019-03-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 09:13:08" itemprop="dateModified" datetime="2021-06-29T09:13:08+08:00">2021-06-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Kotlin-Reference"><a href="#Kotlin-Reference" class="headerlink" title="Kotlin Reference"></a>Kotlin Reference</h1><p>官方文档每年需要浏览一遍。<a target="_blank" rel="noopener" href="https://www.kotlincn.net/">Kotlin中文网</a>已经很全面了，更新也比较及时，这次主要看这个上的Reference，兼顾<a target="_blank" rel="noopener" href="https://kotlinlang.org/">官网</a>。</p>
-<p>需要注意的地方</p>
-<ul>
-<li>编码规范。与Java基本一致，需要注意的是Kotlin自己特有的语法糖，多看即可。</li>
-<li>泛型。PECS；Kotlin中数组是不型变的。</li>
-<li>委托。可使用可观察属性（observable properties）。</li>
-<li>作用域函数。一般使用<code>apply</code>和<code>let</code>即可。</li>
-<li>Java调用Kotlin。生成重载<code>@JvmOverloads</code>。</li>
-<li>待加强和研究的地方。并发、协程。</li>
-</ul>
-<hr>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
-<li><a target="_blank" rel="noopener" href="https://www.kotlincn.net/docs/reference/">Kotlin Reference 中文</a></li>
-<li><a target="_blank" rel="noopener" href="https://kotlinlang.org/docs/reference/">Kotlin Reference 官网</a></li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2019/02/20/android-audio-caption-extraction/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="章亮">
-      <meta itemprop="description" content="Developer For Android">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="永恒的码流">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/02/20/android-audio-caption-extraction/" class="post-title-link" itemprop="url">Android音频转文字</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-02-20 12:26:51" itemprop="dateCreated datePublished" datetime="2019-02-20T12:26:51+08:00">2019-02-20</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 09:13:08" itemprop="dateModified" datetime="2021-06-29T09:13:08+08:00">2021-06-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h1><p>流程图如下</p>
-<p><img src="/images/flow-audio-to-caption.png" alt="Android构建流程"></p>
 
       
     </div>
@@ -1220,20 +1256,20 @@ Task task(Map<String,?> args,String name)<br>Task task(Map&lt;String,?&gt; args,
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">47</span>
+          <span class="site-state-item-count">50</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">56</span>
+        <span class="site-state-item-count">52</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1277,14 +1313,14 @@ Task task(Map<String,?> args,String name)<br>Task task(Map&lt;String,?&gt; args,
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">166k</span>
+    <span title="站点总字数">182k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:31</span>
+    <span title="站点阅读时长">2:45</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>
 
         
@@ -1321,10 +1357,6 @@ Task task(Map<String,?> args,String name)<br>Task task(Map&lt;String,?&gt; args,
   
 
 
-
-
-  
-<script src="/js/local-search.js"></script>
 
 
 

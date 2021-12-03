@@ -17,22 +17,22 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"zhangliangnbu.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"zhangliangnbu.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="脚本和对象构建时，脚本文件会转化为对象；写脚本时不懂的地方查对应对象API即可。  settings.gradle会转化为Settings对象。 build.gradle会转化为Project对象。 其他gradle文件，没有定义为class的，会转换为一个实现了Script接口的对象  任务可以使用方法和关键字定义。  &#96;&#96;&#96;groovy &#x2F;&#x2F; 关键字定义 task myTask task my">
+  <meta name="description" content="脚本和对象构建时，脚本文件会转化为对象；写脚本时不懂的地方查对应对象API即可。  settings.gradle会转化为Settings对象。 build.gradle会转化为Project对象。 其他gradle文件，没有定义为class的，会转换为一个实现了Script接口的对象  任务可以使用方法和关键字定义。 123456789101112&#x2F;&#x2F; 关键字定义task myTasktask">
 <meta property="og:type" content="article">
-<meta property="og:title" content="android-build-07-gradle-advance">
+<meta property="og:title" content="Android构建07-进阶">
 <meta property="og:url" content="https://zhangliangnbu.github.io/2019/05/15/android-build-07-gradle-advance/index.html">
 <meta property="og:site_name" content="永恒的码流">
-<meta property="og:description" content="脚本和对象构建时，脚本文件会转化为对象；写脚本时不懂的地方查对应对象API即可。  settings.gradle会转化为Settings对象。 build.gradle会转化为Project对象。 其他gradle文件，没有定义为class的，会转换为一个实现了Script接口的对象  任务可以使用方法和关键字定义。  &#96;&#96;&#96;groovy &#x2F;&#x2F; 关键字定义 task myTask task my">
+<meta property="og:description" content="脚本和对象构建时，脚本文件会转化为对象；写脚本时不懂的地方查对应对象API即可。  settings.gradle会转化为Settings对象。 build.gradle会转化为Project对象。 其他gradle文件，没有定义为class的，会转换为一个实现了Script接口的对象  任务可以使用方法和关键字定义。 123456789101112&#x2F;&#x2F; 关键字定义task myTasktask">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2019-05-15T06:51:42.000Z">
-<meta property="article:modified_time" content="2021-06-29T01:13:08.963Z">
+<meta property="article:modified_time" content="2021-06-29T06:35:24.254Z">
 <meta property="article:author" content="章亮">
-<meta property="article:tag" content="Android">
-<meta property="article:tag" content="Gradle">
-<meta property="article:tag" content="Build">
+<meta property="article:tag" content="android">
+<meta property="article:tag" content="gradle">
+<meta property="article:tag" content="build">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="https://zhangliangnbu.github.io/2019/05/15/android-build-07-gradle-advance/">
@@ -48,7 +48,7 @@
   };
 </script>
 
-  <title>android-build-07-gradle-advance | 永恒的码流</title>
+  <title>Android构建07-进阶 | 永恒的码流</title>
   
 
 
@@ -107,7 +107,6 @@
 
   <div class="site-nav-right">
     <div class="toggle popup-trigger">
-        <i class="fa fa-search fa-fw fa-lg"></i>
     </div>
   </div>
 </div>
@@ -142,38 +141,11 @@
     <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
 
   </li>
-      <li class="menu-item menu-item-search">
-        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
-        </a>
-      </li>
   </ul>
 </nav>
 
 
 
-  <div class="search-pop-overlay">
-    <div class="popup search-popup">
-        <div class="search-header">
-  <span class="search-icon">
-    <i class="fa fa-search"></i>
-  </span>
-  <div class="search-input-container">
-    <input autocomplete="off" autocapitalize="off"
-           placeholder="搜索..." spellcheck="false"
-           type="search" class="search-input">
-  </div>
-  <span class="popup-btn-close">
-    <i class="fa fa-times-circle"></i>
-  </span>
-</div>
-<div id="search-result">
-  <div id="no-result">
-    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
-  </div>
-</div>
-
-    </div>
-  </div>
 
 </div>
     </header>
@@ -210,7 +182,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          android-build-07-gradle-advance
+          Android构建07-进阶
         </h1>
 
         <div class="post-meta">
@@ -227,7 +199,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 09:13:08" itemprop="dateModified" datetime="2021-06-29T09:13:08+08:00">2021-06-29</time>
+                <time title="修改时间：2021-06-29 14:35:24" itemprop="dateModified" datetime="2021-06-29T14:35:24+08:00">2021-06-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -235,7 +207,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android%E6%9E%84%E5%BB%BA%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">Android构建系统</span></a>
+                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
                 </span>
             </span>
 
@@ -257,10 +229,16 @@
 <li>其他gradle文件，没有定义为class的，会转换为一个实现了<code>Script</code>接口的对象</li>
 </ul>
 <h1 id="任务"><a href="#任务" class="headerlink" title="任务"></a>任务</h1><p>可以使用方法和关键字定义。</p>
-<ul>
-<li>```groovy<br> // 关键字定义<br> task myTask<br> task myTask { configure closure } // 重点<br> task myTask(type: SomeType)<br> task myTask(type: SomeType) { configure closure } // 重点// 方法定义<br>Task task(String name)<br>Task task(String name,Closure configureClosure)<br>Task task(String name,Action<? super Task> configureAction)
-Task task(Map<String,?> args,String name)<br>Task task(Map&lt;String,?&gt; args,String name,Closure configureClosure)<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 常用属性</span><br><span class="line"></span><br><span class="line">`Project`和`Settings`的常用属性</span><br><span class="line"></span><br><span class="line">**扩展属性（Ext属性）**</span><br><span class="line"></span><br><span class="line">```groovy</span><br><span class="line">// 定义</span><br><span class="line">[project.]ext.foo = &quot;bar&quot;</span><br><span class="line">[project.]ext &#123;</span><br><span class="line">		foo = &quot;bar&quot;</span><br><span class="line">&#125; // 命名空间方式定义 ？？</span><br><span class="line"></span><br><span class="line">// 使用</span><br><span class="line">println project.ext.foo</span><br><span class="line">println rootProject.ext.foo</span><br><span class="line"></span><br><span class="line">// 范围：有穿透性？gradle 4.10.* 没有穿透性。即rootProject.foo != projet.foo</span><br></pre></td></tr></table></figure></li>
-</ul>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 关键字定义</span></span><br><span class="line">task myTask</span><br><span class="line">task myTask &#123; configure closure &#125; <span class="comment">// 重点</span></span><br><span class="line">task myTask(<span class="attr">type:</span> SomeType)</span><br><span class="line">task myTask(<span class="attr">type:</span> SomeType) &#123; configure closure &#125; <span class="comment">// 重点</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">// 方法定义</span></span><br><span class="line">Task task(String name)</span><br><span class="line">Task task(String name,Closure configureClosure)</span><br><span class="line">Task task(String name,Action&lt;? super Task&gt; configureAction)</span><br><span class="line">Task task(Map&lt;String,?&gt; args,String name)</span><br><span class="line">Task task(Map&lt;String,?&gt; args,String name,Closure configureClosure)</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="常用属性"><a href="#常用属性" class="headerlink" title="常用属性"></a>常用属性</h1><p><code>Project</code>和<code>Settings</code>的常用属性</p>
+<p><strong>扩展属性（Ext属性）</strong></p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义</span></span><br><span class="line">[project.]ext.foo = <span class="string">&quot;bar&quot;</span></span><br><span class="line">[project.]ext &#123;</span><br><span class="line">		foo = <span class="string">&quot;bar&quot;</span></span><br><span class="line">&#125; <span class="comment">// 命名空间方式定义 ？？</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用</span></span><br><span class="line">println project.ext.foo</span><br><span class="line">println rootProject.ext.foo</span><br><span class="line"></span><br><span class="line"><span class="comment">// 范围：有穿透性？gradle 4.10.* 没有穿透性。即rootProject.foo != projet.foo</span></span><br></pre></td></tr></table></figure>
+
+
+
 <p><strong>文件<code>gradle.properites</code>属性</strong></p>
 <p>可以直接被<code>Project</code>/<code>Settings</code>使用</p>
 <figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// gradle.properties中</span></span><br><span class="line">test=<span class="string">&quot;test hw&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// build.gradle中</span></span><br><span class="line"><span class="keyword">assert</span> project.test == <span class="string">&quot;test hw&quot;</span></span><br><span class="line"><span class="keyword">assert</span> settings.test == <span class="string">&quot;test hw&quot;</span></span><br></pre></td></tr></table></figure>
@@ -297,9 +275,9 @@ Task task(Map<String,?> args,String name)<br>Task task(Map&lt;String,?&gt; args,
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/Android/" rel="tag"># Android</a>
-              <a href="/tags/Gradle/" rel="tag"># Gradle</a>
-              <a href="/tags/Build/" rel="tag"># Build</a>
+              <a href="/tags/android/" rel="tag"># android</a>
+              <a href="/tags/gradle/" rel="tag"># gradle</a>
+              <a href="/tags/build/" rel="tag"># build</a>
           </div>
 
         
@@ -373,7 +351,7 @@ Task task(Map<String,?> args,String name)<br>Task task(Map&lt;String,?&gt; args,
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%84%9A%E6%9C%AC%E5%92%8C%E5%AF%B9%E8%B1%A1"><span class="nav-number">1.</span> <span class="nav-text">脚本和对象</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1"><span class="nav-number">2.</span> <span class="nav-text">任务</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E8%84%9A%E6%9C%AC"><span class="nav-number">3.</span> <span class="nav-text">应用脚本</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9Artifact%E6%96%87%E4%BB%B6%E7%9B%AE%E5%BD%95%E5%92%8C%E5%90%8D%E7%A7%B0"><span class="nav-number">4.</span> <span class="nav-text">修改Artifact文件目录和名称</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%84%9A%E6%9C%AC%E5%92%8C%E5%AF%B9%E8%B1%A1"><span class="nav-number">1.</span> <span class="nav-text">脚本和对象</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1"><span class="nav-number">2.</span> <span class="nav-text">任务</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%B1%9E%E6%80%A7"><span class="nav-number">3.</span> <span class="nav-text">常用属性</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E8%84%9A%E6%9C%AC"><span class="nav-number">4.</span> <span class="nav-text">应用脚本</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9Artifact%E6%96%87%E4%BB%B6%E7%9B%AE%E5%BD%95%E5%92%8C%E5%90%8D%E7%A7%B0"><span class="nav-number">5.</span> <span class="nav-text">修改Artifact文件目录和名称</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -389,20 +367,20 @@ Task task(Map<String,?> args,String name)<br>Task task(Map&lt;String,?&gt; args,
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">47</span>
+          <span class="site-state-item-count">50</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">56</span>
+        <span class="site-state-item-count">52</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -446,14 +424,14 @@ Task task(Map<String,?> args,String name)<br>Task task(Map&lt;String,?&gt; args,
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">166k</span>
+    <span title="站点总字数">182k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:31</span>
+    <span title="站点阅读时长">2:45</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>
 
         
@@ -490,10 +468,6 @@ Task task(Map<String,?> args,String name)<br>Task task(Map&lt;String,?&gt; args,
   
 
 
-
-
-  
-<script src="/js/local-search.js"></script>
 
 
 

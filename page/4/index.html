@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"zhangliangnbu.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"zhangliangnbu.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="Developer For Android">
@@ -103,7 +103,6 @@
 
   <div class="site-nav-right">
     <div class="toggle popup-trigger">
-        <i class="fa fa-search fa-fw fa-lg"></i>
     </div>
   </div>
 </div>
@@ -138,38 +137,11 @@
     <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
 
   </li>
-      <li class="menu-item menu-item-search">
-        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
-        </a>
-      </li>
   </ul>
 </nav>
 
 
 
-  <div class="search-pop-overlay">
-    <div class="popup search-popup">
-        <div class="search-header">
-  <span class="search-icon">
-    <i class="fa fa-search"></i>
-  </span>
-  <div class="search-input-container">
-    <input autocomplete="off" autocapitalize="off"
-           placeholder="搜索..." spellcheck="false"
-           type="search" class="search-input">
-  </div>
-  <span class="popup-btn-close">
-    <i class="fa fa-times-circle"></i>
-  </span>
-</div>
-<div id="search-result">
-  <div id="no-result">
-    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
-  </div>
-</div>
-
-    </div>
-  </div>
 
 </div>
     </header>
@@ -188,6 +160,332 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2018/12/08/2018-12-08-DynamicUrlOperatedByGlide/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/12/08/2018-12-08-DynamicUrlOperatedByGlide/" class="post-title-link" itemprop="url">动态Url过期处理</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-12-08 19:43:00" itemprop="dateCreated datePublished" datetime="2018-12-08T19:43:00+08:00">2018-12-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-29 14:18:17" itemprop="dateModified" datetime="2021-06-29T14:18:17+08:00">2021-06-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="场景描述"><a href="#场景描述" class="headerlink" title="场景描述"></a>场景描述</h1><p>之前做项目时遇到这样的场景，我们的用户头像保存在阿里云OSS上，涉及到动态URL以及过期处理的问题。</p>
+<p><strong>上传头像的逻辑</strong></p>
+<ol>
+<li>首先从APP服务端获取Token</li>
+<li>通过Token上传图片到阿里云OSS</li>
+<li>成功后通知APP服务端。</li>
+</ol>
+<p>如下图所示，其中省略了APP服务端和阿里云OSS的交互。<br><img src="https://upload-images.jianshu.io/upload_images/2658578-45788c6866229c0c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/620" alt="APP上传头像流程"></p>
+<p><strong>获取头像逻辑</strong></p>
+<ol>
+<li>从APP服务端获取URL链接。</li>
+<li>根据URL链接获取图片。如果本地有缓存且没有过期则从本地拉取缓存，不然就从阿里云OSS获取</li>
+</ol>
+<p><strong>动态的URL</strong><br>由于头像是私密的，每次获取用户头像时，url中会有一个动态的Token，如</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://xxx.aliyuncs.com/avatar/xxx-d-avatar?token=yyyy&amp;v=1523326538071">https://xxx.aliyuncs.com/avatar/xxx-d-avatar?token=yyyy&amp;v=1523326538071</a></p>
+</blockquote>
+<p>其中，阿里云OSS识别的是<a target="_blank" rel="noopener" href="https://xxx.aliyuncs.com/avatar/xxx-d-avatar?token=yyyy%EF%BC%8C">https://xxx.aliyuncs.com/avatar/xxx-d-avatar?token=yyyy，</a> <em>v=1523326538071</em>是APP服务端为了控制头像版本而附加的字段。</p>
+<p><strong>问题</strong></p>
+<ol>
+<li>需要缓存头像。当前用户的头像URL中，token的值“yyyy”每次都会改变，因此做缓存的时候，不能直接使用URL作为key，需要过滤掉Token。</li>
+<li>需要定期让缓存失效。阿里云OSS上保存的URL只是<a target="_blank" rel="noopener" href="https://xxx.aliyuncs.com/avatar/xxx-d-avatar?token=yyyy">https://xxx.aliyuncs.com/avatar/xxx-d-avatar?token=yyyy</a> 部分，因此有这样的问题，如果APP客户端上传头像成功，但由于某种原因（比如服务崩溃了）APP服务端并没有成功更新版本，即v的值，则下次APP客户端从服务端获取的仍然是旧的版本值，APP客户端会取本地缓存，而不向阿里云OSS拉取图片，虽然这种问题出现的概率较小，但不得不考虑到。</li>
+</ol>
+<hr>
+<br>
+
+<h1 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h1><p>项目使用了<a target="_blank" rel="noopener" href="https://github.com/bumptech/glide">Glide</a>图片框架。具体代码如下</p>
+<p><strong>动态URL处理类，去掉动态Token</strong></p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GlideDynamicAvatarUrl</span></span>(<span class="keyword">private</span> <span class="keyword">val</span> dynamicUrl: String) : GlideUrl(dynamicUrl) &#123;</span><br><span class="line">    <span class="keyword">companion</span> <span class="keyword">object</span> &#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">const</span> <span class="keyword">val</span> IMAGE_VERSION = <span class="string">&quot;v&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">getCacheKey</span><span class="params">()</span></span>: String &#123;</span><br><span class="line">        <span class="keyword">val</span> uri = Uri.parse(dynamicUrl)</span><br><span class="line">        <span class="keyword">return</span> StringBuilder()</span><br><span class="line">                .append(uri.path)</span><br><span class="line">                .append(uri.getQueryParameter(IMAGE_VERSION))</span><br><span class="line">                .toString()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">toString</span><span class="params">()</span></span>: String &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.getCacheKey()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>定期失效处理，添加额外的key</strong></p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">object</span> GlideAvatarHelper &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">const</span> <span class="keyword">val</span> INVALID_TIME = <span class="number">7</span> * <span class="number">24</span> * <span class="number">3600</span> * <span class="number">1000L</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">execute</span><span class="params">(context:<span class="type">Context</span>, url: <span class="type">String</span>?, iv: <span class="type">ImageView</span>)</span></span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (TextUtils.isEmpty(url)) &#123;</span><br><span class="line">            <span class="keyword">return</span> iv.setImageResource(R.drawable.ic_avatar_default)</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Glide.with(context)</span><br><span class="line">                .load(GlideDynamicAvatarUrl(url!!))</span><br><span class="line">                .apply(RequestOptions.signatureOf(ObjectKey(getSignatureKey())))</span><br><span class="line">                .apply(RequestOptions.placeholderOf(R.drawable.ic_avatar_default))</span><br><span class="line">                .apply(RequestOptions.errorOf(R.drawable.ic_avatar_default))</span><br><span class="line">                .into(iv)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 为URL添加额外的key, 定期让key失效即可</span></span><br><span class="line">    <span class="comment">// 这里设置的有效期是一周时间</span></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">getSignatureKey</span><span class="params">()</span></span>: <span class="built_in">Long</span> &#123;</span><br><span class="line">        <span class="keyword">val</span> key = System.currentTimeMillis() / INVALID_TIME</span><br><span class="line">        <span class="keyword">return</span> key</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2018/12/08/2018-12-08-AuthenticationByToken/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/12/08/2018-12-08-AuthenticationByToken/" class="post-title-link" itemprop="url">使用Token进行身份验证</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-12-08 17:20:50" itemprop="dateCreated datePublished" datetime="2018-12-08T17:20:50+08:00">2018-12-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-29 14:18:02" itemprop="dateModified" datetime="2021-06-29T14:18:02+08:00">2021-06-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>客户端中有些数据是需要登录后才能查看的，这时候就需要在接口中加入凭证，如Cookie 或Token。我们这里主要说下Token。更多关于身份验证的详细情况请见参考链接。</p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/eaf9197abb6b">身份验证的几种方案</a></p>
+<blockquote>
+<p>典型的用户身份验证标准（方案）：<br>HTTP BASIC Authentication<br>HTTP Digest Authentication<br>Form-based Authentication<br>Token Based Authentication<br>X.509 Certificate Authentication</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/5ac166c5fe76">Token/Session/Cookie的区别</a></p>
+<blockquote>
+<p>其中Token身份验证如下:<br>1）客户端使用账号密码请求登录<br>2）服务端收到请求，验证账号密码<br>3）验证通过，服务端签发一个token给客户端<br>4）客户端收到token存储起来（例：存在cookie）<br>5）客户端每次请求服务端时带着服务端签发的token<br>6）服务端收到请求，验证token。验证成功则返回数据给客户端。</p>
+</blockquote>
+<hr>
+<br>
+
+<h1 id="具体实践"><a href="#具体实践" class="headerlink" title="具体实践"></a>具体实践</h1><h2 id="认证逻辑"><a href="#认证逻辑" class="headerlink" title="认证逻辑"></a>认证逻辑</h2><ol>
+<li>客户端在登录页面执行登录请求，服务端通过后返回Token</li>
+<li>客户端本地存储Token，并且在需要身份认证的接口中添加Token(一般放在header里)</li>
+<li>服务端对每个Token赋予一个有效期，过了有效期之后，返回给客户端一个特殊的错误码，让其重新登录或者其他的方式刷新Token(如通过RefreshToken刷新Token)</li>
+</ol>
+<blockquote>
+<p>注意: 以下代码使用了Retrofit和Rxjava框架</p>
+</blockquote>
+<h2 id="登录接口"><a href="#登录接口" class="headerlink" title="登录接口"></a>登录接口</h2><ol>
+<li>执行加盐请求。利用盐加密密码，盐和密码拼接后使用SHA512加密。</li>
+<li>执行登录请求。</li>
+</ol>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">loginWithSalt</span><span class="params">(mobile: <span class="type">String</span>, password: <span class="type">String</span>)</span></span>: Flowable&lt;ApiResponse&lt;TokenModel?&gt;&gt; &#123;</span><br><span class="line">        <span class="keyword">return</span> BossService.api()</span><br><span class="line">                .getSalt() <span class="comment">// 获取盐</span></span><br><span class="line">                .flatMap &#123; response -&gt;</span><br><span class="line">                    <span class="keyword">val</span> enPassword = PasswordEncryptHelper.getWhenLogin(password, response.<span class="keyword">data</span>!!.salt) <span class="comment">// 加密</span></span><br><span class="line">                    <span class="keyword">val</span> map = hashMapOf(</span><br><span class="line">                            Pair(<span class="string">&quot;mobile&quot;</span>, mobile),</span><br><span class="line">                            Pair(<span class="string">&quot;saltKey&quot;</span>, response.<span class="keyword">data</span>.saltkey),</span><br><span class="line">                            Pair(<span class="string">&quot;password&quot;</span>, enPassword))</span><br><span class="line">                    <span class="keyword">return</span><span class="symbol">@flatMap</span> BossService.api().login(map) <span class="comment">// 登录</span></span><br><span class="line">                &#125;</span><br><span class="line">                .compose(apply())</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="登录操作及更新Token"><a href="#登录操作及更新Token" class="headerlink" title="登录操作及更新Token"></a>登录操作及更新Token</h2><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">attemptLogin</span><span class="params">(mobile:<span class="type">String</span>, password:<span class="type">String</span>)</span></span> &#123;</span><br><span class="line">        NetApi.loginWithSalt(mobile, password)</span><br><span class="line">                .subscribe(&#123; <span class="keyword">data</span> -&gt;</span><br><span class="line">                    loginSuccess(<span class="keyword">data</span>.<span class="keyword">data</span>!!, mobile)</span><br><span class="line">                &#125;, &#123; t -&gt;</span><br><span class="line">                    loginFail(t, mobile)</span><br><span class="line">                &#125;)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">loginSuccess</span><span class="params">(any: <span class="type">TokenModel</span>, mobile: <span class="type">String</span>)</span></span> &#123;</span><br><span class="line">	    <span class="comment">// 更新当前用户信息</span></span><br><span class="line">        DataManager.updateCurrentUser(mobile, UserModel(mobile))</span><br><span class="line">        <span class="comment">// 更新Token</span></span><br><span class="line">        DataManager.currentUserSettings()!!.setToken(any.token)</span><br><span class="line">		<span class="comment">// 更新refreshToken。不过我们没有使用refreshToken,当Token过期后我们会提示用户去登录。        </span></span><br><span class="line">        DataManager.currentUserSettings()!!.setRefreshToken(any.refreshToken)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// TokenModel实体</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TokenModel</span></span>(<span class="keyword">val</span> token: String,</span><br><span class="line">                 <span class="keyword">val</span> refreshToken: String) : BaseModel()</span><br></pre></td></tr></table></figure>
+
+<h2 id="需要身份认证的接口"><a href="#需要身份认证的接口" class="headerlink" title="需要身份认证的接口"></a>需要身份认证的接口</h2><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// TestApi中。接口，token放在header的&quot;X-Authorization&quot;字段中</span></span><br><span class="line">   <span class="meta">@GET(<span class="meta-string">&quot;users/v1/baseInfo&quot;</span>)</span></span><br><span class="line">   <span class="function"><span class="keyword">fun</span> <span class="title">getUserBaseInfo</span><span class="params">(<span class="meta">@Header(<span class="meta-string">&quot;X-Authorization&quot;</span>)</span> token: <span class="type">String</span></span></span></span><br><span class="line"><span class="params"><span class="function">   )</span></span>: Flowable&lt;ApiResponse&lt;UserModel&gt;&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment">// WrapTestApi中。</span></span><br><span class="line">   <span class="function"><span class="keyword">fun</span> <span class="title">getUserBaseInfo</span><span class="params">()</span></span>: Flowable&lt;ApiResponse&lt;UserModel?&gt;&gt; &#123;</span><br><span class="line">       <span class="keyword">return</span> BossService.api()</span><br><span class="line">               .getUserBaseInfo(token())</span><br><span class="line">               .compose(apply())</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// WrapTestApi中</span></span><br><span class="line">   <span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">token</span><span class="params">()</span></span>: String &#123;</span><br><span class="line">       <span class="keyword">val</span> currentUser = DataManager.currentUserSettings()</span><br><span class="line">       <span class="keyword">val</span> token = currentUser?.getToken() ?: <span class="string">&quot;&quot;</span></span><br><span class="line">       <span class="keyword">return</span> <span class="string">&quot;Bearer &quot;</span>.plus(token) <span class="comment">// 一般不直接传递Token，需要在前面加点盐，为了简单起见，我们的项目固定写了一个字符串。</span></span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Token过期处理"><a href="#Token过期处理" class="headerlink" title="Token过期处理"></a>Token过期处理</h2><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在需要的地方调用</span></span><br><span class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">fetchRemoteData</span><span class="params">()</span></span>: Disposable &#123;</span><br><span class="line">        <span class="keyword">val</span> loading = LoadingHelper.create(context!!)</span><br><span class="line">        <span class="keyword">return</span> NetApi.getUserBaseInfo()</span><br><span class="line">                .compose(RxTransformers.applyLoading(loading))</span><br><span class="line">                .subscribe(&#123; user -&gt;</span><br><span class="line">	                <span class="comment">// deal for success </span></span><br><span class="line">                &#125;, &#123; t -&gt;</span><br><span class="line">	                <span class="comment">// deal for fail. 先判断是否认证失败</span></span><br><span class="line">                    <span class="keyword">if</span> (!NetErrorHelper.handleAuth(t, activity!!)) &#123;</span><br><span class="line">                        Util.toast().showShort(<span class="string">&quot;fail:<span class="subst">$&#123;t.message&#125;</span>&quot;</span>)</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 处理网络返回统一的错误码</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">object</span> NetErrorHelper &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> true则进行认证失败处理；false则非认证错误</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">handleAuth</span><span class="params">(t: <span class="type">Throwable</span>, activity: <span class="type">Activity</span>)</span></span>: <span class="built_in">Boolean</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (t !<span class="keyword">is</span> ApiException) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">when</span> (t.code) &#123;</span><br><span class="line">	        <span class="comment">// Token过期，弹出对话框去登录</span></span><br><span class="line">            ApiCode.ERROR_JWT_TOKEN_EXPIRED.code -&gt; &#123;</span><br><span class="line">                Util.dialog().warn(activity)</span><br><span class="line">                        .content(t.message ?: ApiCode.ERROR_AUTHENTICATION_FAILED.description)</span><br><span class="line">                        .positiveText(R.string.common_confirm)</span><br><span class="line">                        .onPositive &#123; _, _ -&gt;</span><br><span class="line">                            ARouter.getInstance().build(RouteTable.LOGIN).navigation()</span><br><span class="line">                            activity.finish()</span><br><span class="line">                        &#125;</span><br><span class="line">                        .cancelable(<span class="literal">false</span>)</span><br><span class="line">                        .show()</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> -&gt; &#123;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<br>
+
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li><p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/eaf9197abb6b">身份验证的几种方案</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/5ac166c5fe76">Token/Session/Cookie的区别</a></p>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2018/12/08/2018-12-08-ResourceIDReuseConflict/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/12/08/2018-12-08-ResourceIDReuseConflict/" class="post-title-link" itemprop="url">EditText的ID相同而导致的冲突</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-12-08 17:00:03" itemprop="dateCreated datePublished" datetime="2018-12-08T17:00:03+08:00">2018-12-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-29 14:19:53" itemprop="dateModified" datetime="2021-06-29T14:19:53+08:00">2021-06-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h1><p>最近写项目时，遇到两个自定义ViewGroup中EditText的ID相同而导致冲突的问题，描述如下。</p>
+<ol>
+<li> 我自定义了一个继承FrameLayout名为ClearableEditText的控件，里面包括一个AutoCompleteTextView(EditText的一种) 和一个ImageView。</li>
+<li> 我在LoginFragment（继承Fragment）里使用了两个ClearableEditText，并输入了值分别为123456789和abc。</li>
+<li> 我从LoginFragment里使用FragmentTransaction.replace方法跳转到另外一个Fragment，当回退到LoginFragment时，两个ClearableEditText都显示了abc。</li>
+</ol>
+<p>相关代码如下：</p>
+<p>自定义的ClearableEditText</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ClearableEditText</span> <span class="meta">@JvmOverloads</span> <span class="keyword">constructor</span></span>(context: Context, attrs: AttributeSet? = <span class="literal">null</span>, defStyleAttr: <span class="built_in">Int</span> = <span class="number">0</span>, defStyleRes: <span class="built_in">Int</span> = <span class="number">0</span>)</span><br><span class="line">    : FrameLayout(context, attrs, defStyleAttr, defStyleRes) &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">init</span> &#123;</span><br><span class="line">        initView(context, attrs, defStyleAttr, defStyleRes)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">lateinit</span> <span class="keyword">var</span> input: AutoCompleteTextView</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">lateinit</span> <span class="keyword">var</span> clearImage: ImageView</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">initView</span><span class="params">(context: <span class="type">Context</span>, attrs: <span class="type">AttributeSet</span>?, defStyleAttr: <span class="type">Int</span>, defStyleRes: <span class="type">Int</span>)</span></span> &#123;</span><br><span class="line">        <span class="comment">// init view</span></span><br><span class="line">        <span class="keyword">val</span> view = LayoutInflater.from(context).inflate(R.layout.view_clearable_edit_text, <span class="keyword">this</span>, <span class="literal">true</span>)</span><br><span class="line">        input = view.findViewById&lt;AutoCompleteTextView&gt;(R.id.et_clearable)</span><br><span class="line">        clearImage = view.findViewById(R.id.iv_clearable)</span><br><span class="line"></span><br><span class="line">        <span class="comment">// init attr ......</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onSaveInstanceState</span><span class="params">()</span></span>: Parcelable &#123;</span><br><span class="line">        Logger.d(<span class="string">&quot;view life -&gt; onSaveInstanceState&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.onSaveInstanceState()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onRestoreInstanceState</span><span class="params">(state: <span class="type">Parcelable</span>?)</span></span> &#123;</span><br><span class="line">        Logger.d(<span class="string">&quot;view life -&gt; onRestoreInstanceState&quot;</span>)</span><br><span class="line">        <span class="keyword">super</span>.onRestoreInstanceState(state)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>view_clearable_edit_text布局</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">android.support.constraint.ConstraintLayout</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:android</span>=<span class="string">&quot;http://schemas.android.com/apk/res/android&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:app</span>=<span class="string">&quot;http://schemas.android.com/apk/res-auto&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:tool</span>=<span class="string">&quot;http://schemas.android.com/tools&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_width</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_height</span>=<span class="string">&quot;wrap_content&quot;</span></span></span><br><span class="line"><span class="tag">    &gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">AutoCompleteTextView</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:id</span>=<span class="string">&quot;@+id/et_clearable&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">style</span>=<span class="string">&quot;@style/AuthRowValue&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_width</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_marginTop</span>=<span class="string">&quot;@dimen/spacing_row_vertical&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">tool:drawableStart</span>=<span class="string">&quot;@drawable/ic_mobile&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">tool:ignore</span>=<span class="string">&quot;LabelFor&quot;</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">ImageView</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:id</span>=<span class="string">&quot;@+id/iv_clearable&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">style</span>=<span class="string">&quot;@style/MarkDelete&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:visibility</span>=<span class="string">&quot;gone&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">app:layout_constraintBottom_toBottomOf</span>=<span class="string">&quot;parent&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">app:layout_constraintRight_toRightOf</span>=<span class="string">&quot;parent&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">app:layout_constraintTop_toTopOf</span>=<span class="string">&quot;parent&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">tool:ignore</span>=<span class="string">&quot;ContentDescription&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">tool:visibility</span>=<span class="string">&quot;visible&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">android.support.constraint.ConstraintLayout</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+<p>LoginFragment</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LoginFragment</span> : <span class="type">BaseFragment</span></span>() &#123;</span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">getFragmentID</span><span class="params">()</span></span>: FragmentID &#123;</span><br><span class="line">        <span class="keyword">return</span> FragmentID.LOGIN</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">companion</span> <span class="keyword">object</span> &#123;</span><br><span class="line">        <span class="keyword">val</span> TAG = <span class="keyword">this</span>::<span class="keyword">class</span>.java.simpleName!!</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onCreateView</span><span class="params">(inflater: <span class="type">LayoutInflater</span>, container: <span class="type">ViewGroup</span>?, savedInstanceState: <span class="type">Bundle</span>?)</span></span>: View? &#123;</span><br><span class="line">        Logger.d(<span class="string">&quot;fragment life circle----&gt;onCreateView&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> inflater.inflate(R.layout.fragment_login, container, <span class="literal">false</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onViewCreated</span><span class="params">(view: <span class="type">View</span>, savedInstanceState: <span class="type">Bundle</span>?)</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.onViewCreated(view, savedInstanceState)</span><br><span class="line">   </span><br><span class="line">        <span class="comment">// 注册</span></span><br><span class="line">        tv_register.setOnClickListener &#123; toRegister() &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// .....</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">toRegister</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">val</span> ba = activity <span class="keyword">as</span> BaseActivity</span><br><span class="line">        ba.navigateReplace(RegistrationFragment(), getString(R.string.auth_register), <span class="literal">true</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>fragment_login 布局</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">LinearLayout</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:android</span>=<span class="string">&quot;http://schemas.android.com/apk/res/android&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:app</span>=<span class="string">&quot;http://schemas.android.com/apk/res-auto&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:tool</span>=<span class="string">&quot;http://schemas.android.com/tools&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_width</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_height</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:background</span>=<span class="string">&quot;@color/background_page_dark&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:paddingEnd</span>=<span class="string">&quot;@dimen/spacing_24&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:paddingStart</span>=<span class="string">&quot;@dimen/spacing_24&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:orientation</span>=<span class="string">&quot;vertical&quot;</span></span></span><br><span class="line"><span class="tag">    &gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">include</span> <span class="attr">layout</span>=<span class="string">&quot;@layout/view_logo&quot;</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">cn.yintech.cdam.view.ClearableEditText</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:id</span>=<span class="string">&quot;@+id/cet_auth_mobile&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_width</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_height</span>=<span class="string">&quot;wrap_content&quot;</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">cn.yintech.cdam.view.ClearableEditText</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:id</span>=<span class="string">&quot;@+id/cet_auth_password&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_width</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_height</span>=<span class="string">&quot;wrap_content&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_marginTop</span>=<span class="string">&quot;@dimen/spacing_row_vertical&quot;</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">android.support.constraint.ConstraintLayout</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_width</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_height</span>=<span class="string">&quot;wrap_content&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_marginTop</span>=<span class="string">&quot;@dimen/spacing_24&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">TextView</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:id</span>=<span class="string">&quot;@+id/tv_register&quot;</span></span></span><br><span class="line"><span class="tag">            <span class="attr">style</span>=<span class="string">&quot;@style/ContentText.Large&quot;</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:text</span>=<span class="string">&quot;@string/auth_register&quot;</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:textColor</span>=<span class="string">&quot;@color/white&quot;</span></span></span><br><span class="line"><span class="tag">            /&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">TextView</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:id</span>=<span class="string">&quot;@+id/tv_forget_password&quot;</span></span></span><br><span class="line"><span class="tag">            <span class="attr">style</span>=<span class="string">&quot;@style/ContentText.Large&quot;</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:text</span>=<span class="string">&quot;@string/auth_forget_pwd&quot;</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:textColor</span>=<span class="string">&quot;@color/white&quot;</span></span></span><br><span class="line"><span class="tag">            <span class="attr">app:layout_constraintRight_toRightOf</span>=<span class="string">&quot;parent&quot;</span></span></span><br><span class="line"><span class="tag">            /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">android.support.constraint.ConstraintLayout</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">Button</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:id</span>=<span class="string">&quot;@+id/btn_login&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">style</span>=<span class="string">&quot;@style/Button.Primary&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_width</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_height</span>=<span class="string">&quot;wrap_content&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_marginTop</span>=<span class="string">&quot;@dimen/spacing_section_vertical&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:text</span>=<span class="string">&quot;@string/auth_login&quot;</span></span></span><br><span class="line"><span class="tag">        /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">LinearLayout</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h1><p>这应该是两个ClearableEditText中AutoCompleteTextView的id值相同的导致的。系统会在View的onSaveInstanceState中缓存View的状态，根据id来辨别View，因此相同id的View只保存最后一个的状态，之前的会被覆盖，所以最后都显示为同一个值。</p>
+<h1 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h1><p>可为每个ClearableEditText中的AutoCompleteTextView动态分配一个id，做法如下</p>
+<ol>
+<li><p>在ClearableEditText的属性文件中加入id属性，如</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">resources</span> <span class="attr">xmlns:tools</span>=<span class="string">&quot;http://schemas.android.com/tools&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">declare-styleable</span> <span class="attr">name</span>=<span class="string">&quot;ClearableEditText&quot;</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--省略其他--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">attr</span> <span class="attr">name</span>=<span class="string">&quot;inputId&quot;</span> <span class="attr">format</span>=<span class="string">&quot;reference&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">declare-styleable</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">resources</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>在ClearableEditText中获取并添加id</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">initView</span><span class="params">(context: <span class="type">Context</span>, attrs: <span class="type">AttributeSet</span>?, defStyleAttr: <span class="type">Int</span>, defStyleRes: <span class="type">Int</span>)</span></span> &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// init view</span></span><br><span class="line">        <span class="keyword">val</span> view = LayoutInflater.from(context).inflate(R.layout.view_clearable_edit_text, <span class="keyword">this</span>, <span class="literal">true</span>)</span><br><span class="line">        input = view.findViewById&lt;AutoCompleteTextView&gt;(R.id.et_clearable)</span><br><span class="line">        clearImage = view.findViewById(R.id.iv_clearable)</span><br><span class="line"></span><br><span class="line">        <span class="comment">// init attr</span></span><br><span class="line">        <span class="keyword">val</span> ta = context.theme.obtainStyledAttributes(attrs, R.styleable.ClearableEditText, defStyleAttr, defStyleRes)</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">val</span> inputId = ta.getResourceId(R.styleable.ClearableEditText_inputId, <span class="number">0x50</span>)</span><br><span class="line">            input.id = inputId</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            ta.recycle()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>在res/value/ids.xml(没有这个文件的话，创建一个)中，加入各种类型的ClearableEditText需要的id.注意这里的值如0x51、0x52等其实可以不需要，因为应用为每个资源自动生成一个资源id，上面的代码中获取的就是资源id</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">resources</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--自定义ViewGroup中包含EditText，如果EditText相同则只缓存一个--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">&quot;clearable_input_mobile&quot;</span> <span class="attr">type</span>=<span class="string">&quot;id&quot;</span>&gt;</span>0x51<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">&quot;clearable_input_password&quot;</span> <span class="attr">type</span>=<span class="string">&quot;id&quot;</span>&gt;</span>0x52<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">&quot;clearable_input_password_confirmed&quot;</span> <span class="attr">type</span>=<span class="string">&quot;id&quot;</span>&gt;</span>0x53<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">&quot;clearable_input_password_new&quot;</span> <span class="attr">type</span>=<span class="string">&quot;id&quot;</span>&gt;</span>0x54<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">resources</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>在布局中引用资源id </p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">&lt;!--省略--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">cn.yintech.cdam.view.ClearableEditText</span></span></span><br><span class="line"><span class="tag">     <span class="attr">android:id</span>=<span class="string">&quot;@+id/cet_auth_mobile&quot;</span></span></span><br><span class="line"><span class="tag">     <span class="attr">android:layout_width</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag">     <span class="attr">android:layout_height</span>=<span class="string">&quot;wrap_content&quot;</span></span></span><br><span class="line"><span class="tag">     <span class="attr">app:inputId</span>=<span class="string">&quot;@id/clearable_input_mobile&quot;</span>/&gt;</span></span><br><span class="line"></span><br><span class="line"> <span class="tag">&lt;<span class="name">cn.yintech.cdam.view.ClearableEditText</span></span></span><br><span class="line"><span class="tag">     <span class="attr">android:id</span>=<span class="string">&quot;@+id/cet_auth_password&quot;</span></span></span><br><span class="line"><span class="tag">     <span class="attr">android:layout_width</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag">     <span class="attr">android:layout_height</span>=<span class="string">&quot;wrap_content&quot;</span></span></span><br><span class="line"><span class="tag">     <span class="attr">android:layout_marginTop</span>=<span class="string">&quot;@dimen/spacing_row_vertical&quot;</span></span></span><br><span class="line"><span class="tag">     <span class="attr">app:inputId</span>=<span class="string">&quot;@id/clearable_input_password&quot;</span>/&gt;</span></span><br><span class="line"> <span class="comment">&lt;!--省略--&gt;</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -223,7 +521,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 09:13:08" itemprop="dateModified" datetime="2021-06-29T09:13:08+08:00">2021-06-29</time>
+                <time title="修改时间：2021-06-29 14:17:43" itemprop="dateModified" datetime="2021-06-29T14:17:43+08:00">2021-06-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -350,7 +648,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 09:13:08" itemprop="dateModified" datetime="2021-06-29T09:13:08+08:00">2021-06-29</time>
+                <time title="修改时间：2021-06-29 14:17:20" itemprop="dateModified" datetime="2021-06-29T14:17:20+08:00">2021-06-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -442,7 +740,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 09:13:08" itemprop="dateModified" datetime="2021-06-29T09:13:08+08:00">2021-06-29</time>
+                <time title="修改时间：2021-06-29 14:17:10" itemprop="dateModified" datetime="2021-06-29T14:17:10+08:00">2021-06-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -466,7 +764,7 @@
 
       
           <h1 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h1><ol>
-<li>注册页里需要用户同意两个协议《用户注册协议》和《隐私声明》，要求用户点击协议名称时分别进入对应的详细页面。如图所示。<br><img src="/images/spannablestring_click_event.jpg" alt="情景图"></li>
+<li>注册页里需要用户同意两个协议《用户注册协议》和《隐私声明》，要求用户点击协议名称时分别进入对应的详细页面。如图所示。<br> <img src="/images/spannablestring_click_event.jpg" alt="情景图"></li>
 <li>点击图中区域1时，进入《用户注册协议》页面；点击区域2时，进入《隐私声明》页面；但点击区域3时却进入了《隐私声明》页面，这是不应该出现的，区域3是空白区域，不应该有点击效果。</li>
 </ol>
 <hr>
@@ -532,7 +830,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 09:13:08" itemprop="dateModified" datetime="2021-06-29T09:13:08+08:00">2021-06-29</time>
+                <time title="修改时间：2021-06-29 14:17:03" itemprop="dateModified" datetime="2021-06-29T14:17:03+08:00">2021-06-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -650,7 +948,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 09:13:08" itemprop="dateModified" datetime="2021-06-29T09:13:08+08:00">2021-06-29</time>
+                <time title="修改时间：2021-06-29 14:16:44" itemprop="dateModified" datetime="2021-06-29T14:16:44+08:00">2021-06-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -832,7 +1130,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 09:13:08" itemprop="dateModified" datetime="2021-06-29T09:13:08+08:00">2021-06-29</time>
+                <time title="修改时间：2021-06-29 14:24:08" itemprop="dateModified" datetime="2021-06-29T14:24:08+08:00">2021-06-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -840,7 +1138,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android%E6%9E%84%E5%BB%BA%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">Android构建系统</span></a>
+                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
                 </span>
             </span>
 
@@ -1008,7 +1306,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2018/10/23/git-base-command/" class="post-title-link" itemprop="url">Git-基础与命令</a>
+            <a href="/2018/10/23/git-base-command/" class="post-title-link" itemprop="url">版本管理之Git基础与命令</a>
         </h2>
 
         <div class="post-meta">
@@ -1025,7 +1323,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 09:13:08" itemprop="dateModified" datetime="2021-06-29T09:13:08+08:00">2021-06-29</time>
+                <time title="修改时间：2021-06-29 14:27:23" itemprop="dateModified" datetime="2021-06-29T14:27:23+08:00">2021-06-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1033,7 +1331,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">版本管理</span></a>
+                  <a href="/categories/%E5%85%B6%E4%BB%96/" itemprop="url" rel="index"><span itemprop="name">其他</span></a>
                 </span>
             </span>
 
@@ -1086,15 +1384,15 @@
 <p><img src="https://upload-images.jianshu.io/upload_images/2658578-dd8bea81c4b8c82f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Git项目文件生命周期"></p>
 <p><strong>分支结构变更示意</strong><br><code>master</code>指向自己分支的最新提交，<code>HEAD</code>指向当前分支</p>
 <ol>
-<li><p>只有一个主分支时<br><img src="https://upload-images.jianshu.io/upload_images/2658578-3d9b499d978d52fa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="只有一个主分支master"></p>
+<li><p>只有一个主分支时<br> <img src="https://upload-images.jianshu.io/upload_images/2658578-3d9b499d978d52fa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="只有一个主分支master"></p>
 </li>
-<li><p>创建并切换到分支dev。即创建一个dev指针指向当前提交，同时HEAD也指向dev分支<br><img src="https://upload-images.jianshu.io/upload_images/2658578-0e4b492bab51186d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="创建并切换分支dev"></p>
+<li><p>创建并切换到分支dev。即创建一个dev指针指向当前提交，同时HEAD也指向dev分支<br> <img src="https://upload-images.jianshu.io/upload_images/2658578-0e4b492bab51186d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="创建并切换分支dev"></p>
 </li>
-<li><p>修改并提交分支dev<br><img src="https://upload-images.jianshu.io/upload_images/2658578-7ddb24059a53d93e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="修改并提交分支dev"></p>
+<li><p>修改并提交分支dev<br> <img src="https://upload-images.jianshu.io/upload_images/2658578-7ddb24059a53d93e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="修改并提交分支dev"></p>
 </li>
-<li><p>合并分支dev到master(默认的快速模式)<br><img src="https://upload-images.jianshu.io/upload_images/2658578-6028d4eab1c70d1f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="合并分支-ff"><br><img src="https://upload-images.jianshu.io/upload_images/2658578-12b3c045442d59b4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="合并分支-no-ff"></p>
+<li><p>合并分支dev到master(默认的快速模式)<br> <img src="https://upload-images.jianshu.io/upload_images/2658578-6028d4eab1c70d1f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="合并分支-ff"><br> <img src="https://upload-images.jianshu.io/upload_images/2658578-12b3c045442d59b4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="合并分支-no-ff"></p>
 </li>
-<li><p>删除分支dev<br><img src="https://upload-images.jianshu.io/upload_images/2658578-c9396e94563a2cfd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="删除分支dev"></p>
+<li><p>删除分支dev<br> <img src="https://upload-images.jianshu.io/upload_images/2658578-c9396e94563a2cfd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="删除分支dev"></p>
 </li>
 </ol>
 <hr>
@@ -1153,367 +1451,6 @@
 <li><a target="_blank" rel="noopener" href="https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000">廖雪峰Git教程</a></li>
 <li><a target="_blank" rel="noopener" href="https://git-scm.com/book/zh/v2">Git官网-Pro Git教程</a></li>
 <li><a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2015/12/git-cheat-sheet.html">阮一峰-常用Git命令清单</a></li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2018/10/22/android-build-05-gradle-practise/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="章亮">
-      <meta itemprop="description" content="Developer For Android">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="永恒的码流">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/10/22/android-build-05-gradle-practise/" class="post-title-link" itemprop="url">Android构建05-Gradle最佳实践</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-10-22 09:09:26" itemprop="dateCreated datePublished" datetime="2018-10-22T09:09:26+08:00">2018-10-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 09:13:08" itemprop="dateModified" datetime="2021-06-29T09:13:08+08:00">2021-06-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android%E6%9E%84%E5%BB%BA%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">Android构建系统</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="文件分布简述"><a href="#文件分布简述" class="headerlink" title="文件分布简述"></a>文件分布简述</h1><p>详情请见官方文档<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/directory_layout.html">Directory Layout</a>。</p>
-<p>之前官方文档并没有这方面的说明，现在却单独用一个章节来做说明，可能考虑到许多开发者都遇到过这方面的疑惑吧：项目的依赖包在哪里？我去掉了项目里<code>gradle.properties</code>和IDE（如Android Studio）里的代理设置之后，会什么代理还会生效？等等。</p>
-<p>Gradle相关文件包括Wrapper文件、Gradle各版本包、依赖包等。它们并不都存放在项目目录里，如依赖包，你在项目根目录下是找不到的。</p>
-<p>Gradle相关文件分布在两个地方：</p>
-<ol>
-<li>项目根目录。这个目录下的gradle相关文件只对当前项目生效。包括Wrapper配置和可执行命令文件、项目的<code>gradle.properties</code>、<code>build.gradle</code>等构建和配置文件。</li>
-<li>用户目录。<code>$USER_HOME/.gradle</code>，macOS中执行<code>$ cd ~/.gradle</code>即可进入，该目录下的配置对所有的项目生效。包括配置文件<code>gradle.properties</code>、Gradle各版本<code>wrapper/dists/</code>、项目依赖包<code>~/.gradle/caches/modules-2/files-2.1/</code>等。</li>
-</ol>
-<hr>
-<br>
-
-
-
-<h1 id="问题排查"><a href="#问题排查" class="headerlink" title="问题排查"></a>问题排查</h1><p><strong>获取帮助</strong></p>
-<ol>
-<li><a target="_blank" rel="noopener" href="https://discuss.gradle.org/c/help-discuss">Gradle Forums</a>。更新缓慢，回复率很低。</li>
-<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/tagged/gradle">StackOverflow #gradle</a> 。在StackOverFlow上一般能找到所需要的解答。</li>
-<li><a target="_blank" rel="noopener" href="https://help.gradle.org/">help.gradle.org</a>。没用过，估计和Gradle论坛一样吧。</li>
-</ol>
-<p><strong>安装问题</strong></p>
-<p>详情请见官网<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/troubleshooting.html#sec:troubleshooting_installation">Troubleshooting Gradle installation</a>，按照官网的教程安装，一般没有什么问题。</p>
-<p><strong>定位一般构建问题</strong></p>
-<ol>
-<li>执行<code>$ ./gradlew [task name] -s</code>。打印栈信息，一般可以定位问题出现在哪里，否则执行下一步操作。</li>
-<li>执行<code>$ ./gradlew assembleDebug -d &gt; gradle.log </code>。打印所有的构建信息到<code>gradle.log </code>文件，通过搜索<code>WARNING</code>或<code>ERROR</code>定位错误。</li>
-</ol>
-<p><strong>依赖解析问题</strong></p>
-<p>参考官网<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/troubleshooting_dependency_resolution.html">Troubleshooting Dependency Resolution</a>，补充如下：</p>
-<ol>
-<li>版本冲突。升级低版本或在某个依赖里排除掉(<code>exclude</code>)低版本。</li>
-<li>依赖下载失败。一般会报错<code>Could not resolve xxx....xxxx timed out</code>，有以下两种解决方法：<ul>
-<li>设置HTTP代理或国内镜像仓库。HTTP代理可在<code>$USER_HOME/.gradle/gradle.properties</code>或项目根目录<code>gradle.properties</code>里设置。镜像仓库可使用<a target="_blank" rel="noopener" href="http://maven.aliyun.com/mvn/view">阿里云的仓库</a>，包括google、Maven Central和jcenter等的镜像仓库。</li>
-<li>下载依赖并从缓存执行构建。从官网下载依赖并放在缓存(<code>$USER_HOME/.gradle/caches/jars-3或modules-2</code>)里，然后使用命令行构建时添加<code>--offline</code>可选项。</li>
-</ul>
-</li>
-</ol>
-<hr>
-<br>
-
-
-
-<h1 id="代理设置"><a href="#代理设置" class="headerlink" title="代理设置"></a>代理设置</h1><p>Gradle的代理一般用于解决Gradle版本和依赖下载失败的问题，代理参数可以设置在两个地方：</p>
-<ul>
-<li>项目根目录下的<code>gradle.properties</code>。仅对当前项目生效。</li>
-<li>用户目录下的<code>$USER_HOME/.gradle/gradle.properties</code>。对所有的Gradle项目生效。</li>
-</ul>
-<p>我的代理策略是使用<a target="_blank" rel="noopener" href="https://www.privoxy.org/">Privoxy</a>做HTTP代理，再让Privoxy监听Shadowsocks端口，真正实现代理的是本地Shadowsocks与远程代理服务中Shadowsocks的通信。</p>
-<blockquote>
-<p>因为Shadowsocks走的是Socks协议，而有些资源一定需要HTTP代理才生效，故需要使用Privoxy做一下转换。</p>
-</blockquote>
-<p>我一般的做法是在<code>$USER_HOME/.gradle/gradle.properties</code>下设置代理，代理参数及说明如下：</p>
-<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># https代理</span></span><br><span class="line"><span class="comment"># 代理主机地址。本地，因为是先要走本地Privoxy。</span></span><br><span class="line"><span class="meta">systemProp.https.proxyHost</span>=<span class="string">127.0.0.1</span></span><br><span class="line"><span class="comment"># 代理端口号。Privoxy的端口号</span></span><br><span class="line"><span class="meta">systemProp.https.proxyPort</span>=<span class="string">8118</span></span><br><span class="line"><span class="comment"># 不走代理的地址。公司内部Maven库、内网、本地、阿里云OSS文件服务、个推、eclipse资源等，不用走代理，否则连接缓慢或者失败</span></span><br><span class="line"><span class="meta">systemProp.https.nonProxyHosts</span>=<span class="string">maven.xxxx.com|192.168.*|localhost|oss.sonatype.org|mvn.gt.igexin.com|repo.eclipse.org</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"># http代理。与https代理参数一直。</span></span><br><span class="line"><span class="meta">systemProp.http.proxyHost</span>=<span class="string">127.0.0.1</span></span><br><span class="line"><span class="meta">systemProp.http.proxyPort</span>=<span class="string">8118</span></span><br><span class="line"><span class="meta">systemProp.http.nonProxyHosts</span>=<span class="string">maven.xxxx.com|192.168.*|localhost|oss.sonatype.org|mvn.gt.igexin.com|repo.eclipse.org</span></span><br></pre></td></tr></table></figure>
-
-
-
-<blockquote>
-<p>IDE以Andorid Studio 为例，其代理设置（在<code>Preferences-&gt;System Settings-&gt;HTTP Proxy</code>中）仅仅对IDE更新、下载SDK等生效，不会影响到Gradle构建时下载依赖。</p>
-<p>需要注意的是，Andorid Studio中设置了代理后，一般会弹出对话框，问是否要把Studio的代理设置到用户目录下的<code>$USER_HOME/.gradle/gradle.properties</code>中，如果你点击了确定，则Studio会把自己的代理配置更新到用户目录的<code>gradle.properties</code>文件中，这样代理就对Gradle生效了。一般不建议点确定，因为Studio和Gradle的代理的资源不一样，配置也会不一致，有时候一个可能需要代理，而另一个却不需要代理。</p>
-<p>IDE和Gradle的代理应该分别配置。</p>
-</blockquote>
-<hr>
-<br>
-
-
-
-<h1 id="待续"><a href="#待续" class="headerlink" title="待续"></a>待续</h1><p>撰写可维护的构建脚本</p>
-<p><a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/authoring_maintainable_build_scripts.html">Authoring Maintainable Build Scripts</a></p>
-<p>搭建Gradle项目</p>
-<p><a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/organizing_gradle_projects.html">Organizing Gradle Projects</a></p>
-<p>提高构建性能</p>
-<p><a target="_blank" rel="noopener" href="https://guides.gradle.org/performance/">Improving the Performance of Gradle Builds</a></p>
-<p>使用缓存</p>
-<p><a target="_blank" rel="noopener" href="https://guides.gradle.org/using-build-cache/">https://guides.gradle.org/using-build-cache/</a></p>
-<hr>
-<br>
-
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
-<li><a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/troubleshooting.html">Troubleshooting</a></li>
-<li><a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/troubleshooting_dependency_resolution.html">Troubleshooting Dependency Resolution</a></li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2018/10/21/2018-10-21-%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0-%E7%90%86%E8%A7%A3FileProvider/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="章亮">
-      <meta itemprop="description" content="Developer For Android">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="永恒的码流">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/10/21/2018-10-21-%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0-%E7%90%86%E8%A7%A3FileProvider/" class="post-title-link" itemprop="url">开发笔记-理解FileProvider</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2018-10-21 11:53:40 / 修改时间：17:52:48" itemprop="dateCreated datePublished" datetime="2018-10-21T11:53:40+08:00">2018-10-21</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>用于更安全地在APP之间实现文件共享的一种机制，适用于Android 7.0及以上。</p>
-<p>当应用A（如相册）允许其他应用（以应用B为例）调用自己并获取自己的文件时，应用A需要使用<code>FileProvider</code>来转化自己的文件路径为<code>content://Uri</code>，并提供给需要文件的应用B。其中</p>
-<ol>
-<li>Android 7.0以上如果不使用<code>FileProvider</code>，应用A将返回<code>file:///</code> <code>Uri</code>，而报错。</li>
-<li>返回的<code>content://Uri</code>有生命周期，即应用B接收文件的<code>Activity</code>的生命周期，如果这个<code>Activity</code>被销毁了，则返回的<code>content://Uri</code>也将失效而不能获取文件。</li>
-</ol>
-<hr>
-<br>
-
-
-
-<h1 id="场景-从相册获取图片"><a href="#场景-从相册获取图片" class="headerlink" title="场景-从相册获取图片"></a>场景-从相册获取图片</h1><p>这是经常遇到的场景。当我们的APP（开发者APP）需要从相册获取图片时，一般使用如下代码</p>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">getPicture</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">val</span> intent = Intent()</span><br><span class="line">    intent.type = <span class="string">&quot;image/*&quot;</span></span><br><span class="line">    intent.action = Intent.ACTION_GET_CONTENT</span><br><span class="line">    intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, <span class="literal">true</span>)</span><br><span class="line">    startActivityForResult(Intent.createChooser(intent, <span class="string">&quot;Select Picture&quot;</span>), REQUEST_CODE_ADD_PICTURE)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>并在<code>onActivityResult</code>处理获取到Uri，但需要记住的是，这个Uri是相册应用使用<code>FileProvider</code>处理后的<code>content://Uri</code>，其获取图片的权限是暂时的。</p>
-<p>这个场景中，是开发者APP从相册获取图片，无需在开发者APP中配置<code>FileProvider</code>。</p>
-<hr>
-<br>
-
-
-
-<h1 id="场景-拍照"><a href="#场景-拍照" class="headerlink" title="场景-拍照"></a>场景-拍照</h1><p>开发者APP调用相机拍照并获取照片，官方文档<a target="_blank" rel="noopener" href="https://developer.android.com/training/camera/photobasics#kotlin">TakePhoto</a>对这一块有详细的说明。</p>
-<p>开发者APP调用相机拍照后需要保存在一个文件中，这个文件地址由开发者APP规定。也就是说，相机在拍照后需要读写开发者APP规定的文件，那么这个时候，开发者APP就需要提供文件共享功能，这就需要用到<code>FileProvider</code>了。</p>
-<p>在这个场景中，开发者APP中需要配置<code>FileProvider</code>。</p>
-<hr>
-<br>
-
-
-
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
-<li><a target="_blank" rel="noopener" href="https://developer.android.com/reference/android/support/v4/content/FileProvider">FileProvider</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.android.com/training/camera/photobasics#kotlin">TakePhoto</a></li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2018/10/20/2018-10-20-%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0-Uri%E8%BF%87%E6%9C%9F%E5%AF%BC%E8%87%B4%E5%9B%BE%E7%89%87%E4%B8%8D%E6%98%BE%E7%A4%BA%E7%9A%84%E9%97%AE%E9%A2%98/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="章亮">
-      <meta itemprop="description" content="Developer For Android">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="永恒的码流">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/10/20/2018-10-20-%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0-Uri%E8%BF%87%E6%9C%9F%E5%AF%BC%E8%87%B4%E5%9B%BE%E7%89%87%E4%B8%8D%E6%98%BE%E7%A4%BA%E7%9A%84%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">开发笔记-Uri过期导致图片不显示的问题</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-10-20 09:50:22" itemprop="dateCreated datePublished" datetime="2018-10-20T09:50:22+08:00">2018-10-20</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2018-10-21 17:52:48" itemprop="dateModified" datetime="2018-10-21T17:52:48+08:00">2018-10-21</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h1><p>最近做APP开发时，需要从相册选取图片后在APP的<code>PictureActivity</code>中显示，且每次都需要把获取到的图片URI缓存起来，用以下次进入页面时显示之前选择的图片。但这样偶尔会出现问题：用缓存的Uri并不能获取图片，并报错如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java.lang.SecurityException: Permission Denial: opening provider com.android.providers.media.MediaDocumentsProvider from ProcessRecord&#123;9ebe048 23462:cn.com.xxxx.xxxxx/u0a209&#125; (pid=23462, uid=10209) requires android.permission.MANAGE_DOCUMENTS or android.permission.MANAGE_DOCUMENTS</span><br></pre></td></tr></table></figure>
-
-<p><code>PictureActivity</code>相关代码如下：</p>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">   <span class="comment">// </span></span><br><span class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">addPicture</span><span class="params">()</span></span> &#123;</span><br><span class="line">       <span class="keyword">val</span> intent = Intent()</span><br><span class="line">       intent.type = <span class="string">&quot;image/*&quot;</span></span><br><span class="line">       intent.action = Intent.ACTION_GET_CONTENT</span><br><span class="line">       intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE)</span><br><span class="line">       startActivityForResult(Intent.createChooser(intent, <span class="string">&quot;Select Picture&quot;</span>), REQUEST_CODE_ADD_PICTURE)</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onActivityResult</span><span class="params">(requestCode: <span class="type">Int</span>, resultCode: <span class="type">Int</span>, <span class="keyword">data</span>: <span class="type">Intent</span>?)</span></span> &#123;</span><br><span class="line">       <span class="keyword">super</span>.onActivityResult(requestCode, resultCode, <span class="keyword">data</span>)</span><br><span class="line">       <span class="keyword">if</span>(REQUEST_CODE_ADD_PICTURE == requestCode) &#123;</span><br><span class="line">           <span class="comment">// cacheUri是APP全局静态变量，用于缓存到Memory里</span></span><br><span class="line">           cacheUri = <span class="keyword">data</span>?.<span class="keyword">data</span>?:<span class="keyword">return</span></span><br><span class="line">           <span class="comment">// 使用Glide显示图片</span></span><br><span class="line">           Glide.with(<span class="keyword">this</span>).load(<span class="keyword">data</span>?.<span class="keyword">data</span>).into(iv_picture)</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<hr>
-<br>
-
-
-
-<h1 id="分析和解决"><a href="#分析和解决" class="headerlink" title="分析和解决"></a>分析和解决</h1><p><strong>Uri有生命周期</strong></p>
-<p>查了一下官网以及相关文章，说是用Uri获取图片的权限是暂时赋予的，有生命周期，即选择图片的当前Activity的生命周期。当Activity销毁后，之前的Uri就不能用来获取图片了，否则就会上面的报错。</p>
-<p>上面的例子中，我的应用从相册应用选择图片后，相册会返回图片的Uri，这些Uri获取相册图片的权限是暂时的，即只能在接收这些Uri的<code>PictureActivity</code>中使用，当<code>PictureActivity</code>销毁后，Uri权限即失效，不能用来获取图片。</p>
-<p><strong>Glide有缓存</strong></p>
-<p>Glide默认会有缓存，因此才会导致问题不容易复现，只是偶尔出现。去掉磁盘缓存和内存缓存后，每次回退后再次进入<code>PictureActivity</code>，就一定会复现这个问题。</p>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Glide.with(<span class="keyword">this</span>)</span><br><span class="line">     .applyDefaultRequestOptions(RequestOptions()</span><br><span class="line">           .diskCacheStrategy(DiskCacheStrategy.NONE)</span><br><span class="line">           .skipMemoryCache(<span class="literal">true</span>))</span><br><span class="line">     .load(item).into(iv_picture)</span><br></pre></td></tr></table></figure>
-
-
-
-<p><strong>解决</strong></p>
-<p>知道问题的原因所在，就可以对症下药了。既然Uri的生命周期是短暂的，那么就不要缓存Uri了，缓存图片的绝对路径就可以了。</p>
-<p>获取图片Uri后，将其转换为绝对路径形式，代码如下（参考了网上他人的代码，网上相关的代码有很多）：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">getFilePathByUri</span><span class="params">(Context context, Uri uri)</span> </span>&#123;</span><br><span class="line">    String path = <span class="keyword">null</span>;</span><br><span class="line">    <span class="comment">// 以 file:// 开头的</span></span><br><span class="line">    <span class="keyword">if</span> (ContentResolver.SCHEME_FILE.equals(uri.getScheme())) &#123;</span><br><span class="line">        path = uri.getPath();</span><br><span class="line">        <span class="keyword">return</span> path;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 以 content:// 开头的，比如 content://media/extenral/images/media/17766</span></span><br><span class="line">    <span class="keyword">if</span> (ContentResolver.SCHEME_CONTENT.equals(uri.getScheme()) &amp;&amp; Build.VERSION.SDK_INT &lt; Build.VERSION_CODES.KITKAT) &#123;</span><br><span class="line">        Cursor cursor = context.getContentResolver().query(uri, <span class="keyword">new</span> String[]&#123;MediaStore.Images.Media.DATA&#125;, <span class="keyword">null</span>, <span class="keyword">null</span>, <span class="keyword">null</span>);</span><br><span class="line">        <span class="keyword">if</span> (cursor != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (cursor.moveToFirst()) &#123;</span><br><span class="line">                <span class="keyword">int</span> columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);</span><br><span class="line">                <span class="keyword">if</span> (columnIndex &gt; -<span class="number">1</span>) &#123;</span><br><span class="line">                    path = cursor.getString(columnIndex);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            cursor.close();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> path;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 4.4及之后的 是以 content:// 开头的，比如 content://com.android.providers.media.documents/document/image%3A235700</span></span><br><span class="line">    <span class="keyword">if</span> (ContentResolver.SCHEME_CONTENT.equals(uri.getScheme()) &amp;&amp; Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.KITKAT) &#123;</span><br><span class="line">        <span class="keyword">if</span> (DocumentsContract.isDocumentUri(context, uri)) &#123;</span><br><span class="line">            <span class="keyword">if</span> (isExternalStorageDocument(uri)) &#123;</span><br><span class="line">                <span class="comment">// ExternalStorageProvider</span></span><br><span class="line">                <span class="keyword">final</span> String docId = DocumentsContract.getDocumentId(uri);</span><br><span class="line">                <span class="keyword">final</span> String[] split = docId.split(<span class="string">&quot;:&quot;</span>);</span><br><span class="line">                <span class="keyword">final</span> String type = split[<span class="number">0</span>];</span><br><span class="line">                <span class="keyword">if</span> (<span class="string">&quot;primary&quot;</span>.equalsIgnoreCase(type)) &#123;</span><br><span class="line">                    path = Environment.getExternalStorageDirectory() + <span class="string">&quot;/&quot;</span> + split[<span class="number">1</span>];</span><br><span class="line">                    <span class="keyword">return</span> path;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isDownloadsDocument(uri)) &#123;</span><br><span class="line">                <span class="comment">// DownloadsProvider</span></span><br><span class="line">                <span class="keyword">final</span> String id = DocumentsContract.getDocumentId(uri);</span><br><span class="line">                <span class="keyword">final</span> Uri contentUri = ContentUris.withAppendedId(Uri.parse(<span class="string">&quot;content://downloads/public_downloads&quot;</span>),</span><br><span class="line">                        Long.valueOf(id));</span><br><span class="line">                path = getDataColumn(context, contentUri, <span class="keyword">null</span>, <span class="keyword">null</span>);</span><br><span class="line">                <span class="keyword">return</span> path;</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isMediaDocument(uri)) &#123;</span><br><span class="line">                <span class="comment">// MediaProvider</span></span><br><span class="line">                <span class="keyword">final</span> String docId = DocumentsContract.getDocumentId(uri);</span><br><span class="line">                <span class="keyword">final</span> String[] split = docId.split(<span class="string">&quot;:&quot;</span>);</span><br><span class="line">                <span class="keyword">final</span> String type = split[<span class="number">0</span>];</span><br><span class="line">                Uri contentUri = <span class="keyword">null</span>;</span><br><span class="line">                <span class="keyword">if</span> (<span class="string">&quot;image&quot;</span>.equals(type)) &#123;</span><br><span class="line">                    contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;</span><br><span class="line">                &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="string">&quot;video&quot;</span>.equals(type)) &#123;</span><br><span class="line">                    contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;</span><br><span class="line">                &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="string">&quot;audio&quot;</span>.equals(type)) &#123;</span><br><span class="line">                    contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">final</span> String selection = <span class="string">&quot;_id=?&quot;</span>;</span><br><span class="line">                <span class="keyword">final</span> String[] selectionArgs = <span class="keyword">new</span> String[]&#123;split[<span class="number">1</span>]&#125;;</span><br><span class="line">                path = getDataColumn(context, contentUri, selection, selectionArgs);</span><br><span class="line">                <span class="keyword">return</span> path;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            String[] projection = &#123; MediaStore.Images.Media.DATA &#125;;</span><br><span class="line">            Cursor cursor = <span class="keyword">null</span>;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                cursor = context.getContentResolver().query(uri, projection, <span class="keyword">null</span>, <span class="keyword">null</span>, <span class="keyword">null</span>);</span><br><span class="line">                <span class="keyword">int</span> column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);</span><br><span class="line">                <span class="keyword">if</span> (cursor.moveToFirst()) &#123;</span><br><span class="line">                    <span class="keyword">return</span> cursor.getString(column_index);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> (cursor != <span class="keyword">null</span>) &#123;</span><br><span class="line">                    cursor.close();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<hr>
-<br>
-
-
-
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
-<li><a target="_blank" rel="noopener" href="https://commonsware.com/blog/2016/08/10/uri-access-lifetime-shorter-than-you-might-think.html">Uri Access Lifetime: Shorter Than You Might Think</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.android.com/reference/android/support/v4/content/FileProvider">FileProvider</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.android.com/training/camera/photobasics#kotlin">TakePhoto</a></li>
 </ol>
 
       
@@ -1601,20 +1538,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">47</span>
+          <span class="site-state-item-count">50</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">56</span>
+        <span class="site-state-item-count">52</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1658,14 +1595,14 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">166k</span>
+    <span title="站点总字数">182k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:31</span>
+    <span title="站点阅读时长">2:45</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>
 
         
@@ -1702,10 +1639,6 @@
   
 
 
-
-
-  
-<script src="/js/local-search.js"></script>
 
 
 
