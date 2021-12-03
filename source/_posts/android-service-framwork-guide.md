@@ -35,6 +35,8 @@ Android服务框架包括Java服务框架（Java层）和本地服务框架（C+
 2. 检索服务。用户使用Context.getSystemService获取FooService，实际上是通过IPC从ContextManager 获取FooService，返回的是FooService的句柄，但客户端不能直接使用FooService，最终返回的是通过FooService生成的代理类(BinderProxy)的包装类FooManager。注意这个过程中会生成客户端的BinderProxy实例以及本地BpBinder实例，FooManager间接持有BinderProxy引用，BinderProxy间接持有本地BpBinder指针，这些对象在客户端使用服务时会涉及到。
 3. 使用服务。FooManager调用foo()函数，实际上调用代理类BinderProxy.transact()函数，后者通过JNI与本地BpBinder交互，并将数据传给Binder驱动进行IPC通信，通过IPCThreadState会调用FooService对应的本地BBinder实例，实际为其实现类JavaBBinder，后者会调用Java层的FooService(继承IFooService.Stub，后者继承Binder)的execTransact()方法，最终根据RPC代码查找到指定函数并执行。
 
+**注意：以上举例适用于Java服务，本地服务类似，需要将最上层的Java代码改为C++代码，细节待确定 TODO**
+
 ### 主要类和文件
 
 ```bash
@@ -136,7 +138,7 @@ private static IServiceManager getIServiceManager() {
 public static final native IBinder getContextObject()
 ```
 
-(2) 如何从BBinder进入service_manager.c的binder_loop()方法中?
+**(2) 如何从BBinder进入service_manager.c的binder_loop()方法中? TODO**
 
 ### 检索服务
 
