@@ -10,17 +10,21 @@ categories:
 
 # 说明
 
-参考闹钟服务编写一个HelloWorldService服务，基于编译后的系统，编写APP调用该服务。
+参考闹钟服务编写一个HelloWorldService服务，功能为打印字符串"Hello, World!"，然后基于编译后的系统，编写APP使用该服务。
 
 ```bash
-闹钟服务
-- /frameworks/base/core/java/android/app/IAlarmManager.aidl 接口定义
-- AlarmManagerService.java
+闹钟服务相关接口和类
+- /frameworks/base/core/java/android/app/IAlarmManager.aidl  接口定义
+- out/soong/./gen/android/app/IAlarmManager.java  自动生成的接口以及Stub、Proxy
+- /frameworks/base/services/core/java/com/android/server/AlarmManagerService.java  服务实现
+- /frameworks/base/core/java/android/app/AlarmManager.java  客户端使用的服务代理
 ```
 
-
+# 编写Framwork代码
 
 ### 编写接口 IHelloWorld.aidl
+
+目录：`/frameworks/base/core/java/android/app`
 
 ```java
 package android.app
@@ -36,146 +40,11 @@ interface IHelloWorld {
 
 ### 生成Stub
 
-```java
-package android.app;
-// Declare any non-default types here with import statements
-
-public interface IHelloWorld extends android.os.IInterface
-{
-  /** Default implementation for IHelloWorld. */
-  public static class Default implements IHelloWorld
-  {
-    /**
-         * Demonstrates some basic types that you can use as parameters
-         * and return values in AIDL.
-         */
-    @Override public void printHello() throws android.os.RemoteException
-    {
-    }
-    @Override
-    public android.os.IBinder asBinder() {
-      return null;
-    }
-  }
-  /** Local-side IPC implementation stub class. */
-  public static abstract class Stub extends android.os.Binder implements IHelloWorld
-  {
-    private static final String DESCRIPTOR = "com.example.helloworldservicedemo.IHelloWorld";
-    /** Construct the stub at attach it to the interface. */
-    public Stub()
-    {
-      this.attachInterface(this, DESCRIPTOR);
-    }
-    /**
-     * Cast an IBinder object into an com.example.helloworldservicedemo.IHelloWorld interface,
-     * generating a proxy if needed.
-     */
-    public static IHelloWorld asInterface(android.os.IBinder obj)
-    {
-      if ((obj==null)) {
-        return null;
-      }
-      android.os.IInterface iin = obj.queryLocalInterface(DESCRIPTOR);
-      if (((iin!=null)&&(iin instanceof IHelloWorld))) {
-        return ((IHelloWorld)iin);
-      }
-      return new Proxy(obj);
-    }
-    @Override public android.os.IBinder asBinder()
-    {
-      return this;
-    }
-    @Override public boolean onTransact(int code, android.os.Parcel data, android.os.Parcel reply, int flags) throws android.os.RemoteException
-    {
-      String descriptor = DESCRIPTOR;
-      switch (code)
-      {
-        case INTERFACE_TRANSACTION:
-        {
-          reply.writeString(descriptor);
-          return true;
-        }
-        case TRANSACTION_printHello:
-        {
-          data.enforceInterface(descriptor);
-          this.printHello();
-          reply.writeNoException();
-          return true;
-        }
-        default:
-        {
-          return super.onTransact(code, data, reply, flags);
-        }
-      }
-    }
-    private static class Proxy implements IHelloWorld
-    {
-      private android.os.IBinder mRemote;
-      Proxy(android.os.IBinder remote)
-      {
-        mRemote = remote;
-      }
-      @Override public android.os.IBinder asBinder()
-      {
-        return mRemote;
-      }
-      public String getInterfaceDescriptor()
-      {
-        return DESCRIPTOR;
-      }
-      /**
-           * Demonstrates some basic types that you can use as parameters
-           * and return values in AIDL.
-           */
-      @Override public void printHello() throws android.os.RemoteException
-      {
-        android.os.Parcel _data = android.os.Parcel.obtain();
-        android.os.Parcel _reply = android.os.Parcel.obtain();
-        try {
-          _data.writeInterfaceToken(DESCRIPTOR);
-          boolean _status = mRemote.transact(Stub.TRANSACTION_printHello, _data, _reply, 0);
-          if (!_status && getDefaultImpl() != null) {
-            getDefaultImpl().printHello();
-            return;
-          }
-          _reply.readException();
-        }
-        finally {
-          _reply.recycle();
-          _data.recycle();
-        }
-      }
-      public static IHelloWorld sDefaultImpl;
-    }
-    static final int TRANSACTION_printHello = (android.os.IBinder.FIRST_CALL_TRANSACTION + 0);
-    public static boolean setDefaultImpl(IHelloWorld impl) {
-      // Only one user of this interface can use this function
-      // at a time. This is a heuristic to detect if two different
-      // users in the same process use this function.
-      if (Proxy.sDefaultImpl != null) {
-        throw new IllegalStateException("setDefaultImpl() called twice");
-      }
-      if (impl != null) {
-        Proxy.sDefaultImpl = impl;
-        return true;
-      }
-      return false;
-    }
-    public static IHelloWorld getDefaultImpl() {
-      return Proxy.sDefaultImpl;
-    }
-  }
-  /**
-       * Demonstrates some basic types that you can use as parameters
-       * and return values in AIDL.
-       */
-  public void printHello() throws android.os.RemoteException;
-}
-```
+待编译时，自动生成，不用手动处理。
 
 ### 配置接口
 
-在 framwork/base/Android.bp中配置接口
+在 `/framwork/base/Android.bp`中配置接口。在`srcs`数组里增加`HelloWorld.aidl`的路径地址即可：
 
 ```java
 java_defaults {
@@ -185,15 +54,17 @@ java_defaults {
     srcs: [
         ...
         "core/java/android/app/IAlarmManager.aidl",
-				"core/java/android/app/HelloWorld.aidl",
-				...
+        "core/java/android/app/HelloWorld.aidl",
+        ...
 		],
 }
 ```
 
 ### 实现HelloWorldService服务
 
-参考AlarmManagerService：http://aospxref.com/android-10.0.0_r47/xref/frameworks/base/services/core/java/com/android/server/AlarmManagerService.java#mService
+参考[AlarmManagerService](http://aospxref.com/android-10.0.0_r47/xref/frameworks/base/services/core/java/com/android/server/AlarmManagerService.java#mService) 编写服务.
+
+目录： `/frameworks/base/services/core/java/com/android/server`
 
 ```java
 package com.android.server;
@@ -220,7 +91,7 @@ public class HelloWorldService extends SystemService{
 
     @Override
     public void onStart() {
-				// 先在Context里添加HELLO_WORLD常量
+        // 先在Context里添加HELLO_WORLD常量
         publishBinderService(Context.HELLO_WORLD, mService);
     }
 
@@ -236,25 +107,30 @@ public class HelloWorldService extends SystemService{
 
 ### 注册HelloWorldService服务
 
-在SystemServer.java里向服务管理者注册服务
+在SystemServer.java里向服务管理者注册服务。
+
+目录：` /frameworks/base/services/java/com/android/server/SystemServer.java`
 
 ```java
 private void startOtherServices() {
-		...
-		traceBeginAndSlog("StartAlarmManagerService");
+    ...
+    traceBeginAndSlog("StartAlarmManagerService");
     mSystemServiceManager.startService(new AlarmManagerService(context));
     traceEnd();
 
-		traceBeginAndSlog("StartHelloWorldService");
+    traceBeginAndSlog("StartHelloWorldService");
+    // 此处实例化并注册HelloWorldService
     mSystemServiceManager.startService(new HelloWorldService(context));
     traceEnd();
-		...
+    ...
 }
 ```
 
-### 编写客户端HelloWorldManager
+### 编写HelloWorldManager
 
-应用开发者可以通过HelloWorldManager使用服务HelloWorldService
+参考AlarmManager编写客户端的HelloWorldManager，基于此应用开发者可以使用HelloWorldService。
+
+目录：`/frameworks/base/core/java/android/app`
 
 ```java
 package android.app;
@@ -265,9 +141,7 @@ import android.content.Context;
 @SystemService(Context.HELLO_WORLD)
 public class HelloWorldManager {
     private static final String TAG = "HelloWorldManager";
-
     private final IHelloWorld mService;
-
     HelloWorldManager(IHelloWorld mService) {
         this.mService = mService;
     }
@@ -282,35 +156,65 @@ public class HelloWorldManager {
 }
 ```
 
-### 获取HelloWorldManager
+### 注册ServiceFetcher
 
-`ContextImpl.getSystemService(String name)` 用于获取各种服务的Manager，在SystemServiceRegistry里注册相应的ServiceFetcher即可，如下。
+要利用`ContextImpl.getSystemService(String name)` 获取服务的Manager，需要首先在`SystemServiceRegistry`里注册相应的`ServiceFetcher`：
 
 ```java
 final class SystemServiceRegistry {
-		static {
-				...
-				registerService(Context.HELLO_WORLD, HelloWorldManager.class,
-		            new CachedServiceFetcher<HelloWorldManager>() {
-		        @Override
-		        public HelloWorldManager createService(ContextImpl ctx) throws ServiceNotFoundException {
-		            IBinder b = ServiceManager.getServiceOrThrow(Context.HELLO_WORLD);
-		            IHelloWorld service = IHelloWorld.Stub.asInterface(b);
-		            return new HelloWorldManager(service);
-		        }});
-				...
-		}
+    static {
+        ...
+        registerService(Context.HELLO_WORLD, HelloWorldManager.class,
+                new CachedServiceFetcher<HelloWorldManager>() {
+            @Override
+            public HelloWorldManager createService(ContextImpl ctx) throws ServiceNotFoundException {
+                IBinder b = ServiceManager.getServiceOrThrow(Context.HELLO_WORLD);
+                IHelloWorld service = IHelloWorld.Stub.asInterface(b);
+                return new HelloWorldManager(service);
+            }});
+        ...
+    }
 }
 ```
 
-### 编译和调试
+# 配置SE限制
+
+ 很重要的一步. 在system/sepolicy 中需要加入相应的SE限制 ?
+
+# 编译和烧录
+
+编译Android系统，并烧录到实机设备或虚拟设备中：
 
 ```java
 $ m update-api
 ```
 
-### APP使用
+# 发布SDK
+
+发布SDK，供APP开发
+
+# 编写APP
+
+编写APP，获取服务并调用服务的方法。在主Activity.onCreate()里加入如下两代码：
 
 ```java
-HelloWorldManager hwm = (HelloWorldManager)getSystemService(Context.HELLO_WORLD);
+protected void onCreate(Bundle savedInstanceState) {
+    ...
+    HelloWorldManager hwm = (HelloWorldManager)getSystemService(Context.HELLO_WORLD);
+	hwm.printHW();
+}
+
 ```
+
+运行APP并查看Log：
+
+```
+```
+
+
+
+# 参考
+
+- 金泰廷等著《Android框架解密》，人民邮电出版社，2012。该书分析的代码较老，但框架机制基本不变，非常好的书籍。
+- 源码查看网站：http://aospxref.com/。基于OpenGrok的源码查看服务网站，速度很快，主要用来查看C/C++代码，Java代码可下载到本地查看。
+
