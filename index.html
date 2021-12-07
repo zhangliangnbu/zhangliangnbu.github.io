@@ -164,6 +164,208 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2021/12/07/android-update-ui-in-sub-thread/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/12/07/android-update-ui-in-sub-thread/" class="post-title-link" itemprop="url">探讨-如何在子线程直接刷新主线程的UI</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-12-07 15:18:11 / 修改时间：18:14:54" itemprop="dateCreated datePublished" datetime="2021-12-07T15:18:11+08:00">2021-12-07</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="问题场景"><a href="#问题场景" class="headerlink" title="问题场景"></a>问题场景</h1><p>几年前面试一个互联网大厂时，被问了这么一个问题：如何在子线程不通过Handler直接更新主线程的UI，比如在主线程创建的TextView，如何在子线程直接调用<code>setText()</code>方法更新文本？实例代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> TextView tv1;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_main);</span><br><span class="line">        tv1 = findViewById(R.id.tv_hw);</span><br><span class="line">        tv1.setOnClickListener(v -&gt; <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">            tv1.setText(<span class="string">&quot;子线程刷新UI&quot;</span>);</span><br><span class="line">        &#125;).start());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>直接运行上述代码会导致程序崩溃，调用栈如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">E/AndroidRuntime: FATAL EXCEPTION: Thread-2</span><br><span class="line">    Process: com.xxx.viewsettextdemo, PID: 4387</span><br><span class="line">    android.view.ViewRootImpl<span class="variable">$CalledFromWrongThreadException</span>: Only the original thread that created a view hierarchy can touch its views.</span><br><span class="line">        at android.view.ViewRootImpl.checkThread(ViewRootImpl.java:8191)</span><br><span class="line">        at android.view.ViewRootImpl.requestLayout(ViewRootImpl.java:1420)</span><br><span class="line">        at android.view.View.requestLayout(View.java:24469)</span><br><span class="line">        at android.view.View.requestLayout(View.java:24469)</span><br><span class="line">        at android.view.View.requestLayout(View.java:24469)</span><br><span class="line">        at android.view.View.requestLayout(View.java:24469)</span><br><span class="line">        at android.view.View.requestLayout(View.java:24469)</span><br><span class="line">        at android.view.View.requestLayout(View.java:24469)</span><br><span class="line">        at androidx.constraintlayout.widget.ConstraintLayout.requestLayout(ConstraintLayout.java:3146)</span><br><span class="line">        at android.view.View.requestLayout(View.java:24469)</span><br><span class="line">        at android.widget.TextView.checkForRelayout(TextView.java:9681)</span><br><span class="line">        at android.widget.TextView.setText(TextView.java:6269)</span><br><span class="line">        at android.widget.TextView.setText(TextView.java:6097)</span><br><span class="line">        at android.widget.TextView.setText(TextView.java:6049)</span><br><span class="line">        at com.xxx.viewsettextdemo.MainActivity.lambda$onCreate$0<span class="variable">$MainActivity</span>(MainActivity.java:22)</span><br><span class="line">        at com.xxx.viewsettextdemo.-$$Lambda$MainActivity<span class="variable">$_uRJsNnQ0</span>-zyKYjBJhwoyKb6E_I.run(Unknown Source:2)</span><br><span class="line">        at java.lang.Thread.run(Thread.java:919)</span><br></pre></td></tr></table></figure>
+
+<p>有什么方法，保证程序不崩溃且能够更新UI？</p>
+<h1 id="探讨"><a href="#探讨" class="headerlink" title="探讨"></a>探讨</h1><p>问题出现在调用<code>ViewRootImpl.checkThread()</code>方法时，抛出错误：”CalledFromWrongThreadException: Only the original thread that created a view hierarchy can touch its views.”</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">checkThread</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mThread != Thread.currentThread()) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> CalledFromWrongThreadException(</span><br><span class="line">                <span class="string">&quot;Only the original thread that created a view hierarchy can touch its views.&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>异常消息是说，只有创建View所属视图树的线程才能更新该View，判断依据是ViewRootImpl的mThread成员与当前线程不一致。mThread只在ViewRootImpl构造方法里进行赋值，而ViewRootImpl是在WindowManager(实际为WindowManagerGlobal)的addView方法里进行实例化的，且不能被应用开发者直接实例化。在不更改系统代码的情况下，可以进行如下尝试：</p>
+<h3 id="方案-1"><a href="#方案-1" class="headerlink" title="方案 1"></a>方案 1</h3><p>在主线程中移除目标View，然后在子线程通过WindowManager.addView()添加该view。addView()会创建新的ViewRootImpl实例，并将目标View添加新的ViewRootImpl对应的视图树中。这种方法仅仅解决了在子线程中更新主线程中创建的View问题，但在UI层面则表现为子线程创建了一个新的窗口，此时目标View已经离开了主线程创建的窗口而位于新窗口中，更新的也仅仅是新窗口中的UI，并不能算是子线程更新了主线程的UI，此时主线程UI会缺失目标View。</p>
+<p>具体代码如下，在上述代码中，添加一个按钮，点击按钮时触发创建子线程操作：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">btn.setOnClickListener(v -&gt; <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">    <span class="comment">// 主线程中的View只能在主线程中移除</span></span><br><span class="line">    MainActivity.<span class="keyword">this</span>.runOnUiThread(() -&gt; &#123;</span><br><span class="line">        ViewGroup parent = (ViewGroup) tv1.getParent();</span><br><span class="line">        parent.removeView(tv1);</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="comment">// addView()时会调用Handler发消息到该线程，需要Looper</span></span><br><span class="line">    Looper.prepare();</span><br><span class="line">    WindowManager wm = getWindowManager();</span><br><span class="line">    WindowManager.LayoutParams lp = <span class="keyword">new</span> WindowManager.LayoutParams(</span><br><span class="line">        WindowManager.LayoutParams.MATCH_PARENT,</span><br><span class="line">        WindowManager.LayoutParams.WRAP_CONTENT,</span><br><span class="line">        WindowManager.LayoutParams.TYPE_APPLICATION,</span><br><span class="line">        WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE</span><br><span class="line">        | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,</span><br><span class="line">        PixelFormat.TRANSLUCENT);</span><br><span class="line">    wm.addView(tv1, lp);</span><br><span class="line">    tv1.setTextColor(Color.BLACK);</span><br><span class="line">    tv1.setText(<span class="string">&quot;我是在子线程中的的更新的UI&quot;</span>);</span><br><span class="line">    Looper.loop();</span><br><span class="line">&#125;).start());</span><br></pre></td></tr></table></figure>
+
+<p>具体效果：</p>
+<p><img src="/images/android-update-ui-1.png"></p>
+<p><img src="/images/android-update-ui-2.png"></p>
+<p>上述方案与直接在子线程中创建View实例是一样的，唯一的区别是创建实例的地方不一样。该方案仅仅解决了如何在子线程中更新主线程创建的View实例信息而已这个问题而已，并没有完全解决文章开始提到的问题。</p>
+<p>不修改系统代码，而仅仅使用目前的SDK提供的API，我认为很难解决该问题，因为无法绕过<code>ViewRootImpl.checkThread()</code>方法，也许有其他的Trick，待以后跟进。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2021/12/03/android-java-service-practice-guide/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/12/03/android-java-service-practice-guide/" class="post-title-link" itemprop="url">编写Android的Java系统服务</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-12-03 17:55:19" itemprop="dateCreated datePublished" datetime="2021-12-03T17:55:19+08:00">2021-12-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-12-07 14:04:31" itemprop="dateModified" datetime="2021-12-07T14:04:31+08:00">2021-12-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h1><p>参考闹钟服务编写一个HelloWorldService服务，功能为打印字符串”Hello, World!”，然后基于编译后的系统，编写APP使用该服务。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">闹钟服务相关接口和类</span><br><span class="line">- /frameworks/base/core/java/android/app/IAlarmManager.aidl  接口定义</span><br><span class="line">- out/soong/./gen/android/app/IAlarmManager.java  自动生成的接口以及Stub、Proxy</span><br><span class="line">- /frameworks/base/services/core/java/com/android/server/AlarmManagerService.java  服务实现</span><br><span class="line">- /frameworks/base/core/java/android/app/AlarmManager.java  客户端使用的服务代理</span><br></pre></td></tr></table></figure>
+
+<h1 id="编写Framwork代码"><a href="#编写Framwork代码" class="headerlink" title="编写Framwork代码"></a>编写Framwork代码</h1><h3 id="编写接口-IHelloWorld-aidl"><a href="#编写接口-IHelloWorld-aidl" class="headerlink" title="编写接口 IHelloWorld.aidl"></a>编写接口 IHelloWorld.aidl</h3><p>目录：<code>/frameworks/base/core/java/android/app</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> android.app</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * System private API for talking with the alarm manager service.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * &#123;<span class="doctag">@hide</span>&#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">IHelloWorld</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">printHello</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="生成Stub"><a href="#生成Stub" class="headerlink" title="生成Stub"></a>生成Stub</h3><p>待编译时，自动生成，不用手动处理。</p>
+<h3 id="配置接口"><a href="#配置接口" class="headerlink" title="配置接口"></a>配置接口</h3><p>在 <code>/framwork/base/Android.bp</code>中配置接口。在<code>srcs</code>数组里增加<code>HelloWorld.aidl</code>的路径地址即可：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">java_defaults &#123;</span><br><span class="line">    name: <span class="string">&quot;framework-defaults&quot;</span>,</span><br><span class="line">    installable: <span class="keyword">true</span>,</span><br><span class="line"></span><br><span class="line">    srcs: [</span><br><span class="line">        ...</span><br><span class="line">        <span class="string">&quot;core/java/android/app/IAlarmManager.aidl&quot;</span>,</span><br><span class="line">        <span class="string">&quot;core/java/android/app/HelloWorld.aidl&quot;</span>,</span><br><span class="line">        ...</span><br><span class="line">		],</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="实现HelloWorldService服务"><a href="#实现HelloWorldService服务" class="headerlink" title="实现HelloWorldService服务"></a>实现HelloWorldService服务</h3><p>参考<a target="_blank" rel="noopener" href="http://aospxref.com/android-10.0.0_r47/xref/frameworks/base/services/core/java/com/android/server/AlarmManagerService.java#mService">AlarmManagerService</a> 编写服务.</p>
+<p>目录： <code>/frameworks/base/services/core/java/com/android/server</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.android.server;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> android.app.IHelloWorld;</span><br><span class="line"><span class="keyword">import</span> android.content.Context;</span><br><span class="line"><span class="keyword">import</span> android.os.IBinder;</span><br><span class="line"><span class="keyword">import</span> android.os.RemoteException;</span><br><span class="line"><span class="keyword">import</span> android.util.Slog;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloWorldService</span> <span class="keyword">extends</span> <span class="title">SystemService</span></span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Initializes the system service.</span></span><br><span class="line"><span class="comment">     * &lt;p&gt;</span></span><br><span class="line"><span class="comment">     * Subclasses must define a single argument constructor that accepts the context</span></span><br><span class="line"><span class="comment">     * and passes it to super.</span></span><br><span class="line"><span class="comment">     * &lt;/p&gt;</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> context The system server context.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">HelloWorldService</span><span class="params">(Context context)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(context);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onStart</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 先在Context里添加HELLO_WORLD常量</span></span><br><span class="line">        publishBinderService(Context.HELLO_WORLD, mService);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> IBinder mService = <span class="keyword">new</span> IHelloWorld.Stub() &#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String TAG = <span class="string">&quot;HelloWorldService&quot;</span>;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">printHello</span><span class="params">()</span> <span class="keyword">throws</span> RemoteException </span>&#123;</span><br><span class="line">            Slog.i(TAG, <span class="string">&quot;Hello, World!&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="注册HelloWorldService服务"><a href="#注册HelloWorldService服务" class="headerlink" title="注册HelloWorldService服务"></a>注册HelloWorldService服务</h3><p>在SystemServer.java里向服务管理者注册服务。</p>
+<p>目录：<code> /frameworks/base/services/java/com/android/server/SystemServer.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">startOtherServices</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    traceBeginAndSlog(<span class="string">&quot;StartAlarmManagerService&quot;</span>);</span><br><span class="line">    mSystemServiceManager.startService(<span class="keyword">new</span> AlarmManagerService(context));</span><br><span class="line">    traceEnd();</span><br><span class="line"></span><br><span class="line">    traceBeginAndSlog(<span class="string">&quot;StartHelloWorldService&quot;</span>);</span><br><span class="line">    <span class="comment">// 此处实例化并注册HelloWorldService</span></span><br><span class="line">    mSystemServiceManager.startService(<span class="keyword">new</span> HelloWorldService(context));</span><br><span class="line">    traceEnd();</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="编写HelloWorldManager"><a href="#编写HelloWorldManager" class="headerlink" title="编写HelloWorldManager"></a>编写HelloWorldManager</h3><p>参考AlarmManager编写客户端的HelloWorldManager，基于此应用开发者可以使用HelloWorldService。</p>
+<p>目录：<code>/frameworks/base/core/java/android/app</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> android.app;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> android.annotation.SystemService;</span><br><span class="line"><span class="keyword">import</span> android.content.Context;</span><br><span class="line"></span><br><span class="line"><span class="meta">@SystemService(Context.HELLO_WORLD)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloWorldManager</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String TAG = <span class="string">&quot;HelloWorldManager&quot;</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> IHelloWorld mService;</span><br><span class="line">    HelloWorldManager(IHelloWorld mService) &#123;</span><br><span class="line">        <span class="keyword">this</span>.mService = mService;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">printHello</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            mService.printHello();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="注册ServiceFetcher"><a href="#注册ServiceFetcher" class="headerlink" title="注册ServiceFetcher"></a>注册ServiceFetcher</h3><p>要利用<code>ContextImpl.getSystemService(String name)</code> 获取服务的Manager，需要首先在<code>SystemServiceRegistry</code>里注册相应的<code>ServiceFetcher</code>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">SystemServiceRegistry</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        ...</span><br><span class="line">        registerService(Context.HELLO_WORLD, HelloWorldManager.class,</span><br><span class="line">                <span class="keyword">new</span> CachedServiceFetcher&lt;HelloWorldManager&gt;() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> HelloWorldManager <span class="title">createService</span><span class="params">(ContextImpl ctx)</span> <span class="keyword">throws</span> ServiceNotFoundException </span>&#123;</span><br><span class="line">                IBinder b = ServiceManager.getServiceOrThrow(Context.HELLO_WORLD);</span><br><span class="line">                IHelloWorld service = IHelloWorld.Stub.asInterface(b);</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> HelloWorldManager(service);</span><br><span class="line">            &#125;&#125;);</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="配置SE限制"><a href="#配置SE限制" class="headerlink" title="配置SE限制"></a>配置SE限制</h1><p> 很重要的一步. 在system/sepolicy 中需要加入相应的SE限制 ?</p>
+<h1 id="编译和烧录"><a href="#编译和烧录" class="headerlink" title="编译和烧录"></a>编译和烧录</h1><p>编译Android系统，并烧录到实机设备或虚拟设备中：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ m update-api</span><br></pre></td></tr></table></figure>
+
+<h1 id="发布SDK"><a href="#发布SDK" class="headerlink" title="发布SDK"></a>发布SDK</h1><p>发布SDK，供APP开发</p>
+<h1 id="编写APP"><a href="#编写APP" class="headerlink" title="编写APP"></a>编写APP</h1><p>编写APP，获取服务并调用服务的方法。在主Activity.onCreate()里加入如下两代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    HelloWorldManager hwm = (HelloWorldManager)getSystemService(Context.HELLO_WORLD);</span><br><span class="line">	hwm.printHW();</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>运行APP并查看Log：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li>金泰廷等著《Android框架解密》，人民邮电出版社，2012。该书分析的代码较老，但框架机制基本不变，非常好的书籍。</li>
+<li>源码查看网站：<a target="_blank" rel="noopener" href="http://aospxref.com/%E3%80%82%E5%9F%BA%E4%BA%8EOpenGrok%E7%9A%84%E6%BA%90%E7%A0%81%E6%9F%A5%E7%9C%8B%E6%9C%8D%E5%8A%A1%E7%BD%91%E7%AB%99%EF%BC%8C%E9%80%9F%E5%BA%A6%E5%BE%88%E5%BF%AB%EF%BC%8C%E4%B8%BB%E8%A6%81%E7%94%A8%E6%9D%A5%E6%9F%A5%E7%9C%8BC/C++%E4%BB%A3%E7%A0%81%EF%BC%8CJava%E4%BB%A3%E7%A0%81%E5%8F%AF%E4%B8%8B%E8%BD%BD%E5%88%B0%E6%9C%AC%E5%9C%B0%E6%9F%A5%E7%9C%8B%E3%80%82">http://aospxref.com/。基于OpenGrok的源码查看服务网站，速度很快，主要用来查看C/C++代码，Java代码可下载到本地查看。</a></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2021/12/02/android-service-framwork-guide/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -968,233 +1170,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2019/04/11/android-modularization/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="章亮">
-      <meta itemprop="description" content="Developer For Android">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="永恒的码流">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/04/11/android-modularization/" class="post-title-link" itemprop="url">Android组件化实践</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-04-11 09:02:21" itemprop="dateCreated datePublished" datetime="2019-04-11T09:02:21+08:00">2019-04-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 14:41:15" itemprop="dateModified" datetime="2021-06-29T14:41:15+08:00">2021-06-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="导引"><a href="#导引" class="headerlink" title="导引"></a>导引</h1><p>主要参考以下两种组件化方案</p>
-<p> <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/45374964">知乎 Android 客户端组件化实践</a></p>
-<ul>
-<li>多工程多仓库。主工程通过 aar 依赖各个组件。</li>
-<li>组件划分：主工程、业务组件（完整业务）、基础组件（基础业务）、基础SDK（业务无关）</li>
-<li>组件解耦：公用代码处理、初始化（任务依赖）、通信（路由、接口、EventBus、组件 API 模块）。</li>
-<li>组件半自动拆分。</li>
-<li>联合编译完整包。动态引入组件。</li>
-<li>包含子业务线的组件的处理。子业务模块独立配置、编译和运行，组合发布。</li>
-</ul>
-<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/59245063">网易友品 Android 客户端组件化演进</a></p>
-<ul>
-<li>通信：路由、服务和全局通知</li>
-<li>路由。公共路由表、注解路由地址</li>
-<li>接口。</li>
-<li>拆分流程：建Module -&gt; 移动业务代码到Module -&gt; 根据编译报错修改 -&gt; 接口解耦 -&gt; 配置独立编译功能。</li>
-<li>组件库的独立发布和维护；本地开发调试模式，开发时使用本地Module依赖，发布时使用远程ARR依赖。</li>
-</ul>
-<hr>
-<h1 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h1><p>组件划分。主工程；业务组件（Home、Login、Wisdomsite、Attendance、PersonCenter）及其相对应的API组件；基础业务层（Common、Design等）；基础SDK（Tools、Net等）。</p>
-<p>重构。从最底层开始抽离。</p>
-<p>路由。使用Arouter。</p>
-<p>业务组件间调用。使用相对应的API组件。</p>
-<p>本地module与AAR依赖切换：当依赖无需改变时使用AAR依赖，当依赖需要更改时使用源码依赖。</p>
-<h3 id="通信-接口组件实现"><a href="#通信-接口组件实现" class="headerlink" title="通信-接口组件实现"></a>通信-接口组件实现</h3><ul>
-<li>创建业务组件A和对应的接口组件A-API，且组件A依赖组件A-API</li>
-<li>在组件A-API里定义A需要对外暴露的接口，并用单例维护所有的接口变量</li>
-<li>在组件A里实现组件A-API里的接口，并赋给A-API里的单例</li>
-<li>其他组件B需要使用组件A的方法，则依赖组件A-API，并调用对应接口即可。</li>
-</ul>
-<p>之前项目里有一个wisdomsite业务组件，以及对应的wisdomsite-api组件，现在其他业务组件需要跳转进入wisdomsite组件里，相关代码如下：</p>
-<p>组件wisdomsite相关代码</p>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// build.gradle</span></span><br><span class="line">dependencies &#123;</span><br><span class="line">  	<span class="comment">// 依赖wisdomsite-api组件</span></span><br><span class="line">    implementation deps.business.wisdomsite_api</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 初始化器，在组件初始化时调用init方法</span></span><br><span class="line"><span class="keyword">object</span> WisdomsiteInitializer &#123;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">lateinit</span> <span class="keyword">var</span> app: Application</span><br><span class="line">    <span class="meta">@JvmStatic</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">init</span><span class="params">(app: <span class="type">Application</span>)</span></span> &#123;</span><br><span class="line">        <span class="keyword">this</span>.app = app</span><br><span class="line">      	<span class="comment">// 初始化A-API组件里的接口</span></span><br><span class="line">        initProvider()</span><br><span class="line">      	<span class="comment">// 其他...</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">initProvider</span><span class="params">()</span></span> &#123;</span><br><span class="line">      	<span class="comment">// 实现A-API组件里的接口</span></span><br><span class="line">        WisdomsiteProvider.wi = WisdomsiteInterfaceImpl()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  	<span class="comment">// 实现A-API组件里的接口</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">WisdomsiteInterfaceImpl</span> : <span class="type">WisdomsiteInterface &#123;</span></span></span><br><span class="line">        <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">toWisdomsiteHome</span><span class="params">(userId: <span class="type">Long</span>)</span></span> &#123;</span><br><span class="line">            ARouter.getInstance()</span><br><span class="line">                .build(WisdomsiteRoute.PATH_WISDOM_SITE_MAIN)</span><br><span class="line">                .withLong(<span class="string">&quot;_userId&quot;</span>, projectId)</span><br><span class="line">                .navigation()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>组件wisdomsite-api相关代码</p>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 组件wisdomsite需要对外暴露的接口</span></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">WisdomsiteInterface</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 主页</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">toWisdomsiteHome</span><span class="params">(projectId: <span class="type">Long</span>)</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 用一个单例维护接口</span></span><br><span class="line"><span class="keyword">object</span> WisdomsiteProvider &#123;</span><br><span class="line">    <span class="keyword">var</span> wi: WisdomsiteInterface? = <span class="literal">null</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>其他组件，需要进入wisdomsite组件</p>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// build.gradle</span></span><br><span class="line">dependencies &#123;</span><br><span class="line">  	<span class="comment">// 依赖wisdomsite-api组件</span></span><br><span class="line">    implementation deps.business.wisdomsite_api</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 跳转代码</span></span><br><span class="line">WisdomsiteProvider.wi?.toWisdomsiteHome(<span class="number">123456789L</span>);</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="动态依赖"><a href="#动态依赖" class="headerlink" title="动态依赖"></a>动态依赖</h3><p>新建名为<code>deps.gradle</code>的Gradle文件，在其中添加组件与AAR的对应关系；并在每个Module里引入该文件。</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 其中key为各module的名称，value为上传至Maven仓库里AAR全称</span></span><br><span class="line"><span class="comment">// com.xxx.xxx为公司和部门名称，yyy为项目名称</span></span><br><span class="line"><span class="comment">// 项目基础模块</span></span><br><span class="line"><span class="keyword">def</span> xxx = [</span><br><span class="line">    <span class="attr">net         :</span> <span class="string">&#x27;com.xxx.xxx:android-net:1.0.1&#x27;</span>,</span><br><span class="line">    <span class="attr">utils       :</span> <span class="string">&#x27;com.xxx.xxx:android-utils:1.1.1&#x27;</span>,</span><br><span class="line">    <span class="attr">common  	:</span> <span class="string">&#x27;com.xxx.xxx:android-yyy-common:1.0.5&#x27;</span>,</span><br><span class="line">    <span class="attr">design  	:</span> <span class="string">&#x27;com.xxx.xxx:android-yyy-design:1.0.1&#x27;</span>,</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="comment">// 项目业务模块</span></span><br><span class="line"><span class="keyword">def</span> xxxBusiness = [</span><br><span class="line">    <span class="attr">login     	:</span> <span class="string">&#x27;com.xxx.xxx:android-login:1.0.0&#x27;</span>,</span><br><span class="line">    <span class="attr">login_api	:</span> <span class="string">&#x27;com.xxx.xxx:android-login-api:1.0.0&#x27;</span>,</span><br><span class="line">    <span class="attr">news    	:</span> <span class="string">&#x27;com.xxx.xxx:android-wisdomsite:1.0.0&#x27;</span>,</span><br><span class="line">    news-<span class="attr">api	:</span> <span class="string">&#x27;com.xxx.xxx:android-wisdomsite-api:1.0.0&#x27;</span>,</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">ext.deps = [</span><br><span class="line">    <span class="string">&#x27;xxx&#x27;</span>        : xxx,</span><br><span class="line">    <span class="string">&#x27;xxxBusiness&#x27;</span>: xxxBusiness,</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-
-
-
-<p><code>Settings.gradle</code>文件配置如下</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">include <span class="string">&#x27;:app&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/** -----------组件化-动态构建----------- */</span></span><br><span class="line">apply <span class="attr">from:</span> getRootDir().getAbsolutePath() + <span class="string">&#x27;/deps.gradle&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 构建中使用源码的组件配置  默认依赖的组件都使用AAR</span></span><br><span class="line"><span class="keyword">def</span> useSource(String prj, String artifact) &#123;</span><br><span class="line">    include <span class="string">&quot;$prj&quot;</span></span><br><span class="line">    ext.useSourceModuleConfigs.put(<span class="string">&quot;$prj&quot;</span>, <span class="string">&quot;$artifact&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 构建中使用源码的组件配置  默认依赖的组件都使用AAR</span></span><br><span class="line">ext.useSourceModuleConfigs = [:]</span><br><span class="line"><span class="comment">// 业务层</span></span><br><span class="line">useSource(<span class="string">&#x27;:wisdomsite_api&#x27;</span>, deps.xxxBusiness.wisdomsite_api)</span><br><span class="line">useSource(<span class="string">&#x27;:wisdomsite&#x27;</span>, deps.xxxBusiness.wisdomsite)</span><br><span class="line">useSource(<span class="string">&#x27;:login_api&#x27;</span>, deps.xxxBusiness.login_api)</span><br><span class="line">useSource(<span class="string">&#x27;:login&#x27;</span>, deps.xxxBusiness.login)</span><br><span class="line"><span class="comment">// 基础组件</span></span><br><span class="line">useSource(<span class="string">&#x27;:net&#x27;</span>, deps.xxx.net)</span><br><span class="line">useSource(<span class="string">&#x27;:common&#x27;</span>, deps.xxx.common)</span><br><span class="line">useSource(<span class="string">&#x27;:design&#x27;</span>, deps.xxx.design)</span><br><span class="line">useSource(<span class="string">&#x27;:utils&#x27;</span>, deps.xxx.utils)</span><br><span class="line">println <span class="string">&quot;use source modules -&gt; $&#123;ext.useSourceModuleConfigs.keySet()&#125;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 这一步是使用源码替换AAR依赖</span></span><br><span class="line"><span class="comment">// 注释上面的某一行就可以使用其对应组件的AAR依赖</span></span><br><span class="line">gradle.allprojects &#123; project -&gt;</span><br><span class="line">    <span class="keyword">if</span> (project == project.rootProject) &#123;</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    project.configurations.all &#123;</span><br><span class="line">        resolutionStrategy.dependencySubstitution &#123;</span><br><span class="line">            settings.ext.useSourceModuleConfigs.each &#123; prj, artifact -&gt;</span><br><span class="line">                substitute module(artifact) with it.project(prj)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="其他注意事项"><a href="#其他注意事项" class="headerlink" title="其他注意事项"></a>其他注意事项</h3><p>各组件需要单独维护，能生成AAR文件并上传至Maven仓库。</p>
-<p>各模块之间的资源名不能相同，需要配置<code>resourcePrefix</code>。</p>
-<h3 id="简单开发规范"><a href="#简单开发规范" class="headerlink" title="简单开发规范"></a>简单开发规范</h3><p>以wisdomsite组件为例</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## 组件结构</span></span><br><span class="line">-- data 本地和远程数据层</span><br><span class="line">-- feature 业务层</span><br><span class="line">-- helper 公共业务相关辅助类，如果仅仅是单个业务使用则写在那个业务的包里</span><br><span class="line">-- utils 公共业务无关工具类</span><br><span class="line">-- widgets 公共控件，如果仅仅是单个业务使用则写在那个业务的包里</span><br><span class="line"></span><br><span class="line"><span class="comment">## 业务模块划分</span></span><br><span class="line">- main、video、machine、labor、environment、safety、quality</span><br><span class="line"></span><br><span class="line"><span class="comment">## 切图规范</span></span><br><span class="line">- 只需要放@3x一张图片到drawable-xxhdpi文件即可</span><br><span class="line">- 切图名称：module名称_ic/bg_业务模块名_功能名，如：wisdomsite_ic_home_empty</span><br><span class="line"></span><br><span class="line"><span class="comment">## 资源规范-string</span></span><br><span class="line">- 命名：module名称_业务模块名_功能名，如：wisdomsite_labor_title</span><br><span class="line"></span><br><span class="line"><span class="comment">## 资源规范-color</span></span><br><span class="line">- colors.xml中定义业务无关的颜色值，colors_feature.xml中使用前者的颜色定义业务相关的颜色值</span><br><span class="line">- colors_feature.xml中的命名：module名称_业务模块名_功能名，如：wisdomsite_machine_error</span><br><span class="line"></span><br><span class="line"><span class="comment">## 空值展示</span></span><br><span class="line">- *默认空值*定义在 `@string/wisdomsite_empty_text_filler`</span><br><span class="line">- 在布局中，如果TextView的值可能为空，则默认展示*默认空值*</span><br><span class="line">- 在代码中，给TextView赋值时必须要考虑到空值问题，Kotlin代码使用`EmptyTextFiller.kt`中的扩展函数进行空值处理。</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
-<li><a target="_blank" rel="noopener" href="https://juejin.im/post/5b44a0d76fb9a04f932fe147#heading-25">Android模块化实践</a></li>
-<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/guiying712/article/details/55213884">Android组件化方案</a></li>
-<li><a target="_blank" rel="noopener" href="https://juejin.im/post/5b5f17976fb9a04fa775658d">Android 组件化最佳实践</a></li>
-<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/23147164">从零开始的Android新项目11 - 组件化实践（1）</a></li>
-<li><a target="_blank" rel="noopener" href="https://juejin.im/post/5bb9c0d55188255c7566e1e2">AppJoint</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/alibaba/ARouter">ARouter</a></li>
-<li><a target="_blank" rel="noopener" href="https://juejin.im/post/58f79130a0bb9f006abb066b">使用ARouter实现组件化</a></li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2019/03/28/material-effective-java-2rd/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="章亮">
-      <meta itemprop="description" content="Developer For Android">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="永恒的码流">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/03/28/material-effective-java-2rd/" class="post-title-link" itemprop="url">Effective Java 2rd</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-03-28 09:01:14" itemprop="dateCreated datePublished" datetime="2019-03-28T09:01:14+08:00">2019-03-28</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 14:29:06" itemprop="dateModified" datetime="2021-06-29T14:29:06+08:00">2021-06-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>浏览《Effective Java 第二版》中文版，资源<a target="_blank" rel="noopener" href="https://zhengyq.gitbooks.io/effective-java-2/content/chapter1.html">Gitbook Effective Java 2rd</a></p>
-<hr>
-<p>第9条：覆盖<code>equals</code>时总要覆盖<code>hashCode</code></p>
-<blockquote>
-<p><em>在每个覆盖了equals方法的类中，也必须覆盖hashCode方法</em>。如果不这样做的话，就会违反<code>Object.hashcode</code>的通用约定，从而导致该类无法结合所有基于散列的集合一起正常工作，这样的集合包括<code>HashMap</code>、<code>HashSet</code>和<code>Hashtable</code>。</p>
-</blockquote>
-<p>第18条：接口优于抽象类</p>
-<blockquote>
-<p><em>通过对你导出的每个重要接口都提供一个抽象的骨架实现（skeletal implementation）类，把接口和抽象类的优点结合起来</em>。接口的作用仍然是定义类型，但是骨架实现接管了所有与接口实现相关的工作。</p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1262,7 +1241,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-count">52</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1319,12 +1298,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">182k</span>
+    <span title="站点总字数">191k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:46</span>
+    <span title="站点阅读时长">2:54</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>

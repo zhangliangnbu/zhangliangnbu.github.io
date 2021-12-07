@@ -164,6 +164,245 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2018/12/21/2018-12-21-KotlinForAndroidDevelopersBook/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/12/21/2018-12-21-KotlinForAndroidDevelopersBook/" class="post-title-link" itemprop="url">Android开发者的Kotlin入门指南</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-12-21 08:43:10" itemprop="dateCreated datePublished" datetime="2018-12-21T08:43:10+08:00">2018-12-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-29 14:22:31" itemprop="dateModified" datetime="2021-06-29T14:22:31+08:00">2021-06-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>这是一个本为Android开发者写的Kotlin入门书籍，适合想入门kotlin或使用还不够熟练的Android开发者们，可以让他们少走很多弯路。我已经使用Kotlin开发Android已有一年多了，快读读完后依旧有所收获。</p>
+<ul>
+<li>英文原版：<a target="_blank" rel="noopener" href="https://leanpub.com/kotlin-for-android-developers">官网书籍地址</a>、<a target="_blank" rel="noopener" href="https://book.douban.com/subject/26916501/">豆瓣地址</a></li>
+<li>中文版：貌似还没有正式出版的中文版，只找到<a target="_blank" rel="noopener" href="https://wangjiegulu.gitbooks.io/kotlin-for-android-developers-zh/content/">Gitbook版本-《Kotlin for android developers》中文版翻译</a></li>
+</ul>
+<hr>
+<h1 id="val-vs-var"><a href="#val-vs-var" class="headerlink" title="val vs var"></a>val vs var</h1><p>一般开发者当然知道不可变对象使用<code>val</code>，可变对象使用<code>var</code>。对二者的解释，书中有段话说得很好：</p>
+<blockquote>
+<p>一个不可变对象意味着它在实例化之后就不能再去改变它的状态了。如果你需要一 个这个对象修改之后的版本，那就会再创建一个新的对象。这个让编程更加具有健壮性和预估性。在Java中，大部分的对象是可变的，那就意味着任何可以访问它这个对象的代码都可以去修改它，从而影响整个程序的其它地方。 </p>
+<p>不可变对象也可以说是线程安全的，因为它们无法去改变，也不需要去定义访问控制，因为所有线程访问到的对象都是同一个。 </p>
+<p>所以在Kotlin中，如果我们想使用不可变性，我们编码时思考的方式需要有一些改变。一个重要的概念是：尽可能地使用 val 。除了个别情况（ 特别是在Android中，有很多类我们是不会去直接调用构造函数的） ，大多数时候是可以的。 </p>
+</blockquote>
+<hr>
+<h1 id="网络请求"><a href="#网络请求" class="headerlink" title="网络请求"></a>网络请求</h1><p>简单的网络请求：<code>val data = URL(url).readText()</code>。使用了Kotlin扩展函数，之前都没有使用过，汗。</p>
+<hr>
+<h1 id="Anko库"><a href="#Anko库" class="headerlink" title="Anko库"></a>Anko库</h1><p>简洁的线程切换。还是要早点使用Anko库啊，汗。</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">async() &#123;</span><br><span class="line">	Request(url).run()</span><br><span class="line">	uiThread &#123; longToast(<span class="string">&quot;Request performed&quot;</span>) &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h1 id="委托和泛型"><a href="#委托和泛型" class="headerlink" title="委托和泛型"></a>委托和泛型</h1><p>委托和泛型估计是全书的难点和重点了。书中有个简单的例子，使用属性委托来封装SharePreference数据的获取与设置，很精彩！</p>
+<p>属性委托的实现</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Preference</span>&lt;<span class="type">T</span>&gt;</span>(<span class="keyword">val</span> context: Context, <span class="keyword">val</span> name:String, <span class="keyword">private</span> <span class="keyword">val</span> default: T)</span><br><span class="line">    :ReadWriteProperty&lt;Any?, T&gt; &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">val</span> prefs <span class="keyword">by</span> lazy &#123;</span><br><span class="line">        context.getSharedPreferences(<span class="string">&quot;default&quot;</span>, Context.MODE_PRIVATE)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">getValue</span><span class="params">(thisRef: <span class="type">Any</span>?, property: <span class="type">KProperty</span>&lt;*&gt;)</span></span>: T &#123;</span><br><span class="line">        <span class="keyword">return</span> findPreference(name, default)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">setValue</span><span class="params">(thisRef: <span class="type">Any</span>?, property: <span class="type">KProperty</span>&lt;*&gt;, value: <span class="type">T</span>)</span></span> &#123;</span><br><span class="line">        putPreference(name, value)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">fun</span><span class="type">&lt;T&gt;</span> <span class="title">findPreference</span><span class="params">(name: <span class="type">String</span>, default: <span class="type">T</span>)</span></span>:T = with(prefs) &#123;</span><br><span class="line">        <span class="keyword">val</span> res: Any = <span class="keyword">when</span>(default) &#123;</span><br><span class="line">            <span class="keyword">is</span> <span class="built_in">Int</span> -&gt; getInt(name, default)</span><br><span class="line">            <span class="keyword">is</span> <span class="built_in">Long</span> -&gt; getLong(name, default)</span><br><span class="line">            <span class="keyword">is</span> <span class="built_in">Float</span> -&gt; getFloat(name, default)</span><br><span class="line">            <span class="keyword">is</span> String -&gt; getString(name, default)</span><br><span class="line">            <span class="keyword">is</span> <span class="built_in">Boolean</span> -&gt; getBoolean(name, default)</span><br><span class="line">            <span class="keyword">else</span> -&gt; <span class="keyword">throw</span> IllegalAccessException(<span class="string">&quot;this type can not be gotten from preference&quot;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span><span class="symbol">@with</span> res <span class="keyword">as</span> T</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">fun</span><span class="type">&lt;U&gt;</span> <span class="title">putPreference</span><span class="params">(name: <span class="type">String</span>, value: <span class="type">U</span>)</span></span> = with(prefs.edit()) &#123;</span><br><span class="line">        <span class="keyword">when</span>(value) &#123;</span><br><span class="line">            <span class="keyword">is</span> <span class="built_in">Int</span> -&gt; putInt(name, value)</span><br><span class="line">            <span class="keyword">is</span> <span class="built_in">Long</span> -&gt; putLong(name, value)</span><br><span class="line">            <span class="keyword">is</span> <span class="built_in">Float</span> -&gt; putFloat(name, value)</span><br><span class="line">            <span class="keyword">is</span> String -&gt; putString(name, value)</span><br><span class="line">            <span class="keyword">is</span> <span class="built_in">Boolean</span> -&gt; putBoolean(name, value)</span><br><span class="line">            <span class="keyword">else</span> -&gt; <span class="keyword">throw</span> IllegalAccessException(<span class="string">&quot;this type can not be saved into preference&quot;</span>)</span><br><span class="line">        &#125;.apply()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>封装为方法</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">object</span> DelegateExt &#123;</span><br><span class="line">    <span class="function"><span class="keyword">fun</span><span class="type">&lt;T : Any&gt;</span> <span class="title">preference</span><span class="params">(context: <span class="type">Context</span>, name: <span class="type">String</span>, default: <span class="type">T</span>)</span></span> =</span><br><span class="line">        Preference(context, name, default)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">KotlinForAndroidBookActivity</span> : <span class="type">AppCompatActivity</span></span>() &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">var</span> pName:String <span class="keyword">by</span> DelegateExt.preference(<span class="keyword">this</span>, <span class="string">&quot;person_name&quot;</span>, <span class="string">&quot;default&quot;</span>)</span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onCreate</span><span class="params">(savedInstanceState: <span class="type">Bundle</span>?)</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState)</span><br><span class="line">        setContentView(R.layout.activity_kotlin_for_android_book)</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 设置</span></span><br><span class="line">        pName = <span class="string">&quot;liang&quot;</span></span><br><span class="line">        <span class="comment">// 获取</span></span><br><span class="line">        println(pName)</span><br><span class="line">        <span class="comment">// 抓取本地文件shared_prefs文件可以得到</span></span><br><span class="line">        <span class="comment">// &lt;?xml version=&#x27;1.0&#x27; encoding=&#x27;utf-8&#x27; standalone=&#x27;yes&#x27; ?&gt;</span></span><br><span class="line">        <span class="comment">//&lt;map&gt;</span></span><br><span class="line">        <span class="comment">//    &lt;string name=&quot;person_name&quot;&gt;liang&lt;/string&gt;</span></span><br><span class="line">        <span class="comment">//&lt;/map&gt;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>相关源码请见我的GitHub项目<a target="_blank" rel="noopener" href="https://github.com/zhangliangnbu/android-practice-demo">Android实践示例</a></p>
+<hr>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://github.com/Kotlin/anko">Anko</a></li>
+</ol>
+<hr>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2018/12/20/android-programming-the-big-nerd-ranch-guide-2rd-edition/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/12/20/android-programming-the-big-nerd-ranch-guide-2rd-edition/" class="post-title-link" itemprop="url">Android编程权威指南第2版</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-12-20 06:57:46" itemprop="dateCreated datePublished" datetime="2018-12-20T06:57:46+08:00">2018-12-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-29 14:26:30" itemprop="dateModified" datetime="2021-06-29T14:26:30+08:00">2021-06-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>优秀的Android开发入门书籍，对于有几年开发经验的开发人员来说，也值得一读。</p>
+<p>比较基础，读得很快，说一下日常开发容易忽视的地方。</p>
+<hr>
+<h1 id="Activity回退栈"><a href="#Activity回退栈" class="headerlink" title="Activity回退栈"></a>Activity回退栈</h1><p>获取应用任务栈（或回退栈）信息：</p>
+<blockquote>
+<p>不局限于单个应用，回退栈（Back Stack）作为一个整体共享给操作系统及设备使用。</p>
+</blockquote>
+<p>我们不仅可以获取自己APP的任务栈信息，也可以通过获取系统服务如<code>ACTIVITY_SERVICE</code>等得到其他APP任务栈信息。</p>
+<p>的确可以获取自己以及其他APP任务栈信息，但不同API等级的SDK获取的方式不一样，且获取其他APP任务栈信息越来越严格。</p>
+<p><strong>API 20及以下</strong></p>
+<ul>
+<li>通过<code>ActivityManager.getRunningTasks()</code>可以获取自己和其他APP的任务栈信息，包括栈基和栈顶Activity。</li>
+</ul>
+<p><strong>API 21及以上</strong></p>
+<ul>
+<li>通过<code>ActivityManager.getAppTasks()</code>可以获取自己APP的任务栈信息，包括栈基和栈顶Activity。</li>
+<li><code>API = 21</code>时，通过<code>ActivityManager.getRunningAppProcesses()</code>可以获取相关信息。</li>
+<li><code>API = 22</code>及以上时，通过<code>UsageStatsManager.queryEvents()</code>获取相关信息，但似乎还是只能获取自己APP信息，其他的获取不了。</li>
+</ul>
+<hr>
+<h1 id="Fragment"><a href="#Fragment" class="headerlink" title="Fragment"></a>Fragment</h1><p>尽可能在Fragment里实现UI用户界面，便于复用和扩展。</p>
+<blockquote>
+<p>对于fragment，我们坚持AUF（AlwaysUseFragments）原则，即“总是使用fragment”。不值得为使用fragment还是activity而伤脑筋，相信我们，总是使用fragment！</p>
+</blockquote>
+<p>Activity的Extra和Fragment的Argument Bundle参数的Key值，应该存在使用或消耗这些值的地方。而不应该是其他仅仅传参的地方。</p>
+<blockquote>
+<p>一个比较好的做法是，将crimeID存储在属于CrimeFragment的某个地方，而不是保存在CrimeActivity的私有空间里。这样，无需依赖于CrimeActivity的intent内指定extra的存在，CrimeFragment就能获取自己所需的extra数据。属于fragment的“某个地方”实际就是它的argument bundle。</p>
+</blockquote>
+<p>一般不要在Fragment里直接定义实例变量，需要的话则记得在<code>onSaveInstanceState(Bundle)</code>里保存。</p>
+<blockquote>
+<p>创建实例变量的方式并不可靠。因为，在操作系统重建fragment时，设备配置发生改变时，用户暂时离开当前应用时，甚至操作系统按需回收内存时，任何实例变量都不复存在了。</p>
+</blockquote>
+<hr>
+<h1 id="样式和主题"><a href="#样式和主题" class="headerlink" title="样式和主题"></a>样式和主题</h1><p>覆盖主题属性，便于统一管理。要找到需要覆盖的属性，一层层从下往上定位、查询即可。</p>
+<p>主题和样式应该在开发初期设置，避免后期改动太多。</p>
+<p>覆盖页面背景和按钮样式示例如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- Base application theme. --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">name</span>=<span class="string">&quot;AppTheme&quot;</span> <span class="attr">parent</span>=<span class="string">&quot;Theme.AppCompat.Light.DarkActionBar&quot;</span>&gt;</span><span class="xml"></span></span><br><span class="line"><span class="xml">    <span class="comment">&lt;!-- Customize your theme here. --&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">&quot;colorPrimary&quot;</span>&gt;</span>@color/colorPrimary<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">&quot;colorPrimaryDark&quot;</span>&gt;</span>@color/colorPrimaryDark<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">&quot;colorAccent&quot;</span>&gt;</span>@color/colorAccent<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml">    <span class="comment">&lt;!--页面和对话框背景颜色--&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">&quot;android:colorBackground&quot;</span>&gt;</span>@color/white_light<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span></span><br><span class="line"><span class="xml"> </span></span><br><span class="line"><span class="xml">  	<span class="comment">&lt;!--页面和背景颜色--&gt;</span></span></span><br><span class="line"><span class="xml">  	<span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">&quot;android:colorBackground&quot;</span>&gt;</span>@color/white_light<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span></span><br><span class="line"><span class="xml">  </span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">&quot;buttonStyle&quot;</span>&gt;</span>@style/NormalButton<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span></span><br><span class="line"><span class="xml"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p>You can also define:</p>
+<ul>
+<li>textColor - The default text color of any given view</li>
+<li>textColorPrimary - The default text color for enabled buttons and Large Textviews</li>
+<li>textColorSecondary - The default text color for Medium and Small Textviews</li>
+<li>textColorTertiary - ?</li>
+</ul>
+<p>(Source <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/39070040/textcolor-vs-textcolorprimary-vs-textcolorsecondary">TextColor vs TextColorPrimary vs TextColorSecondary</a>)</p>
+<hr>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/AdobeSolo/article/details/77375714">Android 获取前台应用的方法总结</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/39662488">关于 Android，用多个 activity，还是单 activity 配合 fragment？</a></li>
+<li><a target="_blank" rel="noopener" href="https://inthecheesefactory.com/blog/fragment-state-saving-best-practices/en">The Real Best Practices to Save/Restore Activity’s and Fragment’s state</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/22141193">保存/恢复Activity和Fragment状态的最佳实践(译)</a></li>
+</ol>
+<hr>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2018/12/19/android-develop-advance/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1318,278 +1557,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2018/12/08/2018-12-08-GitlabFlow/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="章亮">
-      <meta itemprop="description" content="Developer For Android">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="永恒的码流">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/12/08/2018-12-08-GitlabFlow/" class="post-title-link" itemprop="url">版本管理之GitlabFlow简介</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-12-08 20:36:59" itemprop="dateCreated datePublished" datetime="2018-12-08T20:36:59+08:00">2018-12-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 14:19:11" itemprop="dateModified" datetime="2021-06-29T14:19:11+08:00">2021-06-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%85%B6%E4%BB%96/" itemprop="url" rel="index"><span itemprop="name">其他</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p><strong>原文链接</strong> <a target="_blank" rel="noopener" href="https://docs.gitlab.com/ee/workflow/gitlab_flow.html">Introduction to GitLab Flow</a></p>
-</blockquote>
-<p><img src="https://upload-images.jianshu.io/upload_images/2658578-4fbe838c70462bed.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"></p>
-<p>在分支管理和合并方面，用Git做版本管理比用以前的版本管理系统如SVN更容易。Git版本管理允许各种各样的分支策略和工作流程。这些策略和流程是对以前的版本管理方法上的一种改进和提升。但是许多企业的工作流程或者不清晰，或者过于复杂，或者未集成问题跟踪系统（issue tracking systems）。鉴于此，我们提出Gitlab工作流(GitLab flow)，作为定义清晰的最佳实践模式。它结合了<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Feature-driven_development">功能驱动开发模式</a>和<a target="_blank" rel="noopener" href="https://martinfowler.com/bliki/FeatureBranch.html">功能分支模式</a>，并集成了问题跟踪功能。</p>
-<p>从其他版本管理系统迁移到Git的团队一般很难用高效的流程进行开发。本文介绍Gitlab工作流，它结合了Git工作流和问题追踪系统，是一种简单、透明和有效的使用Git进行版本管理的工作方式。</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/2658578-5050f3e3155da858.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"></p>
-<p>将工作副本提交到远程服务，大多数版本管理系统只需要一步，而Git需要三步：从工作区添加文件到暂存区（staging area）、提交暂存区内容到本地库、推动本地库信息到远程库。熟悉这三步后，开发人员又面临另一个挑战——Git的分支模型。</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/2658578-e88141fe2d2ee890.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"></p>
-<p>由于许多刚接触Git的团队并没有约定如何使用它，就会导致之后的开发变得一团糟。 他们遇到的最大问题是许多长期运行的分支都包含部分变更，这就很难确定应该在哪个分支上开发，在哪个分支上部署生产版本。 对此问题的解决方法通常是采用标准化模式，例如Git flow和GitHub流。 我们认为仍有改进的余地，并将详细介绍我们称之为最佳实践的GitLab流。</p>
-<h1 id="Git-Flow和它的问题"><a href="#Git-Flow和它的问题" class="headerlink" title="Git Flow和它的问题"></a>Git Flow和它的问题</h1><p><img src="https://upload-images.jianshu.io/upload_images/2658578-215fdb1fb9e423c2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Git Flow"></p>
-<p>Git Flow是最早提出的分支工作模型之一，引起了广泛的关注。它包含两个长期分支，master主分支和开发分支，以及其他的暂时分支，功能分支、发布分支以及程序修复分支。工作流程是，在开发分支上开发，之后转移动发布分支，最后合并到master分支。Git Flow的分支模型定义清晰、明确，但过于复杂，存在两个问题。</p>
-<ol>
-<li>开发使用开发分支而不是master分支。master分支的作用仅仅是存储生产版本的代码，没有发挥更大的作用。一般的开发惯例是在默认分支上开发，在此分支上创建分支以及合并。由于大多数工具会自动将主分支设置为默认分支，并且默认显示该分支，因此每次必须切换到另一个分支上开发是很烦人的事情。</li>
-<li>过于复杂。引入了程序修复分支和发布分支，导致Git Flow过于复杂。这些分支对某些项目来说可能是必要的，但对绝大多数项目来说则是没有必要的。如今大多数项目都是持续发布的，这意味着你的默认分支会被发布。这样就没有必要引入修复分支和发布分支，以及相关的复杂操作。这些操作的一个例子是发布分支的合并，通常开发人员会犯错误，例如，更改只合并到master中，而忘记合并到develop分支中，但执行发布并不意味着也会执行修补程序。这些错误的根本原因是Git Flow的使用相对较复杂。</li>
-</ol>
-<br>
-# GitHub Flow，一个简单的替代者
-
-<p><img src="https://upload-images.jianshu.io/upload_images/2658578-341bb1faacc1e34f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
-<p>针对Git Flow的简单替代方案是<a target="_blank" rel="noopener" href="https://guides.github.com/introduction/flow/index.html">GitHub Flow</a>。这个流程只包含一个主分支和一些功能分支，简单、干净。许多企业已经都在采用这个工作流，并取得了巨大的成功。Atlassian推荐了一个类似的流程，只是修改了功能分支( rebase feature branches)。 将所有内容合并到主分支并部署，这会让你的代码库更简洁，符合持续交付的最佳实践。 但是这个流程仍然存在很多关于部署、环境、发布和议题集成(integrations with issues)的问题。 而GitLab Flow会解决这些问题。<br><br></p>
-<h1 id="GitLab-Flow的Production分支策略"><a href="#GitLab-Flow的Production分支策略" class="headerlink" title="GitLab Flow的Production分支策略"></a>GitLab Flow的Production分支策略</h1><p><img src="https://upload-images.jianshu.io/upload_images/2658578-1df9470b1c257e6a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="GitLab Flow的Production分支"></p>
-<p>GitHub Flow是假设你每次合并功能分支后都能部署到生产环境。这可以用于像SaaS之类的应用程序，但在许多情况下并不能这样做。一种情况是你自己无法控制确切的发布时间，例如IOS应用程序，需要通过App Store审核。另一种情况是你有部署的窗口期（如工作日的上午10点到下午4点，运营团队才帮助你部署），但是你也需要在其他时间合并其他的代码（不能傻等）。在这些情况下，您可以创建一个反映需要部署的代码的生产分支。您可以通过将master分支合并到生产分支来部署新版本。如果你需要知道生产中的代码，您可以查看生产分支。在版本控制系统中，合并提交都有记录，很容易看到部署的大致时间。如果你自动部署生产分支，则这个时间会非常准确。如果你需要更加准确的时间，则可以利用脚本文件在每个部署版本上创建标记。此流程无需Git Flow中常见的发布、标记和合并操作。</p>
-<blockquote>
-<p>这句话怎么理解？原文:This flow prevents the overhead of releasing, tagging and merging that is common to git flow</p>
-</blockquote>
-<br>
-
-<h1 id="GitLab-Flow的Environment分支策略"><a href="#GitLab-Flow的Environment分支策略" class="headerlink" title="GitLab Flow的Environment分支策略"></a>GitLab Flow的Environment分支策略</h1><p><img src="https://upload-images.jianshu.io/upload_images/2658578-69c8a8b6177f39ad.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="GitLab Flow的Environment分支"></p>
-<p>可以在master分支上自动更新环境(开发、测试、生产等)，在这种情况下环境名和分支名可能不一致。假设你有一个开发环境(staging environment)，一个预生产环境(pre-production environment)和一个生产环境(production environment)。在这种情况下，master分支部署在开发环境中，当要部署到预生产时，创建从master分支到预生产分支的合并请求，之后再将预生产分支合并到生产分支中用于发布生产版本。这种只向下游做提交的工作流程(master-&gt;pre-production-&gt;production)可确保代码在所有环境中都经过测试。如果您需<code>cherry-pick</code>一个热修复提交，通常是在功能分支上开发它，之后将其合并到master分支中，但不要删除该功能分支。如果master分支运行良好（假设你正在开发持续部署类项目），然后你需要将修复补丁分支合并到其他分支中。</p>
-<blockquote>
-<p>疑问：这和Git Flow中打紧急修复补丁的做法有什么区别吗？都是需要在开发分支和生产分支上合并修复的代码啊？<br>这段感觉他说的不是很清楚，或者我翻译的太糟。我看阮一峰的<a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2015/12/git-workflow.html">Git 工作流程</a>，也有些迷惑，如下:</p>
-<blockquote>
-<p>开发分支是预发分支的”上游”，预发分支又是生产分支的”上游”。代码的变化，必须由”上游”向”下游”发展。比如，生产环境出现了bug，这时就要新建一个功能分支，先把它合并到<code>master</code>，确认没有问题，再<code>cherry-pick</code>到<code>pre-production</code>，这一步也没有问题，才进入<code>production</code>。</p>
-</blockquote>
-</blockquote>
-<blockquote>
-<p>这里“新建一个功能分支”是在哪里创建？master的最新提交还是对应的创建生产分支的那个提交？。<code>herry-pick</code>哪个分支上的提交？功能分支还是master分支？<br>正文中说“不要删除该功能分支”，加上实践，只能是在master对应的创建生产分支的那个提交上新建分功能分支，然后<code>cherry-pick</code>功能分支上提交到预生产和生产分支上。</p>
-</blockquote>
-<p>如果由于需要许多手动测试而无法实现，则可以发送合并请求，将功能分支合并到下游分支。</p>
-<blockquote>
-<p>这句话不甚理解。原文: If this is not possible because more manual testing is required you can send merge requests from the feature branch to the downstream branches</p>
-</blockquote>
-<br>
-
-<h1 id="GitLab-Flow的发布分支策略"><a href="#GitLab-Flow的发布分支策略" class="headerlink" title="GitLab Flow的发布分支策略"></a>GitLab Flow的发布分支策略</h1><p><img src="https://upload-images.jianshu.io/upload_images/2658578-7d01159cf93fa25a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="GitLab Flow的Release分支"></p>
-<p>只有在你向外界发布软件时，才需要使用发布分支。在这种情况下，每个分支包含较小的版本（2-3-stable, 2-4-stable等）。stable分支从master分支检出，并尽可能晚地创建。越晚创建stable分支，错误越少，最大限度地避免将错误修复补丁应用于多个分支。在创建发布分支后，发布分支中仅允许修复严重的错误。如果需要修复，那么这些错误修复要首先合并到master分支中，然后<code>cherry-pick</code>到发布分支中，这样能避免在后续版本中遇到相同的bug。这就是所谓的“上游优先”策略，也是Google和Red Hat实施的策略。每次在发布分支中增加错误修复补丁时，都会通过设置新标记来发布补丁版本（以符合语义版本控制）。有些项目还有一个稳定的分支，指向与最新发布的分支相同的提交。在此流程中，拥有生产分支（或git flow master分支）并不常见。</p>
-<blockquote>
-<p>这是向外发布软件的工作流，需要维护历史版本的时候，可以利用这个。软件的每个版本都有一个对应的分支来维护。</p>
-</blockquote>
-<blockquote>
-<p>修复历史版本的Bug的工作流程是怎样的？我的理解如下：当发现历史版本如v1.3中有错误需要修复的时候，首先在master分支中对应v1.3的提交上创建hotfix分支，测试无误后提交，首先合并到master分支（以后在maser分支上创建的发布分支就不会出现这个Bug），然后<code>cherry-pick</code>hotfix分支上的提交到v1.3及以后的所有的发布分支上。<br>是不是如此呢？我想不出其他的。</p>
-</blockquote>
-<blockquote>
-<p>上游优先策略。master是所有发布分支的上游，要改动发布分支上的代码，必须先改动<code>master</code>，然后<code>cherry-pick</code>到发布分支上。<br>问题：<code>cherry-pick</code>的提交一定是在<code>master</code>分支上的吗？不是的，只是说先改动<code>master</code>，并不是说一定<code>cherry-pick</code> <code>master</code>分支上的提交。</p>
-</blockquote>
-<br>
-
-<h1 id="待续"><a href="#待续" class="headerlink" title="待续"></a>待续</h1><p>翻译得心累(⊙o⊙)，待以后完全理解了GitlabFlow再把接下来的几节翻译完。</p>
-<ul>
-<li>GitLab Flow的Merge/pull requests</li>
-<li>GitLab Flow的议题追踪</li>
-<li>在merge requests中关联或关闭议题</li>
-<li>使用<code>rebase</code>合并<code>commits</code></li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2018/12/08/2018-12-08-NetworkPractice/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="章亮">
-      <meta itemprop="description" content="Developer For Android">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="永恒的码流">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/12/08/2018-12-08-NetworkPractice/" class="post-title-link" itemprop="url">使用Rxjava&Retrofit搭建网络层</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-12-08 19:57:18" itemprop="dateCreated datePublished" datetime="2018-12-08T19:57:18+08:00">2018-12-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 14:19:40" itemprop="dateModified" datetime="2021-06-29T14:19:40+08:00">2021-06-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>之前上线了一个项目，姑且称为TestApp，开发过程中遇到了一些坑，决定对网络层做一点总结。项目的网络层使用了目前比较流行的Retrofit和Rxjava框架，编程语言使用了Kotlin。</p>
-<hr>
-<br>
-
-<h1 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h1><p>配置网络层Rxjava2.x和Retrofit最新的依赖</p>
-<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// RxJava</span></span><br><span class="line">implementation deps.rxjava2</span><br><span class="line">implementation deps.rx_android</span><br><span class="line"><span class="comment">// Network</span></span><br><span class="line">implementation deps.retrofit.<span class="keyword">runtime</span></span><br><span class="line">implementation deps.retrofit.gson</span><br><span class="line">implementation deps.retrofit.rxjava_adapter</span><br><span class="line">implementation deps.okhttp_logging_interceptor <span class="comment">// 打印网络层log</span></span><br></pre></td></tr></table></figure>
-
-<p>其中deps是<em>versions.gradle</em>文件中的一个变量, <em>versions.gradle</em>文件用于管理各个依赖的版本信息，可在全局gradle文件中引入。</p>
-<hr>
-<br>
-
-<h1 id="一般实践"><a href="#一般实践" class="headerlink" title="一般实践"></a>一般实践</h1><p>与后端通信的接口数据协议如下</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;code&quot;</span>: <span class="string">&quot;0&quot;</span>, <span class="comment">// 0表示业务请求成功， 非0表示业务请求异常</span></span><br><span class="line">  <span class="attr">&quot;message&quot;</span>: <span class="string">&quot;操作成功&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;data&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;result&quot;</span>: <span class="number">1523326559000</span> <span class="comment">// data可以为空、可以为单个数据、可以为规范的json数据</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">&quot;responseTime&quot;</span>: <span class="number">1523326674474</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>对应的Model如下</p>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">data</span> <span class="class"><span class="keyword">class</span> <span class="title">ApiResponse</span>&lt;<span class="type">out T</span>&gt;</span>(<span class="keyword">val</span> code: String,</span><br><span class="line">                              <span class="keyword">val</span> <span class="keyword">data</span>: T?,</span><br><span class="line">                              <span class="keyword">val</span> message: String?) : Serializable</span><br></pre></td></tr></table></figure>
-
-<p>Android端部分基础接口API如下</p>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">TestApi</span> </span>&#123;</span><br><span class="line">	<span class="comment">// 登录</span></span><br><span class="line">	<span class="comment">// 这里需要说明下，因为data即这里的TokenModel可以为空，Rxjava里不允许传递空，而response是不能为空的，所以最后返回response作为处理的对象。</span></span><br><span class="line">    <span class="meta">@POST(<span class="meta-string">&quot;auth/login&quot;</span>)</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">login</span><span class="params">(<span class="meta">@Body</span> loginRequest: <span class="type">Map</span>&lt;<span class="type">String</span>, String&gt;</span></span></span><br><span class="line"><span class="params"><span class="function">    )</span></span>: Flowable&lt;ApiResponse&lt;TokenModel&gt;&gt;</span><br><span class="line">   </span><br><span class="line">    <span class="meta">@GET(<span class="meta-string">&quot;salt&quot;</span>)</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">getSalt</span><span class="params">()</span></span>: Flowable&lt;ApiResponse&lt;SaltModel&gt;&gt;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 获取用户基本信息</span></span><br><span class="line">	<span class="comment">// token: header里的动态Token值</span></span><br><span class="line">    <span class="meta">@GET(<span class="meta-string">&quot;users/v1/baseInfo&quot;</span>)</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">getUserBaseInfo</span><span class="params">(<span class="meta">@Header(<span class="meta-string">&quot;X-Authorization&quot;</span>)</span> token: <span class="type">String</span></span></span></span><br><span class="line"><span class="params"><span class="function">    )</span></span>: Flowable&lt;ApiResponse&lt;UserModel&gt;&gt;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 修改头像后通知服务端</span></span><br><span class="line">    <span class="meta">@PUT(<span class="meta-string">&quot;users/v1/avatar&quot;</span>)</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">notifyAvatarUpdate</span><span class="params">(<span class="meta">@Header(<span class="meta-string">&quot;X-Authorization&quot;</span>)</span> token: <span class="type">String</span></span></span></span><br><span class="line"><span class="params"><span class="function">    )</span></span>: Flowable&lt;ApiResponse&lt;<span class="built_in">Boolean</span>?&gt;&gt;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 获取上传头像需要的信息，我们上传头像到阿里云服务器，之后会单独说明这部分</span></span><br><span class="line">	<span class="meta">@GET(<span class="meta-string">&quot;aliyun/sts&quot;</span>)</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">getAliOSSSTS</span><span class="params">(<span class="meta">@Header(<span class="meta-string">&quot;X-Authorization&quot;</span>)</span> token: <span class="type">String</span>,</span></span></span><br><span class="line"><span class="params"><span class="function">                     <span class="meta">@Query(<span class="meta-string">&quot;right&quot;</span>)</span> right: <span class="type">String</span>,</span></span></span><br><span class="line"><span class="params"><span class="function">                     <span class="meta">@Query(<span class="meta-string">&quot;prod&quot;</span>)</span> prod: <span class="type">String</span></span></span></span><br><span class="line"><span class="params"><span class="function">    )</span></span>: Flowable&lt;ApiResponse&lt;AliOSSSTSModel&gt;&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-<p>实现接口的服务如下</p>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">object</span> TestService &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">val</span> netApi = createNetApi() </span><br><span class="line">    <span class="comment">// 远程服务地址</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">val</span> API_BASE_URL = BuildConfig.SERVICE_PLATFORM</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">val</span> parameterInterceptor: Interceptor</span><br><span class="line">        <span class="keyword">get</span>() = Interceptor &#123; chain -&gt;</span><br><span class="line">            <span class="keyword">val</span> request = chain.request()</span><br><span class="line">            <span class="keyword">val</span> newUrlBuilder = request.url()</span><br><span class="line">                    .newBuilder()</span><br><span class="line">                    .scheme(request.url().scheme())</span><br><span class="line">                    .host(request.url().host())</span><br><span class="line"></span><br><span class="line">            <span class="keyword">val</span> newRequest = request.newBuilder()</span><br><span class="line">                    .method(request.method(), request.body())</span><br><span class="line">                    .url(addParameters(newUrlBuilder, DataManager.baseRequestParams().<span class="keyword">get</span>()).build()) <span class="comment">// 这里是在Url的末尾添加基本请求参数，如版本号、平台类型、时间等</span></span><br><span class="line">                    .removeHeader(<span class="string">&quot;Pragma&quot;</span>)</span><br><span class="line">                    .build()</span><br><span class="line">            chain.proceed(newRequest)</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">addParameters</span><span class="params">(builder: <span class="type">HttpUrl</span>.<span class="type">Builder</span>, params: <span class="type">Map</span>&lt;<span class="type">String</span>, String&gt;)</span></span>: HttpUrl.Builder &#123;</span><br><span class="line">        <span class="keyword">for</span> ((key, value) <span class="keyword">in</span> params) &#123;</span><br><span class="line">            builder.addQueryParameter(key, value)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> builder</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">api</span><span class="params">()</span></span>: TestApi &#123;</span><br><span class="line">        <span class="keyword">return</span> netApi</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">createNetApi</span><span class="params">()</span></span>: TestApi &#123;</span><br><span class="line">        <span class="keyword">val</span> okHttpClient = OkHttpClient.Builder()</span><br><span class="line">                .addInterceptor(parameterInterceptor) <span class="comment">// 添加基本参数</span></span><br><span class="line">                .addInterceptor(HttpLoggingInterceptor()</span><br><span class="line">                       .setLevel(HttpLoggingInterceptor.Level.BODY))  <span class="comment">// 打印log</span></span><br><span class="line">                .readTimeout(<span class="number">5</span>, TimeUnit.SECONDS)</span><br><span class="line">                .connectTimeout(<span class="number">10</span>, TimeUnit.SECONDS)</span><br><span class="line">                .build()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">val</span> retrofit = Retrofit.Builder()</span><br><span class="line">                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())</span><br><span class="line">                .addConverterFactory(GsonConverterFactory.create())</span><br><span class="line">                .baseUrl(API_BASE_URL)</span><br><span class="line">                .client(okHttpClient)</span><br><span class="line">                .build()</span><br><span class="line">        <span class="keyword">return</span> retrofit.create(TestApi::<span class="keyword">class</span>.java)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>一般到达这一步就可以直接调用API了，如：</p>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 检查版本</span></span><br><span class="line">TestService.api().checkVersion()</span><br><span class="line">                .compose(apply())</span><br><span class="line">                .subscribeOn(Schedulers.io())</span><br><span class="line">                .observeOn(AndroidSchedulers.mainThread()</span><br><span class="line">                .subscribe(&#123; response-&gt;</span><br><span class="line">	                <span class="comment">// on success</span></span><br><span class="line">                    <span class="comment">// do something for response successful</span></span><br><span class="line">                    <span class="comment">// has new version or not</span></span><br><span class="line">                &#125;, &#123; t -&gt;</span><br><span class="line">	                <span class="comment">// on error</span></span><br><span class="line">	                <span class="comment">// do something for net error</span></span><br><span class="line">                &#125;)</span><br></pre></td></tr></table></figure>
-
-<p>但这样写需要考虑一下几个问题</p>
-<ol>
-<li>代码重复。每次都要写线程切换等重复代码。</li>
-<li>异常处理。subscribe()的onSuccess处理的是响应成功的结果，包括业务正常code==0和业务异常code!=0两种情况，我们一般希望业务异常和网络异常放在一起统一处理。另外，网络异常的话，提示信息不友好，我们希望对其进行统一处理。</li>
-<li>链式调用。比如请求登录的时候，需要对密码做加盐处理，即现请求盐值接口，之后请求登录接口，直接在调用的地方写则比较臃肿，多次调用会出现代码重复，增加维护难度。</li>
-<li>接口统一。这里只显示了一个远程服务，如果有多个远程服务以及多个网络数据协议的话(比如上传头像到阿里云服务器)则需要分别写接口以及接口实现的服务，导致接口调用分散。</li>
-</ol>
-<p>解决以上几点，我们需要对基础的API方法做一层封装</p>
-<hr>
-<br>
-
-<h1 id="API封装"><a href="#API封装" class="headerlink" title="API封装"></a>API封装</h1><p>下面对接口做封装</p>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">object</span> WrapNetApi &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// version</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">checkVersion</span><span class="params">()</span></span>: Flowable&lt;ApiResponse&lt;VersionModel?&gt;&gt; &#123;</span><br><span class="line">        <span class="keyword">return</span> TestService.api()</span><br><span class="line">                .checkVersion()</span><br><span class="line">                .compose(apply())</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 登录。链式请求</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">loginWithSalt</span><span class="params">(mobile: <span class="type">String</span>, password: <span class="type">String</span>)</span></span>: Flowable&lt;ApiResponse&lt;TokenModel?&gt;&gt; &#123;</span><br><span class="line">        <span class="keyword">return</span> TestService.api()</span><br><span class="line">                .getSalt()</span><br><span class="line">                .flatMap &#123; response -&gt;</span><br><span class="line">                   <span class="comment">// 从response里获取盐值并对mobile进行加密，得到参数map</span></span><br><span class="line">                   <span class="comment">// ----省略部分代码</span></span><br><span class="line">                    <span class="keyword">return</span><span class="symbol">@flatMap</span> TestService.api().login(map)</span><br><span class="line">                &#125;</span><br><span class="line">                .compose(apply())</span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 获取基本信息</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">getUserBaseInfo</span><span class="params">()</span></span>: Flowable&lt;ApiResponse&lt;UserModel?&gt;&gt; &#123;</span><br><span class="line">        <span class="keyword">return</span> TestService.api()</span><br><span class="line">                .getUserBaseInfo(token())</span><br><span class="line">                .compose(apply())</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 上传头像。后面有具体说明</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">uploadAvatar</span><span class="params">(context: <span class="type">Context</span>, avatarData: <span class="type">ByteArray</span>)</span></span>: Flowable&lt;ApiResponse&lt;<span class="built_in">Boolean</span>?&gt;&gt; &#123;</span><br><span class="line">        <span class="keyword">return</span> TestService.api()</span><br><span class="line">                .getAliOSSSTS(token(),<span class="string">&quot;WRITE&quot;</span>, <span class="string">&quot;OSS&quot;</span>)</span><br><span class="line">                .flatMap &#123; response -&gt;</span><br><span class="line">                    AliOSSService.uploadFile(context, response.<span class="keyword">data</span>!!, avatarData)</span><br><span class="line">                &#125;</span><br><span class="line">                .subscribeOn(Schedulers.io())</span><br><span class="line">                .observeOn(Schedulers.io())</span><br><span class="line">                .flatMap &#123;</span><br><span class="line">                    TestService.api().notifyAvatarUpdate(token())</span><br><span class="line">                &#125;</span><br><span class="line">                .compose(apply())</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 异常处理</span></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="type">&lt;T&gt;</span> <span class="title">apply</span><span class="params">()</span></span>: FlowableTransformer&lt;ApiResponse&lt;T?&gt;, ApiResponse&lt;T?&gt;&gt; &#123;</span><br><span class="line">        <span class="keyword">return</span> FlowableTransformer &#123; flowable -&gt;</span><br><span class="line">            flowable.map(&#123; response -&gt;</span><br><span class="line">                <span class="keyword">if</span> (ApiCode.SUCCESS.code != response.code) &#123;</span><br><span class="line">                    <span class="comment">// 业务异常。</span></span><br><span class="line">                    <span class="keyword">throw</span> ApiException(response)</span><br><span class="line">                &#125;</span><br><span class="line">                response</span><br><span class="line">            &#125;)</span><br><span class="line">                    .onErrorResumeNext &#123; t: Throwable -&gt;</span><br><span class="line">                        <span class="comment">// 非业务异常</span></span><br><span class="line">                        <span class="comment">// ExceptionEngine.handleException将网络等非业务异常封装成ApiException类并赋予友好的提示message</span></span><br><span class="line">                        Flowable.error(ExceptionEngine.handleException(t))</span><br><span class="line">                    &#125;</span><br><span class="line">                    .subscribeOn(Schedulers.io())</span><br><span class="line">                    .observeOn(AndroidSchedulers.mainThread())<span class="comment">// 线程调度</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 获取Token</span></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">token</span><span class="params">()</span></span>: String &#123;</span><br><span class="line">	    <span class="comment">// 省略</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>其中，ApiException如下</p>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">ApiException</span></span>(<span class="keyword">val</span> code: String, message: String?) : Exception(message) &#123;</span><br><span class="line">    <span class="keyword">var</span> <span class="keyword">data</span>: Any? = <span class="literal">null</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">constructor</span>(code: String, message: String?, <span class="keyword">data</span>: Any?) : <span class="keyword">this</span>(code, message) &#123;</span><br><span class="line">        <span class="keyword">this</span>.<span class="keyword">data</span> = <span class="keyword">data</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">constructor</span>(apiResponse: ApiResponse&lt;*&gt;) : <span class="keyword">this</span>(apiResponse.code, apiResponse.message, apiResponse.<span class="keyword">data</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>ExceptionEngine代码如下</p>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">object</span> ExceptionEngine &#123;</span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">handleException</span><span class="params">(e: <span class="type">Throwable</span>)</span></span>: ApiException &#123;</span><br><span class="line">        <span class="keyword">if</span> (e <span class="keyword">is</span> ApiException) &#123;</span><br><span class="line">            <span class="keyword">return</span> e</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">val</span> apiCode: ApiCode = <span class="keyword">if</span> (e <span class="keyword">is</span> HttpException) &#123;</span><br><span class="line">            ApiCode.ERROR_HTTP</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (e <span class="keyword">is</span> JsonParseException</span><br><span class="line">                || e <span class="keyword">is</span> JSONException</span><br><span class="line">                || e <span class="keyword">is</span> ParseException) &#123;</span><br><span class="line">            ApiCode.ERROR_PARSE</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (e <span class="keyword">is</span> SocketException</span><br><span class="line">                || e <span class="keyword">is</span> UnknownHostException) &#123;</span><br><span class="line">            ApiCode.ERROR_NETWORK</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            ApiCode.ERROR_UNKNOWN</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ApiException(apiCode.code, apiCode.description)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>如此，则实现了对API接口的封装，解决了上面提到的几个问题。<br>下面说一下上传头像到阿里云的业务及代码实现。</p>
-<hr>
-<br>
-
-<h1 id="上传文件到阿里云"><a href="#上传文件到阿里云" class="headerlink" title="上传文件到阿里云"></a>上传文件到阿里云</h1><p>阿里云文件服务是单独的服务，需要另外写接口类和实现接口的服务类，但阿里文件服务有自己的接口API，因此不需要写接口类，只需要写一个服务类封装即可，如下。</p>
-<p>阿里云文件服务</p>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">object</span> AliOSSService &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">val</span> clientConfiguration = config()</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 基础配置</span></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">config</span><span class="params">()</span></span>: ClientConfiguration &#123;</span><br><span class="line">        <span class="keyword">val</span> conf = ClientConfiguration()</span><br><span class="line">        conf.connectionTimeout = <span class="number">15</span> * <span class="number">1000</span> <span class="comment">// 连接超时，默认15秒</span></span><br><span class="line">        conf.socketTimeout = <span class="number">15</span> * <span class="number">1000</span> <span class="comment">// socket超时，默认15秒</span></span><br><span class="line">        conf.maxConcurrentRequest = <span class="number">5</span> <span class="comment">// 最大并发请求数，默认5个</span></span><br><span class="line">        conf.maxErrorRetry = <span class="number">2</span> <span class="comment">// 失败后最大重试次数，默认2次</span></span><br><span class="line">        <span class="keyword">return</span> conf</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 上传文件，并改造API为Rxjava格式</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">uploadFile</span><span class="params">(context: <span class="type">Context</span>, stsModel: <span class="type">AliOSSSTSModel</span>, fileData: <span class="type">ByteArray</span>)</span></span>: Flowable&lt;ApiResponse&lt;<span class="built_in">Boolean</span>?&gt;&gt; &#123;</span><br><span class="line">        <span class="keyword">val</span> credentialProvider = OSSStsTokenCredentialProvider(</span><br><span class="line">                stsModel.credentials.accessKeyId,</span><br><span class="line">                stsModel.credentials.accessKeySecret,</span><br><span class="line">                stsModel.credentials.securityToken)</span><br><span class="line">        <span class="keyword">val</span> oss = OSSClient(context, stsModel.endpoint, credentialProvider, clientConfiguration)</span><br><span class="line">        <span class="keyword">val</span> put = PutObjectRequest(stsModel.bucket, stsModel.objectKey, fileData)</span><br><span class="line">        <span class="keyword">return</span> Flowable.create(&#123; subscriber -&gt;</span><br><span class="line">            oss.asyncPutObject(put, <span class="keyword">object</span> : OSSCompletedCallback&lt;PutObjectRequest, PutObjectResult&gt; &#123;</span><br><span class="line">                <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onSuccess</span><span class="params">(request: <span class="type">PutObjectRequest</span>?, result: <span class="type">PutObjectResult</span>?)</span></span> &#123;</span><br><span class="line">                    subscriber.onNext(ApiResponse(ApiCode.SUCCESS.code, <span class="literal">true</span>, <span class="string">&quot;success&quot;</span>))</span><br><span class="line">                    subscriber.onComplete()</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onFailure</span><span class="params">(request: <span class="type">PutObjectRequest</span>?, clientException: <span class="type">ClientException</span>?, serviceException: <span class="type">ServiceException</span>?)</span></span> &#123;</span><br><span class="line">                    subscriber.onError(ApiException(</span><br><span class="line">                            code = <span class="keyword">if</span> (serviceException == <span class="literal">null</span>) <span class="string">&quot;10&quot;</span> <span class="keyword">else</span> serviceException.errorCode,</span><br><span class="line">                            message = serviceException?.rawMessage</span><br><span class="line">                    ))</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;, BackpressureStrategy.LATEST)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-<p>在WrapNetApi里进一步封装，增加Test服务相关请求</p>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 上传头像。链式调用，先从Test服务获取上传头像需要的凭证，之后上传头像到阿里云服务，上传成功后通知Test服务</span></span><br><span class="line">   <span class="function"><span class="keyword">fun</span> <span class="title">uploadAvatar</span><span class="params">(context: <span class="type">Context</span>, avatarData: <span class="type">ByteArray</span>)</span></span>: Flowable&lt;ApiResponse&lt;<span class="built_in">Boolean</span>?&gt;&gt; &#123;</span><br><span class="line">       <span class="keyword">return</span> TestService.api()</span><br><span class="line">               .getAliOSSSTS(token(),<span class="string">&quot;WRITE&quot;</span>, <span class="string">&quot;OSS&quot;</span>) <span class="comment">// 获取凭证</span></span><br><span class="line">               .flatMap &#123; response -&gt;</span><br><span class="line">                <span class="comment">// 上传头像</span></span><br><span class="line">                   AliOSSService.uploadFile(context, response.<span class="keyword">data</span>!!, avatarData)</span><br><span class="line">               &#125;</span><br><span class="line">               .subscribeOn(Schedulers.io())</span><br><span class="line">               .observeOn(Schedulers.io())</span><br><span class="line">               .flatMap &#123;</span><br><span class="line">                <span class="comment">// 通知“上传成功”</span></span><br><span class="line">                   TestService.api().notifyAvatarUpdate(token())</span><br><span class="line">               &#125;</span><br><span class="line">               .compose(apply())</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1657,7 +1628,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-count">52</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1714,12 +1685,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">182k</span>
+    <span title="站点总字数">191k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:46</span>
+    <span title="站点阅读时长">2:54</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>

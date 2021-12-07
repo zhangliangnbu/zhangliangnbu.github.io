@@ -164,6 +164,229 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2019/04/11/android-modularization/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/04/11/android-modularization/" class="post-title-link" itemprop="url">Android组件化实践</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-04-11 09:02:21" itemprop="dateCreated datePublished" datetime="2019-04-11T09:02:21+08:00">2019-04-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-29 14:41:15" itemprop="dateModified" datetime="2021-06-29T14:41:15+08:00">2021-06-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="导引"><a href="#导引" class="headerlink" title="导引"></a>导引</h1><p>主要参考以下两种组件化方案</p>
+<p> <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/45374964">知乎 Android 客户端组件化实践</a></p>
+<ul>
+<li>多工程多仓库。主工程通过 aar 依赖各个组件。</li>
+<li>组件划分：主工程、业务组件（完整业务）、基础组件（基础业务）、基础SDK（业务无关）</li>
+<li>组件解耦：公用代码处理、初始化（任务依赖）、通信（路由、接口、EventBus、组件 API 模块）。</li>
+<li>组件半自动拆分。</li>
+<li>联合编译完整包。动态引入组件。</li>
+<li>包含子业务线的组件的处理。子业务模块独立配置、编译和运行，组合发布。</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/59245063">网易友品 Android 客户端组件化演进</a></p>
+<ul>
+<li>通信：路由、服务和全局通知</li>
+<li>路由。公共路由表、注解路由地址</li>
+<li>接口。</li>
+<li>拆分流程：建Module -&gt; 移动业务代码到Module -&gt; 根据编译报错修改 -&gt; 接口解耦 -&gt; 配置独立编译功能。</li>
+<li>组件库的独立发布和维护；本地开发调试模式，开发时使用本地Module依赖，发布时使用远程ARR依赖。</li>
+</ul>
+<hr>
+<h1 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h1><p>组件划分。主工程；业务组件（Home、Login、Wisdomsite、Attendance、PersonCenter）及其相对应的API组件；基础业务层（Common、Design等）；基础SDK（Tools、Net等）。</p>
+<p>重构。从最底层开始抽离。</p>
+<p>路由。使用Arouter。</p>
+<p>业务组件间调用。使用相对应的API组件。</p>
+<p>本地module与AAR依赖切换：当依赖无需改变时使用AAR依赖，当依赖需要更改时使用源码依赖。</p>
+<h3 id="通信-接口组件实现"><a href="#通信-接口组件实现" class="headerlink" title="通信-接口组件实现"></a>通信-接口组件实现</h3><ul>
+<li>创建业务组件A和对应的接口组件A-API，且组件A依赖组件A-API</li>
+<li>在组件A-API里定义A需要对外暴露的接口，并用单例维护所有的接口变量</li>
+<li>在组件A里实现组件A-API里的接口，并赋给A-API里的单例</li>
+<li>其他组件B需要使用组件A的方法，则依赖组件A-API，并调用对应接口即可。</li>
+</ul>
+<p>之前项目里有一个wisdomsite业务组件，以及对应的wisdomsite-api组件，现在其他业务组件需要跳转进入wisdomsite组件里，相关代码如下：</p>
+<p>组件wisdomsite相关代码</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// build.gradle</span></span><br><span class="line">dependencies &#123;</span><br><span class="line">  	<span class="comment">// 依赖wisdomsite-api组件</span></span><br><span class="line">    implementation deps.business.wisdomsite_api</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 初始化器，在组件初始化时调用init方法</span></span><br><span class="line"><span class="keyword">object</span> WisdomsiteInitializer &#123;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">lateinit</span> <span class="keyword">var</span> app: Application</span><br><span class="line">    <span class="meta">@JvmStatic</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">init</span><span class="params">(app: <span class="type">Application</span>)</span></span> &#123;</span><br><span class="line">        <span class="keyword">this</span>.app = app</span><br><span class="line">      	<span class="comment">// 初始化A-API组件里的接口</span></span><br><span class="line">        initProvider()</span><br><span class="line">      	<span class="comment">// 其他...</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">initProvider</span><span class="params">()</span></span> &#123;</span><br><span class="line">      	<span class="comment">// 实现A-API组件里的接口</span></span><br><span class="line">        WisdomsiteProvider.wi = WisdomsiteInterfaceImpl()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  	<span class="comment">// 实现A-API组件里的接口</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">WisdomsiteInterfaceImpl</span> : <span class="type">WisdomsiteInterface &#123;</span></span></span><br><span class="line">        <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">toWisdomsiteHome</span><span class="params">(userId: <span class="type">Long</span>)</span></span> &#123;</span><br><span class="line">            ARouter.getInstance()</span><br><span class="line">                .build(WisdomsiteRoute.PATH_WISDOM_SITE_MAIN)</span><br><span class="line">                .withLong(<span class="string">&quot;_userId&quot;</span>, projectId)</span><br><span class="line">                .navigation()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>组件wisdomsite-api相关代码</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 组件wisdomsite需要对外暴露的接口</span></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">WisdomsiteInterface</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 主页</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">toWisdomsiteHome</span><span class="params">(projectId: <span class="type">Long</span>)</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 用一个单例维护接口</span></span><br><span class="line"><span class="keyword">object</span> WisdomsiteProvider &#123;</span><br><span class="line">    <span class="keyword">var</span> wi: WisdomsiteInterface? = <span class="literal">null</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其他组件，需要进入wisdomsite组件</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// build.gradle</span></span><br><span class="line">dependencies &#123;</span><br><span class="line">  	<span class="comment">// 依赖wisdomsite-api组件</span></span><br><span class="line">    implementation deps.business.wisdomsite_api</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 跳转代码</span></span><br><span class="line">WisdomsiteProvider.wi?.toWisdomsiteHome(<span class="number">123456789L</span>);</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="动态依赖"><a href="#动态依赖" class="headerlink" title="动态依赖"></a>动态依赖</h3><p>新建名为<code>deps.gradle</code>的Gradle文件，在其中添加组件与AAR的对应关系；并在每个Module里引入该文件。</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 其中key为各module的名称，value为上传至Maven仓库里AAR全称</span></span><br><span class="line"><span class="comment">// com.xxx.xxx为公司和部门名称，yyy为项目名称</span></span><br><span class="line"><span class="comment">// 项目基础模块</span></span><br><span class="line"><span class="keyword">def</span> xxx = [</span><br><span class="line">    <span class="attr">net         :</span> <span class="string">&#x27;com.xxx.xxx:android-net:1.0.1&#x27;</span>,</span><br><span class="line">    <span class="attr">utils       :</span> <span class="string">&#x27;com.xxx.xxx:android-utils:1.1.1&#x27;</span>,</span><br><span class="line">    <span class="attr">common  	:</span> <span class="string">&#x27;com.xxx.xxx:android-yyy-common:1.0.5&#x27;</span>,</span><br><span class="line">    <span class="attr">design  	:</span> <span class="string">&#x27;com.xxx.xxx:android-yyy-design:1.0.1&#x27;</span>,</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="comment">// 项目业务模块</span></span><br><span class="line"><span class="keyword">def</span> xxxBusiness = [</span><br><span class="line">    <span class="attr">login     	:</span> <span class="string">&#x27;com.xxx.xxx:android-login:1.0.0&#x27;</span>,</span><br><span class="line">    <span class="attr">login_api	:</span> <span class="string">&#x27;com.xxx.xxx:android-login-api:1.0.0&#x27;</span>,</span><br><span class="line">    <span class="attr">news    	:</span> <span class="string">&#x27;com.xxx.xxx:android-wisdomsite:1.0.0&#x27;</span>,</span><br><span class="line">    news-<span class="attr">api	:</span> <span class="string">&#x27;com.xxx.xxx:android-wisdomsite-api:1.0.0&#x27;</span>,</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">ext.deps = [</span><br><span class="line">    <span class="string">&#x27;xxx&#x27;</span>        : xxx,</span><br><span class="line">    <span class="string">&#x27;xxxBusiness&#x27;</span>: xxxBusiness,</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+
+
+<p><code>Settings.gradle</code>文件配置如下</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">include <span class="string">&#x27;:app&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/** -----------组件化-动态构建----------- */</span></span><br><span class="line">apply <span class="attr">from:</span> getRootDir().getAbsolutePath() + <span class="string">&#x27;/deps.gradle&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 构建中使用源码的组件配置  默认依赖的组件都使用AAR</span></span><br><span class="line"><span class="keyword">def</span> useSource(String prj, String artifact) &#123;</span><br><span class="line">    include <span class="string">&quot;$prj&quot;</span></span><br><span class="line">    ext.useSourceModuleConfigs.put(<span class="string">&quot;$prj&quot;</span>, <span class="string">&quot;$artifact&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 构建中使用源码的组件配置  默认依赖的组件都使用AAR</span></span><br><span class="line">ext.useSourceModuleConfigs = [:]</span><br><span class="line"><span class="comment">// 业务层</span></span><br><span class="line">useSource(<span class="string">&#x27;:wisdomsite_api&#x27;</span>, deps.xxxBusiness.wisdomsite_api)</span><br><span class="line">useSource(<span class="string">&#x27;:wisdomsite&#x27;</span>, deps.xxxBusiness.wisdomsite)</span><br><span class="line">useSource(<span class="string">&#x27;:login_api&#x27;</span>, deps.xxxBusiness.login_api)</span><br><span class="line">useSource(<span class="string">&#x27;:login&#x27;</span>, deps.xxxBusiness.login)</span><br><span class="line"><span class="comment">// 基础组件</span></span><br><span class="line">useSource(<span class="string">&#x27;:net&#x27;</span>, deps.xxx.net)</span><br><span class="line">useSource(<span class="string">&#x27;:common&#x27;</span>, deps.xxx.common)</span><br><span class="line">useSource(<span class="string">&#x27;:design&#x27;</span>, deps.xxx.design)</span><br><span class="line">useSource(<span class="string">&#x27;:utils&#x27;</span>, deps.xxx.utils)</span><br><span class="line">println <span class="string">&quot;use source modules -&gt; $&#123;ext.useSourceModuleConfigs.keySet()&#125;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 这一步是使用源码替换AAR依赖</span></span><br><span class="line"><span class="comment">// 注释上面的某一行就可以使用其对应组件的AAR依赖</span></span><br><span class="line">gradle.allprojects &#123; project -&gt;</span><br><span class="line">    <span class="keyword">if</span> (project == project.rootProject) &#123;</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    project.configurations.all &#123;</span><br><span class="line">        resolutionStrategy.dependencySubstitution &#123;</span><br><span class="line">            settings.ext.useSourceModuleConfigs.each &#123; prj, artifact -&gt;</span><br><span class="line">                substitute module(artifact) with it.project(prj)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="其他注意事项"><a href="#其他注意事项" class="headerlink" title="其他注意事项"></a>其他注意事项</h3><p>各组件需要单独维护，能生成AAR文件并上传至Maven仓库。</p>
+<p>各模块之间的资源名不能相同，需要配置<code>resourcePrefix</code>。</p>
+<h3 id="简单开发规范"><a href="#简单开发规范" class="headerlink" title="简单开发规范"></a>简单开发规范</h3><p>以wisdomsite组件为例</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## 组件结构</span></span><br><span class="line">-- data 本地和远程数据层</span><br><span class="line">-- feature 业务层</span><br><span class="line">-- helper 公共业务相关辅助类，如果仅仅是单个业务使用则写在那个业务的包里</span><br><span class="line">-- utils 公共业务无关工具类</span><br><span class="line">-- widgets 公共控件，如果仅仅是单个业务使用则写在那个业务的包里</span><br><span class="line"></span><br><span class="line"><span class="comment">## 业务模块划分</span></span><br><span class="line">- main、video、machine、labor、environment、safety、quality</span><br><span class="line"></span><br><span class="line"><span class="comment">## 切图规范</span></span><br><span class="line">- 只需要放@3x一张图片到drawable-xxhdpi文件即可</span><br><span class="line">- 切图名称：module名称_ic/bg_业务模块名_功能名，如：wisdomsite_ic_home_empty</span><br><span class="line"></span><br><span class="line"><span class="comment">## 资源规范-string</span></span><br><span class="line">- 命名：module名称_业务模块名_功能名，如：wisdomsite_labor_title</span><br><span class="line"></span><br><span class="line"><span class="comment">## 资源规范-color</span></span><br><span class="line">- colors.xml中定义业务无关的颜色值，colors_feature.xml中使用前者的颜色定义业务相关的颜色值</span><br><span class="line">- colors_feature.xml中的命名：module名称_业务模块名_功能名，如：wisdomsite_machine_error</span><br><span class="line"></span><br><span class="line"><span class="comment">## 空值展示</span></span><br><span class="line">- *默认空值*定义在 `@string/wisdomsite_empty_text_filler`</span><br><span class="line">- 在布局中，如果TextView的值可能为空，则默认展示*默认空值*</span><br><span class="line">- 在代码中，给TextView赋值时必须要考虑到空值问题，Kotlin代码使用`EmptyTextFiller.kt`中的扩展函数进行空值处理。</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://juejin.im/post/5b44a0d76fb9a04f932fe147#heading-25">Android模块化实践</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/guiying712/article/details/55213884">Android组件化方案</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.im/post/5b5f17976fb9a04fa775658d">Android 组件化最佳实践</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/23147164">从零开始的Android新项目11 - 组件化实践（1）</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.im/post/5bb9c0d55188255c7566e1e2">AppJoint</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/alibaba/ARouter">ARouter</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.im/post/58f79130a0bb9f006abb066b">使用ARouter实现组件化</a></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2019/03/28/material-effective-java-2rd/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/03/28/material-effective-java-2rd/" class="post-title-link" itemprop="url">Effective Java 2rd</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-03-28 09:01:14" itemprop="dateCreated datePublished" datetime="2019-03-28T09:01:14+08:00">2019-03-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-29 14:29:06" itemprop="dateModified" datetime="2021-06-29T14:29:06+08:00">2021-06-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>浏览《Effective Java 第二版》中文版，资源<a target="_blank" rel="noopener" href="https://zhengyq.gitbooks.io/effective-java-2/content/chapter1.html">Gitbook Effective Java 2rd</a></p>
+<hr>
+<p>第9条：覆盖<code>equals</code>时总要覆盖<code>hashCode</code></p>
+<blockquote>
+<p><em>在每个覆盖了equals方法的类中，也必须覆盖hashCode方法</em>。如果不这样做的话，就会违反<code>Object.hashcode</code>的通用约定，从而导致该类无法结合所有基于散列的集合一起正常工作，这样的集合包括<code>HashMap</code>、<code>HashSet</code>和<code>Hashtable</code>。</p>
+</blockquote>
+<p>第18条：接口优于抽象类</p>
+<blockquote>
+<p><em>通过对你导出的每个重要接口都提供一个抽象的骨架实现（skeletal implementation）类，把接口和抽象类的优点结合起来</em>。接口的作用仍然是定义类型，但是骨架实现接管了所有与接口实现相关的工作。</p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2019/03/27/git-merge-strategy/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1056,249 +1279,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2018/12/21/2018-12-21-KotlinForAndroidDevelopersBook/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="章亮">
-      <meta itemprop="description" content="Developer For Android">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="永恒的码流">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/12/21/2018-12-21-KotlinForAndroidDevelopersBook/" class="post-title-link" itemprop="url">Android开发者的Kotlin入门指南</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-12-21 08:43:10" itemprop="dateCreated datePublished" datetime="2018-12-21T08:43:10+08:00">2018-12-21</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 14:22:31" itemprop="dateModified" datetime="2021-06-29T14:22:31+08:00">2021-06-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>这是一个本为Android开发者写的Kotlin入门书籍，适合想入门kotlin或使用还不够熟练的Android开发者们，可以让他们少走很多弯路。我已经使用Kotlin开发Android已有一年多了，快读读完后依旧有所收获。</p>
-<ul>
-<li>英文原版：<a target="_blank" rel="noopener" href="https://leanpub.com/kotlin-for-android-developers">官网书籍地址</a>、<a target="_blank" rel="noopener" href="https://book.douban.com/subject/26916501/">豆瓣地址</a></li>
-<li>中文版：貌似还没有正式出版的中文版，只找到<a target="_blank" rel="noopener" href="https://wangjiegulu.gitbooks.io/kotlin-for-android-developers-zh/content/">Gitbook版本-《Kotlin for android developers》中文版翻译</a></li>
-</ul>
-<hr>
-<h1 id="val-vs-var"><a href="#val-vs-var" class="headerlink" title="val vs var"></a>val vs var</h1><p>一般开发者当然知道不可变对象使用<code>val</code>，可变对象使用<code>var</code>。对二者的解释，书中有段话说得很好：</p>
-<blockquote>
-<p>一个不可变对象意味着它在实例化之后就不能再去改变它的状态了。如果你需要一 个这个对象修改之后的版本，那就会再创建一个新的对象。这个让编程更加具有健壮性和预估性。在Java中，大部分的对象是可变的，那就意味着任何可以访问它这个对象的代码都可以去修改它，从而影响整个程序的其它地方。 </p>
-<p>不可变对象也可以说是线程安全的，因为它们无法去改变，也不需要去定义访问控制，因为所有线程访问到的对象都是同一个。 </p>
-<p>所以在Kotlin中，如果我们想使用不可变性，我们编码时思考的方式需要有一些改变。一个重要的概念是：尽可能地使用 val 。除了个别情况（ 特别是在Android中，有很多类我们是不会去直接调用构造函数的） ，大多数时候是可以的。 </p>
-</blockquote>
-<hr>
-<h1 id="网络请求"><a href="#网络请求" class="headerlink" title="网络请求"></a>网络请求</h1><p>简单的网络请求：<code>val data = URL(url).readText()</code>。使用了Kotlin扩展函数，之前都没有使用过，汗。</p>
-<hr>
-<h1 id="Anko库"><a href="#Anko库" class="headerlink" title="Anko库"></a>Anko库</h1><p>简洁的线程切换。还是要早点使用Anko库啊，汗。</p>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">async() &#123;</span><br><span class="line">	Request(url).run()</span><br><span class="line">	uiThread &#123; longToast(<span class="string">&quot;Request performed&quot;</span>) &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<hr>
-<h1 id="委托和泛型"><a href="#委托和泛型" class="headerlink" title="委托和泛型"></a>委托和泛型</h1><p>委托和泛型估计是全书的难点和重点了。书中有个简单的例子，使用属性委托来封装SharePreference数据的获取与设置，很精彩！</p>
-<p>属性委托的实现</p>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Preference</span>&lt;<span class="type">T</span>&gt;</span>(<span class="keyword">val</span> context: Context, <span class="keyword">val</span> name:String, <span class="keyword">private</span> <span class="keyword">val</span> default: T)</span><br><span class="line">    :ReadWriteProperty&lt;Any?, T&gt; &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">val</span> prefs <span class="keyword">by</span> lazy &#123;</span><br><span class="line">        context.getSharedPreferences(<span class="string">&quot;default&quot;</span>, Context.MODE_PRIVATE)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">getValue</span><span class="params">(thisRef: <span class="type">Any</span>?, property: <span class="type">KProperty</span>&lt;*&gt;)</span></span>: T &#123;</span><br><span class="line">        <span class="keyword">return</span> findPreference(name, default)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">setValue</span><span class="params">(thisRef: <span class="type">Any</span>?, property: <span class="type">KProperty</span>&lt;*&gt;, value: <span class="type">T</span>)</span></span> &#123;</span><br><span class="line">        putPreference(name, value)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">fun</span><span class="type">&lt;T&gt;</span> <span class="title">findPreference</span><span class="params">(name: <span class="type">String</span>, default: <span class="type">T</span>)</span></span>:T = with(prefs) &#123;</span><br><span class="line">        <span class="keyword">val</span> res: Any = <span class="keyword">when</span>(default) &#123;</span><br><span class="line">            <span class="keyword">is</span> <span class="built_in">Int</span> -&gt; getInt(name, default)</span><br><span class="line">            <span class="keyword">is</span> <span class="built_in">Long</span> -&gt; getLong(name, default)</span><br><span class="line">            <span class="keyword">is</span> <span class="built_in">Float</span> -&gt; getFloat(name, default)</span><br><span class="line">            <span class="keyword">is</span> String -&gt; getString(name, default)</span><br><span class="line">            <span class="keyword">is</span> <span class="built_in">Boolean</span> -&gt; getBoolean(name, default)</span><br><span class="line">            <span class="keyword">else</span> -&gt; <span class="keyword">throw</span> IllegalAccessException(<span class="string">&quot;this type can not be gotten from preference&quot;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span><span class="symbol">@with</span> res <span class="keyword">as</span> T</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">fun</span><span class="type">&lt;U&gt;</span> <span class="title">putPreference</span><span class="params">(name: <span class="type">String</span>, value: <span class="type">U</span>)</span></span> = with(prefs.edit()) &#123;</span><br><span class="line">        <span class="keyword">when</span>(value) &#123;</span><br><span class="line">            <span class="keyword">is</span> <span class="built_in">Int</span> -&gt; putInt(name, value)</span><br><span class="line">            <span class="keyword">is</span> <span class="built_in">Long</span> -&gt; putLong(name, value)</span><br><span class="line">            <span class="keyword">is</span> <span class="built_in">Float</span> -&gt; putFloat(name, value)</span><br><span class="line">            <span class="keyword">is</span> String -&gt; putString(name, value)</span><br><span class="line">            <span class="keyword">is</span> <span class="built_in">Boolean</span> -&gt; putBoolean(name, value)</span><br><span class="line">            <span class="keyword">else</span> -&gt; <span class="keyword">throw</span> IllegalAccessException(<span class="string">&quot;this type can not be saved into preference&quot;</span>)</span><br><span class="line">        &#125;.apply()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>封装为方法</p>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">object</span> DelegateExt &#123;</span><br><span class="line">    <span class="function"><span class="keyword">fun</span><span class="type">&lt;T : Any&gt;</span> <span class="title">preference</span><span class="params">(context: <span class="type">Context</span>, name: <span class="type">String</span>, default: <span class="type">T</span>)</span></span> =</span><br><span class="line">        Preference(context, name, default)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>使用</p>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">KotlinForAndroidBookActivity</span> : <span class="type">AppCompatActivity</span></span>() &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">var</span> pName:String <span class="keyword">by</span> DelegateExt.preference(<span class="keyword">this</span>, <span class="string">&quot;person_name&quot;</span>, <span class="string">&quot;default&quot;</span>)</span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onCreate</span><span class="params">(savedInstanceState: <span class="type">Bundle</span>?)</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState)</span><br><span class="line">        setContentView(R.layout.activity_kotlin_for_android_book)</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 设置</span></span><br><span class="line">        pName = <span class="string">&quot;liang&quot;</span></span><br><span class="line">        <span class="comment">// 获取</span></span><br><span class="line">        println(pName)</span><br><span class="line">        <span class="comment">// 抓取本地文件shared_prefs文件可以得到</span></span><br><span class="line">        <span class="comment">// &lt;?xml version=&#x27;1.0&#x27; encoding=&#x27;utf-8&#x27; standalone=&#x27;yes&#x27; ?&gt;</span></span><br><span class="line">        <span class="comment">//&lt;map&gt;</span></span><br><span class="line">        <span class="comment">//    &lt;string name=&quot;person_name&quot;&gt;liang&lt;/string&gt;</span></span><br><span class="line">        <span class="comment">//&lt;/map&gt;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>相关源码请见我的GitHub项目<a target="_blank" rel="noopener" href="https://github.com/zhangliangnbu/android-practice-demo">Android实践示例</a></p>
-<hr>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
-<li><a target="_blank" rel="noopener" href="https://github.com/Kotlin/anko">Anko</a></li>
-</ol>
-<hr>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2018/12/20/android-programming-the-big-nerd-ranch-guide-2rd-edition/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="章亮">
-      <meta itemprop="description" content="Developer For Android">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="永恒的码流">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/12/20/android-programming-the-big-nerd-ranch-guide-2rd-edition/" class="post-title-link" itemprop="url">Android编程权威指南第2版</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-12-20 06:57:46" itemprop="dateCreated datePublished" datetime="2018-12-20T06:57:46+08:00">2018-12-20</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 14:26:30" itemprop="dateModified" datetime="2021-06-29T14:26:30+08:00">2021-06-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>优秀的Android开发入门书籍，对于有几年开发经验的开发人员来说，也值得一读。</p>
-<p>比较基础，读得很快，说一下日常开发容易忽视的地方。</p>
-<hr>
-<h1 id="Activity回退栈"><a href="#Activity回退栈" class="headerlink" title="Activity回退栈"></a>Activity回退栈</h1><p>获取应用任务栈（或回退栈）信息：</p>
-<blockquote>
-<p>不局限于单个应用，回退栈（Back Stack）作为一个整体共享给操作系统及设备使用。</p>
-</blockquote>
-<p>我们不仅可以获取自己APP的任务栈信息，也可以通过获取系统服务如<code>ACTIVITY_SERVICE</code>等得到其他APP任务栈信息。</p>
-<p>的确可以获取自己以及其他APP任务栈信息，但不同API等级的SDK获取的方式不一样，且获取其他APP任务栈信息越来越严格。</p>
-<p><strong>API 20及以下</strong></p>
-<ul>
-<li>通过<code>ActivityManager.getRunningTasks()</code>可以获取自己和其他APP的任务栈信息，包括栈基和栈顶Activity。</li>
-</ul>
-<p><strong>API 21及以上</strong></p>
-<ul>
-<li>通过<code>ActivityManager.getAppTasks()</code>可以获取自己APP的任务栈信息，包括栈基和栈顶Activity。</li>
-<li><code>API = 21</code>时，通过<code>ActivityManager.getRunningAppProcesses()</code>可以获取相关信息。</li>
-<li><code>API = 22</code>及以上时，通过<code>UsageStatsManager.queryEvents()</code>获取相关信息，但似乎还是只能获取自己APP信息，其他的获取不了。</li>
-</ul>
-<hr>
-<h1 id="Fragment"><a href="#Fragment" class="headerlink" title="Fragment"></a>Fragment</h1><p>尽可能在Fragment里实现UI用户界面，便于复用和扩展。</p>
-<blockquote>
-<p>对于fragment，我们坚持AUF（AlwaysUseFragments）原则，即“总是使用fragment”。不值得为使用fragment还是activity而伤脑筋，相信我们，总是使用fragment！</p>
-</blockquote>
-<p>Activity的Extra和Fragment的Argument Bundle参数的Key值，应该存在使用或消耗这些值的地方。而不应该是其他仅仅传参的地方。</p>
-<blockquote>
-<p>一个比较好的做法是，将crimeID存储在属于CrimeFragment的某个地方，而不是保存在CrimeActivity的私有空间里。这样，无需依赖于CrimeActivity的intent内指定extra的存在，CrimeFragment就能获取自己所需的extra数据。属于fragment的“某个地方”实际就是它的argument bundle。</p>
-</blockquote>
-<p>一般不要在Fragment里直接定义实例变量，需要的话则记得在<code>onSaveInstanceState(Bundle)</code>里保存。</p>
-<blockquote>
-<p>创建实例变量的方式并不可靠。因为，在操作系统重建fragment时，设备配置发生改变时，用户暂时离开当前应用时，甚至操作系统按需回收内存时，任何实例变量都不复存在了。</p>
-</blockquote>
-<hr>
-<h1 id="样式和主题"><a href="#样式和主题" class="headerlink" title="样式和主题"></a>样式和主题</h1><p>覆盖主题属性，便于统一管理。要找到需要覆盖的属性，一层层从下往上定位、查询即可。</p>
-<p>主题和样式应该在开发初期设置，避免后期改动太多。</p>
-<p>覆盖页面背景和按钮样式示例如下：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- Base application theme. --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">name</span>=<span class="string">&quot;AppTheme&quot;</span> <span class="attr">parent</span>=<span class="string">&quot;Theme.AppCompat.Light.DarkActionBar&quot;</span>&gt;</span><span class="xml"></span></span><br><span class="line"><span class="xml">    <span class="comment">&lt;!-- Customize your theme here. --&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">&quot;colorPrimary&quot;</span>&gt;</span>@color/colorPrimary<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">&quot;colorPrimaryDark&quot;</span>&gt;</span>@color/colorPrimaryDark<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">&quot;colorAccent&quot;</span>&gt;</span>@color/colorAccent<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml">    <span class="comment">&lt;!--页面和对话框背景颜色--&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">&quot;android:colorBackground&quot;</span>&gt;</span>@color/white_light<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span></span><br><span class="line"><span class="xml"> </span></span><br><span class="line"><span class="xml">  	<span class="comment">&lt;!--页面和背景颜色--&gt;</span></span></span><br><span class="line"><span class="xml">  	<span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">&quot;android:colorBackground&quot;</span>&gt;</span>@color/white_light<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span></span><br><span class="line"><span class="xml">  </span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">&quot;buttonStyle&quot;</span>&gt;</span>@style/NormalButton<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span></span><br><span class="line"><span class="xml"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-<p>You can also define:</p>
-<ul>
-<li>textColor - The default text color of any given view</li>
-<li>textColorPrimary - The default text color for enabled buttons and Large Textviews</li>
-<li>textColorSecondary - The default text color for Medium and Small Textviews</li>
-<li>textColorTertiary - ?</li>
-</ul>
-<p>(Source <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/39070040/textcolor-vs-textcolorprimary-vs-textcolorsecondary">TextColor vs TextColorPrimary vs TextColorSecondary</a>)</p>
-<hr>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
-<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/AdobeSolo/article/details/77375714">Android 获取前台应用的方法总结</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/39662488">关于 Android，用多个 activity，还是单 activity 配合 fragment？</a></li>
-<li><a target="_blank" rel="noopener" href="https://inthecheesefactory.com/blog/fragment-state-saving-best-practices/en">The Real Best Practices to Save/Restore Activity’s and Fragment’s state</a></li>
-<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/22141193">保存/恢复Activity和Fragment状态的最佳实践(译)</a></li>
-</ol>
-<hr>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1366,7 +1350,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-count">52</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1423,12 +1407,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">182k</span>
+    <span title="站点总字数">191k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:46</span>
+    <span title="站点阅读时长">2:54</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>
