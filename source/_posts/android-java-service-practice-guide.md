@@ -15,16 +15,18 @@ categories:
 ```bash
 闹钟服务相关接口和类
 - /frameworks/base/core/java/android/app/IAlarmManager.aidl  接口定义
-- out/soong/./gen/android/app/IAlarmManager.java  自动生成的接口以及Stub、Proxy
+- out/soong/.intermediates/frameworks/base/framemwork/android_common/
+  gen/aidl/frameworks/base/core/java/android/app/IAlarmManager.java  自动生成的接口以及Stub、Proxy
 - /frameworks/base/services/core/java/com/android/server/AlarmManagerService.java  服务实现
 - /frameworks/base/core/java/android/app/AlarmManager.java  客户端使用的服务代理
+
 ```
 
 # 编写Framwork代码
 
-### 编写接口 IHelloWorld.aidl
+### 编写和配置 IHelloWorld.aidl
 
-目录：`/frameworks/base/core/java/android/app`
+**编写接口**。目录：`/frameworks/base/core/java/android/app`
 
 ```java
 package android.app
@@ -38,13 +40,9 @@ interface IHelloWorld {
 }
 ```
 
-### 生成Stub
+待编译时，会自动生成对应的java接口和Stub、Proxy类，不用手动处理，生成的代码位于：out/soong/.intermediates/frameworks/base/framemwork/android_common/gen/aidl/frameworks/base/core/java/android/app
 
-待编译时，自动生成，不用手动处理。
-
-### 配置接口
-
-在 `/framwork/base/Android.bp`中配置接口。在`srcs`数组里增加`HelloWorld.aidl`的路径地址即可：
+**配置接口**。在 `/framwork/base/Android.bp`中配置接口，在`srcs`数组里增加`HelloWorld.aidl`的路径地址即可：
 
 ```java
 java_defaults {
@@ -60,11 +58,24 @@ java_defaults {
 }
 ```
 
-### 实现HelloWorldService服务
+### 编写和注册HelloWorldService
 
-参考[AlarmManagerService](http://aospxref.com/android-10.0.0_r47/xref/frameworks/base/services/core/java/com/android/server/AlarmManagerService.java#mService) 编写服务.
+**配置常量**。在编写服务之前需要在Context.java里配置常量，参照ALARM_SERVICE，进行如下配置。
 
-目录： `/frameworks/base/services/core/java/com/android/server`
+```java
+// 定义常量
+public static final String HELLO_WORLD_SERVICE = "hello_world";
+
+// 将常量添加到注解值列表中
+@StringDef(suffix = { "_SERVICE" }, value = {
+	...
+    HELLO_WORLD_SERVICE,
+})
+@Retention(RetentionPolicy.SOURCE)
+public @interface ServiceName {}
+```
+
+**编写服务**。参考[AlarmManagerService](http://aospxref.com/android-10.0.0_r47/xref/frameworks/base/services/core/java/com/android/server/AlarmManagerService.java#mService) ，目录: `/frameworks/base/services/core/java/com/android/server`
 
 ```java
 package com.android.server;
@@ -91,7 +102,7 @@ public class HelloWorldService extends SystemService{
 
     @Override
     public void onStart() {
-        // 先在Context里添加HELLO_WORLD常量
+        // 之前已经在Context中定义过常量
         publishBinderService(Context.HELLO_WORLD, mService);
     }
 
@@ -105,9 +116,7 @@ public class HelloWorldService extends SystemService{
 }
 ```
 
-### 注册HelloWorldService服务
-
-在SystemServer.java里向服务管理者注册服务。
+**注册HelloWorldService服务**。在SystemServer.java里向服务管理者注册服务。
 
 目录：` /frameworks/base/services/java/com/android/server/SystemServer.java`
 
@@ -126,9 +135,9 @@ private void startOtherServices() {
 }
 ```
 
-### 编写HelloWorldManager
+### 编写和注册HelloWorldManager
 
-参考AlarmManager编写客户端的HelloWorldManager，基于此应用开发者可以使用HelloWorldService。
+**编写HelloWorldManager**。参考AlarmManager编写客户端的HelloWorldManager，基于此应用开发者可以使用HelloWorldService。
 
 目录：`/frameworks/base/core/java/android/app`
 
@@ -156,9 +165,7 @@ public class HelloWorldManager {
 }
 ```
 
-### 注册ServiceFetcher
-
-要利用`ContextImpl.getSystemService(String name)` 获取服务的Manager，需要首先在`SystemServiceRegistry`里注册相应的`ServiceFetcher`：
+**注册ServiceFetcher**。要利用`ContextImpl.getSystemService(String name)` 获取服务的Manager，需要首先在`SystemServiceRegistry`里注册相应的`ServiceFetcher`：
 
 ```java
 final class SystemServiceRegistry {
@@ -177,9 +184,9 @@ final class SystemServiceRegistry {
 }
 ```
 
-# 配置SE限制
+### 配置SELinux权限
 
- 很重要的一步. 在system/sepolicy 中需要加入相应的SE限制 ?
+在system/sepolicy 目录下的service.te 和 service_contexts 中配置 HelloWorldService的权限。**TODO，待详细了解**
 
 # 编译和烧录
 
@@ -189,27 +196,21 @@ final class SystemServiceRegistry {
 $ m update-api
 ```
 
-# 发布SDK
+# 编写APP并验证
 
-发布SDK，供APP开发
+将系统编译出的class.jar导入到工程中，编写APP，获取服务并调用服务的方法。
 
-# 编写APP
-
-编写APP，获取服务并调用服务的方法。在主Activity.onCreate()里加入如下两代码：
+在主Activity的onCreate()里加入如下两代码：
 
 ```java
 protected void onCreate(Bundle savedInstanceState) {
     ...
     HelloWorldManager hwm = (HelloWorldManager)getSystemService(Context.HELLO_WORLD);
-	hwm.printHW();
+    hwm.printHW();
 }
-
 ```
 
-运行APP并查看Log：
-
-```
-```
+运行APP并查看Log
 
 
 
@@ -217,4 +218,6 @@ protected void onCreate(Bundle savedInstanceState) {
 
 - 金泰廷等著《Android框架解密》，人民邮电出版社，2012。该书分析的代码较老，但框架机制基本不变，非常好的书籍。
 - 源码查看网站：http://aospxref.com/。基于OpenGrok的源码查看服务网站，速度很快，主要用来查看C/C++代码，Java代码可下载到本地查看。
+- [AOSP官方-SELinux](https://source.android.google.cn/security/selinux?hl=zh-cn)：详细介绍了SELinux
+- [android 10 添加系统服务步骤](https://blog.csdn.net/a546036242/article/details/118221349)：主要参考里面添加SELinux权限那块。
 

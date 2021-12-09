@@ -12,7 +12,7 @@ categories:
 
 # 问题场景
 
-几年前面试一个互联网大厂时，被问了这么一个问题：如何在子线程不通过Handler直接更新主线程的UI，比如在主线程创建的TextView，如何在子线程直接调用`setText()`方法更新文本？实例代码如下：
+之前被问到一个问题：如何在子线程中不通过Handler而直接更新主线程的UI，比如在主线程创建的TextView，如何在子线程直接调用`setText()`方法更新文本？实例代码如下：
 
 ```java
 public class MainActivity extends AppCompatActivity {
@@ -101,13 +101,17 @@ btn.setOnClickListener(v -> new Thread(() -> {
 }).start());
 ```
 
-具体效果：
+具体效果如下
 
-![](/images/android-update-ui-1.png)
+进入应用，依次为TextView和Button：
 
 ![](/images/android-update-ui-2.png)
 
-上述方案与直接在子线程中创建View实例是一样的，唯一的区别是创建实例的地方不一样。该方案仅仅解决了如何在子线程中更新主线程创建的View实例信息而已这个问题而已，并没有完全解决文章开始提到的问题。
+点击“子线程更新UI”的Button，TextView出现在新的窗口中且文本被更新：
+
+![](/images/android-update-ui-1.png)
+
+上述方案与直接在子线程中创建View实例是一样的，唯一的区别是创建实例的地方不一样。该方案仅仅解决了如何在子线程中更新主线程创建的View实例信息这个问题而已，并没有完全解决文章开始提到的问题。
 
 不修改系统代码，而仅仅使用目前的SDK提供的API，我认为很难解决该问题，因为无法绕过`ViewRootImpl.checkThread()`方法，也许有其他的Trick，待以后跟进。
 
