@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zhangliangnbu.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="说明JNI，即Java本地接口（Java Native Interface），允许Java代码与C&#x2F;C++等本地语言编写的代码进行交互操作。 JNI提供的接口声明位于：&lt;JDK_HOME&gt;&#x2F;include&#x2F;jni.h中  注意：JNI是Java的特性而非Android独有特性，只因为Android使用了Java语言，因此可以利用JNI的功能。  基本原理Java虚拟机利用函数原型将Ja">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JNI开发概览">
+<meta property="og:url" content="https://zhangliangnbu.github.io/2021/12/09/android-jni-guide/index.html">
+<meta property="og:site_name" content="永恒的码流">
+<meta property="og:description" content="说明JNI，即Java本地接口（Java Native Interface），允许Java代码与C&#x2F;C++等本地语言编写的代码进行交互操作。 JNI提供的接口声明位于：&lt;JDK_HOME&gt;&#x2F;include&#x2F;jni.h中  注意：JNI是Java的特性而非Android独有特性，只因为Android使用了Java语言，因此可以利用JNI的功能。  基本原理Java虚拟机利用函数原型将Ja">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://zhangliangnbu.github.io/images/aosp10-jni-guide.drawio.svg">
+<meta property="article:published_time" content="2021-12-09T09:14:28.000Z">
+<meta property="article:modified_time" content="2021-12-15T09:40:53.832Z">
+<meta property="article:author" content="章亮">
+<meta property="article:tag" content="android">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="android系统开发">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zhangliangnbu.github.io/images/aosp10-jni-guide.drawio.svg">
+
+<link rel="canonical" href="https://zhangliangnbu.github.io/2021/12/09/android-jni-guide/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>JNI开发概览 | 永恒的码流</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">永恒的码流</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">万物皆流，无物常驻</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2021/12/09/android-jni-guide/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JNI开发概览
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-12-09 17:14:28" itemprop="dateCreated datePublished" datetime="2021-12-09T17:14:28+08:00">2021-12-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-12-15 17:40:53" itemprop="dateModified" datetime="2021-12-15T17:40:53+08:00">2021-12-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h1><p>JNI，即Java本地接口（Java Native Interface），允许Java代码与C/C++等本地语言编写的代码进行交互操作。</p>
+<p>JNI提供的接口声明位于：<code>&lt;JDK_HOME&gt;/include/jni.h</code>中</p>
+<blockquote>
+<p>注意：JNI是Java的特性而非Android独有特性，只因为Android使用了Java语言，因此可以利用JNI的功能。</p>
+</blockquote>
+<h2 id="基本原理"><a href="#基本原理" class="headerlink" title="基本原理"></a>基本原理</h2><p><strong>Java虚拟机</strong>利用<strong>函数原型</strong>将Java声明的本地方法与运行库中的C函数通过函数映射表对应起来，这样Java代码就能与C/C++代码交互。</p>
+<blockquote>
+<p><strong>函数原型</strong>（英语：<strong>Function prototype</strong>）或<strong>函数接口</strong>（英语：<strong>Function interface</strong>）是用于指定函数的名称和<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%B1%BB%E5%9E%8B%E7%AD%BE%E5%90%8D">类型签名</a>（<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%85%83%E6%95%B0">元数</a>，参数的<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E8%B3%87%E6%96%99%E9%A1%9E%E5%9E%8B">数据类型</a>和返回值类型）的一种省略了函数体的<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%AD%90%E7%A8%8B%E5%BA%8F">函数</a><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/w/index.php?title=%E5%A3%B0%E6%98%8E&action=edit&redlink=1">声明</a>。</p>
+</blockquote>
+<blockquote>
+<p>思考一：Java虚拟机作为桥梁。Java代码和C/C++本地代码运行环境不一样，因此不能直接交互，而Java代码的容器Java虚拟机是C/C++代码编写的，因此可以使用Java虚拟机作为桥梁将Java代码和C/C++本地代码联系起来。</p>
+<p>思考二：为什么用函数原型？Java方法和C/C++函数是不一样的，但它们可以在函数原型上变为一致，都有名称和签名，因此可以使用函数原型建立映射关系。</p>
+</blockquote>
+<h2 id="Java代码与JNI本地函数的交互"><a href="#Java代码与JNI本地函数的交互" class="headerlink" title="Java代码与JNI本地函数的交互"></a>Java代码与JNI本地函数的交互</h2><p>使用JNI一般遵循以下步骤：</p>
+<ol>
+<li>声明本地方法。在Java类中使用<code>native</code>关键字声明本地方法并加载本地函数库。</li>
+<li>建立映射关系。使用<code>javah</code>命令，生成包含JNI本地函数原型的头文件，建立Java方法与C/C++本地函数间的映射。另外，在C/C++本地函数里使用<code>RegisterNatives()</code>也可直接创建映射关系，且速度较快。</li>
+<li>实现C/C++本地函数。根据上面提供的头文件实现本地函数。</li>
+<li>编译本地函数，生成C/C++共享库</li>
+<li>Java代码通过JNI调用本地函数。本地函数可以使用虚拟机传递过来的<code>JNIEnv *</code>指针调用JNI函数，进而调用Java代码。</li>
+</ol>
+<p><strong>不遵循以上步骤的场景</strong>：如果仅仅只是编写C/C++应用，然后复用Java提供的库来实现某些功能，不涉及编写Java类调用C/C++函数的代码，则不需要遵循上面的步骤，而是直接在C函数里创建虚拟机并获取对应的<code>JNIEnv *</code>指针，然后通过JNI函数调用Java代码即可。</p>
+<p><img src="/images/aosp10-jni-guide.drawio.svg" alt="aosp10-jni-guide.drawio"></p>
+<h1 id="JNI使用示例"><a href="#JNI使用示例" class="headerlink" title="JNI使用示例"></a>JNI使用示例</h1><h2 id="Java代码调用C-C-本地函数"><a href="#Java代码调用C-C-本地函数" class="headerlink" title="Java代码调用C/C++本地函数"></a>Java代码调用C/C++本地函数</h2><ol>
+<li><p>在Java类中声明本地方法并加载本地函数库</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// HelloJNI.java</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HelloJNI</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">native</span> <span class="keyword">void</span> <span class="title">printString</span><span class="params">(String str)</span></span>; <span class="comment">// 声明本地方法</span></span><br><span class="line">	<span class="keyword">static</span> &#123; System.loadLibrary(<span class="string">&quot;hellojni&quot;</span>); &#125; <span class="comment">// 加载本地函数库</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span> </span>&#123;</span><br><span class="line">		HelloJNI myJNI = <span class="keyword">new</span> HelloJNI();</span><br><span class="line">		myJNI.printString(<span class="string">&quot;Hello World from native&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>使用<code>javah</code>命令，生成包含JNI本地函数原型的头文件，建立Java方法与C/C++本地函数间的映射</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$ javac HelloJNI.java</span><br><span class="line">$ javah HelloJNI</span><br><span class="line">$ ls</span><br><span class="line">HelloJNI.class  HelloJNI.h  HelloJNI.java</span><br><span class="line">$ cat HelloJNI.h</span><br><span class="line">...</span><br><span class="line">/*</span><br><span class="line"> * Class:     HelloJNI <span class="comment"># 对应的Java类名</span></span><br><span class="line"> * Method:    printString <span class="comment"># 方法名</span></span><br><span class="line"> * Signature: (Ljava/lang/String;)V  <span class="comment"># 方法签名，括号内为入参，括号外为返回值</span></span><br><span class="line"> */</span><br><span class="line">JNIEXPORT void JNICALL Java_HelloJNI_printString</span><br><span class="line">  (JNIEnv *, jobject, jstring); <span class="comment"># 本地函数原型</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p><code>HelloJNI.h</code>头文件中包含基于Java方法生成的本地函数原型以及注释，本地函数原型说明如下：</p>
+<ul>
+<li>JNIEXPORT、JNICALL：关键字，JNI需要此关键字才能正常调用函数。</li>
+<li>Java_HelloJNI_printString：本地函数名，格式<code>Java_类名_方法名</code>。</li>
+<li>JNIEnv *, jobject：默认参数，JNIEnv *指向JNI提供的基本函数集，可用来调用相关函数；jobject表示调用本地方法的Java本地对象，如果调用静态方法则为jclass，表示Java本地类。</li>
+</ul>
+</li>
+<li><p>实现JNI本地函数：编写<code>hellojni.c</code>文件</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;HelloJNI.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function">JNIEXPORT <span class="keyword">void</span> JNICALL <span class="title">Java_HelloJNI_printString</span><span class="params">(JNIEnv *env, jobject obj, jstring <span class="built_in">string</span>)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// jni.h文件里声明了GetStringUTFChars()函数</span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span> *str = (*env)-&gt;GetStringUTFChars(env, <span class="built_in">string</span>, <span class="number">0</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%s\n&quot;</span>, str);</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>生成C共享库。以Windows平台为例，生成<code>hellojni.dll</code>文件</p>
+<p>在<code>Visual C++ 2015 x86 x64 Cross Build Tools Command Prompt</code>编译代码</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># C:\Program Files\Java\jdk1.8.0_251 为JDK Home目录</span></span><br><span class="line">$ cl -I<span class="string">&quot;C:\Program Files\Java\jdk1.8.0_251\include&quot;</span> -I<span class="string">&quot;C:\Program Files\Java\jdk1.8.0_251\include\win32&quot;</span> -LD hellojni.c -Fehellojni.dll</span><br></pre></td></tr></table></figure></li>
+<li><p>Java代码通过JNI调用本地函数</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ java HelloJNI</span><br><span class="line">Hello World from native!</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="C-C-本地函数调用Java代码"><a href="#C-C-本地函数调用Java代码" class="headerlink" title="C/C++本地函数调用Java代码"></a>C/C++本地函数调用Java代码</h2><p>C/C++函数调用Java代码的用法有：获取Java类的class，创建Java类的对象实例，调用类的静态成员变量和静态方法，调用对象的成员变量和方法。相关JNI接口都声明在<code>&lt;JDK_HOME&gt;/include/jni.h</code>中。</p>
+<p>相关部分接口(C++)，通过<code>JNIEnv *</code>调用如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 查询并加载类</span></span><br><span class="line"><span class="function">jclass <span class="title">FindClass</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *name)</span></span></span><br><span class="line"><span class="function"><span class="comment">// 获取类的静态方法</span></span></span><br><span class="line"><span class="function">jmethodID <span class="title">GetStaticMethodID</span><span class="params">(jclass clazz, <span class="keyword">const</span> <span class="keyword">char</span> *name, <span class="keyword">const</span> <span class="keyword">char</span> *sig)</span></span></span><br><span class="line"><span class="function"><span class="comment">// 调用类的静态方法 XXX表示Object、Boolean等方法返回值类型</span></span></span><br><span class="line"><span class="function">jXXX <span class="title">CallStaticXXXMethod</span><span class="params">(jclass clazz, jmethodID methodID, ...)</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">// 查找方法. 构造方法： name=&quot;&lt;init&gt;&quot;, sig为签名如&quot;(I)V&quot;</span></span></span><br><span class="line"><span class="function">jmethodID <span class="title">GetMethodID</span><span class="params">(jclass clazz, <span class="keyword">const</span> <span class="keyword">char</span> *name, <span class="keyword">const</span> <span class="keyword">char</span> *sig)</span></span></span><br><span class="line"><span class="function"><span class="comment">// 创建Java对象实例</span></span></span><br><span class="line"><span class="function">jobject <span class="title">NewObject</span><span class="params">(jclass clazz, jmethodID methodID, ...)</span></span></span><br><span class="line"><span class="function"><span class="comment">// 调用普通对象方法</span></span></span><br><span class="line"><span class="function">jxxx <span class="title">CallXxxMethod</span><span class="params">(jobject obj, jmethodID methodID, ...)</span></span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>上述接口，在C里需要在入参里添加env(JNIEnv *)。</p>
+</blockquote>
+<p><strong>C函数主动调用Java代码注意事项</strong></p>
+<p>调用JNI方法的前提是持有<code>JNIEnv *</code>指针，该指针一般通过Java调用本地方法传给C/C++函数。但如果C/C++函数主动调用Java的代码时没有持有该指针，或者此时Java虚拟机没有启动，则C/C++如何调用Java代码呢？答案是在C函数里主动生成虚拟机，获取与该虚拟机对应的<code>JNIEnv *</code>指针，然后就可以调用Java代码了。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 生成虚拟机的接口</span></span><br><span class="line">JNI_CreateJavaVM(JavaVM **pvm, <span class="keyword">void</span> **penv, <span class="keyword">void</span> *args);</span><br></pre></td></tr></table></figure>
+
+<p>注意：通过主动生成虚拟机获取<code>JNIEnv *</code>指针，然后调用Java代码时，无需创建Java方法与本地C/C++函数间的映射表这一步骤。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/android/" rel="tag"># android</a>
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/android%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/" rel="tag"># android系统开发</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/12/07/android-update-ui-in-sub-thread/" rel="prev" title="探讨-如何在子线程直接刷新主线程的UI">
+      <i class="fa fa-chevron-left"></i> 探讨-如何在子线程直接刷新主线程的UI
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/12/15/android-aosp-compile-flashing/" rel="next" title="Android 10系统编译和烧录">
+      Android 10系统编译和烧录 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AF%B4%E6%98%8E"><span class="nav-number">1.</span> <span class="nav-text">说明</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86"><span class="nav-number">1.1.</span> <span class="nav-text">基本原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java%E4%BB%A3%E7%A0%81%E4%B8%8EJNI%E6%9C%AC%E5%9C%B0%E5%87%BD%E6%95%B0%E7%9A%84%E4%BA%A4%E4%BA%92"><span class="nav-number">1.2.</span> <span class="nav-text">Java代码与JNI本地函数的交互</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JNI%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="nav-number">2.</span> <span class="nav-text">JNI使用示例</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Java%E4%BB%A3%E7%A0%81%E8%B0%83%E7%94%A8C-C-%E6%9C%AC%E5%9C%B0%E5%87%BD%E6%95%B0"><span class="nav-number">2.1.</span> <span class="nav-text">Java代码调用C&#x2F;C++本地函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-C-%E6%9C%AC%E5%9C%B0%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8Java%E4%BB%A3%E7%A0%81"><span class="nav-number">2.2.</span> <span class="nav-text">C&#x2F;C++本地函数调用Java代码</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="章亮"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">章亮</p>
+  <div class="site-description" itemprop="description">Developer For Android</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">54</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">52</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zhangliangnbu" title="GitHub → https://github.com/zhangliangnbu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhangliangnbu@qq.com" title="E-Mail → mailto:zhangliangnbu@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">章亮</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">199k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">3:01</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

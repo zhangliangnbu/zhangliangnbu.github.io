@@ -164,6 +164,306 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2018/11/04/2018-11-04-GridLayoutManagerEvenDistribution/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/11/04/2018-11-04-GridLayoutManagerEvenDistribution/" class="post-title-link" itemprop="url">GridLayoutManager实现均匀分布</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-11-04 11:11:16" itemprop="dateCreated datePublished" datetime="2018-11-04T11:11:16+08:00">2018-11-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-29 14:17:03" itemprop="dateModified" datetime="2021-06-29T14:17:03+08:00">2021-06-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="背景描述"><a href="#背景描述" class="headerlink" title="背景描述"></a>背景描述</h1><p>最近开发中遇到需求，需要实现图片的格子分布效果，如下图所示</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/2658578-22632ab28c5aedd6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="格子图片"></p>
+<p>其中要求：</p>
+<ol>
+<li>图片与图片的间隔，图片与屏幕的左边距，以及图片与屏幕的右边距，都为固定大小，比如<code>10dp</code>。</li>
+<li>图片宽高相等。</li>
+</ol>
+<hr>
+<br>
+
+<h1 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h1><p>主要代码如下</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> : <span class="type">AppCompatActivity</span></span>() &#123;</span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onCreate</span><span class="params">(savedInstanceState: <span class="type">Bundle</span>?)</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState)</span><br><span class="line">        setContentView(R.layout.activity_main)</span><br><span class="line">        <span class="keyword">val</span> images = listOf(...)</span><br><span class="line">        <span class="keyword">val</span> imageAdapter = ImageAdapter(images)</span><br><span class="line">        rv_images.apply &#123;</span><br><span class="line">            layoutManager = GridLayoutManager(context, <span class="number">4</span>, RecyclerView.VERTICAL, <span class="literal">false</span>)</span><br><span class="line">            addItemDecoration(EvenItemDecoration(dp2px(context, <span class="number">10</span>), <span class="number">4</span>))</span><br><span class="line">            adapter = imageAdapter</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">ImageAdapter</span></span>(<span class="keyword">private</span> <span class="keyword">val</span> images: List&lt;<span class="built_in">Int</span>&gt; = listOf()) : RecyclerView.Adapter&lt;ImageAdapter.ViewHolder&gt;() &#123;</span><br><span class="line">        <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onCreateViewHolder</span><span class="params">(parent: <span class="type">ViewGroup</span>, viewType: <span class="type">Int</span>)</span></span>: ViewHolder &#123;</span><br><span class="line">            <span class="keyword">val</span> view = LayoutInflater.from(parent.context).inflate(R.layout.item_image, parent, <span class="literal">false</span>)</span><br><span class="line">            <span class="comment">// 动态设置图片大小 保证宽高相等</span></span><br><span class="line">            <span class="keyword">val</span> ivSize = (getScreenContentWidth(parent.context) - dp2px(parent.context, <span class="number">10</span>) * <span class="number">5</span>) / <span class="number">4</span></span><br><span class="line">            view.iv_image.layoutParams.height = ivSize</span><br><span class="line">            <span class="keyword">return</span> ViewHolder(view)</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onBindViewHolder</span><span class="params">(holder: <span class="type">ViewHolder</span>, position: <span class="type">Int</span>)</span></span> &#123;</span><br><span class="line">            holder.view.iv_image.setImageResource(images[position])</span><br><span class="line">        &#125;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">EvenItemDecoration</span></span>(<span class="keyword">private</span> <span class="keyword">val</span> space: <span class="built_in">Int</span>, <span class="keyword">private</span> <span class="keyword">val</span> column: <span class="built_in">Int</span>) : RecyclerView.ItemDecoration() &#123;</span><br><span class="line">        <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">getItemOffsets</span><span class="params">(outRect: <span class="type">Rect</span>, view: <span class="type">View</span>, parent: <span class="type">RecyclerView</span>, state: <span class="type">RecyclerView</span>.<span class="type">State</span>)</span></span> &#123;</span><br><span class="line">            <span class="keyword">val</span> position = parent.getChildAdapterPosition(view)</span><br><span class="line">            <span class="comment">// 每列分配的间隙大小，包括左间隙和右间隙</span></span><br><span class="line">            <span class="keyword">val</span> colPadding = space * (column + <span class="number">1</span>) / column</span><br><span class="line">            <span class="comment">// 列索引</span></span><br><span class="line">            <span class="keyword">val</span> colIndex = position % column</span><br><span class="line">            <span class="comment">// 列左、右空隙。右间隙=space-左间隙</span></span><br><span class="line">            outRect.left = space * (colIndex + <span class="number">1</span>) - colPadding * colIndex</span><br><span class="line">            outRect.right = colPadding * (colIndex + <span class="number">1</span>) - space * (colIndex + <span class="number">1</span>)</span><br><span class="line">            <span class="comment">// 行间距</span></span><br><span class="line">            <span class="keyword">if</span> (position &gt;= column) &#123;</span><br><span class="line">                outRect.top = space</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>布局<code>item_image.xml</code>如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">ImageView</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:id</span>=<span class="string">&quot;@+id/iv_image&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:android</span>=<span class="string">&quot;http://schemas.android.com/apk/res/android&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:tools</span>=<span class="string">&quot;http://schemas.android.com/tools&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_width</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_height</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:scaleType</span>=<span class="string">&quot;fitXY&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">tools:src</span>=<span class="string">&quot;@mipmap/ic_launcher&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:background</span>=<span class="string">&quot;#ffccff&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<p>其中需要注意是</p>
+<ol>
+<li>图片的宽度在布局和代码中不能写死，需要自适应。</li>
+<li>在代码（Adapter）中根据屏幕宽度来计算图片高度。</li>
+<li>在ItemDecoration中计算每列的左右间隙。</li>
+</ol>
+<hr>
+<br>
+
+<h1 id="分析-GridLayoutManger分配Item空间的机制"><a href="#分析-GridLayoutManger分配Item空间的机制" class="headerlink" title="分析-GridLayoutManger分配Item空间的机制"></a>分析-GridLayoutManger分配Item空间的机制</h1><p><strong>GridLayoutManger在绘制子View的时候，会先为它们分配固定的空间</strong>。<br>比如，我们这里是4列，则每列分配父布局宽度（这里是屏幕宽度） / 4的宽度大小的空间，每列占据的宽度相等。</p>
+<ol>
+<li>每列由图片和空隙组成。空隙包括左空隙和右空隙，分布在图片的左右。</li>
+<li>每列中的图片会局限在列分配的空间内，不会超出这个空间。如果图片宽度小于列宽，则剩余的宽度会分配给空隙；如果图片的宽度大于列宽，则不会有空隙，且图片超出列的部分会被遮盖。</li>
+<li>如果使用ItemDecoration设置间隙，则间隙不会被压缩，如果图片过宽，则会占用当前图片的空间，图片会被压缩。</li>
+</ol>
+<p><strong>示例一-设置固定大宽度</strong><br>在Adapter代码中设置图片的宽度并在去掉ItemDecoration</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ImageAdapter</span></span><br><span class="line">...</span><br><span class="line"><span class="keyword">val</span> ivSize = (getScreenContentWidth(parent.context) - dp2px(parent.context, <span class="number">10</span>) * <span class="number">5</span>) / <span class="number">4</span></span><br><span class="line">view.iv_image.layoutParams.width = <span class="number">1000</span></span><br><span class="line">view.iv_image.layoutParams.height = ivSize</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="comment">// MainActivity 中注释掉EvenItemDecoration</span></span><br><span class="line">...</span><br><span class="line"><span class="comment">// addItemDecoration(EvenItemDecoration(dp2px(context, 10), 4))</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>结果如下：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/2658578-0d38e5c7cf5fd001.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="宽度设置为1000px的图片"></p>
+<p>通过Studio自带<code>Layout Inspector</code>可以查看每个图片的左右位置，第一行图片的<code>mLeft</code>分为0、360、720、1080，对应的<code>mRight</code>是<code>mLeft</code> + 1000。<br>以上示例说明</p>
+<ol>
+<li>每个图片占据的父布局的宽度是一样的，为父布局宽度除以列数，这里是1440 / 4 = 360。</li>
+<li>每个图片超出所占据空间宽度后的部分会被后面的图片或屏幕遮盖。</li>
+</ol>
+<p><strong>示例二-设置较大的左右间隔</strong><br>修改EvenItemDecoration代码如下：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// MainActivity中，设置间隙为20dp</span></span><br><span class="line">        rv_items.apply &#123;</span><br><span class="line">            layoutManager = GridLayoutManager(context, <span class="number">4</span>, RecyclerView.VERTICAL, <span class="literal">false</span>)</span><br><span class="line">            addItemDecoration(EvenItemDecoration(dp2px(context, <span class="number">20</span>), <span class="number">4</span>))</span><br><span class="line">            adapter = imageAdapter</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 修改EvenItemDecoration</span></span><br><span class="line">	<span class="class"><span class="keyword">class</span> <span class="title">EvenItemDecoration</span></span>(<span class="keyword">private</span> <span class="keyword">val</span> space: <span class="built_in">Int</span>, <span class="keyword">private</span> <span class="keyword">val</span> column: <span class="built_in">Int</span>) : RecyclerView.ItemDecoration() &#123;</span><br><span class="line">        <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">getItemOffsets</span><span class="params">(outRect: <span class="type">Rect</span>, view: <span class="type">View</span>, parent: <span class="type">RecyclerView</span>, state: <span class="type">RecyclerView</span>.<span class="type">State</span>)</span></span> &#123;</span><br><span class="line">            outRect.left = space</span><br><span class="line">            outRect.right = space</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果如下：</p>
+<p><img src="/images/gridlayout_even_example2.png" alt="有间隔的Grid"></p>
+<p>通过<code>Layout Inspector</code>查看每个图片的左右位置，每个图片的大小为220，左右间隙都为70(px/dp=3.5)，说明设置的间隙会占用图片之前分配的空间。</p>
+<p>最后，根据以上机制，不难理解<code>EvenItemDecoration</code>中的代码。</p>
+<p>Github源代码地址:<a target="_blank" rel="noopener" href="https://github.com/zhangliangnbu/gridlayout-demo">https://github.com/zhangliangnbu/gridlayout-demo</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2018/11/01/2018-11-01-FlutterStart/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/11/01/2018-11-01-FlutterStart/" class="post-title-link" itemprop="url">Flutter入门</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-11-01 09:04:21" itemprop="dateCreated datePublished" datetime="2018-11-01T09:04:21+08:00">2018-11-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-29 14:16:44" itemprop="dateModified" datetime="2021-06-29T14:16:44+08:00">2021-06-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%85%B6%E4%BB%96/" itemprop="url" rel="index"><span itemprop="name">其他</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>照着官方<a target="_blank" rel="noopener" href="https://flutter.io/get-started/install/">get-started</a>教程做，略作补充。</p>
+<hr>
+<h1 id="入门"><a href="#入门" class="headerlink" title="入门"></a>入门</h1><p><strong>1 下载SDK安装包并解压</strong></p>
+<p><strong>2 使用<code>$ flutter doctor</code>做检查并安装相关工具</strong></p>
+<p>安装IOS相关工具时，如果报错</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">configure: error: Package requirements (libusbmuxd &gt;= 1.1.0) were not met:</span><br></pre></td></tr></table></figure>
+
+<p>可以使用如下方法解决<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/52602425/libusbmuxd-version-error-during-flutter-install/52604913#52604913">IOS toolchain安装异常解决</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">brew update</span><br><span class="line">brew uninstall --ignore-dependencies libimobiledevice</span><br><span class="line">brew uninstall --ignore-dependencies usbmuxd</span><br><span class="line">brew install --HEAD usbmuxd</span><br><span class="line">brew unlink usbmuxd</span><br><span class="line">brew link usbmuxd</span><br><span class="line">brew install --HEAD libimobiledevice</span><br></pre></td></tr></table></figure>
+
+<p><strong>3 配置IDE，安装插件</strong></p>
+<p><strong>4 尝试运行项目</strong></p>
+<p>创建、在Android和IOS模拟器上运行、修改字符串并热加载。</p>
+<p><strong>5  写第一个APP</strong> </p>
+<p>分为两部分，入门文档主要介绍第一部分。这两部分的内容都可以在<a target="_blank" rel="noopener" href="https://codelabs.developers.google.com/?cat=Flutter">Google Codelas</a>中找到。</p>
+<hr>
+<h1 id="入门之坑"><a href="#入门之坑" class="headerlink" title="入门之坑"></a>入门之坑</h1><ul>
+<li>使用命令行方式<code>flutter upgrade</code>升级需要谨慎，有一次升级后，flutter直接挂了。</li>
+</ul>
+<hr>
+<h1 id="移动端开发演进"><a href="#移动端开发演进" class="headerlink" title="移动端开发演进"></a>移动端开发演进</h1><p>详细请看文章<a target="_blank" rel="noopener" href="http://www.infoq.com/cn/articles/why-is-flutter-revolutionary">为什么说Flutter是革命性的？</a></p>
+<p>**传统(Android&amp;IOS)**。APP直接调用平台控件和服务。</p>
+<p><img src="/images/mobile_dev_oem.png" alt="传统构架"></p>
+<p><strong>WebView</strong>。APP直接调用平台的WebView以及通过桥接的方式调用服务。</p>
+<p><img src="/images/mobile_dev_webview.png" alt="WebView"></p>
+<p><strong>ReactNative</strong>。JS代码通过桥接的方式调用平台控件和服务。桥接的转化效率较低。</p>
+<p><img src="/images/mobile_dev_rn.png" alt="WebView"></p>
+<p><strong>Flutter</strong>。APP端通过接口直接调用平台的Canvas、Events和服务，转化效率较桥接的方式快几个数量。</p>
+<p><img src="/images/mobile_dev_flutter.png" alt="WebView"></p>
+<blockquote>
+<p>上面的图皆来自文章<a target="_blank" rel="noopener" href="http://www.infoq.com/cn/articles/why-is-flutter-revolutionary">为什么说Flutter是革命性的？</a></p>
+</blockquote>
+<hr>
+<br>
+
+
+
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><p>一切皆控件。所有的组成部分都是控件，包括位置、补白、主题、导航等。</p>
+<p>Flutter运行机制。请看文章</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/CQQXD0TrlbaNWjoClIcDtw">Flutter原理解析</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/e6cd8584fdbb">Flutter原理与美团的实践</a></li>
+</ul>
+<h1 id="Flutter视图"><a href="#Flutter视图" class="headerlink" title="Flutter视图"></a>Flutter视图</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://juejin.im/post/5b4c6054e51d4519475f1d5d#heading-1">Flutter，什么是 Widgets、RenderObjects 和 Elements</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.stephenw.cc/2018/05/28/flutter-dart-framework/">Flutter Dart Framework原理简解</a></li>
+</ul>
+<h1 id="Flutter异步编程"><a href="#Flutter异步编程" class="headerlink" title="Flutter异步编程"></a>Flutter异步编程</h1><p>大纲：</p>
+<ul>
+<li>概念澄清：线程进程、并行并发、同步异步、阻塞非阻塞、单线程模型</li>
+<li>单线程异步事件模型</li>
+<li>API使用及场景实践：本地编写、本地资源读写、网络请求等。</li>
+</ul>
+<p><strong>单线程模型</strong></p>
+<p>仅仅指代码在一个线程里执行，但可以通过工作线程调度某段代码在其他时刻异步触发。</p>
+<p><strong>事件机制</strong></p>
+<p><img src="https://segmentfault.com/img/bVxLvF"></p>
+<p>参考</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000014396421">异步async、await和Future的使用技巧</a></li>
+<li><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000004322358">JavaScript：彻底理解同步、异步和事件循环(Event Loop)</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/27035708">JavaScript单线程异步的背后——事件循环机制</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2014/10/event-loop.html">JavaScript 运行机制详解：再谈Event Loop</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.im/post/5c4875f86fb9a049ff4e78cf">Flutter/Dart中的异步</a></li>
+<li><a target="_blank" rel="noopener" href="https://medium.com/dartlang/dart-asynchronous-programming-isolates-and-event-loops-bffc3e296a6a">Dart asynchronous programming: Isolates and event loops</a></li>
+</ul>
+<h1 id="混合开发实践"><a href="#混合开发实践" class="headerlink" title="混合开发实践"></a>混合开发实践</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/flutter/flutter/wiki/Add-Flutter-to-existing-apps#experiment-turn-the-flutter-project-into-a-module">官方-Add Flutter to existing apps</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.kikt.top/posts/flutter/exists/android-as-aar-to-maven/">把flutter项目作为aar添加到已有的Android工程上</a></li>
+<li><a target="_blank" rel="noopener" href="https://allenwu.itscoder.com/add-flutter-in-android">Android 工程中集成 Flutter Module</a></li>
+</ul>
+<p>这里考虑将flutter项目作为AAR添加到已有的Android工程里，可以将AAR文件作为本地文件依赖，或者发布AAR作为远程仓库依赖。</p>
+<h3 id="将flutter项目作为本地AAR依赖"><a href="#将flutter项目作为本地AAR依赖" class="headerlink" title="将flutter项目作为本地AAR依赖"></a>将flutter项目作为本地AAR依赖</h3><ul>
+<li>创建flutter module项目</li>
+<li>执行<code>flutter build apk</code>，生成aar文件<code>./.android/Flutter/build/outputs/flutter-release.aar</code></li>
+<li>将上述aar文件放入已有Android工程<code>app/libs</code>中，并使用<code>api fileTree(dir: &#39;libs&#39;, include: [&#39;*.jar&#39;, &#39;*.aar&#39;])</code>依赖</li>
+<li>在已有Android工程添加flutter初始化代码以及集成FlutterActivity的容器。</li>
+</ul>
+<p>关于有三方控件不能使用的情况，我使用的是flutter版本为1.7.8+hotfix.4，直接打包成AAR作为依赖，就可以直接使用，可能flutter当前的版本已经修复了这个问题：在打包aar的时候，会将其依赖的第三方代码也一起打进aar文件里。</p>
+<p>另外，<a target="_blank" rel="noopener" href="https://github.com/flutter/flutter/wiki/Add-Flutter-to-existing-apps#experiment-turn-the-flutter-project-into-a-module">官方-Add Flutter to existing apps</a> 这篇文章里说将来稳定版flutter发布本地aar仓库非常简单。</p>
+<h1 id="Flutter应用框架BLoC"><a href="#Flutter应用框架BLoC" class="headerlink" title="Flutter应用框架BLoC"></a>Flutter应用框架BLoC</h1><p>纲要：</p>
+<ul>
+<li>概念</li>
+<li>stream bloc</li>
+<li>bloc框架</li>
+</ul>
+<p>参考</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.didierboelens.com/2018/08/reactive-programming---streams---bloc/">Reactive Programming Streams BLoC</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.im/post/5ca396b5518825440563e0f5">Reactive Programming Streams BLoC中文版：Flutter-BLoC-第一讲</a></li>
+<li><a href="%5Bhttps://silencezhou.github.io/2019/03/14/Flutter-BLoC-%E7%AC%AC%E4%BA%8C%E8%AE%B2/%5D(https://silencezhou.github.io/2019/03/14/Flutter-BLoC-%E7%AC%AC%E4%BA%8C%E8%AE%B2/)">Reactive Programming Streams BLoC中文版：Flutter-BLoC-第二讲</a></li>
+<li><a href="%5Bhttps://silencezhou.github.io/2019/04/03/Flutter-BLoC-%E7%AC%AC%E4%B8%89%E8%AE%B2/%5D(https://silencezhou.github.io/2019/04/03/Flutter-BLoC-%E7%AC%AC%E4%B8%89%E8%AE%B2/)">Reactive Programming Streams BLoC中文版：Flutter-BLoC-第三讲</a></li>
+<li><a target="_blank" rel="noopener" href="https://felangel.github.io/bloc/#/gettingstarted">Bloc框架官方文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=PLHln7wHgPE">谷歌官方视频介绍</a></li>
+</ul>
+<hr>
+<br>
+
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://flutter.io/get-started/install/">Flutter官网</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/flutter/flutter">Flutter Github</a></li>
+<li><a target="_blank" rel="noopener" href="https://flutter-io.cn/#section-keynotes">Flutter中文社区</a></li>
+<li><a target="_blank" rel="noopener" href="https://flutterchina.club/get-started/install/">Flutter官网中文翻译</a></li>
+<li><a target="_blank" rel="noopener" href="https://book.flutterchina.club/">书籍-Flutter实战</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/AweiLoveAndroid/Flutter-learning/blob/master/readme/Flutter%E4%BB%8E%E9%85%8D%E7%BD%AE%E5%AE%89%E8%A3%85%E5%88%B0%E5%A1%AB%E5%9D%91%E6%8C%87%E5%8D%97%E8%AF%A6%E8%A7%A3.md">Flutter从配置安装到填坑指南详解</a></li>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/52602425/libusbmuxd-version-error-during-flutter-install/52604913#52604913">IOS toolchain安装异常解决</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.infoq.com/cn/articles/why-is-flutter-revolutionary">为什么说Flutter是革命性的？</a></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/CQQXD0TrlbaNWjoClIcDtw">Flutter原理解析</a></li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2018/10/24/android-build-06-application-start/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1394,581 +1694,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2018/08/27/android-build-04-gradle-lifecycle/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="章亮">
-      <meta itemprop="description" content="Developer For Android">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="永恒的码流">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/08/27/android-build-04-gradle-lifecycle/" class="post-title-link" itemprop="url">Android构建04-Gradle构建流程</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-08-27 20:24:50" itemprop="dateCreated datePublished" datetime="2018-08-27T20:24:50+08:00">2018-08-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2018-10-17 14:52:48" itemprop="dateModified" datetime="2018-10-17T14:52:48+08:00">2018-10-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="构建的生命周期"><a href="#构建的生命周期" class="headerlink" title="构建的生命周期"></a>构建的生命周期</h1><p>Gradle项目的构建分为三个阶段：初始化、配置、执行。<br>参考官方手册 <a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/build_lifecycle.html">Build Lifecycle</a>。</p>
-<h2 id="初始化（Initialization）"><a href="#初始化（Initialization）" class="headerlink" title="初始化（Initialization）"></a>初始化（Initialization）</h2><p>在这个阶段中，Gradle决定哪些项目加入到构建中（因为Gradle支持多项目构建），并为这些项目分别创建一个<code>Project</code>实例。</p>
-<p>Gradle支持单项目和多项目构建，如果是单项目构建，则初始化当前项目即可，如果是多项目构建，则需要决定哪些项目需要加入到构建中并初始化。那么：</p>
-<ol>
-<li>Gradle是如何判断当前构建是单项目还是多项目构建呢？</li>
-<li>如果是多项目构建，Gradle又是如何决定将哪些项目加入到构建中呢？</li>
-</ol>
-<p><strong>多项目还是单项目构建？</strong><br>这里的关键是一个名为<code>setting.gradle</code>的文件，Gradle在初始化阶段会首先去查找<code>setting.gradle</code>文件，查找的规则如下：</p>
-<ol>
-<li>查找当前构建目录下的<code>setting.gradle</code>文件。</li>
-<li>如果没有找到，则去与当前目录有相同嵌套级别的<code>master</code>目录查找。</li>
-<li>如果没有找到，则去父目录查找。</li>
-<li>如果没有找到，则进行单项目构建。</li>
-<li>如果找到了，Gradle去检查当前项目在<code>settings.gradle</code>中是否有定义。如果没有，则进行单项目构建，否则进行多项目构建。</li>
-</ol>
-<p>多项目工程在根目录必须存在<code>setting.gradle</code>文件，单项目工程则可以不需要这个文件。</p>
-<p><strong>多项目构建的项目集如何决定？</strong><br>多项目构建时，项目集由<code>setting.gradle</code>创建。项目集可以用一个树形结构表示，每个节点表示一个项目，并且有对应的项目路径。在大多数情况下，项目路径与文件系统中项目的位置一致，当然这也是可以配置的。<br>在<code>setting.gradle</code>中，有很多方法可以定义项目树，常见的是层次化和扁平化的布局。</p>
-<p>层次化布局</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// setting.gradle</span></span><br><span class="line">include <span class="string">&#x27;project1&#x27;</span>, <span class="string">&#x27;project2:child&#x27;</span>, <span class="string">&#x27;project3:child1&#x27;</span></span><br></pre></td></tr></table></figure>
-<p><code>include</code>方法接收多个项目路径作为参数。<br>每个项目路径对应文件系统中的一个目录，通常，项目路径和文件目录一一对应，比如<code>project2:child</code>对应项目根目录下的<code>project2/child</code>目录。<br>如果项目树的叶子节点和它的父节点都需要包含在构建中，则只需指定叶子节点即可。比如，<code>project2:child</code>，将创建两个项目实例<code>project2</code>和<code>project2:child</code>。</p>
-<p>扁平化布局</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// setting.gradle</span></span><br><span class="line">includeFlat <span class="string">&#x27;project3&#x27;</span>, <span class="string">&#x27;project4&#x27;</span></span><br></pre></td></tr></table></figure>
-<p><code>includeFlat</code>方法将目录名作为参数。这些目录是根项目目录的兄弟目录，并作为多项目树中根项目的子项目。</p>
-<p><strong>Settings语法</strong><br>这里主要说一下<code>include</code>方法的语法，其余的语法请见对应的<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/dsl/org.gradle.api.initialization.Settings.html">DSL Reference</a>。<code>setting.gradle</code>在构建时会创建代理对象<code>Settings</code>，其<code>include</code>方法对应着 <code>Settings.include(java.lang.String[])</code>，查看其<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/dsl/org.gradle.api.initialization.Settings.html#org.gradle.api.initialization.Settings:include(java.lang.String[])">DSL Reference</a>:</p>
-<ol>
-<li><code>include</code>方法接收项目路径数组作为参数，并将对应的项目添加到构建中。</li>
-<li>参数中支持的项目路径分隔符为“:”，而不是“/”。</li>
-<li>路径的最后一个节点是项目的名称。</li>
-<li>项目路径是根项目目录下的相对路径，可以使用<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/javadoc/org/gradle/api/initialization/ProjectDescriptor.html#setProjectDir-java.io.File-"><code>ProjectDescriptor.setProjectDir(java.io.File)</code></a>)更改。</li>
-</ol>
-<p>示例</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 引入两个项目, &#x27;foo&#x27; and &#x27;foo:bar&#x27;</span></span><br><span class="line"><span class="comment">// 对应的文件目录是 $rootDir/a 和 $rootDir/a/b</span></span><br><span class="line"><span class="comment">// directories are inferred by replacing &#x27;:&#x27; with &#x27;/&#x27;</span></span><br><span class="line">include <span class="string">&#x27;foo:bar&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// include one project whose project dir does not match the logical project path</span></span><br><span class="line"><span class="comment">// 引入‘baz’项目，对应的文件目录是foo/baz</span></span><br><span class="line">include <span class="string">&#x27;baz&#x27;</span></span><br><span class="line">project(<span class="string">&#x27;:baz&#x27;</span>).projectDir = file(<span class="string">&#x27;foo/baz&#x27;</span>)</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="配置（Configuration）"><a href="#配置（Configuration）" class="headerlink" title="配置（Configuration）"></a>配置（Configuration）</h2><p>在这个阶段，Gradle会配置加入到构建中的<code>Project</code>实例，执行所有项目对应的构建脚本。</p>
-<blockquote>
-<p>作为名词的‘配置（Configuration）’是指，Gradle执行项目的构建脚本这一过程。<br>作为动词的’配置（ Configure）’是指，Gradle执行项目的构建脚本这一动作。</p>
-</blockquote>
-<p><strong>默认配置模式</strong></p>
-<p>默认情况下，Gradle会配置<code>settings.gradle</code>里的所有项目，不论这些项目与最终执行的任务是否有关系。这样做是因为Gradle允许一个项目在配置和执行阶段访问任何其他项目，如Gradle里可以进行<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/multi_project_builds.html#sec:cross_project_configuration">跨项目配置(Cross project configuration)</a>，一个项目的配置可能会依赖其他项目，所以在执行任务之前，需要配置所有的项目。</p>
-<p>项目配置按照广度（ breadth-wise）顺序来执行，如父项目先于子项目被配置。</p>
-<p><strong>按需配置模式</strong></p>
-<p>由于多项目配置中，可能存在大量无需配置的项目，如果需要配置所有项目后才执行任务则会浪费大量的时间。从Gradle1.4开始，有一个孵化中的特性，叫做<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/multi_project_builds.html#sec:cross_project_configuration">按需配置（configuration on demand）</a>模式。按需配置项目时，Gradle只配置与最终任务相关联的项目，以缩短构建时间。这个模式以后可能会成为默认模式，甚至成为唯一的模式。截至我写这篇文章（Gradle发布4.10）时，按需配置模式还只是一个实验中的特性，不能保证所有的构建都能正确运行，尤其是存在耦合的多项目构建。</p>
-<blockquote>
-<p>项目的耦合和解耦请见文档的<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/multi_project_builds.html#sec:decoupled_projects">Decoupled Projects</a>。一个简单的耦合项目就是在子项目中使用<code>allprojects</code> and <code>subprojects</code>等方法，在根项目中使用这两个方法则不会影响按需配置模式。</p>
-</blockquote>
-<p>按需配置模式下，项目配置遵循规则如下：</p>
-<ul>
-<li>根项目总会被配置。</li>
-<li>构建的当前项目也会被配置。</li>
-<li>项目的依赖会被配置。如果项目A将项目B作为依赖，则构建A时，A和B都会被配置。</li>
-<li>任务依赖对应的项目会被配置。如’someTask.dependsOn(“:someOtherProject:someOtherTask”)‘，someOtherProject会被配置。</li>
-<li>通过命令行构建任务时会配置相应的项目。如构建 ‘projectA:projectB:someTask’时会配置projectB。</li>
-</ul>
-<p>进行构建时，可以在命令行加入<code>--configure-on-demand</code>来指定用按需配置模式来进行构建，如<code>gradle hello --configure-on-demand</code>将以按需配置模式执行‘’hello“任务。</p>
-<h2 id="执行（Execution）"><a href="#执行（Execution）" class="headerlink" title="执行（Execution）"></a>执行（Execution）</h2><p>在这个阶段，首先，Gradle确定要执行的任务集，任务集是由输入到命令行的任务名称参数和当前目录决定的。然后，Gradle会去执行任务集中的每个任务。<br>任务（<code>Task</code>）是由一系列的活动（<code>Action</code>）组成的，当任务执行的时候，活动会依次执行。可以通过<code>doFirst</code>和<code>doLast</code>方法将活动添加到任务中。</p>
-<p>问题：</p>
-<ol>
-<li>多项目构建中，Gradle如何确定任务是哪个项目的？尤其是任务名称相同的情况下。</li>
-<li>如果确定多个任务执行的顺序？</li>
-</ol>
-<p><strong>任务的位置</strong><br>以<code>$ gradle hello</code>为例，在执行阶段，Gradle会从构建的当前项目目录开始，依据项目树往下查找名称为<code>hello</code>的任务并执行。因此Gradle不会执行当前项目的父项目和兄弟节点项目的任务。</p>
-<p><strong>任务的顺序</strong><br>如果没有额外配置，Gradle将以字母数字顺序执行任务。比如 “:consumer:action” 将先于 “:producer:action”执行。</p>
-<blockquote>
-<p>If nothing else is defined, Gradle executes the task in alphanumeric order</p>
-</blockquote>
-<hr>
-<br>
-
-
-
-<h1 id="示例-单项目构建"><a href="#示例-单项目构建" class="headerlink" title="示例-单项目构建"></a>示例-单项目构建</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建项目目录</span></span><br><span class="line">$ mkdir single-project-build-lifecycle-demo</span><br><span class="line">$ <span class="built_in">cd</span> single-project-build-lifecycle-demo</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建settings.gradle文件</span></span><br><span class="line">$ vi settings.gradle</span><br></pre></td></tr></table></figure>
-<p><code>settings.gradle</code>文件</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rootProject.name = &#x27;single-project-build-lifecycle-demo&#x27;</span><br><span class="line">println &#x27;settings.gradle -&gt; this is executed during the initialization phase.&#x27;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建build.gradle文件</span></span><br><span class="line">$ vi build.gradle</span><br></pre></td></tr></table></figure>
-<p><code> build.gradle</code>文件</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">println <span class="string">&#x27;build.gradle -&gt; global println -&gt; This is executed during the configuration phase.&#x27;</span></span><br><span class="line"></span><br><span class="line">task configured &#123;</span><br><span class="line">    println <span class="string">&#x27;build.gradle -&gt; task configured -&gt; This is also executed during the configuration phase.&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">task test &#123;</span><br><span class="line">    doLast &#123;</span><br><span class="line">        println <span class="string">&#x27;build.gradle -&gt; task test -&gt; doLast -&gt; This is executed during the execution phase.&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">task testBoth &#123;</span><br><span class="line">    doFirst &#123;</span><br><span class="line">      println <span class="string">&#x27;build.gradle -&gt; task testBoth -&gt; doFirst -&gt; This is executed first during the execution phase.&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">    doLast &#123;</span><br><span class="line">      println <span class="string">&#x27;build.gradle -&gt; task testBoth -&gt; doLast -&gt; This is executed last during the execution phase.&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">    println <span class="string">&#x27;build.gradle -&gt; task testBoth -&gt; This is executed during the configuration phase as well.&#x27;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>开始构建，并执行testBoth任务 <code>$ gradle testBoth</code>，输出如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">settings.gradle -&gt; this is executed during the initialization phase.</span><br><span class="line"></span><br><span class="line">&gt; Configure project :</span><br><span class="line">build.gradle -&gt; global println -&gt; This is executed during the configuration phase.</span><br><span class="line">build.gradle -&gt; task configured -&gt; This is also executed during the configuration phase.</span><br><span class="line">build.gradle -&gt; task testBoth -&gt; This is executed during the configuration phase as well.</span><br><span class="line"></span><br><span class="line">&gt; Task :testBoth</span><br><span class="line">build.gradle -&gt; task testBoth -&gt; doFirst -&gt; This is executed first during the execution phase.</span><br><span class="line">build.gradle -&gt; task testBoth -&gt; doLast -&gt; This is executed last during the execution phase.</span><br><span class="line"></span><br><span class="line">BUILD SUCCESSFUL <span class="keyword">in</span> 0s</span><br><span class="line">1 actionable task: 1 executed</span><br></pre></td></tr></table></figure>
-<p>构建过程如下：</p>
-<ol>
-<li><p>初始化阶段。<br> 执行<code>settings.gradle</code>脚本，所以首先输出’settings.gradle -&gt; this is executed during the initialization phase.’。</p>
-</li>
-<li><p>配置阶段。<br> 由于<code>settings.gradle</code>没有定义项目，根项目即当前项目有<code>build.gradle</code>，因此只是执行这个文件。顺序执行：打印语句、三个task方法。<br> 这里的三个task方法对应<code>Project</code>实例中<code>Task task(String name, Closure configureClosure)</code>，查看其<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/dsl/org.gradle.api.Project.html#org.gradle.api.Project:task(java.lang.String,%20groovy.lang.Closure)">Reference文档</a>，说是这个方法会产生一个任务对象并添加到当前<code>Project</code>实例中，并且在返回这个任务的时候会执行闭包以配置这个任务。也就说在配置我们这个项目时，三个<code>task</code>方法的闭包都会被执行。<br> 以testBoth任务对应的<code>task</code>方法为例，它的闭包里包含<code>doFirst</code>、<code>doLast</code>和<code>println</code>三个方法。其中<code>doFirst</code>和<code>doLast</code>是<code>Task</code>的方法，查看<code>doFirst</code>的<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/dsl/org.gradle.api.Task.html#org.gradle.api.Task:doFirst(groovy.lang.Closure)">Reference文档</a>，说是添加闭包到任务的action列表中，当任务执行的时候，会执行这个闭包。在配置阶段，并不会去执行任务，也就是说不会去执行<code>doFirst</code>和<code>doLast</code>闭包里的内容。<br> 因此，在配置阶段，Gradle会依次执行三个任务方法里的闭包，而不会执行闭包里添加action的闭包即<code>doFirst</code>和<code>doLast</code>的闭包，因此会依次输出<br> ‘build.gradle -&gt; task configured -&gt; …’ 和‘build.gradle -&gt; task testBoth -…’</p>
-</li>
-<li><p>执行阶段。<br> 由于在命令行只构建testBoth任务，因此这个阶段只执行testBoth任务中的<code>Action</code>列表，依次执行<code>doFirst</code>和<code>doLast</code>的闭包。</p>
-</li>
-</ol>
-<hr>
-<br>
-
-
-
-<h1 id="示例-常见的多项目构建"><a href="#示例-常见的多项目构建" class="headerlink" title="示例-常见的多项目构建"></a>示例-常见的多项目构建</h1><p>参考官方手册<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/multi_project_builds.html#sec:project_jar_dependencies">Authoring Multi-Project Builds</a><br>模拟一个常见的Java项目，目录结构如下</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">multi-project-build-lifecycle-demo/</span><br><span class="line">  settings.gradle</span><br><span class="line">  build.gradle</span><br><span class="line">  api/</span><br><span class="line">    src/main/java/</span><br><span class="line">      org/gradle/sample/</span><br><span class="line">        api/</span><br><span class="line">          Person.java</span><br><span class="line">        apiImpl/</span><br><span class="line">          PersonImpl.java</span><br><span class="line">  services/personService/</span><br><span class="line">    src/</span><br><span class="line">      main/java/</span><br><span class="line">        org/gradle/sample/services/</span><br><span class="line">          PersonService.java</span><br><span class="line">      test/java/</span><br><span class="line">        org/gradle/sample/services/</span><br><span class="line">          PersonServiceTest.java</span><br><span class="line">  shared/</span><br><span class="line">    src/main/java/</span><br><span class="line">      org/gradle/sample/shared/</span><br><span class="line">        Helper.java</span><br></pre></td></tr></table></figure>
-<p>根目录<code>settings.gradle</code></p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">include <span class="string">&#x27;api&#x27;</span>, <span class="string">&#x27;shared&#x27;</span>, <span class="string">&#x27;services:personService&#x27;</span></span><br></pre></td></tr></table></figure>
-<p>根目录<code>build.gradle</code></p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">subprojects &#123;</span><br><span class="line">    apply <span class="attr">plugin:</span> <span class="string">&#x27;java&#x27;</span></span><br><span class="line">    group = <span class="string">&#x27;org.gradle.sample&#x27;</span></span><br><span class="line">    version = <span class="string">&#x27;1.0&#x27;</span></span><br><span class="line">    repositories &#123;</span><br><span class="line">        mavenCentral()</span><br><span class="line">    &#125;</span><br><span class="line">    dependencies &#123;</span><br><span class="line">        testCompile <span class="string">&quot;junit:junit:4.12&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">project(<span class="string">&#x27;:shared&#x27;</span>) &#123;</span><br><span class="line">    task hello &#123;</span><br><span class="line">        doLast &#123;</span><br><span class="line">            println <span class="string">&quot;shared task hello -&gt; doLast&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">        println <span class="string">&quot;shared task hello&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">project(<span class="string">&#x27;:api&#x27;</span>) &#123;</span><br><span class="line">    dependencies &#123;</span><br><span class="line">        compile project(<span class="string">&#x27;:shared&#x27;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    task hello &#123;</span><br><span class="line">        doLast &#123;</span><br><span class="line">            println <span class="string">&quot;api task hello -&gt; doLast&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">        println <span class="string">&quot;api task hello&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">project(<span class="string">&#x27;:services:personService&#x27;</span>) &#123;</span><br><span class="line">    dependencies &#123;</span><br><span class="line">        compile project(<span class="string">&#x27;:shared&#x27;</span>), project(<span class="string">&#x27;:api&#x27;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    task hello &#123;</span><br><span class="line">        doLast &#123;</span><br><span class="line">            println <span class="string">&quot;personService task hello -&gt; doLast&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">        println <span class="string">&quot;personService task hello&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>执行命令<code>gradle -i :services:personService:hello</code>，输出如下</p>
-<blockquote>
-<p><code>-i</code> 是gradle的log等级的一种，输出较为详细的信息</p>
-</blockquote>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">Initialized native services <span class="keyword">in</span>: /Users/zhangliang/.gradle/native</span><br><span class="line">The client will now receive all logging from the daemon (pid: 27188). The daemon <span class="built_in">log</span> file: /Users/zhangliang/.gradle/daemon/4.8.1/daemon-27188.out.log</span><br><span class="line">Starting 4th build <span class="keyword">in</span> daemon [uptime: 2 mins 55.761 secs, performance: 98%, no major garbage collections]</span><br><span class="line">Using 8 worker leases.</span><br><span class="line">Starting Build</span><br><span class="line">Settings evaluated using settings file <span class="string">&#x27;/Users/zhangliang/Projects/tools/learn-gradle/multi-project-build-lifecycle-demo/settings.gradle&#x27;</span>.</span><br><span class="line">Projects loaded. Root project using build file <span class="string">&#x27;/Users/zhangliang/Projects/tools/learn-gradle/multi-project-build-lifecycle-demo/build.gradle&#x27;</span>.</span><br><span class="line">Included projects: [root project <span class="string">&#x27;multi-project-build-lifecycle-demo&#x27;</span>, project <span class="string">&#x27;:api&#x27;</span>, project <span class="string">&#x27;:services&#x27;</span>, project <span class="string">&#x27;:shared&#x27;</span>, project <span class="string">&#x27;:services:personService&#x27;</span>]</span><br><span class="line"></span><br><span class="line">&gt; Configure project :</span><br><span class="line">Evaluating root project <span class="string">&#x27;multi-project-build-lifecycle-demo&#x27;</span> using build file <span class="string">&#x27;/Users/zhangliang/Projects/tools/learn-gradle/multi-project-build-lifecycle-demo/build.gradle&#x27;</span>.</span><br><span class="line">shared task hello</span><br><span class="line">api task hello</span><br><span class="line">personService task hello</span><br><span class="line"></span><br><span class="line">&gt; Configure project :api</span><br><span class="line">Evaluating project <span class="string">&#x27;:api&#x27;</span> using build file <span class="string">&#x27;/Users/zhangliang/Projects/tools/learn-gradle/multi-project-build-lifecycle-demo/api/build.gradle&#x27;</span>.</span><br><span class="line"></span><br><span class="line">&gt; Configure project :services</span><br><span class="line">Evaluating project <span class="string">&#x27;:services&#x27;</span> using build file <span class="string">&#x27;/Users/zhangliang/Projects/tools/learn-gradle/multi-project-build-lifecycle-demo/services/build.gradle&#x27;</span>.</span><br><span class="line"></span><br><span class="line">&gt; Configure project :shared</span><br><span class="line">Evaluating project <span class="string">&#x27;:shared&#x27;</span> using build file <span class="string">&#x27;/Users/zhangliang/Projects/tools/learn-gradle/multi-project-build-lifecycle-demo/shared/build.gradle&#x27;</span>.</span><br><span class="line"></span><br><span class="line">&gt; Configure project :services:personService</span><br><span class="line">Evaluating project <span class="string">&#x27;:services:personService&#x27;</span> using build file <span class="string">&#x27;/Users/zhangliang/Projects/tools/learn-gradle/multi-project-build-lifecycle-demo/services/personService/build.gradle&#x27;</span>.</span><br><span class="line">All projects evaluated.</span><br><span class="line">Selected primary task <span class="string">&#x27;:services:personService:hello&#x27;</span> from project :services:personService</span><br><span class="line">Tasks to be executed: [task <span class="string">&#x27;:services:personService:hello&#x27;</span>]</span><br><span class="line">:services:personService:hello (Thread[Task worker <span class="keyword">for</span> <span class="string">&#x27;:&#x27;</span>,5,main]) started.</span><br><span class="line"></span><br><span class="line">&gt; Task :services:personService:hello</span><br><span class="line">Task <span class="string">&#x27;:services:personService:hello&#x27;</span> is not up-to-date because:</span><br><span class="line">  Task has not declared any outputs despite executing actions.</span><br><span class="line">personService task hello -&gt; doLast</span><br><span class="line">:services:personService:hello (Thread[Task worker <span class="keyword">for</span> <span class="string">&#x27;:&#x27;</span>,5,main]) completed. Took 0.001 secs.</span><br><span class="line"></span><br><span class="line">BUILD SUCCESSFUL <span class="keyword">in</span> 0s</span><br><span class="line">1 actionable task: 1 executed</span><br></pre></td></tr></table></figure>
-<p>从输出可以看出：</p>
-<ol>
-<li>Gradle首先查找<code>settings.gradle</code>文件进行初始化，确定根项目目录并创建所有<code>include</code>的项目实例。其中包括<code>services </code>。</li>
-<li>配置<code>settings.gradle</code>中<code>include</code>的所有的项目。项目配置的顺序，首先是根项目，其次是子项目，多个子项目看来也是按照字母顺序依次进行的。<blockquote>
-<p>当前配置排序是<br>[root project ‘multi-project-build-lifecycle-demo’, project ‘:api’, project ‘:services’, project ‘:shared’, project ‘:services:personService’]<br>当我将‘shared’项目重命名为‘ashared’后，配置排序变为<br>[root project ‘multi-project-build-lifecycle-demo’, project ‘:api’, project ‘:ashared’, project ‘:services’, project ‘:services:personService’]</p>
-</blockquote>
-</li>
-</ol>
-<ol start="3">
-<li>最后执行任务<code>:services:personService:hello</code>。</li>
-</ol>
-<hr>
-<br>
-
-
-
-<h1 id="示例-按需配置的多项目构建"><a href="#示例-按需配置的多项目构建" class="headerlink" title="示例-按需配置的多项目构建"></a>示例-按需配置的多项目构建</h1><p>参考文档<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/multi_project_builds.html#example_build_script_of_water_parent_project">Build script of water (parent) project</a></p>
-<p>创建一个多项目工程，目录结构如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── bluewhale/</span><br><span class="line">├── build.gradle</span><br><span class="line">├── krill/</span><br><span class="line">└── settings.gradle</span><br></pre></td></tr></table></figure>
-
-<p><code>settings.gradle</code>文件</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rootProject.name = <span class="string">&#x27;water&#x27;</span></span><br><span class="line">include <span class="string">&#x27;bluewhale&#x27;</span>, <span class="string">&#x27;krill&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p><code>build.gradle</code>文件</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">allprojects &#123;</span><br><span class="line">    task hello &#123;</span><br><span class="line">        doLast &#123; task -&gt;</span><br><span class="line">            println <span class="string">&quot;I&#x27;m $task.project.name&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>根目录下执行<code>gradle -i :bluewhale:hello</code>，输出如下（省略部分无关信息）：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Initialized native services <span class="keyword">in</span>: /Users/zhangliang/.gradle/native</span><br><span class="line">Included projects: [root project <span class="string">&#x27;water&#x27;</span>, project <span class="string">&#x27;:bluewhale&#x27;</span>, project <span class="string">&#x27;:krill&#x27;</span>]</span><br><span class="line"></span><br><span class="line">&gt; Configure project :</span><br><span class="line">&gt; Configure project :bluewhale</span><br><span class="line">&gt; Configure project :krill</span><br><span class="line">All projects evaluated.</span><br><span class="line"></span><br><span class="line">&gt; Task :bluewhale:hello</span><br><span class="line">I<span class="string">&#x27;m bluewhale</span></span><br></pre></td></tr></table></figure>
-
-<p>从输出可以看出，所有的项目都进行了配置。</p>
-<p>根目录下执行<code>gradle -i :bluewhale:hello --configure-on-demand</code>，输出如下（省略部分无关信息）：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Initialized native services <span class="keyword">in</span>: /Users/zhangliang/.gradle/native</span><br><span class="line">Included projects: [root project <span class="string">&#x27;water&#x27;</span>, project <span class="string">&#x27;:bluewhale&#x27;</span>, project <span class="string">&#x27;:krill&#x27;</span>]</span><br><span class="line">Configuration on demand is an incubating feature.</span><br><span class="line"></span><br><span class="line">&gt; Configure project :</span><br><span class="line">&gt; Configure project :bluewhale</span><br><span class="line">All projects evaluated.</span><br><span class="line"></span><br><span class="line">&gt; Task :bluewhale:hello</span><br><span class="line">I<span class="string">&#x27;m bluewhale</span></span><br></pre></td></tr></table></figure>
-
-<p>上面的输出中出现了一句话”Configuration on demand is an incubating feature”，表示当前的“按需配置模式”还只是实验中的功能。从输出中可以看出，没有配置与任务无关的“krill”项目。</p>
-<hr>
-<br>
-
-
-
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
-<li><a target="_blank" rel="noopener" href="https://gradle.org/">Gradle官网</a></li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2018/08/27/android-build-03-gradle-start/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="章亮">
-      <meta itemprop="description" content="Developer For Android">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="永恒的码流">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/08/27/android-build-03-gradle-start/" class="post-title-link" itemprop="url">Android构建03-Gradle基础</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-08-27 18:02:47" itemprop="dateCreated datePublished" datetime="2018-08-27T18:02:47+08:00">2018-08-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2018-10-17 14:52:48" itemprop="dateModified" datetime="2018-10-17T14:52:48+08:00">2018-10-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>Gradle是Android构建系统的重点，需要花费时间用心学习。学习资料主要是官方的<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/userguide.html">Gradle Docs</a>，有个社区版的<a target="_blank" rel="noopener" href="https://dongchuan.gitbooks.io/gradle-user-guide-/">中文翻译资料</a>，英语不好的同学可以看看，但不全。</p>
-<p>这章首先对Gradle做一个简单的介绍，然后讲如何使用官方文档和API，接着讲解Gradle的基本概念、Wrapper和学习中需要使用到的命令行指令、插件等。有些知识点如插件应该放在之后的章节讲解，但为了保持文章的完整性，我放在了这一章，学习的过程中可能不能完全理解，没有关系，在以后的章节中如果有涉及的话，会具体解释。</p>
-<hr>
-<br>
-
-
-
-<h1 id="Gradle简介"><a href="#Gradle简介" class="headerlink" title="Gradle简介"></a>Gradle简介</h1><p>Gradle是一个注重灵活性和性能的开源构建自动化工具，使用Groovy或Kotlin DSL来编写构建脚本。</p>
-<blockquote>
-<p>虽然支持Kotlin，但还是建议学习Groovy。因为：一，目前官方示例里有许多还没有kotlin方式；二，目前大多数项目的Gradle脚本都是用Groovy编写的。</p>
-</blockquote>
-<p>Gradle特点如下：</p>
-<ol>
-<li>高度可定制。Gradle使用了可定制和可扩展的设计思想，如使用插件。</li>
-<li>快速。Gradle通过重用先前执行的输出，仅处理已更改的输入以及并行执行任务来快速完成任务。</li>
-<li>强大。Gradle是Android的官方构建工具，并支持许多主流的编程语言和技术。</li>
-</ol>
-<p><strong>图形界面和命令行</strong> Gradle支持IDE或命令行两种方式来构建工程。支持主流的IDE，如Android Studio, Eclipse, IntelliJ IDEA, Visual Studio 2017, 和XCode等。</p>
-<blockquote>
-<p>提示：命令行方式构建是必须掌握的，因为命令行方式包含所有的功能，而图形界面方式却未必。在调试时，命令行方式尤其重要。</p>
-</blockquote>
-<p><strong>典型的工程目录</strong> 一个典型Gradle项目一般会包括两个脚本文件（<code>settings.gradle</code>和<code>build.gradle</code>）和Wrapper文件（gradle文件目录和gradlew、gradlew.bat可执行文件）。如下所示</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">├── settings.gradle </span><br><span class="line">├── build.gradle</span><br><span class="line">├── gradle</span><br><span class="line">│   └── wrapper</span><br><span class="line">│       ├── gradle-wrapper.jar  </span><br><span class="line">│       └── gradle-wrapper.properties  </span><br><span class="line">├── gradlew  </span><br><span class="line">└── gradlew.bat</span><br></pre></td></tr></table></figure>
-<p>其中<code>settings.gradle</code>和<code>build.gradle</code>是项目构建时所需的脚本，Gradle会据此创建相应的Java实例。Wrapper文件用于管理<code>gradle</code>版本，一个终端上不同的项目可以使用不同配置和版本的Gradle，具体项目中使用<code>./gradlew</code>或<code>gradlew.bat</code>来替代<code>gradle</code>命令。</p>
-<hr>
-<br>
-
-
-
-<h1 id="Gradle-Docs的使用"><a href="#Gradle-Docs的使用" class="headerlink" title="Gradle Docs的使用"></a>Gradle Docs的使用</h1><p><a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/userguide.html">Gradle Docs</a>资料中，最重要的是User Manual（用户手册）和API文档（DSL Reference和Javadoc），其余的可以不用看。</p>
-<p><strong>Gradle User Manual</strong> User Manual中最关键的一部分当属“Build Configuration Scripts”（官网经常换名字，可能已经不叫这个标题了）。这一部分内容相当多，内容也比较杂。可以先看<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/build_lifecycle.html">Build Lifecycle</a>和<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/multi_project_builds.html">Configuring Multi-Project Build</a>这两节，看懂这两节，就可以对Gradle构建的流程有一个清晰的了解了，之后再看其他章节就非常容易了。</p>
-<p><strong>API文档</strong> API文档包括<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/dsl/">Gradle DSL Reference（Gradle特定语言指南）</a> 和 <a target="_blank" rel="noopener" href="https://docs.gradle.org/current/javadoc/">Javadoc（Java文档）</a>。Reference包含主要的接口和类，并做了描述和分类以利于学习，Javadoc包含所有的API，主要用于检索。就内容的覆盖面而言，Javadoc完全包含Reference。学习时可以看Reference，使用中具体查找Gradle的某个API文档时，用Javadoc。</p>
-<hr>
-<br>
-
-
-
-<h1 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h1><p>使用Gradle构建项目时，会经常涉及到几个重要的概念：脚本(Script)、项目(Project)和任务(Task)。这几个概念出现的顺序如下：</p>
-<ol>
-<li>开发者编写脚本，如<code>settings.gradle</code>和<code>build.gradle</code>；</li>
-<li>构建项目时，Gradle会根据构建脚本创建对应的Java实例，如<code>settings.gradle</code>对应<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/dsl/org.gradle.api.initialization.Settings.html">Setting</a>，<code>build.gradle</code>对应<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/dsl/org.gradle.api.Project.html">Project</a>，其中<code>Project</code>包含构建需要的任务集。然后，Gradle根据这些实例依次执行初始化、项目配置和任务执行等来构建项目。</li>
-</ol>
-<h2 id="脚本-Script"><a href="#脚本-Script" class="headerlink" title="脚本(Script)"></a><a target="_blank" rel="noopener" href="https://docs.gradle.org/current/dsl/org.gradle.api.Script.html">脚本(Script)</a></h2><p>利用Gradle构建项目时，与开发者直接交互的就是脚本了。<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/dsl/">Gradle脚本有以下特点</a>：</p>
-<ol>
-<li>每个脚本都有一个对应的Java实例，称为代理对象，在脚本中可以直接使用代理对象的属性和方法。</li>
-<li>Gradle脚本实现了<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/dsl/org.gradle.api.Script.html"><code>Script</code></a>接口。此接口定义了许多属性和方法，可以在脚本中直接使用。</li>
-<li>Gradle脚本由零或多个语句和脚本块组成（statements and script blocks）。 语句包括方法调用、属性赋值和局部变量定义等。 脚本块是一种方法调用，它以闭包作为方法的参数，而闭包用来配置代理对象。</li>
-</ol>
-<h2 id="项目-Project"><a href="#项目-Project" class="headerlink" title="项目(Project)"></a><a target="_blank" rel="noopener" href="https://docs.gradle.org/current/dsl/org.gradle.api.Project.html">项目(Project)</a></h2><p>项目是Gradle的最基本的概念之一。<br>Gradle通过<code>build.gradle</code>脚本生成实现了<code>Project</code>接口的项目实例，每个Gradle构建都由一个或多个项目组成。<code>Project</code>接口是脚本文件与Gradle交互的主要API，可以通过<code>Project</code>实例访问Gradle的所有功能。</p>
-<h2 id="任务-Task"><a href="#任务-Task" class="headerlink" title="任务(Task)"></a><a target="_blank" rel="noopener" href="https://docs.gradle.org/current/dsl/org.gradle.api.Task.html">任务(Task)</a></h2><p>项目由一个或多个任务组成。 每个任务执行一些基本工作，例如编译类、运行单元测试或压缩WAR文件等。<br>任务由一系列Action对象组成。 执行任务时，通过调用<code>Action.execute（T）</code>依次执行每个<code>Action</code>。 可以通过调用<code>Task.doFirst（org.gradle.api.Action）</code>或<code>Task.doLast（org.gradle.api.Action）</code>向任务添加<code>Action</code>。</p>
-<p><strong>概念之间的关系</strong> Gradle中项目和任务、Action的关系如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">A[Gradle构建]</span><br><span class="line">A --&gt;B1(项目1)</span><br><span class="line">A --&gt;B2(项目2)</span><br><span class="line">A --&gt;B3(项目 ...)</span><br><span class="line">B1 --&gt; T11[任务 ...]</span><br><span class="line">T11 --&gt; A111[Action ...]</span><br><span class="line">B2 --&gt; T21[任务 ...]</span><br><span class="line">T21 --&gt; A211[Action ...]</span><br><span class="line">B3 --&gt; T31[任务 ...]</span><br><span class="line">T31 --&gt; A311[Action ...]</span><br></pre></td></tr></table></figure>
-
-<p><strong>浏览官方文档</strong> 以上概念详细说明和使用，请见官方手册和指南：</p>
-<ol>
-<li>脚本。<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/writing_build_scripts.html">Writing Build Scripts</a>、<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/dsl/org.gradle.api.Script.html">Script Reference</a></li>
-<li>项目。<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/dsl/org.gradle.api.Project.html">Project Reference</a></li>
-<li>任务。<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/tutorial_using_tasks.html">Build Script Basics</a>、<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/more_about_tasks.html">Authoring Tasks</a>、<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/custom_tasks.html">Writing Custom Task Classes</a>、<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/dsl/org.gradle.api.Task.html">Task Reference</a></li>
-</ol>
-<p>以上文档可以不用深读，但需要浏览一遍，知道大概。</p>
-<hr>
-<br>
-
-
-
-<h1 id="Gradle-Wrapper"><a href="#Gradle-Wrapper" class="headerlink" title="Gradle Wrapper"></a>Gradle Wrapper</h1><p>前言中已经提到了Wrapper，即一种管理当前项目的Gradle版本的工具。多人协作时，每个人安装的Gradle环境可能不一致（也没有必要一致），需要使用Wrapper管理项目的版本。官方强烈推荐使用Wrapper管理具体的项目，并以<code>./gradlew</code>(macOS)代替<code>gradle</code>执行命令。<br>Wrapper目录中有一个<code>gradle-wrapper.properties</code>文件，配置Gradle的版本号、本地存储地址等。</p>
-<p><strong>引入Wrapper</strong> 使用命令行添加Wrapper有两种方式：</p>
-<ol>
-<li>使用<code>gradle init</code>创建新项目，则会初始化一个带有Wrapper的Gradle项目。</li>
-<li>使用<code>gradle wrapper</code>在旧的项目中添加Wrapper。<blockquote>
-<p><code>wrapper</code>是Gradle的内建任务</p>
-</blockquote>
-</li>
-</ol>
-<p>一般的IDE创建项目时都会自动生产Wrapper文件，如Android Studio。</p>
-<p><strong>使用Wrapper执行任务</strong> 用Wrapper脚本替换掉<code>gradle</code>来执行任务即可。以macOS平台为例，在项目根目录下执行<code>./gradlew [task name] </code>即可，如列出当前项目的所有任务，项目根目录下执行：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> ./gradlew tasks</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>更新Wrapper</strong> 有两种方式更新Wrapper</p>
-<ol>
-<li>命令行方法。<code>.gradlew wrapper --gradle-version [要更新的版本号]</code>。</li>
-<li>修改<code>gradle/wrapper/gradle-wrapper.properties</code>中的<code>distributionUrl</code>属性。</li>
-</ol>
-<p>关于Gradle Wrapper的详细说明请见官方手册<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/gradle_wrapper.html">The Gradle Wrapper</a></p>
-<hr>
-<br>
-
-
-
-<h1 id="命令行"><a href="#命令行" class="headerlink" title="命令行"></a>命令行</h1><p><strong>指令形式</strong> Gradle命令行指令由三部分组成: 可执行文件<code>gradle</code>或<code>./gradlew</code>、一个或多个任务名、零或多个选项名，如下所示：。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> gradle [taskName...] [--option-name...]</span></span><br></pre></td></tr></table></figure>
-<p>指令的详细说明请见官方手册<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/command_line_interface.html">Command-Line Interface</a>，这里我只介绍学习或调试中常用的指令。部分常见命令行选项说明如下：</p>
-<p><strong>固有任务类</strong></p>
-<ul>
-<li><code>gradle build</code>。生成所有的输出，并执行所有的检查。</li>
-<li><code>gradle clean</code>。删除build文件目录。</li>
-<li><code>gradle projects</code>。查看项目结构。</li>
-<li><code>gradle tasks</code>。查看任务列表。查看某个任务详细信息，可用<code>gradle help --task someTask</code></li>
-<li><code>gradle dependencies</code>。查看依赖列表。</li>
-</ul>
-<p><strong>调试类</strong></p>
-<ul>
-<li><code>-?</code>, <code>-h</code>, <code>--help</code>。查看帮助信息。</li>
-<li><code>-v</code>,<code> --version</code>。查看版本信息。</li>
-<li><code>-s</code>,<code> --stacktrace</code>。执行任务时，打印栈信息。如<code>gradle build -s</code></li>
-</ul>
-<p><strong>日志类</strong></p>
-<ul>
-<li><code>-q</code>, <code>--quiet</code>。只打印errors类信息。</li>
-<li><code>-i</code>, <code>--info</code>。打印详细的信息。</li>
-</ul>
-<p>其中在学习的过程中，经常会用到</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ gradle [taskName...] -i</span><br></pre></td></tr></table></figure>
-<p>这会打印比较详细的构建信息，用于帮助我们理解Gradle构建流程、项目配置和依赖、任务依赖等。</p>
-<hr>
-<br>
-
-
-
-<h1 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h1><p>配置构建环境，主要配置Gradle构建参数和对应的JVM参数，如代理策略等。其目的是为了多人协作时，保持在一致的环境下进行项目开发。</p>
-<p>配置环境有几种途径，优先级从高往低，列出如下：</p>
-<ol>
-<li>命令行。</li>
-<li><code>GRADLE_USER_HOME</code>目录中的<code>gradle.properties</code>文件。</li>
-<li>项目根目录中的<code>gradle.properties</code>文件。</li>
-<li>环境变量。运行Gradle环境的变量，如JAVA_HOME等。</li>
-</ol>
-<p>具体参数的配置请见官方手册<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/build_environment.html">Build Environment</a></p>
-<hr>
-<br>
-
-
-
-<h1 id="依赖管理"><a href="#依赖管理" class="headerlink" title="依赖管理"></a>依赖管理</h1><p>现在的项目基本上都需要使用第三方库，一般称其为依赖，这样说并不准确，<a href="(https://docs.gradle.org/current/userguide/dependency_management_terminology.html#sub:terminology_module)">官方的定义</a>是:</p>
-<blockquote>
-<p>A dependency is a pointer to another piece of software required to build, test or run a module</p>
-<p>依赖是指向软件模块的指针，而非模块本身</p>
-</blockquote>
-<p>依赖管理是一种以自动方式声明、解析和使用项目所需的依赖的技术。</p>
-<p><strong>依赖管理流程</strong> </p>
-<ol>
-<li>声明。在构建脚本中声明依赖和对应的仓库。 </li>
-<li>解析。项目构建时，Gradle会定位依赖的本地路径或远程服务器路径并下载依赖（有必须要的话）。 </li>
-<li>缓存。依赖解析后，Gradle会将从远程服务下载的依赖缓存到本地，避免下次构建时重复下载。 </li>
-</ol>
-<p><strong>依赖的类型</strong></p>
-<ul>
-<li>模块依赖（Module dependencies）。指向一个库中的模块，这是最常见的依赖类型。</li>
-<li>文件依赖。指向无需仓库的一系列文件。</li>
-<li>项目依赖。指向多项目工程主项目需要用到的其他项目。</li>
-<li>特定分发的依赖。如API依赖、TestKit依赖和本地Groovy依赖等。 </li>
-</ul>
-<p><strong>常见的仓库</strong></p>
-<ul>
-<li>文件系统仓库。通过查找文件目录以解析依赖。</li>
-<li>Maven Central 仓库。一般默认的Maven仓库。</li>
-<li>JCenter Maven 仓库。Android默认的Maven仓库。</li>
-<li>Google Maven 仓库。Google的支持库所在的Maven仓库。</li>
-<li>本地 Maven仓库。就是你开发项目所用的主机中的仓库。</li>
-<li>自定义Maven仓库。一些公司，如阿里，喜欢把阿里云OSS服务SDK等存储在自己搭建的Maven仓库中。</li>
-<li>Ivy仓库。不常用。</li>
-</ul>
-<blockquote>
-<p>Maven仓库是用<a href="javascript:void%200">Apache Maven</a>工具搭建的存储不同类型资源的本地或远程资源服务。Maven Central仓库、JCenter Maven仓库和Google Maven仓库都是Maven仓库，区别在于存储的服务器和管理的机构不一样。 </p>
-</blockquote>
-<hr>
-<br>
-
-
-
-<h1 id="插件-Plugin"><a href="#插件-Plugin" class="headerlink" title="插件(Plugin)"></a>插件(Plugin)</h1><p><strong>插件简介</strong> Gradle的一个非常大的特点就是灵活或者说可扩展性，它本身没有提供多少构建具体任务的逻辑，构建各类具体的项目都是通过增加插件实现的。插件可以添加新任务（例如JavaCompile），新的域对象（例如SourceSet），新的规定（例如Java源位于src/main/java）以及继承其他插件而获得的功能。<br>Gradle本身提供了一些基础的插件，只需要配置id即可使用，如<code> Java Plugin</code>。</p>
-<p><strong>二进制插件及配置</strong> 插件分为两种，本地脚本插件和远程发布的二进制插件，一般我们常用的是后者。如Android项目中我们用到的Android插件，就是一种远程二进制插件。<br>Android项目添加插件示例：<br>在根目录<code>build.gradle</code>中添加仓库和插件路径</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">buildscript &#123;</span><br><span class="line">    repositories &#123;</span><br><span class="line">        google()</span><br><span class="line">        jcenter()</span><br><span class="line">    &#125;</span><br><span class="line">    dependencies &#123;</span><br><span class="line">        classpath <span class="string">&#x27;com.android.tools.build:gradle:3.1.4&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在app目录<code>build.gradle</code>中应用插件</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apply <span class="attr">plugin:</span> <span class="string">&#x27;com.android.application&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>插件的使用</strong> Gradle使用插件里的构建逻辑分为两步</p>
-<ol>
-<li>解析插件。即获取插件的jar包。插件被解析后，就可以在脚本文件中直接使用它的API，如Android项目脚本文件中的配置<code>android</code>、方法<code>compileSdkVersion</code>等。本地脚本插件和Gradle固有插件会自动解析。</li>
-<li>应用插件。即执行插件的<code>Plugin.apply(T)</code>方法，这是插件的核心方法。在这个方法中，可以为当前项目添加一些新的任务。</li>
-</ol>
-<p>关于插件更详细的说明请见官方手册:</p>
-<ol>
-<li><a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/plugins.html#sec:using_plugins">Using Gradle Plugins</a></li>
-<li><a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/standard_plugins.html">Standard Gradle plugins</a></li>
-<li><a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/plugin_reference.html">Core Plugin</a></li>
-<li><a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/custom_plugins.html">Writing Custom Plugins</a></li>
-</ol>
-<p>如何你想查看Gradle源码，看看插件是如何实现的，链接如下：</p>
-<ol>
-<li><a target="_blank" rel="noopener" href="https://github.com/gradle/gradle">Github上的Gradle源码</a></li>
-<li><a target="_blank" rel="noopener" href="https://source.android.com/setup/build/downloading">Android插件源码-AOSP</a></li>
-<li><a target="_blank" rel="noopener" href="http://repo.spring.io/libs-milestone/com/android/tools/build/gradle/">Andorid插件源码-repe.spring.io</a></li>
-<li><a target="_blank" rel="noopener" href="https://android.googlesource.com/platform/tools/build/+/e49dcf3e1edbe40d945a24fee85c6422eb6221b9/">Android源码-android.google.source</a></li>
-</ol>
-<hr>
-<br>
-
-
-
-<h1 id="示例-单项目构建"><a href="#示例-单项目构建" class="headerlink" title="示例-单项目构建"></a>示例-单项目构建</h1><p>官方示例 <a target="_blank" rel="noopener" href="https://guides.gradle.org/creating-new-gradle-builds/?_ga=2.262531468.1022039991.1532854446-1803358189.1525999794">Creating New Gradle Builds</a><br>主要练习：初始化项目、执行任务、移动文件、添加Plugin等。</p>
-<blockquote>
-<p>提示：示例中使用了<code>./gradlew</code>来执行命令，如果因为下载失败导致该命令不可用，使用<code>gradle</code>命令即可。</p>
-</blockquote>
-<hr>
-<br>
-
-
-
-<h1 id="示例-多项目构建"><a href="#示例-多项目构建" class="headerlink" title="示例-多项目构建"></a>示例-多项目构建</h1><p>官方示例 <a target="_blank" rel="noopener" href="https://guides.gradle.org/creating-multi-project-builds/?_ga=2.39430567.560526946.1533349009-1803358189.1525999794">Creating Multi-project Builds</a></p>
-<blockquote>
-<p>提示：示例中需要下载依赖，国内网络直接访问可能导致下载失败，需要设置国外代理服务。我的代理服务走的通道是<code>shadowsocks</code>，有的资源使用<code>shadowsocks</code>协议是访问不了的，需要使用<code>http</code>或<code>https</code>协议才行，可以使用<code>privoxy</code>切换<code>shadowsocks</code>协议为<code>http</code>和<code>https</code>协议（实际上是在本地<code>shadowsocks</code>端口上再加了一层<code>privoxy</code>代理）。<br><code>shadowsocks</code>代理设置请参考<a target="_blank" rel="noopener" href="https://github.com/shadowsocks/shadowsocks/blob/master/README.md">Github shadowsocks</a><br><code>privoxy</code>代理设置请参考 <a target="_blank" rel="noopener" href="https://www.privoxy.org/">Privoxy 官网</a>、<a target="_blank" rel="noopener" href="http://lazybios.com/2016/11/transter-socks5-to-http-by-privoxy/">使用Privoxy桥接Http代理到SOCKS5代理</a>、<a target="_blank" rel="noopener" href="https://blog.zfanw.com/privoxy-tutorial/">Privoxy 教程</a><br>Gradle项目代理设置如下：在电脑中设置好<code>http</code>协议代理后，在当前项目根目录下创建<code>gradle.properties</code>文件（如果有就不用创建），编辑文件如下:</p>
-<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">systemProp.http.proxyHost=<span class="number">127.0</span>.<span class="number">0.1</span></span><br><span class="line">systemProp.http.nonProxyHosts=<span class="number">192.168</span>.*, &lt;localhost&gt;</span><br><span class="line">systemProp.http.proxyPort=<span class="number">8118</span></span><br><span class="line">systemProp.https.proxyHost=<span class="number">127.0</span>.<span class="number">0.1</span></span><br><span class="line">systemProp.https.nonProxyHosts=<span class="number">192.168</span>.*, &lt;localhost&gt;</span><br><span class="line">systemProp.https.proxyPort=<span class="number">8118</span></span><br></pre></td></tr></table></figure>
-
-<p>其中<code>8118</code>是<code>privoxy</code>的端口号<br>Gradle代理设置详细说明请参考官方文档<a target="_blank" rel="noopener" href="https://docs.gradle.org/4.0/userguide/build_environment.html#N10D07">Accessing the web via a proxy</a>（虽然也不够详细:p）</p>
-</blockquote>
-<hr>
-<br>
-
-
-
-<h1 id="示例-Android项目根目录-build-gradle语法分析"><a href="#示例-Android项目根目录-build-gradle语法分析" class="headerlink" title="示例-Android项目根目录 build.gradle语法分析"></a>示例-Android项目根目录 <code>build.gradle</code>语法分析</h1><p>利用<code>Android Studio</code>创建一个项目，根目录中<code>build.gradle</code>文件如下</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">buildscript &#123;</span><br><span class="line">    ext.kotlin_version = <span class="string">&#x27;1.2.50&#x27;</span></span><br><span class="line">    repositories &#123;</span><br><span class="line">        google()</span><br><span class="line">        jcenter()</span><br><span class="line">    &#125;</span><br><span class="line">    dependencies &#123;</span><br><span class="line">        classpath <span class="string">&#x27;com.android.tools.build:gradle:3.1.4&#x27;</span></span><br><span class="line">        classpath <span class="string">&quot;org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version&quot;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// <span class="doctag">NOTE:</span> Do not place your application dependencies here; they belong</span></span><br><span class="line">        <span class="comment">// in the individual module build.gradle files</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">allprojects &#123;</span><br><span class="line">    repositories &#123;</span><br><span class="line">        google()</span><br><span class="line">        jcenter()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">task clean(<span class="attr">type:</span> Delete) &#123;</span><br><span class="line">    delete rootProject.buildDir</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>直接使用API文档来分析上面的代码：</p>
-<ul>
-<li><p><code>Project</code>和方法。<code>build.gradle</code>脚本的代理对象是<code>Project</code>实例，<code>buildscript</code>、<code>allprojects</code>和<code>task</code>是<code>Project</code>中的三个方法（实际上，<code>task</code>在这里是关键字，不是方法，但<code>Project</code>中有方法与之对应）。</p>
-</li>
-<li><p><code>buildscript</code>。在<code>Android Studio</code>中(<code>Mac</code>平台 <code>Command+鼠标左键</code>)或者在文档中查看API详情，如下<br>￼￼<img src="https://upload-images.jianshu.io/upload_images/2658578-f4b3e247a668231b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="buildscript"><br>这个方法的作用是配置项目构建脚本的<code>classpath</code>，参数是一个闭包，闭包的代理对象是<code>ScriptHandler</code>，即如果<code>buildscript</code>代码块中的属性和方法，如果不能在<code>Project</code>中找到，就去<code>ScriptHandler</code>中去找。<br>再来分析下<code>buildscript</code>代码块里的内容。示例代码中，<code>repositories</code>和<code>dependencies</code>都是<code>ScriptHandler</code>的方法，可以直接在<code>Android Studio</code>中点击查看其API。但<code>ext</code>是什么，是谁的属性？<code>owner</code>（<code>Project</code>）的，还是<code>delegate</code>（<code>ScriptHandler</code>）的？由于不能在<code>Studio</code>里直接查看，我们先看看<code>Project</code>的API<br><img src="https://upload-images.jianshu.io/upload_images/2658578-df8c01595c625c03.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Project"><br>全局搜索<code>ext</code>或<code>setExt</code>、<code>getExt</code>，都没有结果。再看看其继承的接口，发现<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/javadoc/org/gradle/api/plugins/ExtensionAware.html">ExtensionAware</a>中可以搜索到，API文档说</p>
-</li>
-</ul>
-<blockquote>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// All extension aware objects have a special “ext” extension of type &gt;ExtraPropertiesExtension</span></span><br><span class="line"><span class="keyword">assert</span> project.hasProperty(<span class="string">&quot;myProperty&quot;</span>) == <span class="literal">false</span></span><br><span class="line">project.ext.myProperty = <span class="string">&quot;myValue&quot;</span></span><br><span class="line"><span class="comment">// Properties added to the “ext” extension are promoted to the owning &gt;object</span></span><br><span class="line"><span class="keyword">assert</span> project.myProperty == <span class="string">&quot;myValue&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>继承了<code>ExtensionAware</code>的对象都有一个特殊的<code>ext</code>扩展类型，可以直接添加属性<code>project.ext.myProperty = &quot;myValue&quot;</code>，之后使用属性<code>myProperty</code>时可以不用写<code>ext</code>，如<code>project.myProperty</code>。<br>因此示例代码中的<code>ext</code>是<code>owner</code>（<code>Project</code>）的属性。</p>
-</blockquote>
-<ul>
-<li><p><code>allprojects</code>。分析方法同上，略。</p>
-</li>
-<li><p><code>task</code>。<code>Project</code>中有四个<code>task</code>方法</p>
-</li>
-</ul>
-<blockquote>
-<p><code>Task task(String name)</code><br><code>Task task(String name, Closure configureClosure)</code><br><code>Task task(Map&lt;String, ?&gt; args, String name)</code><br><code>Task task(Map&lt;String, ?&gt; args, String name, Closure configureClosure)</code></p>
-</blockquote>
-<p><code>Studio</code>中链接的是<code>Task task(String name)</code>，但后面的<code>clean(type: Delete) &#123; ​    delete rootProject.buildDir &#125;</code>是什么呢？开始以为是方法，实际上并不是，一是在<code>Project</code>中没有<code>clean</code>方法，二是<a target="_blank" rel="noopener" href="http://www.groovy-lang.org/semantics.html#_optional_parentheses">Groovy语法中不允许嵌套的方法省略括号</a>。</p>
-<blockquote>
-<p>Parentheses are required for method calls without parameters or ambiguous method calls:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">println(Math.max(5, 10))</span><br></pre></td></tr></table></figure>
-
-<p>不是方法，但看起来又不是参数。查看<code>Task</code>API，有定义task的示例<br>You can also use the task keyword in your build file:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">task myTask</span><br><span class="line">task myTask &#123; configure closure &#125;</span><br><span class="line">task myTask(type: SomeType)</span><br><span class="line">task myTask(type: SomeType) &#123; configure closure &#125;</span><br></pre></td></tr></table></figure>
-
-<p>也就是说<code>task</code>可以是一个关键字！去看Gradle官方文档<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/more_about_tasks.html#sec:defining_tasks">Defining tasks</a><br>There are a few variations on this style, which you may need to use in certain situations. For example, the keyword style does not work in expressions.</p>
-</blockquote>
-<p>有很多方式定义task，有关键字格式：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">task copy(type: Copy) &#123;</span><br><span class="line">    from(file(&#x27;srcDir&#x27;))</span><br><span class="line">    into(buildDir)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>我们的示例就是这种格式的。<br>也有方法格式的：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">task(&#x27;copy&#x27;, type: Copy) &#123;</span><br><span class="line">    from(file(&#x27;srcDir&#x27;))</span><br><span class="line">    into(buildDir)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这对应<code>Project</code>的方法<code>Task task(Map&lt;String, ?&gt; args, String name, Closure configureClosure)</code>。Groovy方法中的参数似乎是可以改变顺序的，有人写的<a target="_blank" rel="noopener" href="https://blog.csdn.net/cckevincyh/article/details/75094293">博客</a>中提到了这件事，但我没有找到相关的官方文档。<br>终于分析完了，初学者学习这些估计要抓狂，:p。</p>
-<p>最后，把示例代码中省略的括号和<code>owner</code>、<code>delegate</code>补全，以提高可读性，如下</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">buildscript(&#123;</span><br><span class="line">    owner.ext.kotlin_version = <span class="string">&#x27;1.2.50&#x27;</span></span><br><span class="line">    delegate.repositories(&#123;</span><br><span class="line">        delegate.google()</span><br><span class="line">        delegate.jcenter()</span><br><span class="line">    &#125;)</span><br><span class="line">    dependencies(&#123;</span><br><span class="line">        delegate.add(<span class="string">&#x27;classpath&#x27;</span>, <span class="string">&#x27;com.android.tools.build:gradle:3.1.4&#x27;</span>)</span><br><span class="line">        delegate.add(<span class="string">&#x27;classpath&#x27;</span>, <span class="string">&quot;org.jetbrains.kotlin:kotlin-gradle-plugin:$&#123;owner.kotlin_version&#125;&quot;</span>)</span><br><span class="line">        <span class="comment">// <span class="doctag">NOTE:</span> Do not place your application dependencies here; they belong</span></span><br><span class="line">        <span class="comment">// in the individual module build.gradle files</span></span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">allprojects(&#123;</span><br><span class="line">    delegate.repositories(&#123;</span><br><span class="line">        delegate.google()</span><br><span class="line">        delegate.jcenter()</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">task clean(<span class="attr">type:</span> Delete) &#123;</span><br><span class="line">    delete rootProject.buildDir</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>注意: 其中的<code>classpath</code>，我暂时并没有理解清楚它是如何工作的，它不是方法，只能理解它是一个可以添加的配置属性。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Dependency add(String configurationName, Object &gt;dependencyNotation);</span><br></pre></td></tr></table></figure>
-</blockquote>
-<hr>
-<br>
-
-
-
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
-<li><a target="_blank" rel="noopener" href="https://gradle.org/">Gradle官网</a></li>
-<li><a target="_blank" rel="noopener" href="https://dongchuan.gitbooks.io/gradle-user-guide-/">Gradle User Guide 中文版(非官方)</a></li>
-<li><a target="_blank" rel="noopener" href="http://www.groovy-lang.org/learn.html">Groovy官网</a></li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -2040,14 +1765,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">52</span>
+          <span class="site-state-item-count">54</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -2097,12 +1822,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">192k</span>
+    <span title="站点总字数">199k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:54</span>
+    <span title="站点阅读时长">3:01</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>
