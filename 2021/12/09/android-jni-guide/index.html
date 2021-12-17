@@ -29,7 +29,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://zhangliangnbu.github.io/images/aosp10-jni-guide.drawio.svg">
 <meta property="article:published_time" content="2021-12-09T09:14:28.000Z">
-<meta property="article:modified_time" content="2021-12-15T09:40:53.832Z">
+<meta property="article:modified_time" content="2021-12-17T04:13:59.752Z">
 <meta property="article:author" content="章亮">
 <meta property="article:tag" content="android">
 <meta property="article:tag" content="java">
@@ -201,7 +201,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-12-15 17:40:53" itemprop="dateModified" datetime="2021-12-15T17:40:53+08:00">2021-12-15</time>
+                <time title="修改时间：2021-12-17 12:13:59" itemprop="dateModified" datetime="2021-12-17T12:13:59+08:00">2021-12-17</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -247,6 +247,9 @@
 </ol>
 <p><strong>不遵循以上步骤的场景</strong>：如果仅仅只是编写C/C++应用，然后复用Java提供的库来实现某些功能，不涉及编写Java类调用C/C++函数的代码，则不需要遵循上面的步骤，而是直接在C函数里创建虚拟机并获取对应的<code>JNIEnv *</code>指针，然后通过JNI函数调用Java代码即可。</p>
 <p><img src="/images/aosp10-jni-guide.drawio.svg" alt="aosp10-jni-guide.drawio"></p>
+<blockquote>
+<p>思考：能否基于JNI开发主要使用C/C++编写的本地应用程序？不妥，JNI函数调用的开销应该比较大，影响性能。</p>
+</blockquote>
 <h1 id="JNI使用示例"><a href="#JNI使用示例" class="headerlink" title="JNI使用示例"></a>JNI使用示例</h1><h2 id="Java代码调用C-C-本地函数"><a href="#Java代码调用C-C-本地函数" class="headerlink" title="Java代码调用C/C++本地函数"></a>Java代码调用C/C++本地函数</h2><ol>
 <li><p>在Java类中声明本地方法并加载本地函数库</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// HelloJNI.java</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HelloJNI</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">native</span> <span class="keyword">void</span> <span class="title">printString</span><span class="params">(String str)</span></span>; <span class="comment">// 声明本地方法</span></span><br><span class="line">	<span class="keyword">static</span> &#123; System.loadLibrary(<span class="string">&quot;hellojni&quot;</span>); &#125; <span class="comment">// 加载本地函数库</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span> </span>&#123;</span><br><span class="line">		HelloJNI myJNI = <span class="keyword">new</span> HelloJNI();</span><br><span class="line">		myJNI.printString(<span class="string">&quot;Hello World from native&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
@@ -280,6 +283,14 @@
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 生成虚拟机的接口</span></span><br><span class="line">JNI_CreateJavaVM(JavaVM **pvm, <span class="keyword">void</span> **penv, <span class="keyword">void</span> *args);</span><br></pre></td></tr></table></figure>
 
 <p>注意：通过主动生成虚拟机获取<code>JNIEnv *</code>指针，然后调用Java代码时，无需创建Java方法与本地C/C++函数间的映射表这一步骤。</p>
+<h1 id="使用Android-NDK开发"><a href="#使用Android-NDK开发" class="headerlink" title="使用Android NDK开发"></a>使用Android NDK开发</h1><p>在开发Android里的JNI相关的功能，可使用Android Studio配套的NDK工具包，一键编译，方便快速开发。</p>
+<p>NDK使用的官方介绍：<a target="_blank" rel="noopener" href="https://developer.android.google.cn/ndk">Android NDK</a></p>
+<p>NDK使用示例见官方CodeLab: <a target="_blank" rel="noopener" href="https://developer.android.google.cn/codelabs/android-studio-cmake#0">Create Hello-CMake with Android Studio</a></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li>金泰廷等著《Android框架解密》，人民邮电出版社，2012。该书分析的代码较老，但框架机制基本不变，非常好的书籍。</li>
+<li>源码查看网站：<a target="_blank" rel="noopener" href="http://aospxref.com/%E3%80%82%E5%9F%BA%E4%BA%8EOpenGrok%E7%9A%84%E6%BA%90%E7%A0%81%E6%9F%A5%E7%9C%8B%E6%9C%8D%E5%8A%A1%E7%BD%91%E7%AB%99%EF%BC%8C%E9%80%9F%E5%BA%A6%E5%BE%88%E5%BF%AB%EF%BC%8C%E4%B8%BB%E8%A6%81%E7%94%A8%E6%9D%A5%E6%9F%A5%E7%9C%8BC/C++%E4%BB%A3%E7%A0%81%EF%BC%8CJava%E4%BB%A3%E7%A0%81%E5%8F%AF%E4%B8%8B%E8%BD%BD%E5%88%B0%E6%9C%AC%E5%9C%B0%E6%9F%A5%E7%9C%8B%E3%80%82">http://aospxref.com/。基于OpenGrok的源码查看服务网站，速度很快，主要用来查看C/C++代码，Java代码可下载到本地查看。</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/codelabs/android-studio-cmake#0">Create Hello-CMake with Android Studio</a>:NDK开发示例</li>
+</ul>
 
     </div>
 
@@ -365,7 +376,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AF%B4%E6%98%8E"><span class="nav-number">1.</span> <span class="nav-text">说明</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86"><span class="nav-number">1.1.</span> <span class="nav-text">基本原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java%E4%BB%A3%E7%A0%81%E4%B8%8EJNI%E6%9C%AC%E5%9C%B0%E5%87%BD%E6%95%B0%E7%9A%84%E4%BA%A4%E4%BA%92"><span class="nav-number">1.2.</span> <span class="nav-text">Java代码与JNI本地函数的交互</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JNI%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="nav-number">2.</span> <span class="nav-text">JNI使用示例</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Java%E4%BB%A3%E7%A0%81%E8%B0%83%E7%94%A8C-C-%E6%9C%AC%E5%9C%B0%E5%87%BD%E6%95%B0"><span class="nav-number">2.1.</span> <span class="nav-text">Java代码调用C&#x2F;C++本地函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-C-%E6%9C%AC%E5%9C%B0%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8Java%E4%BB%A3%E7%A0%81"><span class="nav-number">2.2.</span> <span class="nav-text">C&#x2F;C++本地函数调用Java代码</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AF%B4%E6%98%8E"><span class="nav-number">1.</span> <span class="nav-text">说明</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86"><span class="nav-number">1.1.</span> <span class="nav-text">基本原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java%E4%BB%A3%E7%A0%81%E4%B8%8EJNI%E6%9C%AC%E5%9C%B0%E5%87%BD%E6%95%B0%E7%9A%84%E4%BA%A4%E4%BA%92"><span class="nav-number">1.2.</span> <span class="nav-text">Java代码与JNI本地函数的交互</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JNI%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="nav-number">2.</span> <span class="nav-text">JNI使用示例</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Java%E4%BB%A3%E7%A0%81%E8%B0%83%E7%94%A8C-C-%E6%9C%AC%E5%9C%B0%E5%87%BD%E6%95%B0"><span class="nav-number">2.1.</span> <span class="nav-text">Java代码调用C&#x2F;C++本地函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-C-%E6%9C%AC%E5%9C%B0%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8Java%E4%BB%A3%E7%A0%81"><span class="nav-number">2.2.</span> <span class="nav-text">C&#x2F;C++本地函数调用Java代码</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8Android-NDK%E5%BC%80%E5%8F%91"><span class="nav-number">3.</span> <span class="nav-text">使用Android NDK开发</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -438,7 +449,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">199k</span>
+    <span title="站点总字数">200k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
