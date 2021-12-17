@@ -17,7 +17,7 @@ JNI提供的接口声明位于：`<JDK_HOME>/include/jni.h`中
 
 > 注意：JNI是Java的特性而非Android独有特性，只因为Android使用了Java语言，因此可以利用JNI的功能。
 
-### 基本原理
+## 基本原理
 
 **Java虚拟机**利用**函数原型**将Java声明的本地方法与运行库中的C函数通过函数映射表对应起来，这样Java代码就能与C/C++代码交互。
 
@@ -27,7 +27,7 @@ JNI提供的接口声明位于：`<JDK_HOME>/include/jni.h`中
 >
 >思考二：为什么用函数原型？Java方法和C/C++函数是不一样的，但它们可以在函数原型上变为一致，都有名称和签名，因此可以使用函数原型建立映射关系。
 
-### Java代码与JNI本地函数的交互
+## Java代码与JNI本地函数的交互
 
 使用JNI一般遵循以下步骤：
 
@@ -41,9 +41,11 @@ JNI提供的接口声明位于：`<JDK_HOME>/include/jni.h`中
 
 ![aosp10-jni-guide.drawio](/images/aosp10-jni-guide.drawio.svg)
 
+> 思考：能否基于JNI开发主要使用C/C++编写的本地应用程序？不妥，JNI函数调用的开销应该比较大，影响性能。
+
 # JNI使用示例
 
-### Java代码调用C/C++本地函数
+## Java代码调用C/C++本地函数
 
 1. 在Java类中声明本地方法并加载本地函数库
 
@@ -114,7 +116,7 @@ JNI提供的接口声明位于：`<JDK_HOME>/include/jni.h`中
    Hello World from native!
    ```
 
-### C/C++本地函数调用Java代码
+## C/C++本地函数调用Java代码
 
 C/C++函数调用Java代码的用法有：获取Java类的class，创建Java类的对象实例，调用类的静态成员变量和静态方法，调用对象的成员变量和方法。相关JNI接口都声明在`<JDK_HOME>/include/jni.h`中。
 
@@ -148,4 +150,20 @@ JNI_CreateJavaVM(JavaVM **pvm, void **penv, void *args);
 ```
 
 注意：通过主动生成虚拟机获取`JNIEnv *`指针，然后调用Java代码时，无需创建Java方法与本地C/C++函数间的映射表这一步骤。
+
+# 使用Android NDK开发
+
+在开发Android里的JNI相关的功能，可使用Android Studio配套的NDK工具包，一键编译，方便快速开发。
+
+NDK使用的官方介绍：[Android NDK](https://developer.android.google.cn/ndk)
+
+NDK使用示例见官方CodeLab: [Create Hello-CMake with Android Studio](https://developer.android.google.cn/codelabs/android-studio-cmake#0)
+
+
+
+# 参考
+
+- 金泰廷等著《Android框架解密》，人民邮电出版社，2012。该书分析的代码较老，但框架机制基本不变，非常好的书籍。
+- 源码查看网站：http://aospxref.com/。基于OpenGrok的源码查看服务网站，速度很快，主要用来查看C/C++代码，Java代码可下载到本地查看。
+- [Create Hello-CMake with Android Studio](https://developer.android.google.cn/codelabs/android-studio-cmake#0):NDK开发示例
 
