@@ -1,5 +1,5 @@
 ---
-title: Android 10系统编译和烧录
+title: Android10系统编译和烧录
 date: 2021-12-15 15:10:20
 tags:
 - android
