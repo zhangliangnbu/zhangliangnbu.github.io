@@ -27,15 +27,15 @@
 <meta property="og:site_name" content="永恒的码流">
 <meta property="og:description" content="前言基于Android 10 源码 。Activity启动分为两种：  普通Activity启动：APP已经启动，一般在APP内从一个Activity启动另一个Activity。 根Activity启动：也称为APP冷启动，App还没有启动，一般从Launcher界面启动。  两者主流程基本一致，区别在于根Activity启动流程还包含启动APP进程和实例化Application的流程。 普通Ac">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://zhangliangnbu.github.io/2021/12/17/images/aosp10_activity_start_create.drawio.svg">
-<meta property="og:image" content="https://zhangliangnbu.github.io/2021/12/17/images/aosp10_app_start_cold.drawio.svg">
+<meta property="og:image" content="https://zhangliangnbu.github.io/2021/12/17/images/aosp10-activity-start-create.svg">
+<meta property="og:image" content="https://zhangliangnbu.github.io/2021/12/17/images/aosp10-app-start-cold.svg">
 <meta property="article:published_time" content="2021-12-17T07:49:34.000Z">
-<meta property="article:modified_time" content="2021-12-20T07:08:24.830Z">
+<meta property="article:modified_time" content="2021-12-20T07:33:13.608Z">
 <meta property="article:author" content="章亮">
 <meta property="article:tag" content="android">
 <meta property="article:tag" content="android系统开发">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://zhangliangnbu.github.io/2021/12/17/images/aosp10_activity_start_create.drawio.svg">
+<meta name="twitter:image" content="https://zhangliangnbu.github.io/2021/12/17/images/aosp10-activity-start-create.svg">
 
 <link rel="canonical" href="https://zhangliangnbu.github.io/2021/12/17/android-activity-start-guide/">
 
@@ -201,7 +201,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-12-20 15:08:24" itemprop="dateModified" datetime="2021-12-20T15:08:24+08:00">2021-12-20</time>
+                <time title="修改时间：2021-12-20 15:33:13" itemprop="dateModified" datetime="2021-12-20T15:33:13+08:00">2021-12-20</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -231,7 +231,7 @@
 </ul>
 <p>两者主流程基本一致，区别在于根Activity启动流程还包含启动APP进程和实例化Application的流程。</p>
 <h1 id="普通Activity启动流程"><a href="#普通Activity启动流程" class="headerlink" title="普通Activity启动流程"></a>普通Activity启动流程</h1><h2 id="流程概述"><a href="#流程概述" class="headerlink" title="流程概述"></a>流程概述</h2><p>分析方法<code>Activity.startActivity()</code> 到<code>Activity.onCreate()</code>的流程，流程图如下。</p>
-<p><img src="../images/aosp10_activity_start_create.drawio.svg" alt="aosp10_activity_start_create.drawio"></p>
+<p><img src="../images/aosp10-activity-start-create.svg"></p>
 <p>流程说明：</p>
 <ol>
 <li>客户端发起启动Activity请求。客户端里的Activity通过<code>Instrumentation.execStartActivity()</code>请求服务端的ATMS启动Activity。</li>
@@ -254,7 +254,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> Activity <span class="title">performLaunchActivity</span><span class="params">(ActivityClientRecord r, Intent customIntent)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// activity 准备创建需要的相关数据，创建</span></span><br><span class="line">    ActivityInfo aInfo = r.activityInfo;</span><br><span class="line">    ComponentName component = r.intent.getComponent();</span><br><span class="line">    ContextImpl appContext = createBaseContextForActivity(r);</span><br><span class="line">    java.lang.ClassLoader cl = appContext.getClassLoader();</span><br><span class="line">    <span class="comment">// 反射创建Activity对象，还不能交互</span></span><br><span class="line">    Activity activity = mInstrumentation.newActivity(cl, component.getClassName(), r.intent);</span><br><span class="line">    <span class="comment">// 如果已经存在，直接返回</span></span><br><span class="line">    Application app = r.packageInfo.makeApplication(<span class="keyword">false</span>, mInstrumentation);</span><br><span class="line">    <span class="comment">// 绑定Activity与其他数据：绑定Context，创建PhoneWindow，绑定线程、Token、Application等</span></span><br><span class="line">    activity.attach(appContext, <span class="keyword">this</span>, getInstrumentation(), r.token...);</span><br><span class="line">    <span class="comment">// 触发onCreate调用</span></span><br><span class="line">    mInstrumentation.callActivityOnCreate(activity, r.state);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h1 id="根Activity启动流程"><a href="#根Activity启动流程" class="headerlink" title="根Activity启动流程"></a>根Activity启动流程</h1><h2 id="流程概述-1"><a href="#流程概述-1" class="headerlink" title="流程概述"></a>流程概述</h2><p>一般也称为APP冷启动流程，分析从Launcher界面点击APP图标到APP显示完成的流程。相比从普通Activity启动流程，App的冷启动流程多了两个步骤：创建进程，绑定并创建Application对象。</p>
-<p><img src="../images/aosp10_app_start_cold.drawio.svg" alt="aosp10_app_start_cold.drawio"></p>
+<p><img src="../images/aosp10-app-start-cold.svg" alt="aosp10_app_start_cold.drawio"></p>
 <p>图中虚线部分是创建APP进程和启动Application的流程。</p>
 <p>普通Activity启动流程走到<code>ActivityStackSupervisor.startSpecificActivityLocked()</code>时，有一个进程相关的判断：如果应用进程存在则去启动Activity，否则去创建进程。冷启动时，App进程还不存在，因此需要去创建进程，其入口便是这里。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">startSpecificActivityLocked</span><span class="params">(ActivityRecord r, <span class="keyword">boolean</span> andResume, <span class="keyword">boolean</span> checkConfig)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// Is this activity&#x27;s application already running?</span></span><br><span class="line">    <span class="keyword">final</span> WindowProcessController wpc =</span><br><span class="line">            mService.getProcessController(r.processName, r.info.applicationInfo.uid);</span><br><span class="line">    <span class="keyword">boolean</span> knownToBeDead = <span class="keyword">false</span>;</span><br><span class="line">	<span class="comment">// APP进程存在时，启动Activity</span></span><br><span class="line">    <span class="keyword">if</span> (wpc != <span class="keyword">null</span> &amp;&amp; wpc.hasThread()) &#123;</span><br><span class="line">        <span class="comment">// 启动 Activity</span></span><br><span class="line">        realStartActivityLocked(r, wpc, andResume, checkConfig);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// APP进程不存在时，创建进程</span></span><br><span class="line">    <span class="comment">// Message 里设置了一个回调，即 ActivityManagerInternal.startProcess</span></span><br><span class="line">    <span class="keyword">final</span> Message msg = PooledLambda.obtainMessage(</span><br><span class="line">            ActivityManagerInternal::startProcess, mService.mAmInternal, r.processName,</span><br><span class="line">            r.info.applicationInfo, knownToBeDead, <span class="string">&quot;activity&quot;</span>, r.intent.getComponent());</span><br><span class="line">		<span class="comment">// 发送消息到&quot;android.display&quot;线程处理</span></span><br><span class="line">    mService.mH.sendMessage(msg);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
