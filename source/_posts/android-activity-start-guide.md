@@ -23,7 +23,7 @@ categories:
 
 分析方法`Activity.startActivity()` 到`Activity.onCreate()`的流程，流程图如下。
 
-![](../images/aosp10-activity-start-create.svg)
+![aosp10-activity-start-create](/images/aosp10-activity-start-create.svg)
 
 流程说明：
 
@@ -140,7 +140,7 @@ private Activity performLaunchActivity(ActivityClientRecord r, Intent customInte
 
 一般也称为APP冷启动流程，分析从Launcher界面点击APP图标到APP显示完成的流程。相比从普通Activity启动流程，App的冷启动流程多了两个步骤：创建进程，绑定并创建Application对象。
 
-![aosp10_app_start_cold.drawio](../images/aosp10-app-start-cold.svg)
+![aosp10_app_start_cold](/images/aosp10-app-start-cold.svg)
 
 图中虚线部分是创建APP进程和启动Application的流程。
 
