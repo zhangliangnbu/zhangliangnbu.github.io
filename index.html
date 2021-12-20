@@ -164,6 +164,146 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2021/12/17/android-activity-start-guide/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/12/17/android-activity-start-guide/" class="post-title-link" itemprop="url">Andoird 10 Activity启动流程概览</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-12-17 15:49:34" itemprop="dateCreated datePublished" datetime="2021-12-17T15:49:34+08:00">2021-12-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-12-20 15:08:24" itemprop="dateModified" datetime="2021-12-20T15:08:24+08:00">2021-12-20</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android系统开发</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>基于Android 10 源码 。Activity启动分为两种：</p>
+<ul>
+<li>普通Activity启动：APP已经启动，一般在APP内从一个Activity启动另一个Activity。</li>
+<li>根Activity启动：也称为APP冷启动，App还没有启动，一般从Launcher界面启动。</li>
+</ul>
+<p>两者主流程基本一致，区别在于根Activity启动流程还包含启动APP进程和实例化Application的流程。</p>
+<h1 id="普通Activity启动流程"><a href="#普通Activity启动流程" class="headerlink" title="普通Activity启动流程"></a>普通Activity启动流程</h1><h2 id="流程概述"><a href="#流程概述" class="headerlink" title="流程概述"></a>流程概述</h2><p>分析方法<code>Activity.startActivity()</code> 到<code>Activity.onCreate()</code>的流程，流程图如下。</p>
+<p><img src="../images/aosp10_activity_start_create.drawio.svg" alt="aosp10_activity_start_create.drawio"></p>
+<p>流程说明：</p>
+<ol>
+<li>客户端发起启动Activity请求。客户端里的Activity通过<code>Instrumentation.execStartActivity()</code>请求服务端的ATMS启动Activity。</li>
+<li>服务端完成Intent解析和数据、权限、状态等检查的准备工作。ATMS通过ActivityStarter、ActivityStack、ActivityStackSupervisor等完成Intent解析、检查等准备工作，并将数据传递给客户端的ApplicationThread，请求后者完成剩余启动工作。</li>
+<li>客户端完成Activity的创建、数据绑定、onCreate回调等工作。ApplicationThread通过ActivityThread将数据传到其主线程的Handler中进行处理，完成Activity的创建、数据绑定和onCreate回调等工作。</li>
+</ol>
+<h2 id="方法说明"><a href="#方法说明" class="headerlink" title="方法说明"></a>方法说明</h2><h3 id="Instrumentation-execStartActivity"><a href="#Instrumentation-execStartActivity" class="headerlink" title="Instrumentation.execStartActivity()"></a><code>Instrumentation.execStartActivity()</code></h3><p>请求服务端的ATMS启动Activity</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> ActivityResult <span class="title">execStartActivity</span><span class="params">(Context who, IBinder contextThread, IBinder token ...)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// IPC：调用 ActivityTaskManagerService</span></span><br><span class="line">    <span class="keyword">int</span> result = ActivityTaskManager.getService().startActivity(</span><br><span class="line">        whoThread, <span class="comment">// 发起方 IApplicationThread</span></span><br><span class="line">        who.getBasePackageName(), <span class="comment">// 发起方 package name</span></span><br><span class="line">        intent, <span class="comment">// 目标</span></span><br><span class="line">        <span class="comment">// Data MIME 类型，没有数据时为空</span></span><br><span class="line">        intent.resolveTypeIfNeeded(who.getContentResolver()),</span><br><span class="line">        token,  <span class="comment">// 发起方 IBinder</span></span><br><span class="line">        target != <span class="keyword">null</span> ? target.mEmbeddedID : <span class="keyword">null</span>, <span class="comment">// mEmbeddedID 作用？TODO</span></span><br><span class="line">        requestCode, </span><br><span class="line">        <span class="number">0</span>, <span class="comment">// startFlag</span></span><br><span class="line">        <span class="keyword">null</span>, <span class="comment">// ProfilerInfo profilerInfo 作用？TODO</span></span><br><span class="line">        options);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="ActivityStarter-startActivityMayWait"><a href="#ActivityStarter-startActivityMayWait" class="headerlink" title="ActivityStarter.startActivityMayWait()"></a><code>ActivityStarter.startActivityMayWait()</code></h3><p>解析Intent</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">startActivityMayWait</span><span class="params">(IApplicationThread caller, <span class="keyword">int</span> callingUid ...)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 解析Intent获取ResolveInfo，核心是获取其成员ActivityInfo。</span></span><br><span class="line">    <span class="comment">// 最终调用 PMS#queryIntentActivitiesInternal()：</span></span><br><span class="line">    <span class="comment">// 1. 通过Intent中ComponentName获取安装apk或扫描时解析过并保存的ActivityInfo;</span></span><br><span class="line">    <span class="comment">// 2. 设置ActivityInfo的metaData和applicationInfo</span></span><br><span class="line">    <span class="comment">// 上面的ActivityInfo作为新建的ResolveInfo成员，跟随后者一起被返回</span></span><br><span class="line">    ResolveInfo rInfo = mSupervisor.resolveIntent(intent, resolvedType, userId...);</span><br><span class="line">    <span class="comment">// 普通情况仅仅将rInfo的数据设置到intent中</span></span><br><span class="line">    ActivityInfo aInfo = mSupervisor.resolveActivity(intent, rInfo, startFlags, profilerInfo);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="ActivityStarter-startActivity"><a href="#ActivityStarter-startActivity" class="headerlink" title="ActivityStarter.startActivity()"></a><code>ActivityStarter.startActivity()</code></h3><p>检查权限等</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">startActivity</span><span class="params">(IApplicationThread caller, Intent intent ...)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 检查启动方的权限，系统方或同一个APP等则可授权</span></span><br><span class="line">    <span class="keyword">boolean</span> abort = !mSupervisor.checkStartAnyActivityPermission(intent, aInfo, resultWho ...);</span><br><span class="line">    abort |= !mService.mIntentFirewall.checkStartActivity(intent, callingUid ...);</span><br><span class="line">    abort |= !mService.getPermissionPolicyInternal().checkStartActivity(intent, callingUid,callingPackage);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="ActivityStackSupervisor-realStartActivityLocked"><a href="#ActivityStackSupervisor-realStartActivityLocked" class="headerlink" title="ActivityStackSupervisor.realStartActivityLocked()"></a><code>ActivityStackSupervisor.realStartActivityLocked()</code></h3><p>生成事务，为IPC到客户端创建Activity准备</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">boolean</span> <span class="title">realStartActivityLocked</span><span class="params">(ActivityRecord r, WindowProcessController proc...)</span></span>&#123;</span><br><span class="line">    <span class="comment">// 准备工作：锁定屏幕、开始计时、绑定进程、确保可见和配置...</span></span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">// 添加启动Activity事务项</span></span><br><span class="line">    <span class="keyword">final</span> ClientTransaction clientTransaction = ClientTransaction.obtain(proc.getThread(), r.appToken);</span><br><span class="line">    <span class="keyword">final</span> DisplayContent dc = r.getDisplay().mDisplayContent;</span><br><span class="line">	clientTransaction.addCallback(LaunchActivityItem.obtain(<span class="keyword">new</span> Intent(r.intent), ...));</span><br><span class="line">    <span class="comment">// 添加使Activity处于resume事务项</span></span><br><span class="line">    <span class="comment">// 在TransactionExecutor.execute()里会依次处理callback、LifecycleState</span></span><br><span class="line">    <span class="keyword">final</span> ActivityLifecycleItem lifecycleItem;</span><br><span class="line">    <span class="keyword">if</span> (andResume) &#123;</span><br><span class="line">        lifecycleItem = ResumeActivityItem.obtain(dc.isNextTransitionForward());</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        lifecycleItem = PauseActivityItem.obtain();</span><br><span class="line">    &#125;</span><br><span class="line">    clientTransaction.setLifecycleStateRequest(lifecycleItem);</span><br><span class="line">    <span class="comment">// Schedule transaction.</span></span><br><span class="line">	<span class="comment">// ActivityTaskManagerService</span></span><br><span class="line">    mService.getLifecycleManager().scheduleTransaction(clientTransaction);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="ActivityThread-performLaunchActivity"><a href="#ActivityThread-performLaunchActivity" class="headerlink" title="ActivityThread.performLaunchActivity()"></a><code>ActivityThread.performLaunchActivity()</code></h3><p>创建Activity，绑定数据等，执行<code>Activity.onCreate()</code>回调。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> Activity <span class="title">performLaunchActivity</span><span class="params">(ActivityClientRecord r, Intent customIntent)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// activity 准备创建需要的相关数据，创建</span></span><br><span class="line">    ActivityInfo aInfo = r.activityInfo;</span><br><span class="line">    ComponentName component = r.intent.getComponent();</span><br><span class="line">    ContextImpl appContext = createBaseContextForActivity(r);</span><br><span class="line">    java.lang.ClassLoader cl = appContext.getClassLoader();</span><br><span class="line">    <span class="comment">// 反射创建Activity对象，还不能交互</span></span><br><span class="line">    Activity activity = mInstrumentation.newActivity(cl, component.getClassName(), r.intent);</span><br><span class="line">    <span class="comment">// 如果已经存在，直接返回</span></span><br><span class="line">    Application app = r.packageInfo.makeApplication(<span class="keyword">false</span>, mInstrumentation);</span><br><span class="line">    <span class="comment">// 绑定Activity与其他数据：绑定Context，创建PhoneWindow，绑定线程、Token、Application等</span></span><br><span class="line">    activity.attach(appContext, <span class="keyword">this</span>, getInstrumentation(), r.token...);</span><br><span class="line">    <span class="comment">// 触发onCreate调用</span></span><br><span class="line">    mInstrumentation.callActivityOnCreate(activity, r.state);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="根Activity启动流程"><a href="#根Activity启动流程" class="headerlink" title="根Activity启动流程"></a>根Activity启动流程</h1><h2 id="流程概述-1"><a href="#流程概述-1" class="headerlink" title="流程概述"></a>流程概述</h2><p>一般也称为APP冷启动流程，分析从Launcher界面点击APP图标到APP显示完成的流程。相比从普通Activity启动流程，App的冷启动流程多了两个步骤：创建进程，绑定并创建Application对象。</p>
+<p><img src="../images/aosp10_app_start_cold.drawio.svg" alt="aosp10_app_start_cold.drawio"></p>
+<p>图中虚线部分是创建APP进程和启动Application的流程。</p>
+<p>普通Activity启动流程走到<code>ActivityStackSupervisor.startSpecificActivityLocked()</code>时，有一个进程相关的判断：如果应用进程存在则去启动Activity，否则去创建进程。冷启动时，App进程还不存在，因此需要去创建进程，其入口便是这里。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">startSpecificActivityLocked</span><span class="params">(ActivityRecord r, <span class="keyword">boolean</span> andResume, <span class="keyword">boolean</span> checkConfig)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// Is this activity&#x27;s application already running?</span></span><br><span class="line">    <span class="keyword">final</span> WindowProcessController wpc =</span><br><span class="line">            mService.getProcessController(r.processName, r.info.applicationInfo.uid);</span><br><span class="line">    <span class="keyword">boolean</span> knownToBeDead = <span class="keyword">false</span>;</span><br><span class="line">	<span class="comment">// APP进程存在时，启动Activity</span></span><br><span class="line">    <span class="keyword">if</span> (wpc != <span class="keyword">null</span> &amp;&amp; wpc.hasThread()) &#123;</span><br><span class="line">        <span class="comment">// 启动 Activity</span></span><br><span class="line">        realStartActivityLocked(r, wpc, andResume, checkConfig);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// APP进程不存在时，创建进程</span></span><br><span class="line">    <span class="comment">// Message 里设置了一个回调，即 ActivityManagerInternal.startProcess</span></span><br><span class="line">    <span class="keyword">final</span> Message msg = PooledLambda.obtainMessage(</span><br><span class="line">            ActivityManagerInternal::startProcess, mService.mAmInternal, r.processName,</span><br><span class="line">            r.info.applicationInfo, knownToBeDead, <span class="string">&quot;activity&quot;</span>, r.intent.getComponent());</span><br><span class="line">		<span class="comment">// 发送消息到&quot;android.display&quot;线程处理</span></span><br><span class="line">    mService.mH.sendMessage(msg);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>APP的冷启动过程主涉及到四个进程：Launcher进程（启动APP的进程）、SystemServer进程、APP进程、Zygote进程；三个重要工作：启动进程、启动Application、启动Activity。</p>
+<p>整个流程简述为：</p>
+<ul>
+<li>Launcher进程请求SystemServer进程创建Activity</li>
+<li>SystemServer进程解析Intent等，并检查目标APP进程是否存在，不存在则去创建进程。</li>
+<li>SystemServer进程通过Socket方式请求Zygote进程创建APP进程，返回进程号等信息。</li>
+<li>App进程入口为<code>ActivityThread.main()</code>方法，执行此方法，初始化进程并请求SystemServer绑定APP进程。绑定进程的工作包括，一，通知APP进程去启动Application；二，通知APP进程去启动Activity。</li>
+</ul>
+<aside> 💡 这里说的启动包含创建实例以及执行回调方法等操作。
+
+<h2 id="方法说明-1"><a href="#方法说明-1" class="headerlink" title="方法说明"></a>方法说明</h2><p>与普通Activity启动流程重复的方法不再进行说明</p>
+<h3 id="ProcessList-startProcessLocked"><a href="#ProcessList-startProcessLocked" class="headerlink" title="ProcessList.startProcessLocked()"></a><code>ProcessList.startProcessLocked()</code></h3><p>指定进程执行入口为<code>android.app.ActivityThread.main()</code>方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 设置进程启动相关参数</span></span><br><span class="line"><span class="function"><span class="keyword">boolean</span> <span class="title">startProcessLocked</span><span class="params">(ProcessRecord app, HostingRecord hostingRecord ...)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 进程执行入口</span></span><br><span class="line">    <span class="keyword">final</span> String entryPoint = <span class="string">&quot;android.app.ActivityThread&quot;</span>;</span><br><span class="line">    <span class="keyword">return</span> startProcessLocked(hostingRecord, entryPoint, app, uid, gids,</span><br><span class="line">                              runtimeFlags, mountExternal, seInfo, requiredAbi, </span><br><span class="line">                              instructionSet, invokeWith,startTime);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="ZygoteProcess-startViaZygote"><a href="#ZygoteProcess-startViaZygote" class="headerlink" title="ZygoteProcess.startViaZygote()"></a><code>ZygoteProcess.startViaZygote()</code></h3><p>设置zygote启动进程的参数</p>
+<h3 id="ZygoteProcess-attemptZygoteSendArgsAndGetResult"><a href="#ZygoteProcess-attemptZygoteSendArgsAndGetResult" class="headerlink" title="ZygoteProcess.attemptZygoteSendArgsAndGetResult()"></a><code>ZygoteProcess.attemptZygoteSendArgsAndGetResult()</code></h3><p>发送数据以启动进程，获取进程启动后的进程号等</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 发送数据以启动进程，获取进程启动后的进程号等</span></span><br><span class="line"><span class="keyword">private</span> Process.<span class="function">ProcessStartResult <span class="title">attemptZygoteSendArgsAndGetResult</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">        ZygoteState zygoteState, String msgStr)</span> <span class="keyword">throws</span> ZygoteStartFailedEx </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> BufferedWriter zygoteWriter = zygoteState.mZygoteOutputWriter;</span><br><span class="line">    <span class="keyword">final</span> DataInputStream zygoteInputStream = zygoteState.mZygoteInputStream;</span><br><span class="line">	<span class="comment">// 发消息给Zygote进程，各种参数</span></span><br><span class="line">    zygoteWriter.write(msgStr);</span><br><span class="line">    zygoteWriter.flush();</span><br><span class="line">    </span><br><span class="line">	<span class="comment">// 启动进程中...最终会执行ActivityThread.main方法</span></span><br><span class="line">    </span><br><span class="line">	<span class="comment">// 获取启动进程后结果，进程号等</span></span><br><span class="line">    Process.ProcessStartResult result = <span class="keyword">new</span> Process.ProcessStartResult();</span><br><span class="line">    result.pid = zygoteInputStream.readInt();</span><br><span class="line">    result.usingWrapper = zygoteInputStream.readBoolean();</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="ActivityThread-main"><a href="#ActivityThread-main" class="headerlink" title="ActivityThread.main()"></a><code>ActivityThread.main()</code></h3><p>进程入口方法，初始化主线程，绑定进程，启动应用</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">	<span class="comment">// 主线程Looper</span></span><br><span class="line">    Looper.prepareMainLooper();</span><br><span class="line">	<span class="comment">// 当前启动中进程的标识符，从ZygoteProcess相关方法传入</span></span><br><span class="line">    <span class="keyword">long</span> startSeq = <span class="number">0</span>;</span><br><span class="line">	ActivityThread thread = <span class="keyword">new</span> ActivityThread();</span><br><span class="line">	<span class="comment">// 绑定进程，false 表示非系统进程，会调用AMS.attachApplication()</span></span><br><span class="line">    thread.attach(<span class="keyword">false</span>, startSeq);</span><br><span class="line">	<span class="comment">// 主线程绑定的Handler</span></span><br><span class="line">    sMainThreadHandler = thread.getHandler();</span><br><span class="line">	<span class="comment">// 防止线程结束，等待如Application.onCreate()、Activity.onCreate()等周期回调方法</span></span><br><span class="line">    Looper.loop();</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">&quot;Main thread loop unexpectedly exited&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="ActivityManagerService-attachApplicationLocked"><a href="#ActivityManagerService-attachApplicationLocked" class="headerlink" title="ActivityManagerService.attachApplicationLocked()"></a><code>ActivityManagerService.attachApplicationLocked()</code></h3><p> 启动Application、启动Activity</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取并设置Application Record，启动Application，启动Activity等</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">attachApplicationLocked</span><span class="params">(<span class="meta">@NonNull</span> IApplicationThread thread,<span class="keyword">int</span> pid, <span class="keyword">int</span> callingUid, <span class="keyword">long</span> startSeq)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// zygote启动进程返回结果后，pid会被保存到mPidsSelfLocked中</span></span><br><span class="line">    <span class="comment">// 见 ProcessList.startProcessLocked 方法中执行的</span></span><br><span class="line">    <span class="comment">// ProcessList.handleProcessStartedLocked，启动进程后更新状态</span></span><br><span class="line">    <span class="comment">// 有概率发生当前方法先于handleProcessStartedLocked执行，则app=null</span></span><br><span class="line">    ProcessRecord app = mPidsSelfLocked.get(pid);</span><br><span class="line">    <span class="comment">// 设置app参数</span></span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">// ipc 启动Application, 最终在APP进程调用ActivityThread.handleBindApplication()</span></span><br><span class="line">    thread.bindApplication(processName, appInfo, providers, ...);</span><br><span class="line">    <span class="comment">// 去启动Activity。最终调用ActivityStackSupervisor.realStartActivityLocked()</span></span><br><span class="line">    didSomething = mAtmInternal.attachApplication(app.getWindowProcessController());</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="ActivityThread-handleBindApplication"><a href="#ActivityThread-handleBindApplication" class="headerlink" title="ActivityThread.handleBindApplication()"></a><code>ActivityThread.handleBindApplication()</code></h3><p>设置APP数据，创建Application实例，调用<code>Application.onCreate()</code>方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">handleBindApplication</span><span class="params">(AppBindData data)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 设置APP名称</span></span><br><span class="line">    Process.setArgV0(data.processName);</span><br><span class="line">    android.ddm.DdmHandleAppName.setAppName(data.processName, UserHandle.myUserId());</span><br><span class="line">    VMRuntime.setProcessPackageName(data.appInfo.packageName);</span><br><span class="line">    <span class="comment">// 设置应用缓存数据目录</span></span><br><span class="line">    VMRuntime.setProcessDataDirectory(data.appInfo.dataDir);</span><br><span class="line">    <span class="comment">// 设置时区和本地化</span></span><br><span class="line">    TimeZone.setDefault(<span class="keyword">null</span>);</span><br><span class="line">    LocaleList.setDefault(data.config.getLocales());</span><br><span class="line">    <span class="comment">// 创建应用包的数据</span></span><br><span class="line">    data.info = getPackageInfoNoCheck(data.appInfo, data.compatInfo);</span><br><span class="line">    <span class="keyword">if</span> (agent != <span class="keyword">null</span>) &#123;</span><br><span class="line">        handleAttachAgent(agent, data.info);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 设置屏幕分辨率(用于兼容)、时间格式、网络代理</span></span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">// 判断并获取或创建 Instrumentation，之后会用来创建Application</span></span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">// 创建Application、重写资源相关的R常量</span></span><br><span class="line">    Application app = data.info.makeApplication(data.restrictedBackupMode, <span class="keyword">null</span>);</span><br><span class="line">	mInstrumentation.onCreate(data.instrumentationArgs);</span><br><span class="line">	<span class="comment">// 执行Application.onCreate回调</span></span><br><span class="line">	mInstrumentation.callApplicationOnCreate(app);</span><br><span class="line">	<span class="comment">// 加载字体资源</span></span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="相关类"><a href="#相关类" class="headerlink" title="相关类"></a>相关类</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">frameworks/base/services/core</span><br><span class="line">    com.android.server.wm.ActivityTaskManagerService </span><br><span class="line">    com.android.server.wm.ActivityStarter</span><br><span class="line">    com.android.server.wm.RootActivityContainer</span><br><span class="line">    com.android.server.wm.ActivityStack</span><br><span class="line">    com.android.server.wm.ActivityStackSupervisor</span><br><span class="line">    com.android.server.wm.ClientLifecycleManager</span><br><span class="line">    com.android.server.am.ActivityManagerService</span><br><span class="line">    com.android.server.am.ActivityManagerService.LocalService</span><br><span class="line">    com.android.server.am.ProcessList</span><br><span class="line">frameworks/base/core</span><br><span class="line">    android.app.Activity</span><br><span class="line">    android.app.Instrumentation</span><br><span class="line">    android.app.ActivityThread</span><br><span class="line">    android.app.ActivityThread.ApplicationThread</span><br><span class="line">    android.app.servertransaction.LaunchActivityItem</span><br><span class="line">    android.app.servertransaction.TransactionExecutor</span><br><span class="line">    android.app.servertransaction.ClientTransaction</span><br><span class="line">    android.os.Process</span><br><span class="line">    android.os.ZygoteProcess</span><br><span class="line">    android.app.LoadedApk</span><br><span class="line">    android.app.AppComponentFactory</span><br><span class="line">    android.app.Application</span><br></pre></td></tr></table></figure>
+
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li><a target="_blank" rel="noopener" href="http://aospxref.com/android-10.0.0_r47/">Android 10 源码</a></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2021/12/15/android-aosp-compile-flashing/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -178,7 +318,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/12/15/android-aosp-compile-flashing/" class="post-title-link" itemprop="url">Android 10系统编译和烧录</a>
+            <a href="/2021/12/15/android-aosp-compile-flashing/" class="post-title-link" itemprop="url">Android10系统编译和烧录</a>
         </h2>
 
         <div class="post-meta">
@@ -187,10 +327,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-12-15 15:10:20 / 修改时间：17:36:19" itemprop="dateCreated datePublished" datetime="2021-12-15T15:10:20+08:00">2021-12-15</time>
+              <time title="创建时间：2021-12-15 15:10:20" itemprop="dateCreated datePublished" datetime="2021-12-15T15:10:20+08:00">2021-12-15</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-12-17 15:51:08" itemprop="dateModified" datetime="2021-12-17T15:51:08+08:00">2021-12-17</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -1159,123 +1305,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2019/05/15/android-build-07-gradle-advance/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="章亮">
-      <meta itemprop="description" content="Developer For Android">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="永恒的码流">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/05/15/android-build-07-gradle-advance/" class="post-title-link" itemprop="url">Android构建07-进阶</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-05-15 14:51:42" itemprop="dateCreated datePublished" datetime="2019-05-15T14:51:42+08:00">2019-05-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 14:35:24" itemprop="dateModified" datetime="2021-06-29T14:35:24+08:00">2021-06-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="脚本和对象"><a href="#脚本和对象" class="headerlink" title="脚本和对象"></a>脚本和对象</h1><p>构建时，脚本文件会转化为对象；写脚本时不懂的地方查对应对象API即可。</p>
-<ul>
-<li><code>settings.gradle</code>会转化为<code>Settings</code>对象。</li>
-<li><code>build.gradle</code>会转化为<code>Project</code>对象。</li>
-<li>其他gradle文件，没有定义为class的，会转换为一个实现了<code>Script</code>接口的对象</li>
-</ul>
-<h1 id="任务"><a href="#任务" class="headerlink" title="任务"></a>任务</h1><p>可以使用方法和关键字定义。</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 关键字定义</span></span><br><span class="line">task myTask</span><br><span class="line">task myTask &#123; configure closure &#125; <span class="comment">// 重点</span></span><br><span class="line">task myTask(<span class="attr">type:</span> SomeType)</span><br><span class="line">task myTask(<span class="attr">type:</span> SomeType) &#123; configure closure &#125; <span class="comment">// 重点</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">// 方法定义</span></span><br><span class="line">Task task(String name)</span><br><span class="line">Task task(String name,Closure configureClosure)</span><br><span class="line">Task task(String name,Action&lt;? super Task&gt; configureAction)</span><br><span class="line">Task task(Map&lt;String,?&gt; args,String name)</span><br><span class="line">Task task(Map&lt;String,?&gt; args,String name,Closure configureClosure)</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="常用属性"><a href="#常用属性" class="headerlink" title="常用属性"></a>常用属性</h1><p><code>Project</code>和<code>Settings</code>的常用属性</p>
-<p><strong>扩展属性（Ext属性）</strong></p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义</span></span><br><span class="line">[project.]ext.foo = <span class="string">&quot;bar&quot;</span></span><br><span class="line">[project.]ext &#123;</span><br><span class="line">		foo = <span class="string">&quot;bar&quot;</span></span><br><span class="line">&#125; <span class="comment">// 命名空间方式定义 ？？</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用</span></span><br><span class="line">println project.ext.foo</span><br><span class="line">println rootProject.ext.foo</span><br><span class="line"></span><br><span class="line"><span class="comment">// 范围：有穿透性？gradle 4.10.* 没有穿透性。即rootProject.foo != projet.foo</span></span><br></pre></td></tr></table></figure>
-
-
-
-<p><strong>文件<code>gradle.properites</code>属性</strong></p>
-<p>可以直接被<code>Project</code>/<code>Settings</code>使用</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// gradle.properties中</span></span><br><span class="line">test=<span class="string">&quot;test hw&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// build.gradle中</span></span><br><span class="line"><span class="keyword">assert</span> project.test == <span class="string">&quot;test hw&quot;</span></span><br><span class="line"><span class="keyword">assert</span> settings.test == <span class="string">&quot;test hw&quot;</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="应用脚本"><a href="#应用脚本" class="headerlink" title="应用脚本"></a>应用脚本</h1><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 属性</span></span><br><span class="line"><span class="keyword">def</span> version = [<span class="attr">test:</span> <span class="number">1.0</span>]</span><br><span class="line"><span class="keyword">def</span> deps = [<span class="attr">test :</span> <span class="string">&quot;com.example.test:test:$&#123;version.test&#125;&quot;</span>]</span><br><span class="line">ext.deps = deps</span><br><span class="line"></span><br><span class="line"><span class="comment">// 方法</span></span><br><span class="line"><span class="keyword">def</span> printHW() &#123;</span><br><span class="line">  println <span class="string">&#x27;hello world !!!&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line">ext.printHW = <span class="built_in">this</span>.&amp;printHW</span><br><span class="line"></span><br><span class="line"><span class="comment">// build.gradle中使用</span></span><br><span class="line">apply <span class="attr">from:</span> rootProject.getRootDir().getAbsolutePath() + <span class="string">&#x27;/deps.gradle&#x27;</span></span><br><span class="line">println deps.test</span><br><span class="line">printlnHW()</span><br></pre></td></tr></table></figure>
-
-
-
-<p>读取属性文件</p>
-<h1 id="修改Artifact文件目录和名称"><a href="#修改Artifact文件目录和名称" class="headerlink" title="修改Artifact文件目录和名称"></a>修改Artifact文件目录和名称</h1><p>在gradle 4.10和android gradle tools 3.3.*及以上</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 通过 androd.applicationVariants.all &#123;&#125; 获取  ApplicationVariant</span></span><br><span class="line"><span class="comment">// ApplicationVariant获取生成物目录属性API，直接赋值即可修改</span></span><br><span class="line">File dir = ApplicationVariant.getPackageApplicationProvider().get().outputDirectory</span><br><span class="line"></span><br><span class="line"><span class="comment">// 通过ApplicationVariant.getOutputs().each &#123;&#125; 获取VariantOutput</span></span><br><span class="line"><span class="comment">// VariantOutput获取生成物文件名称属性，直接赋值即可修改</span></span><br><span class="line">String name = VariantOutput.outputFileName</span><br></pre></td></tr></table></figure>
-
-
-
-<p>完整代码，在module的<code>build.gradle</code>脚本文件中添加如下代码：</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">android &#123;</span><br><span class="line">		...</span><br><span class="line">    applicationVariants.all &#123; variant -&gt;</span><br><span class="line">        refactorVariant(variant)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.android.build.gradle.api.ApplicationVariant</span><br><span class="line"><span class="comment">// 更改生成物目录和名称</span></span><br><span class="line"><span class="comment">// gradle 4.10 and android-gradle-tools 3.3</span></span><br><span class="line"><span class="keyword">def</span> refactorVariant(ApplicationVariant variant) &#123;</span><br><span class="line">    <span class="comment">// 获取目录</span></span><br><span class="line">    println <span class="string">&quot;old dir -&gt; &quot;</span> + variant.getPackageApplicationProvider().get().outputDirectory.getAbsolutePath()</span><br><span class="line">    <span class="comment">// 修改目录</span></span><br><span class="line">    variant.getPackageApplicationProvider().get().outputDirectory = <span class="keyword">new</span> File(<span class="string">&quot;$&#123;project.projectDir.getPath()&#125;/apk/$&#123;variant.getBuildType().name&#125;&quot;</span>)</span><br><span class="line">    <span class="comment">// 输出修改后的目录</span></span><br><span class="line">    println <span class="string">&quot;new dir -&gt; &quot;</span> + variant.getPackageApplicationProvider().get().outputDirectory.getAbsolutePath()</span><br><span class="line"></span><br><span class="line">    variant.getOutputs().each &#123; output -&gt;</span><br><span class="line">        <span class="comment">// 获取名称</span></span><br><span class="line">        println <span class="string">&quot;old name -&gt; &quot;</span> + output.outputFileName</span><br><span class="line">        <span class="keyword">if</span> (output.outputFileName.endsWith(<span class="string">&#x27;.apk&#x27;</span>)) &#123;</span><br><span class="line">            <span class="comment">// 修改名称</span></span><br><span class="line">            output.outputFileName = <span class="string">&quot;GradleDemo_$&#123;variant.getBuildType().name&#125;_$&#123;variant.getVersionName()&#125;.apk&quot;</span></span><br><span class="line">            <span class="comment">// 输出修改后的名称</span></span><br><span class="line">            println <span class="string">&quot;new name -&gt; &quot;</span> + output.outputFileName</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
-<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/innost/article/details/48228651#t14">深入理解Android之Gradle</a></li>
-<li><a target="_blank" rel="noopener" href="http://www.huangbowen.net/blog/2013/09/12/setup-properties-in-gradle/">Gradle的属性设置大全</a></li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1347,7 +1376,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">54</span>
+          <span class="site-state-item-count">55</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1404,12 +1433,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">200k</span>
+    <span title="站点总字数">210k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">3:01</span>
+    <span title="站点阅读时长">3:11</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>

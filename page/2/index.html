@@ -164,6 +164,123 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2019/05/15/android-build-07-gradle-advance/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/05/15/android-build-07-gradle-advance/" class="post-title-link" itemprop="url">Android构建07-进阶</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-05-15 14:51:42" itemprop="dateCreated datePublished" datetime="2019-05-15T14:51:42+08:00">2019-05-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-29 14:35:24" itemprop="dateModified" datetime="2021-06-29T14:35:24+08:00">2021-06-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="脚本和对象"><a href="#脚本和对象" class="headerlink" title="脚本和对象"></a>脚本和对象</h1><p>构建时，脚本文件会转化为对象；写脚本时不懂的地方查对应对象API即可。</p>
+<ul>
+<li><code>settings.gradle</code>会转化为<code>Settings</code>对象。</li>
+<li><code>build.gradle</code>会转化为<code>Project</code>对象。</li>
+<li>其他gradle文件，没有定义为class的，会转换为一个实现了<code>Script</code>接口的对象</li>
+</ul>
+<h1 id="任务"><a href="#任务" class="headerlink" title="任务"></a>任务</h1><p>可以使用方法和关键字定义。</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 关键字定义</span></span><br><span class="line">task myTask</span><br><span class="line">task myTask &#123; configure closure &#125; <span class="comment">// 重点</span></span><br><span class="line">task myTask(<span class="attr">type:</span> SomeType)</span><br><span class="line">task myTask(<span class="attr">type:</span> SomeType) &#123; configure closure &#125; <span class="comment">// 重点</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">// 方法定义</span></span><br><span class="line">Task task(String name)</span><br><span class="line">Task task(String name,Closure configureClosure)</span><br><span class="line">Task task(String name,Action&lt;? super Task&gt; configureAction)</span><br><span class="line">Task task(Map&lt;String,?&gt; args,String name)</span><br><span class="line">Task task(Map&lt;String,?&gt; args,String name,Closure configureClosure)</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="常用属性"><a href="#常用属性" class="headerlink" title="常用属性"></a>常用属性</h1><p><code>Project</code>和<code>Settings</code>的常用属性</p>
+<p><strong>扩展属性（Ext属性）</strong></p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义</span></span><br><span class="line">[project.]ext.foo = <span class="string">&quot;bar&quot;</span></span><br><span class="line">[project.]ext &#123;</span><br><span class="line">		foo = <span class="string">&quot;bar&quot;</span></span><br><span class="line">&#125; <span class="comment">// 命名空间方式定义 ？？</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用</span></span><br><span class="line">println project.ext.foo</span><br><span class="line">println rootProject.ext.foo</span><br><span class="line"></span><br><span class="line"><span class="comment">// 范围：有穿透性？gradle 4.10.* 没有穿透性。即rootProject.foo != projet.foo</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>文件<code>gradle.properites</code>属性</strong></p>
+<p>可以直接被<code>Project</code>/<code>Settings</code>使用</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// gradle.properties中</span></span><br><span class="line">test=<span class="string">&quot;test hw&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// build.gradle中</span></span><br><span class="line"><span class="keyword">assert</span> project.test == <span class="string">&quot;test hw&quot;</span></span><br><span class="line"><span class="keyword">assert</span> settings.test == <span class="string">&quot;test hw&quot;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="应用脚本"><a href="#应用脚本" class="headerlink" title="应用脚本"></a>应用脚本</h1><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 属性</span></span><br><span class="line"><span class="keyword">def</span> version = [<span class="attr">test:</span> <span class="number">1.0</span>]</span><br><span class="line"><span class="keyword">def</span> deps = [<span class="attr">test :</span> <span class="string">&quot;com.example.test:test:$&#123;version.test&#125;&quot;</span>]</span><br><span class="line">ext.deps = deps</span><br><span class="line"></span><br><span class="line"><span class="comment">// 方法</span></span><br><span class="line"><span class="keyword">def</span> printHW() &#123;</span><br><span class="line">  println <span class="string">&#x27;hello world !!!&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line">ext.printHW = <span class="built_in">this</span>.&amp;printHW</span><br><span class="line"></span><br><span class="line"><span class="comment">// build.gradle中使用</span></span><br><span class="line">apply <span class="attr">from:</span> rootProject.getRootDir().getAbsolutePath() + <span class="string">&#x27;/deps.gradle&#x27;</span></span><br><span class="line">println deps.test</span><br><span class="line">printlnHW()</span><br></pre></td></tr></table></figure>
+
+
+
+<p>读取属性文件</p>
+<h1 id="修改Artifact文件目录和名称"><a href="#修改Artifact文件目录和名称" class="headerlink" title="修改Artifact文件目录和名称"></a>修改Artifact文件目录和名称</h1><p>在gradle 4.10和android gradle tools 3.3.*及以上</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 通过 androd.applicationVariants.all &#123;&#125; 获取  ApplicationVariant</span></span><br><span class="line"><span class="comment">// ApplicationVariant获取生成物目录属性API，直接赋值即可修改</span></span><br><span class="line">File dir = ApplicationVariant.getPackageApplicationProvider().get().outputDirectory</span><br><span class="line"></span><br><span class="line"><span class="comment">// 通过ApplicationVariant.getOutputs().each &#123;&#125; 获取VariantOutput</span></span><br><span class="line"><span class="comment">// VariantOutput获取生成物文件名称属性，直接赋值即可修改</span></span><br><span class="line">String name = VariantOutput.outputFileName</span><br></pre></td></tr></table></figure>
+
+
+
+<p>完整代码，在module的<code>build.gradle</code>脚本文件中添加如下代码：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">android &#123;</span><br><span class="line">		...</span><br><span class="line">    applicationVariants.all &#123; variant -&gt;</span><br><span class="line">        refactorVariant(variant)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.android.build.gradle.api.ApplicationVariant</span><br><span class="line"><span class="comment">// 更改生成物目录和名称</span></span><br><span class="line"><span class="comment">// gradle 4.10 and android-gradle-tools 3.3</span></span><br><span class="line"><span class="keyword">def</span> refactorVariant(ApplicationVariant variant) &#123;</span><br><span class="line">    <span class="comment">// 获取目录</span></span><br><span class="line">    println <span class="string">&quot;old dir -&gt; &quot;</span> + variant.getPackageApplicationProvider().get().outputDirectory.getAbsolutePath()</span><br><span class="line">    <span class="comment">// 修改目录</span></span><br><span class="line">    variant.getPackageApplicationProvider().get().outputDirectory = <span class="keyword">new</span> File(<span class="string">&quot;$&#123;project.projectDir.getPath()&#125;/apk/$&#123;variant.getBuildType().name&#125;&quot;</span>)</span><br><span class="line">    <span class="comment">// 输出修改后的目录</span></span><br><span class="line">    println <span class="string">&quot;new dir -&gt; &quot;</span> + variant.getPackageApplicationProvider().get().outputDirectory.getAbsolutePath()</span><br><span class="line"></span><br><span class="line">    variant.getOutputs().each &#123; output -&gt;</span><br><span class="line">        <span class="comment">// 获取名称</span></span><br><span class="line">        println <span class="string">&quot;old name -&gt; &quot;</span> + output.outputFileName</span><br><span class="line">        <span class="keyword">if</span> (output.outputFileName.endsWith(<span class="string">&#x27;.apk&#x27;</span>)) &#123;</span><br><span class="line">            <span class="comment">// 修改名称</span></span><br><span class="line">            output.outputFileName = <span class="string">&quot;GradleDemo_$&#123;variant.getBuildType().name&#125;_$&#123;variant.getVersionName()&#125;.apk&quot;</span></span><br><span class="line">            <span class="comment">// 输出修改后的名称</span></span><br><span class="line">            println <span class="string">&quot;new name -&gt; &quot;</span> + output.outputFileName</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/innost/article/details/48228651#t14">深入理解Android之Gradle</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.huangbowen.net/blog/2013/09/12/setup-properties-in-gradle/">Gradle的属性设置大全</a></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2019/04/26/tools-alfred/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1210,96 +1327,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2019/01/15/android-drawable-density-adaptation/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="章亮">
-      <meta itemprop="description" content="Developer For Android">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="永恒的码流">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/01/15/android-drawable-density-adaptation/" class="post-title-link" itemprop="url">Drawable分辨率适配</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-01-15 15:10:24" itemprop="dateCreated datePublished" datetime="2019-01-15T15:10:24+08:00">2019-01-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 14:25:21" itemprop="dateModified" datetime="2021-06-29T14:25:21+08:00">2021-06-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>定义了不同的<code>drawable-***dpi</code>的文件夹，但只在其中某些里面放置了图片，比如在<code>drawable-xhdpi</code>里放置了图片，其他的文件夹里没有放置图片，那么非xhdpi的设配如何适配图片资源？如何定位图片以及如何显示？</p>
-<h1 id="图片选择规则"><a href="#图片选择规则" class="headerlink" title="图片选择规则"></a>图片选择规则</h1><p>当前-&gt;高分辨率-&gt;低分辨率。</p>
-<ul>
-<li>先找当前分辨率的drawable文件夹，没有则进行下一步；</li>
-<li>向上寻找高于当前分辨率的drawable文件夹，没有则进行下一步；</li>
-<li>向下寻找低于当前分辨率的drawable文件夹。没有？不可能通过编译。</li>
-</ul>
-<h1 id="图片显示缩放规则"><a href="#图片显示缩放规则" class="headerlink" title="图片显示缩放规则"></a>图片显示缩放规则</h1><p>设备上显示的图片尺寸 =（设配分辨率 / 适配图片定义分辨率）* 适配图片尺寸。</p>
-<p>示例。图片尺寸为144x144，位于<code>drawalbe-xxhdpi/ic_wechat</code>，在Nexus 6（1440 x 2560， 560dpi）显示尺寸为168 x 168，即 （560/480）* 144。</p>
-<blockquote>
-<p>Android Developer Guide对此语焉不详，以上结论来自我的实践，可写DEMO验证。</p>
-<p>另外，mipmap资源适配规则与drawable资源保持一致。</p>
-</blockquote>
-<hr>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.android.com/training/multiscreen/screendensities">Android Developer Guide - Support different pixel densities</a></li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1371,7 +1398,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">54</span>
+          <span class="site-state-item-count">55</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1428,12 +1455,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">200k</span>
+    <span title="站点总字数">210k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">3:01</span>
+    <span title="站点阅读时长">3:11</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>
