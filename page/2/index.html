@@ -164,6 +164,93 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2019/11/15/android-tbs-problem/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/11/15/android-tbs-problem/" class="post-title-link" itemprop="url">Android集成TBS填坑记录</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-11-15 09:01:50" itemprop="dateCreated datePublished" datetime="2019-11-15T09:01:50+08:00">2019-11-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-29 14:12:44" itemprop="dateModified" datetime="2021-06-29T14:12:44+08:00">2021-06-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>最近得空，记录下这几月Android开发中遇到的坑。</p>
+<p>这篇文章主要记录集成腾讯浏览服务（TBS Tencent Browse Server）时遇到的问题以及解决方案。</p>
+<hr>
+<h1 id="问题：H5加载异常"><a href="#问题：H5加载异常" class="headerlink" title="问题：H5加载异常"></a>问题：H5加载异常</h1><p><strong>具体情况</strong></p>
+<p>我在公司内网环境下，使用几个测试机，有的可以正常加载，有的则加载失败。我的接入步骤皆是按照官方接入文档以及Demo做的，检查了几遍，认为接入是没有问题的。</p>
+<p><strong>解决</strong></p>
+<p>结论：一是换外网；二是在入口Activity里请求外部读写权限并初始化<code>QbSdk.initX5Environment(context, callback)</code>。</p>
+<p>分析：要明白TBS在初始化的时候做的事情。Tbs sdk有一个初始化的方法<code>QbSdk.initX5Environment(context, callback)</code>，按照官方Demo，是放置于<code>Application.onCreate()</code>中。这个方法首先会检测到sdcard里是否有x5内核所在的文件夹，有的话就会加载内核，如果文件夹为空则加载失败，总之不会去下载 内核；如果检测到没有相关文件夹，则会下载内核。一般安装了腾旭系的APP，在sdcard里都会有相对应的内核及文件夹。</p>
+<p>x5内核的下载走外网，因此用公司内网测试时是不可能下载成功的。之前有的机器能在测试环境下通过，是因为其sdcard中已经存在内核了，或者是之前下载的，或者是由于安装了其他腾讯系APP。</p>
+<p>在外网下测试，部分测试机依旧偶尔不能加载x5内核。这是因为初始化是在<code>Application.onCreate()</code>中的，此时并没有读写权限，所以每次都要下载，但完全下载成功需要一定的时间，因此如果快速打开H5页面，此时x5内核没有完全下载完成，就会出现加载失败。</p>
+<hr>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://x5.tencent.com/">TBS官网</a></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2019/05/15/android-build-07-gradle-advance/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1072,261 +1159,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2019/01/19/android-developer-guide-2019/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="章亮">
-      <meta itemprop="description" content="Developer For Android">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="永恒的码流">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/01/19/android-developer-guide-2019/" class="post-title-link" itemprop="url">Android Developer Guide 2019</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-01-19 09:13:38" itemprop="dateCreated datePublished" datetime="2019-01-19T09:13:38+08:00">2019-01-19</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 14:25:15" itemprop="dateModified" datetime="2021-06-29T14:25:15+08:00">2021-06-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>温故知新，官方文档每年都应该读一遍。</p>
-<hr>
-<h1 id="Animations-amp-Transitions"><a href="#Animations-amp-Transitions" class="headerlink" title="Animations &amp; Transitions"></a>Animations &amp; Transitions</h1><p><strong>动画实现方式</strong> </p>
-<p>Property Animation。最常用、最主要的动画，应用于UI可见性和运动、布局改变过渡、Activity切换过渡等。 </p>
-<ul>
-<li>API。主要位于<code>android.aniamtion</code>包，插补器在<code>android.view.animation</code>包。 基础API有：<code>ValueAnimator</code>、<code>ObjectAnimator</code>、<code>AnimatorListenerAdapter</code>、<code>AnimatorSet</code>。其他API有：过渡-<code>LayoutTransition</code>、状态-<code>StateListAnimator</code>、多动画和便捷-<code>ViewPropertyAnimator</code>。</li>
-<li>XML。位于<code>res/animator</code>，可使用<code>AnimatorInflater</code>加载。</li>
-</ul>
-<p>Drawable Animation。图形动画，静态图片或矢量图动画 </p>
-<ul>
-<li>逐帧图形动画。<code>AnimationDrawable</code>，资源为<code>res/drawable/animation-list</code>。 </li>
-<li>矢量图动画。<code>AnimatedVectorDrawable</code>，资源为 <code>res/drawable/animated-vector</code>。 </li>
-</ul>
-<p>View Animation。有局限，一般情况下，可用Property Animation替代。 </p>
-<blockquote>
-<p>之前许多文档把动画分为属性动画、补间动画和图形动画三种，这里的补间动画就是View Animation，但感觉最新官方文档并没有这样划分。</p>
-<p>对于最新的文档，论述最多的是Property Animation，其他两种动画说的很少，所以主要掌握Property Animation，其他两种动画了解即可。</p>
-</blockquote>
-<p><strong>应用场景</strong> </p>
-<ul>
-<li>View显示和隐藏。前后连续的View的显示切换。crossfade、card flip？circular reveal animation </li>
-<li>View移动。直线、曲线、速度控制等。使用API有：<code>ObjectAnimator</code> 、<code>Path</code> 、<code>Interpolar</code>、<code>FlingAnimation</code>等。 </li>
-<li>View缩放过渡。图片的缩放过渡，如从小图过渡到大图预览。利用属性有：<code>alpha</code>、<code>x</code>、<code>sacleX</code>等。 </li>
-<li>布局变更过渡。布局更改后的多个View位置改变动画；利用系统动画直接设置<code>android:animateLayoutChanges=&quot;true”</code>即可，或自定义动画，利用API有：Scene、Transition、TransitionManager等。 </li>
-<li>Activity及其内部元素切换过渡。用到的API有<code>ActivityOptions.makeSceneTransitionAnimation()</code>等 </li>
-</ul>
-<hr>
-<h1 id="Resources"><a href="#Resources" class="headerlink" title="Resources"></a>Resources</h1><p>资源组织。位于<code>res/</code>和<code>assets/</code>目录，独立于代码，利于复用。</p>
-<p>可选性资源。提供可选性资源用于不同配置的设备。</p>
-<ul>
-<li>资源文件夹名称格式*<resources_name>-<config_qualifier><em>，其中</em><config_qualifier>*(限定符)命名有自己的规则：可多个、有顺序、目录不能嵌套、大小写不敏感、限定类型不能相同。</li>
-<li>资源匹配规则。根据<a target="_blank" rel="noopener" href="https://developer.android.com/guide/topics/resources/providing-resources#BestMatch">匹配规则-BestMatch</a>并依据<a target="_blank" rel="noopener" href="https://developer.android.com/guide/topics/resources/providing-resources#table2">限定符表单</a>从上到下依次匹配。</li>
-<li>必须要设置默认资源，即无限定符的资源，避免APP找不到资源时崩溃。</li>
-</ul>
-<p>代码里引用资源。</p>
-<ul>
-<li>引用一般<code>res/</code>资源，<code>[&lt;package_name&gt;.]R.&lt;resource_type&gt;.&lt;resource_name&gt;</code>；</li>
-<li>引用<code>res/raw</code>资源，<code> Resources.openRawResource()</code>；</li>
-<li>引用<code>assets/</code>资源，<code>AssetManager.open(&quot;filename&quot;)</code>。</li>
-</ul>
-<p>XML里引用资源。</p>
-<ul>
-<li>引用文件资源：<code>@[&lt;package_name&gt;:]&lt;resource_type&gt;/&lt;resource_name&gt;</code>。</li>
-<li>引用样式属性：<code>?[&lt;package_name&gt;:][&lt;resource_type&gt;/]&lt;resource_name&gt;</code></li>
-</ul>
-<p>本地化。使用可选资源、总是在<code>strings.xml</code>定义字符串、使用<code>&lt;xliff:g&gt;</code>保持部分文本不变。</p>
-<p>Unicode和国际化。<a target="_blank" rel="noopener" href="http://userguide.icu-project.org/icufaq#TOC-How-is-the-ICU-licensed-">ICU</a></p>
-<p>使用<code>&lt;aapt:attr&gt;</code>内联复杂的XML资源。</p>
-<p>字符串。数量字符串（Quantity Strings）<code>plurals</code>；样式设置-HTML、Spannables、Annotation。</p>
-<hr>
-<h1 id="Permissions"><a href="#Permissions" class="headerlink" title="Permissions"></a>Permissions</h1><p>Android安全架构的核心设计点是，默认情况下，任何应用都无权执行任何会对其他应用，操作系统或用户产生负面影响的操作。</p>
-<p>概述</p>
-<ul>
-<li>可选硬件功能。如无必须，设置<code>android:required=&quot;false&quot;</code>。</li>
-<li>权限强制。对服务的任何调用都可以强制执行任意细粒度的权限。四大组件、URI等。</li>
-<li>自动权限适配。低<code>targetSdkVersion </code>的APP在高SDK版本平台运行时，可无视新增加的权限限制。</li>
-<li>保护级别。<em>normal</em>, <em>signature</em>, and <em>dangerous</em>。另外，特殊权限如 <code>SYSTEM_ALERT_WINDOW</code> and <code>WRITE_SETTINGS</code>需要发起Intent请求。</li>
-<li>权限组。仅影响<em>dangerous</em>权限用户交互体验，组内被手动授权后，其他自动被授权。</li>
-<li>总是显示请求每个需要的权限。权限级别、组的划分可能会随着版本的更新而有所改变。</li>
-<li>ADB命令自动授权所有权限。<code>$ adb shell install -g MyApp.apk</code></li>
-</ul>
-<p>申请权限</p>
-<ul>
-<li>声明。在Manifest中声明，可附加API等级、最大SDK版本信息等。</li>
-<li>检查。<code>ContextCompat.checkSelfPermission()</code>。</li>
-<li>申请。<code> ActivityCompat.requestPermissions()</code>。</li>
-<li>处理。在<code>onRequestPermissionsResult()</code>处理。</li>
-</ul>
-<p>权限使用原则</p>
-<ul>
-<li>只添加必要权限。如能用其他方式实现则不要添加权限，如用Intent调用其他APP、使<code>onAudioFocusChange()</code>判断电话状态、使用<code>com.google.android.gms.iid</code>或<code>Advertising Identifier</code>获取身份凭证等。</li>
-<li>注意依赖库的权限。添加依赖则会集成其所需权限。</li>
-<li>对用户透明。让用户明白为何需要权限。</li>
-<li>显示使用权限功能。让用户知道你在使用相关权限功能，不要偷偷使用。</li>
-</ul>
-<p>自定义权限。(⊙o⊙)</p>
-<hr>
-<h1 id="Testing"><a href="#Testing" class="headerlink" title="Testing"></a>Testing</h1><p>概述</p>
-<ul>
-<li>测试驱动开发 Test-Driven Development。工作流：Failing Test -&gt; Passing Test -&gt; Refactor -&gt; Failing Test -&gt; … </li>
-<li>测试层级。Small Tests（Unit Tests）70% -&gt; Medium Tests 20% -&gt; Large Tests 10%。</li>
-</ul>
-<p>Small Tests或单元测试</p>
-<ul>
-<li>Local Unit Tests。最主要的单元测试。运行于本地JVM，源码位于*[module-name]/src/test/java/*；如果测试单元引用了Android层框架或三方依赖代码，可使用Robolectric或Mockito等来模拟。依赖库包括JUnit 4、Robolectric、Mockito。</li>
-<li>Instrumented Unit Tests。运行于模拟器或真机，源码位于*[module-name]/src/androidTest/java/*。依赖库包括AndroidX test runner和rules、Hamcrest、Espresso、UI Automator。</li>
-</ul>
-<p>资源</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://github.com/googlesamples/android-testing">googlesamples/<strong>android-testing</strong></a></li>
-<li><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=pK7W5npkhho&start=111">Test-Driven Development on Android with the Android Testing Support Library (Google I/O ‘17)</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/googlesamples/android-sunflower">googlesamples/android-sunflower</a></li>
-<li><a target="_blank" rel="noopener" href="https://codelabs.developers.google.com/codelabs/android-testing/index.html#0">Android Testing Codelab</a>。教程不错，可惜依赖库不是最新的，也没有用Robolectric。</li>
-</ul>
-<p>实践。优化既有项目，测试工具类（单元测试或小型测试）、测试页面逻辑（简单UI测试或中型测试，可先优化MVP结构）、测试页面间逻辑（集成UI测试或大型测试）。</p>
-<hr>
-<h1 id="Activities"><a href="#Activities" class="headerlink" title="Activities"></a>Activities</h1><p>概述。Activity而不是APP，是交互的基本单位。</p>
-<p>生命周期。</p>
-<ul>
-<li><code>onCreate()</code>。一个实例只执行一次，此处完成初始化工作。</li>
-<li><code>onStart()</code>。可见，不能交互；执行很快。</li>
-<li><code>onResume()</code>。可见，获取焦点能交互。</li>
-<li><code>onPause()</code>。失去焦点不能交互；执行很快，不能做较重的操作，如操作数据库等。</li>
-<li><code>onStop()</code>。可执行较重操作，以及释放资源。</li>
-<li><code>onDestory()</code>。释放资源。</li>
-</ul>
-<p>UI状态的保存和恢复。持久化信息系统或本地，并从系统或本地恢复到Activity。</p>
-<p>回退栈和启动模式。哪个状态进栈的？</p>
-<p>SingleTask。</p>
-<ul>
-<li>官方说会开启新栈，但实际上是否进入新栈与”taskAffinity”有关，启动Activity与新建Activity的”taskAffinity”不同则进入新栈，否在在同一栈内。两种方式，一，AndroidManifest文件中设置，<code>android:launchMode=&quot;singleTask&quot;</code>,如果不设置”taskAffinity”，则不会开启新栈，只会在当前栈新建实例；二，如果使用代码<code>flags = Intent.FLAG_ACTIVITY_NEW_TASK</code>，则必须设置不同的”taskAffinity”，否则不能开始”singleTask”模式。</li>
-<li>发现了一个奇怪的情况，启动一个已经存在的”singleTask”的Activity，只是将其所在的任务栈带回前台，显示这个栈顶的Activity，而不是要启动的Activity。示例 Activity启动顺序： A-&gt;B-&gt;C，A和C设置为”singleTask”和不同的”taskAffinity”，执行C-&gt;A，则出现B，返回才看到A。</li>
-</ul>
-<blockquote>
-<p>参考</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/u012889434/article/details/47150739">“singleTask”模式 切换到新的栈中</a></li>
-<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/lincyang/article/details/6802017">启动模式”singleTask”和FLAG_ACTIVITY_NEW_TASK具有不同的行为！</a></li>
-</ul>
-</blockquote>
-<p>进程和应用生命周期。</p>
-<ul>
-<li>进程优先级取决于其中所运行的组件活动状态。</li>
-<li>优先级从高到低：前台进程-&gt;可见进程-&gt;服务进程-&gt;缓存进程。</li>
-</ul>
-<p>Parcelables和Bundles。每个进程的Binder事务缓冲区目前限制在1M以内，对于操作比如<code>savedInstanceState</code>建议缓冲数据不超过50K。</p>
-<p>Fragments</p>
-<ul>
-<li>设计哲学。模块化(避免从Fragment操作其他Fragment)、可复用、UI布局适配。</li>
-<li>测试。验证交互一致性；API <code>FragmentScenario</code>。</li>
-</ul>
-<p>App Links。</p>
-<ul>
-<li>Deep Link。可选择的APP；local intent-filter</li>
-<li>Android App Link。直接进入APP；local intent-filter &amp; remote Digital Asset Links JSON file</li>
-</ul>
-<hr>
-<h1 id="Android-Architecture-Components"><a href="#Android-Architecture-Components" class="headerlink" title="Android Architecture Components"></a>Android Architecture Components</h1><p>Lifecycle</p>
-<ul>
-<li>概述。继承<code>LifecycleOwner</code>的UI控件如Activity或Fragment，能够注册观察者<code>LifecycleObserver</code>来监测其生命周期方法。如此则能够让生命周期敏感的组件在自己内部处理相应的生命周期方法，从而保持UI控件如Activity或Fragment的简洁性。</li>
-<li>涉及类或接口。<code>LifecycleOwner</code>是<code>Lifecycle</code>的容器，使用<code>Lifecycle</code>添加观察者<code>LifecycleObserver</code>。</li>
-<li>使用。创建生命周期敏感的组件继承<code>LifecycleObserver</code>；添加方法或构造方法获取<code>Lifecycle</code>，并使用<code>Lifecycle.addObserver()</code>绑定自身；在UI控件中实例化生命周期敏感的组件即可。</li>
-</ul>
-<p>LiveData</p>
-<ul>
-<li>概述。LiveData只通知处于active状态（<code>STARTD</code>和<code>RESUMED</code>）的<code>LifecycleOwner</code>观察者更新，并在<code>DESTROYED</code>与观察者解绑。通知更新有两种情况：一，数据改变；二，观察者状态从inactive切换到active。</li>
-<li>优点。UI和数据保持同步（观察者模式）、无内存泄漏（自动解绑）、Stoppe状态Activities无Crash（inactive状态不通知更新）、无需手动处理生命周期事件、保持最新数据（后台切前台、配置改变如旋转）、资源分享（继承LiveData的系统服务）。</li>
-<li>使用。创建<code>LiveData</code>、UI线程创<code>Observer</code>并定义<code>onChanged()</code>方法、绑定<code>Observer</code>（生命周期相关或无关）。</li>
-<li>结合Room。Room提供返回LiveData对象的可观察查询，数据库更新时自动更新LiveData对象。</li>
-<li>其他。集成扩展、变换、组合。</li>
-</ul>
-<p>ViewModel</p>
-<ul>
-<li>概述。用生命周期管理的方式，存储和管理UI相关数据。</li>
-<li>生命周期。与所绑定的Lifecycle相关，在Created创建，在Activity Finished或Fragment Detached（并不再马上重新创建）之后销毁。</li>
-<li>用处。Fragment间共享数据，使用相同的Key的ViewModel。在Lifecycle由于Configuration改变而重新创建期间存储数据。</li>
-</ul>
-<p>Room</p>
-<ul>
-<li><p>Dao。自动更新<code>LiveData</code>。返回<code>LiveData</code>的方法会监测数据库（可查看生成的方法实现），当数据库更新数据时，对应的<code>LiveData</code>也会更新。如：</p>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Query(<span class="meta-string">&quot;SELECT * from word_table ORDER BY word ASC&quot;</span>)</span></span><br><span class="line">LiveData&lt;List&lt;Word&gt;&gt; getAllWords();</span><br></pre></td></tr></table></figure></li>
-</ul>
-<p>参考</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://github.com/googlesamples/android-architecture-components">Github-googlesamples/android-architecture-components</a></li>
-<li><a target="_blank" rel="noopener" href="https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#0">Codelabs-android-room-with-a-view</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/googlesamples/android-sunflower">Github-googlesamples/android-sunflower</a></li>
-</ul>
-<hr>
-<h1 id="User-interface-amp-navigation"><a href="#User-interface-amp-navigation" class="headerlink" title="User interface &amp; navigation"></a>User interface &amp; navigation</h1><p>隐藏状态栏。</p>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Hide the status bar.</span></span><br><span class="line">window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN</span><br><span class="line"><span class="comment">// Remember that you should never show the action bar if the</span></span><br><span class="line"><span class="comment">// status bar is hidden, so hide that too if necessary.</span></span><br><span class="line">actionBar?.hide()</span><br></pre></td></tr></table></figure>
-
-<p>三种菜单。应用层级别的<em>Options Menu</em>、当前页面的行为响应或内容菜单、下拉列表<em>Popup Menue</em>。</p>
-<hr>
-<h1 id="Images-and-graphics"><a href="#Images-and-graphics" class="headerlink" title="Images and graphics"></a>Images and graphics</h1><p>优先使用WebP图片格式（API 17+）</p>
-<hr>
-<h1 id="Background-Tasks"><a href="#Background-Tasks" class="headerlink" title="Background Tasks"></a>Background Tasks</h1><p>几种解决方案。WorkManager、Foreground services、AlarmManager、DownloadManager。</p>
-<p>异步编程解决方案。回调、Java 8的 CompletableFuture、Rx 编程、Kotlin协程。</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="http://johnnyshieh.me/posts/kotlin-coroutine-introduction/">Kotlin 协程</a></li>
-<li><a href="%E7%BA%BF%E7%A8%8B%E7%9A%84%E6%8C%82%E8%B5%B7%E5%92%8C%E6%81%A2%E5%A4%8D">Java线程的挂起和恢复</a></li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1398,7 +1230,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">55</span>
+          <span class="site-state-item-count">56</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1455,12 +1287,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">210k</span>
+    <span title="站点总字数">220k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">3:11</span>
+    <span title="站点阅读时长">3:20</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>
