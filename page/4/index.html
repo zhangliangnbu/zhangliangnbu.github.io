@@ -164,6 +164,183 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2018/12/15/2018-12-15-PublishToJCenter2ByUI/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/12/15/2018-12-15-PublishToJCenter2ByUI/" class="post-title-link" itemprop="url">项目发布-手动</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-12-15 21:09:18" itemprop="dateCreated datePublished" datetime="2018-12-15T21:09:18+08:00">2018-12-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-29 14:21:01" itemprop="dateModified" datetime="2021-06-29T14:21:01+08:00">2021-06-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%85%B6%E4%BB%96/" itemprop="url" rel="index"><span itemprop="name">其他</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本文主要说明如何生成项目构件，并手动上传构件文件到Bintray平台，最后发布到JCenter仓库这一流程。</p>
+<p><strong>发布流程</strong>。参考上一篇文章，完整发布流程如下：</p>
+<ol>
+<li>准备工作。定义参数；准备本地待发布项目；配置Bintray平台账号、仓库、Package、版本。</li>
+<li>生成构件文件。本地生成待发布的构件文件(包括POM文件)。</li>
+<li>发布到Bintray。上传和发布本地构件文件到Bintray平台。</li>
+<li>发布到JCenter。发布Bintray平台上的项目到JCenter。</li>
+</ol>
+<p><strong>源码地址</strong>。本文涉及到的<code>nicelogger</code>项目Github地址：<a target="_blank" rel="noopener" href="https://github.com/zhangliangnbu/nice-logger">https://github.com/zhangliangnbu/nice-logger</a></p>
+<hr>
+<h1 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h1><p>参考上一篇文章，如果已经做了，可以跳过。默认你已经有了一个本地项目，已经创建了Bintray平台账号和Maven仓库。</p>
+<p><strong>定义参数</strong></p>
+<ul>
+<li>Bintray平台仓库名称。<code>android</code>。</li>
+<li>Bintray平台Package名称。<code>nicelogger</code>。</li>
+<li>POM文件<code>groupId</code>。<code>com.liang.android</code>。</li>
+<li>POM文件<code>artifactId</code>。<code>nicelogger</code>。</li>
+<li>POM文件<code>version</code>。取<code>0.0.1</code>。</li>
+</ul>
+<p><strong>准备本地项目</strong>。略。</p>
+<p><strong>配置Bintray平台</strong>。根据参数创建Package和版本。</p>
+<br>
+
+<hr>
+<h1 id="生成构件"><a href="#生成构件" class="headerlink" title="生成构件"></a>生成构件</h1><p>生成需要上传到Maven库的四个文件：</p>
+<ul>
+<li><code>nicelogger-0.0.1.aar</code></li>
+<li><code>nicelogger-0.0.1-sources.jar</code></li>
+<li><code>nicelogger-0.0.1-javadoc.jar</code></li>
+<li><code>nicelogger-0.0.1.pom</code></li>
+</ul>
+<p><strong>生成<code>nicelogger-0.0.1.aar</code>文件</strong></p>
+<p>在<code>nicelogger</code>的<code>build.gradle</code>最后中添加如下代码，用于重命名生成的aar文件：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义pom文件参数</span></span><br><span class="line"><span class="keyword">def</span> groupIdDefined = <span class="string">&quot;com.liang.android&quot;</span></span><br><span class="line"><span class="keyword">def</span> artifactIdDefined = <span class="string">&quot;nicelogger&quot;</span></span><br><span class="line"><span class="keyword">def</span> versionDefined = <span class="string">&quot;0.0.1&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 重命名生成的arr文件</span></span><br><span class="line">android.libraryVariants.all &#123; variant -&gt;</span><br><span class="line">    variant.outputs.all &#123; output -&gt;</span><br><span class="line">        <span class="keyword">if</span> (outputFile != <span class="literal">null</span> &amp;&amp; outputFileName.endsWith(<span class="string">&#x27;.aar&#x27;</span>)) &#123;</span><br><span class="line">            outputFileName = <span class="string">&quot;$&#123;artifactIdDefined&#125;-$&#123;versionDefined&#125;.aar&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>执行<code>./gradlew nicelogger:assembleRelease</code>生成arr文件，位于<code>library/build/outputs/aar/</code>中。</p>
+<p><strong>生成<code>nicelogger-0.0.1-sources.jar</code>文件</strong></p>
+<p>接着在<code>nicelogger</code>的<code>build.gradle</code>最后添加如下代码，建立生成所需文件的任务</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 生成Java源码文件</span></span><br><span class="line">task sourcesJar(<span class="attr">type:</span> Jar) &#123;</span><br><span class="line">    from android.sourceSets.main.java.srcDirs</span><br><span class="line">    baseName = <span class="string">&quot;$&#123;artifactIdDefined&#125;-$&#123;versionDefined&#125;&quot;</span></span><br><span class="line">    classifier = <span class="string">&#x27;sources&#x27;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后执行<code>./gradlew nicelogger:sourcesJar</code>，就可以生成Java源码文件，位于<code>nicelogger/build/libs/</code>中。</p>
+<p><strong>生成<code>nicelogger-0.0.1-javadoc.jar</code>文件</strong></p>
+<p>接着在<code>nicelogger</code>的<code>build.gradle</code>最后添加如下代码，建立生成所需文件的任务</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 生成Javadoc文件</span></span><br><span class="line">task javadoc(<span class="attr">type:</span> Javadoc) &#123;</span><br><span class="line">    failOnError <span class="literal">false</span></span><br><span class="line">    source = android.sourceSets.main.java.sourceFiles</span><br><span class="line">    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))</span><br><span class="line">    classpath += configurations.compile</span><br><span class="line">&#125;</span><br><span class="line">task javadocJar(<span class="attr">type:</span> Jar, <span class="attr">dependsOn:</span> javadoc) &#123;</span><br><span class="line">    baseName = <span class="string">&quot;$&#123;artifactIdDefined&#125;-$&#123;versionDefined&#125;&quot;</span></span><br><span class="line">    classifier = <span class="string">&#x27;javadoc&#x27;</span></span><br><span class="line">    from javadoc.destinationDir</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后执行<code>./gradlew nicelogger:javadocJar</code>，就可以生成Javadoc文件，位于<code>nicelogger/build/libs/</code>中。</p>
+<p><strong>生成<code>nicelogger-0.0.1.pom</code>文件</strong></p>
+<p>有两种方式创建POM文件：</p>
+<p>一，参考<a target="_blank" rel="noopener" href="http://maven.apache.org/pom.html">POM Reference</a>手动创建POM文件，填入相关参数。</p>
+<p>二，使用<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/maven_plugin.html">Gradle Maven Plugin</a>生成POM，接着在<code>nicelogger</code>的<code>build.gradle</code>最后中添加如下代码</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 生成pom文件</span></span><br><span class="line">apply <span class="attr">plugin:</span> <span class="string">&#x27;maven&#x27;</span></span><br><span class="line"></span><br><span class="line">task createPom &#123;</span><br><span class="line">    doLast &#123;</span><br><span class="line">        pom &#123;</span><br><span class="line">            project &#123;</span><br><span class="line">                groupId <span class="string">&quot;$&#123;groupIdDefined&#125;&quot;</span></span><br><span class="line">                artifactId <span class="string">&quot;$&#123;artifactIdDefined&#125;&quot;</span></span><br><span class="line">                version <span class="string">&quot;$&#123;versionDefined&#125;&quot;</span></span><br><span class="line">                packaging <span class="string">&quot;aar&quot;</span></span><br><span class="line">                licenses &#123;</span><br><span class="line">                    license &#123;</span><br><span class="line">                        name <span class="string">&#x27;The Apache Software License, Version 2.0&#x27;</span></span><br><span class="line">                        url <span class="string">&#x27;http://www.apache.org/licenses/LICENSE-2.0.txt&#x27;</span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;.writeTo(<span class="string">&quot;$libsDir/$&#123;artifactIdDefined&#125;-$&#123;versionDefined&#125;.pom&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>后执行<code>./gradlew nicelogger:createPom</code>，就可以生成所需的POM文件，位于<code>nicelogger/build/libs/</code>中，内容如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">project</span> <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://maven.apache.org/POM/4.0.0&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="name">modelVersion</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.liang.android<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>nicelogger<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>0.0.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">packaging</span>&gt;</span>aar<span class="tag">&lt;/<span class="name">packaging</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">licenses</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">license</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">name</span>&gt;</span>The Apache Software License, Version 2.0<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://www.apache.org/licenses/LICENSE-2.0.txt<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">license</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">licenses</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>生成四个文件后，可以把它们放在一个文件夹里，方面之后的上传操作。</p>
+<hr>
+<h1 id="发布到Bintray"><a href="#发布到Bintray" class="headerlink" title="发布到Bintray"></a>发布到Bintray</h1><p><strong>上传文件</strong></p>
+<ul>
+<li>进入上传文件页。在Bintray官网上，进入<code>&#123;usrname&#125;/android/nicelogger/0.0.1</code>版本页，点击“Upload Files”进入上传文件页。</li>
+<li>上传文件。点击“Click to Add Files” 上传四个文件， “Target Repository Path”填<code>com/liang/android/nicelogger/0.0.1</code>，一般上传了POM文件后，就会有提示。然后点击“Save Changes”即可。</li>
+</ul>
+<blockquote>
+<p>Target Repository Path为{groupId}/{artifactId}/{version}，其中“.”都需要替换为“/”。</p>
+</blockquote>
+<p><strong>发布到Bintray仓库</strong></p>
+<p>上传文件完成后，会提示如何处理文件：“Discard”还是“Publish”。选择“Publish”，就会发布文件到Bintray平台的Maven仓库，这样我们就能解析，只不过要带上用户自己的仓库地址而已。</p>
+<blockquote>
+<p>发布到Bintray仓库后，会自动生成<code>maven-metadata.xml</code>文件。</p>
+</blockquote>
+<p>用户Bintray仓库地址。发布后的项目在<code>https://dl.bintray.com/&#123;username&#125;/&#123;repository_name&#125;</code>下可查看，我刚才发布的项目在<code>https://dl.bintray.com/zhangliang/android/com/liang/android/nicelogger/</code>。</p>
+<p><strong>Bintray仓库依赖解析</strong></p>
+<p>Gradle项目使用<code>nicelogger</code>依赖方式如下：</p>
+<p>一，添加仓库地址。</p>
+<p>在需要此依赖的项目<code>build.gradle</code>配置仓库地址：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">repositories &#123;</span><br><span class="line">    maven &#123;</span><br><span class="line">        url <span class="string">&quot;https://dl.bintray.com/zhangliang/android&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>或工程目录<code>build.gradle</code>下添加配置：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">allprojects &#123;</span><br><span class="line">    repositories &#123;</span><br><span class="line">        maven &#123;</span><br><span class="line">            url <span class="string">&quot;https://dl.bintray.com/zhangliang/android&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>二，添加依赖。在项目<code>build.gradle</code>配置依赖</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    implementation <span class="string">&#x27;com.liang.android:nicelogger:0.0.1&#x27;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h1 id="发布到JCenter"><a href="#发布到JCenter" class="headerlink" title="发布到JCenter"></a>发布到JCenter</h1><p>进入<code>nicelogger</code>的package页面，点击“Add to JCenter”，进入下一页，点击“Send”即可。</p>
+<p>发布到JCenter仓库需要审核，主要审核文件格式是否符合规范和以及名称是否唯一等，没有问题的话，一般一个工作日以内都会通过。通过后，可以直接用jcenter作为仓库地址，无需配置用户自己的Bintray仓库地址。</p>
+<p>JCenter仓库地址。<code>http://jcenter.bintray.com/&#123;地址化的groupId&#125;</code>，<code>地址化的groupId</code>即用“/”代替“.”。</p>
+<p>具体详情请见用户指南<a target="_blank" rel="noopener" href="https://www.jfrog.com/confluence/display/BT/Central+Repositories#CentralRepositories-JCenter">发布到JCenter</a>。</p>
+<p><strong>可能遇到的问题</strong></p>
+<p>一，点击“Add to JCenter”报错：</p>
+<blockquote>
+<p>Please fix the following before submitting a JCenter inclusion request: the POM is invalid or was uploaded to the wrong coordinates</p>
+</blockquote>
+<p>我之前是因为文件名不一致才出现这个错误提示。必须为<code>&#123;artifactId&#125;-&#123;version&#125;xxx</code>等。</p>
+<p>终于写完了一个完整的流程，O(∩_∩)O。</p>
+<hr>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://bintray.com/">Bintray官网</a></li>
+<li><a target="_blank" rel="noopener" href="https://jcenter.bintray.com/">JCenter仓库</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jfrog.com/confluence/display/BT/Introduction">JFrog用户指南</a></li>
+</ol>
+<hr>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2018/12/13/2018-12-13-PublishToJCenter1Base/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1274,133 +1451,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2018/12/02/2018-12-02-GithubPagesHexo/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="章亮">
-      <meta itemprop="description" content="Developer For Android">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="永恒的码流">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/12/02/2018-12-02-GithubPagesHexo/" class="post-title-link" itemprop="url">GithubPages&Hexo&Next部署个人博客</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-12-02 11:05:16" itemprop="dateCreated datePublished" datetime="2018-12-02T11:05:16+08:00">2018-12-02</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 14:17:43" itemprop="dateModified" datetime="2021-06-29T14:17:43+08:00">2021-06-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%85%B6%E4%BB%96/" itemprop="url" rel="index"><span itemprop="name">其他</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="GitHub-Pages"><a href="#GitHub-Pages" class="headerlink" title="GitHub Pages"></a>GitHub Pages</h1><p><strong>简介</strong>。一种利用GitHub项目建立的静态主页，一般用来介绍GitHub开发者自己和某个项目，但也可以利用它来建立自己的免费个人博客。</p>
-<p><strong>两种主页</strong>。可以建立两种GitHub Pages，一种是个人或组织主页，一个账号只能有一个；一种是项目主页，每个项目又可以有一个。</p>
-<p><strong>建立主页</strong>。建立主页比较简单：具体可以查阅<a target="_blank" rel="noopener" href="https://pages.github.com/">GitHub Pages官网介绍</a>，更加详细的说明请见<a target="_blank" rel="noopener" href="https://help.github.com/categories/github-pages-basics/">GitHub Pages帮助文档</a></p>
-<p><strong>博客框架</strong>。建立GitHub Pages后，默认使用<a target="_blank" rel="noopener" href="https://help.github.com/articles/using-jekyll-with-pages">Jekyll</a>框架，目前比较流行的是Hexo。</p>
-<hr>
-<br>
-
-<h1 id="Hexo"><a href="#Hexo" class="headerlink" title="Hexo"></a>Hexo</h1><p><strong>简介</strong>。快速、简洁且高效的博客框架。详情请见<a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/">官网-Hexo</a>，</p>
-<p><strong>主题</strong>。Hexo有许多不同的主题，比较流行的有Next。</p>
-<hr>
-<br>
-
-<h1 id="NexT"><a href="#NexT" class="headerlink" title="NexT"></a>NexT</h1><p>一种Hexo主题，源码和安装请见<a target="_blank" rel="noopener" href="https://github.com/theme-next/hexo-theme-next">GitHub Next Theme</a>，相关配置请见<a target="_blank" rel="noopener" href="http://theme-next.iissnan.com/theme-settings.html#categories-page">Hexo主题配置</a>。</p>
-<blockquote>
-<p>主题配置的那个网站是针对低版本Next的，除了安装部分要参考<a target="_blank" rel="noopener" href="https://github.com/theme-next/hexo-theme-next">GitHub Next Theme</a>，其余部分如增加标签和分类功能等，都是有用的。</p>
-</blockquote>
-<hr>
-<br>
-
-<h1 id="实践-搭建个人博客"><a href="#实践-搭建个人博客" class="headerlink" title="实践-搭建个人博客"></a>实践-搭建个人博客</h1><h2 id="GitHub上创建Github-Pages项目"><a href="#GitHub上创建Github-Pages项目" class="headerlink" title="GitHub上创建Github Pages项目"></a>GitHub上创建Github Pages项目</h2><ul>
-<li>用户或组织主页。创建一个名称为<code>&#123;用户名称&#125;.github.io</code>的新项目。然后就可以用<code>https://&#123;用户名称&#125;.github.io</code>去访问了。</li>
-<li>项目主页。创建任意名称的项目，在项目<code>Settings-&gt;GitHub Pages</code>中设置<code>Source</code>为<code>master</code>分支。然后就可以用<code>http://&#123;用户名称&#125;.github.io/&#123;项目名称&#125;</code>去访问了。</li>
-<li>创建<code>blog-src</code>分支。由于有两份代码需要处理，一份是博客源代码，一份是部署后生成的静态网站的代码，所以需要开分支用于分别存储，这里我们用<code>master</code>分支存储部署后的代码，用<code>blog-src</code>分支存储源代码。</li>
-</ul>
-<h2 id="本地生成Hexo项目"><a href="#本地生成Hexo项目" class="headerlink" title="本地生成Hexo项目"></a>本地生成Hexo项目</h2><ul>
-<li>安装Hexo。见<a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/">官网-安装Hexo</a>。</li>
-<li>生成Hexo项目。进入博客所在的文件目录中，<code>hexo init &#123;博客名&#125;</code>，</li>
-<li>测试。<code>hexo server</code>查看是否在本地生成静态站点。</li>
-</ul>
-<p>详细命令如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-cli -g</span><br><span class="line">hexo init &#123;博客名&#125;</span><br><span class="line"><span class="built_in">cd</span> blog</span><br><span class="line">npm install</span><br><span class="line">hexo server</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="管理和配置"><a href="#管理和配置" class="headerlink" title="管理和配置"></a>管理和配置</h2><p><strong>关联GitHub Pages和Hexo项目</strong>。初始化Hexo项目为<code>git</code>项目，然后添加GitHub Pages项目作为远程链接。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> &#123;博客名&#125;</span><br><span class="line">git init</span><br><span class="line"><span class="comment"># 在blog-src分支上编辑</span></span><br><span class="line">git checkout -b blog-src</span><br><span class="line"><span class="comment"># 个人或组织主页</span></span><br><span class="line">git remote add origin git@github.com:&#123;用户名&#125;.git</span><br><span class="line"><span class="comment"># 项目主页</span></span><br><span class="line">git remote add origin git@github.com:&#123;用户名&#125;/&#123;项目名&#125;.git</span><br></pre></td></tr></table></figure>
-
-<p><strong>初始化配置</strong>。在站点<code>_config.yml</code>里修改<code>url</code>、<code>root</code>和<code>deploy</code>项。</p>
-<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 如果是个人或组织主页</span></span><br><span class="line"><span class="attr">url</span>: <span class="string">https://&#123;用户名称&#125;.github.io</span></span><br><span class="line"><span class="attr">root</span>: <span class="string">/</span></span><br><span class="line"><span class="comment"># 如果项目主页</span></span><br><span class="line"><span class="attr">url</span>: <span class="string">https://&#123;用户名称&#125;.github.io/&#123;项目名称&#125;</span></span><br><span class="line"><span class="attr">root</span>: <span class="string">/&#123;项目名称&#125;/</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"># 下面的&#123;项目名称&#125;指的是管理GitHub Pages的项目名称，不论是个人主页还是项目主页，都有一个项目与之对应。个人主页的项目名称是：&#123;用户名&#125;.github.io。</span></span><br><span class="line"><span class="attr">deploy</span>:<span class="string"></span></span><br><span class="line">  <span class="attr">type</span>: <span class="string">git</span></span><br><span class="line">  <span class="attr">repo</span>: <span class="string">git@github.com:&#123;用户名称&#125;/&#123;项目名&#125;.git</span></span><br><span class="line">  <span class="attr">branch</span>: <span class="string">gh-pages</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>部署</strong>。利用<code>hexo g -d</code>命令生成并发布静态网页内容到GitHub Pages服务中，然后用相对应的配置的<code>url</code>去浏览器查看。</p>
-<h2 id="生成标签和分类页面"><a href="#生成标签和分类页面" class="headerlink" title="生成标签和分类页面"></a>生成标签和分类页面</h2><p>详情请见<a target="_blank" rel="noopener" href="http://theme-next.iissnan.com/theme-settings.html#tags-page">主题配置文档</a></p>
-<h2 id="配置主题"><a href="#配置主题" class="headerlink" title="配置主题"></a>配置主题</h2><p>默认主题是<code>landscape</code>,可以配置<code>NexT</code>主题，详细操作请见<a target="_blank" rel="noopener" href="http://theme-next.iissnan.com/getting-started.html">主题配置文档</a></p>
-<h2 id="版权声明"><a href="#版权声明" class="headerlink" title="版权声明"></a>版权声明</h2><p>请见<a target="_blank" rel="noopener" href="http://stevenshi.me/2017/05/26/hexo-add-copyright/">Hexo文章末尾添加版权信息</a></p>
-<hr>
-<br>
-
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
-<li><a target="_blank" rel="noopener" href="https://pages.github.com/">官网-GitHub Pages</a></li>
-<li><a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/">官网-Hexo</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/theme-next/hexo-theme-next">NexT</a></li>
-<li><a target="_blank" rel="noopener" href="http://theme-next.iissnan.com/theme-settings.html#categories-page">NexT配置</a></li>
-<li><a target="_blank" rel="noopener" href="http://stevenshi.me/2017/05/26/hexo-add-copyright/">Hexo文章末尾添加版权信息</a></li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1472,7 +1522,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">56</span>
+          <span class="site-state-item-count">57</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1529,12 +1579,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">220k</span>
+    <span title="站点总字数">231k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">3:20</span>
+    <span title="站点阅读时长">3:30</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>
