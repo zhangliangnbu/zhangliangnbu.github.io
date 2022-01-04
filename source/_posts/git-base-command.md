@@ -138,15 +138,18 @@ $ git reflog
 ```bash
 # 版本回退。回退到历史版本
 # 其中“HEAD^”表示上一个版本，“HEAD^^”表示上上个版本
-# 回退到当前版本，会清除所有修改
+# 回退到当前版本，并清除所有修改
+$ git reset --hard HEAD
+# 回退到上个版本，并清除所有修改
 $ git reset --hard HEAD^
-# 回退到上个版本
-$ git reset --hard HEAD^
+# 回退到上个版本，本地保留修改
+$ git reset --soft HEAD^
 # 版本切换。回退到历史版本或跳到最新版本。
 # “1094a”表示指定commit id的版本
 # 可以通过“git log”命令查看历史版本commit id
 # 或通过通过“git reflog”查看提交记录
 $ git reset --hard 1094a
+
 
 # 撤销已修改的文件。恢复到最近一次git commit或git add时的状态
 $ git checkout -- <file>
