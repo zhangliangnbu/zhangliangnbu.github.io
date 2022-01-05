@@ -164,6 +164,258 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2021/12/27/auto-navigation-system-guide/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/12/27/auto-navigation-system-guide/" class="post-title-link" itemprop="url">车载导航系统概览</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-12-27 17:27:42" itemprop="dateCreated datePublished" datetime="2021-12-27T17:27:42+08:00">2021-12-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-01-05 10:55:02" itemprop="dateModified" datetime="2022-01-05T10:55:02+08:00">2022-01-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%BD%A6%E6%9C%BA%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">车机开发</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>之前做了基于某流行的导航SDK开发车机导航App的项目，现在做一个总结，仅仅总结与特定导航无关的基础知识和概念。</p>
+<p>车载导航系统由硬件和软件组合而成，按功能可划分为由定位系统、系统软件、导航应用软件等。定位系统包括GNSS天线、各种传感器、滤波器、DR模块等；系统软件目前较流行的是Android系统；导航应用软件即常说的某某导航App，正式名称为导航电子地图，可通过触摸显示屏或者语音等进行交互操作， 实现实时定位、 目的地检索、路线规划、画面和语音引导等功能，帮助驾驶者准确、快捷地到达目的地。</p>
+<blockquote>
+<p>车载导航与手机导航的最大的优势是，一，提供更加精准的定位，尤其是在GPS信号不好的时候，对比更加明显；二，更大的显示屏、更好的散热、更好的稳定性等。</p>
+</blockquote>
+<h1 id="定位系统"><a href="#定位系统" class="headerlink" title="定位系统"></a>定位系统</h1><p>在信号弱或者高速行驶时，仅依靠卫星定位是困难的，目前的定位不只是卫星定位，也会有硬件或软件的参与。硬件一般包括：GNSS信号接收机或称天线、DR微处理器（也可能由软件处理）、车速传感器、陀螺仪、加速度计等。 目前定位一般是通过包括GNSS信号在内的许多信号一起通过航位推算算法（DR）计算得到的，下图是DR模块位于硬件或软件系统中时的信号流程图，MMF表示地图匹配反馈信号。</p>
+<p><img src="/images/auto-navi-dr.png" alt="auto-navi-dr"></p>
+<p>目前普通民用 gps 和 dr 组合定位设备 (gps 惯性设备 ) 已经可以达到 1 000 m 无 gps 信号的情况下的航向精度和 10 m 的距离精度。</p>
+<blockquote>
+<p>车载天线接收GNSS信号的频率是有规定的，比如10Hz，频率太高对系统要求也会高，必定提高成本。10Hz的情况下，如果车速为36km/h（10m/s），间隔1m接收一次定位信号，似乎可以接收，如果车速为33m/s（120km/h)，则间隔3.3m才接收一次定位，对于一些路口区域，很容易错过。</p>
+<p>航位推算：这种根据已知信息（当前位置、速度、加速度、方向等）推算经过一段时间后的位置的方法称为DR，dead reckoning。</p>
+<p>卫星定位系统：一般称为全球导航卫星系统（ Global Navigation Satellite System，GNSS），GPS是美国的全球定位系统的简称，一般应该使用GNSS代表卫星定位或导航系统的总称。</p>
+<p>陀螺仪：一般指三轴陀螺仪，是用于获取车辆三个轴向的角速度值，如果是单轴陀螺仪，则一般指Z轴，用来测量车辆的左右转向角度值。</p>
+</blockquote>
+<h1 id="地图匹配"><a href="#地图匹配" class="headerlink" title="地图匹配"></a>地图匹配</h1><p>地图匹配（Map Matching，简称MM）：将经过处理的信号中的位置、角度信息在实际道路线上显示出来的过程。我们认为车辆应该行驶在道路上，但实际信号的位置与角度一般不会跟道路数据吻合，所以需要选择一条与信号最为符合的道路段或路径段将车标展示在上面，此过程就称为地图匹配。 地图匹配的输入源包括信号与道路数据，地图匹配的输出结果为位置信息，包括经纬度、角度、速度等。</p>
+<blockquote>
+<p>实际场景中，手机自带 GPS 的定位精度在 10 米上下，单车道的宽度一般是 2-3 米。实际上，手机 GPS 定位不足以精确判断车辆行驶的实际道路。但大家会发现，通常情况下导航的道路定位都是很准确的，导航过程中地图会知道用户在某某道路而不是附近小区或者沟河中。</p>
+<p>究其原因，用户导航过程中，系统一直在计算 GPS 位置和导航路线&amp;路网间的配准关系，从而进行一定程度的纠偏，这也是提高定位精度的重要手段。</p>
+</blockquote>
+<img src="/images/auto-map-match.jpg" width="70%" height="70%">
+
+<p>地图匹配可分为两类：一类是导航和偏航，匹配非闭环路线；另一类为巡航，匹配路网。</p>
+<p>地图匹配的核心是匹配算法，常见算法有离散点集匹配和曲线拟合：</p>
+<ul>
+<li>离散点集匹配。相对简单，随机离散点没有形状和拓扑关系，用欧氏距离作吸附即可，典型应用如离散热力图。效率低。</li>
+<li>曲线拟合：评价曲线相似性的一般要素有长度、形状、曲率、拓扑关系、方向比如正向逆向、距离、属性例如交通规则左转右转禁行等信息。曲线拟合基于几何、拓扑、概率等可细分为多个方法。</li>
+</ul>
+<p>地图匹配反馈（Map-Matching Feedback）简称 MMF，将地图匹配的结果通知给 DR（推算及位置融合模块） 模块。</p>
+<h1 id="导航电子地图"><a href="#导航电子地图" class="headerlink" title="导航电子地图"></a>导航电子地图</h1><p>用户最终看到的导航应用软件是由定位和地图共同组合的结果。导航电子地图包含的地图数据有道路数据（路段和节点）、 POI数据（特征点数据，兴趣点）、背景数据（建筑层、水系、植被）、行政区域数据、图形文件（高速出入口等）、语音文件等。其主要功能为地图显示、地图匹配、路线规划、路线引导等。</p>
+<h1 id="路网与拓扑"><a href="#路网与拓扑" class="headerlink" title="路网与拓扑"></a>路网与拓扑</h1><p>现实世界中的道路是千变万化的，一般需要将这些道路抽象为基本的路段和节点（路网），再建立它们之间的拓扑关系，以实现地图匹配、路线规划等功能。路网的基本要素：点实体（节点）和线实体（路段）。</p>
+<p><strong>路段</strong>。路段一般作为道路的最小空间描述单元，即路段是具有同一属性在路网中相互独立且最小的道路图形特征。路段属性有：编号、路段、长度、宽度、道路等级、最高速度限制、是否收费与收费标准、实时路况信息（交通事故、堵塞程度等）、允许车辆类型，等等。</p>
+<blockquote>
+<p>每一条道路，对应一些属性信息，例如道路的交通限制、道路名称、道路宽度等，所以需要根据属性信息的变化把一些道路拆分为更小的路段，现实世界里的一条道路一般会划分为多个路段。</p>
+</blockquote>
+<p><strong>节点</strong>。节点并不是一个实际意义上的点，它是一个抽象的概念，即可能使车辆行驶路线发生改变的控制点：</p>
+<ul>
+<li>道路的交叉口或者路的终点。</li>
+<li>道路特性发生改变的点，如在该点道路的宽度显著增加或者减少，或者从该点开始道路需要收费行驶等。</li>
+<li>可能进行转向操作的点，如进行物理分隔的道路中间将隔离栏(带)打开，专供车辆掉头的点。</li>
+<li>快速路的出入口等。直接影响车辆导航系统路线计算的结果的点。</li>
+</ul>
+<p>常见节点：多道交叉口、环岛型交叉口、快速路的出入口、U型转弯口、道路连接点、复杂的立交桥等。</p>
+<p>节点的属性有：编号、坐标、灯控路口的时间配时、节点的车辆行驶平均时间延误、交叉口转向限制等。</p>
+<p><strong>路网拓扑结构</strong></p>
+<p>路段之间的连接关系的表达即路段通过节点建立拓扑关系。建立拓扑关系的路网可以方便的执行地图匹配、路线规划等道路计算。</p>
+<blockquote>
+<p>拓扑，就是把实体抽象成与其大小、形状无关的“点”，而把连接实体的线路抽象成“线”，进而以图的形式来表示这些点与线之间关系的方法。其目的在于研究这些点、线之间的相连关系。表示点和线之间关系的图被称为拓扑结构图。</p>
+</blockquote>
+<p>常用模型为路段-链数据模型，基本思想：将路网的基本单元“路段”作为图的顶点，而将路段之间的允许转向行为（这种转向行为称作“链”）作为图的弧。</p>
+<p><strong>导航路线与路段分析</strong></p>
+<p>一个完整的导航路线（path），会被划分为多个聚合段（group segment），聚合段一般对应实际的道路；一个聚合段包括对应多个导航段（segment），导航段对应导航播报的基本单位，但未必对应最小的路段单位；导航段可以包含多个路段（link），路段表示道路的最小空间描述单元。用户关心的是导航段和聚合段。</p>
+<ul>
+<li>Link：路段，道路的最小描述单元。比如两个指示牌间的路段、路口与指示牌间的路段等、。</li>
+<li>Segment：导航段，导航播报最小单元。两个转弯路口或道路有明显改变的节点之间的道路。</li>
+<li>GroupSegment：聚合段，从一条路完全进入另外一条路之间的路段，与物理道路对应，但不一定完全对应。</li>
+</ul>
+<h1 id="地图和图层"><a href="#地图和图层" class="headerlink" title="地图和图层"></a>地图和图层</h1><p>目前的GIS软件都采用分层结构组织地图数据，把同一类或几类地理要素的信息放在同一个图层，整个地图数据按照图层-&gt;地图-&gt;地图集来组织，每个图层存储管理同类地图元素：</p>
+<ul>
+<li>地图集：地图集包含了导航软件所能加载的所有地图数据, 它是一个存放地图的容器。</li>
+<li>地图：地图是通过地图集检索得到一个对象，它包含的是一个行政区划的地图数据。同时地图也是存放图层的一个容器。</li>
+<li>图层：一个图层代表的是一种地图数据元素的集合。</li>
+</ul>
+<h1 id="其他相关概念"><a href="#其他相关概念" class="headerlink" title="其他相关概念"></a>其他相关概念</h1><h2 id="车辆坐标系"><a href="#车辆坐标系" class="headerlink" title="车辆坐标系"></a>车辆坐标系</h2><p>与机动车相关的坐标系有许多，常见的有：</p>
+<ul>
+<li>世界坐标系：用于描述车辆在世界的位置。</li>
+<li>车辆坐标系：用于描述车辆的速度、旋转等，原点位于车辆中。</li>
+<li>车内设备坐标系：比如车机的坐标系，用于描述设备自身的速度、角速度等，原点在设备中。</li>
+<li>设备芯片：比如加速度计、陀螺仪等，用于描述芯片原始的值。原点在芯片中。</li>
+</ul>
+<p><img src="/images/auto-coordinate.jpg" alt="auto-coordinate"></p>
+<p><strong>车辆坐标系</strong></p>
+<p>由于XYZ坐标系不能很好地描述车辆的转动，因此一般用RPY（Roll-Pitch-Yaw）轴表示：</p>
+<ul>
+<li>Roll轴。滚转轴，轴正方向指向车辆前方，绕轴转动表示车辆在做滚转的动作。对应X轴或Y轴。</li>
+<li>Pitch轴。俯仰轴，轴正方向指向车辆右侧，绕轴转动表示车辆在做俯仰的动作。对应Y轴或X轴。</li>
+<li>Yaw轴。偏航轴，轴正方向指向车顶上方或车底下方，绕轴转动表示车辆在做偏航（转弯）的动作。对应Z轴。</li>
+</ul>
+<img src="/images/auto-directional-rotations.png" width="70%" height="70%">
+
+<p>明确了轴正向方向后就可以确认正负值定义。对陀螺仪来说，需借助右手法则，拇指朝向轴正向，屈指方向为输出正值的方向；对加速度计来说，轴正向的加速度为正值。</p>
+<p>一般设备芯片与车机的坐标系并不一致，而是存在角度差，称为安装角。安装角会导致传感器输出值计算过程中的误差，因此需要提前测出安装角并传给相关处理单元。</p>
+<h2 id="加速度计"><a href="#加速度计" class="headerlink" title="加速度计"></a>加速度计</h2><p>加速度计（Accelerometer），用于获取车辆三个轴向的加速度值，常见三轴数值规定如下：</p>
+<ul>
+<li>Roll轴。车尾指向车头    车辆向前加速输出变大，刹车输出变小</li>
+<li>Pitch轴。车左侧指向车右侧，车辆向右横移输出变大，向左横移输出变小</li>
+<li>Yaw轴。车底指向车顶，车辆水平静止，输出+1.0；垂直向上加速，输出大于+1.0；垂直向下加速，输出小于+1.0。静止时的1.0表示一个重力加速度g。</li>
+</ul>
+<h2 id="陀螺仪"><a href="#陀螺仪" class="headerlink" title="陀螺仪"></a>陀螺仪</h2><p>陀螺仪（Gyroscope），用来测量角速度或保持方向器具。它是一个旋转的轮子或圆盘，其中的自旋轴可以是任何方向。根据角动量守恒，当旋转时，自旋轴的方向不受影响。一般指三轴陀螺仪，是用于获取车辆三个轴向的角速度值，如果是单轴陀螺仪，则一般指Z轴，用来测量车辆的左右转向角度值。</p>
+<p>陀螺仪零偏。指陀螺仪在无外部输入（车辆静止或匀速直线行驶）状态下，所输出的值不等于0的状态，零偏亦指这种状态下输出的误差值。</p>
+<p>陀螺仪温漂。指陀螺仪零偏随着传感器本身温度不同而变化的特性。</p>
+<p>陀螺仪轴向验证。</p>
+<h2 id="航向"><a href="#航向" class="headerlink" title="航向"></a>航向</h2><p>中文里航向对应英文里的Course或Heading，但这二者是有区别的：</p>
+<ul>
+<li>Course。表示机车（或飞机或船）的实际航行轨迹的方向，是机车本身的速度、风速等叠加后的合速度的方向。</li>
+<li>Heading。仅仅指机车（或飞机或船）车头指向的方向。</li>
+</ul>
+<img src="/images/auto-heading-course.png" width="30%" height="30%">
+
+<p>上图中AB是飞机的Heading方向，由于风速的影响，飞机的航向偏移到AC方向即Course。一般意义上，中文里航向指的就是Course，实际航行的路径方向。</p>
+<h2 id="常用术语"><a href="#常用术语" class="headerlink" title="常用术语"></a>常用术语</h2><table>
+<thead>
+<tr>
+<th>术语缩写</th>
+<th>全称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>EGL</td>
+<td>Embedded Graphics Library</td>
+<td>嵌入图形库</td>
+</tr>
+<tr>
+<td>GPS</td>
+<td>Global Positioning System</td>
+<td>美国的全球定位系统</td>
+</tr>
+<tr>
+<td>GNSS</td>
+<td>Global Navigation Satellite System</td>
+<td>全球导航卫星系统</td>
+</tr>
+<tr>
+<td>HMI</td>
+<td>Human Machine Interface</td>
+<td>人机交互接口，通常指SDK之上的开发</td>
+</tr>
+<tr>
+<td>POI</td>
+<td>Point of Interest</td>
+<td>兴趣点</td>
+</tr>
+<tr>
+<td>TBT</td>
+<td>Turn By Turn</td>
+<td>逐向导航</td>
+</tr>
+<tr>
+<td>TMC</td>
+<td>Traffic Message Channel</td>
+<td>交通实时信息频道</td>
+</tr>
+<tr>
+<td>TTS</td>
+<td>Text To Speech</td>
+<td>从文本到语音</td>
+</tr>
+<tr>
+<td>TR</td>
+<td>Traffic Radar</td>
+<td></td>
+</tr>
+<tr>
+<td>MM</td>
+<td>Map-Matching</td>
+<td>地图匹配</td>
+</tr>
+<tr>
+<td>SA/PA</td>
+<td>Server Area / Parking Area</td>
+<td>服务区、停车区</td>
+</tr>
+<tr>
+<td>DR</td>
+<td>Dead Reckoning</td>
+<td>航位推算</td>
+</tr>
+</tbody></table>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Satellite_navigation">维基百科-卫星导航</a></li>
+<li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Satellite_constellation">维基百科-卫星星座</a></li>
+<li><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E4%BC%AA%E8%B7%9D">维基百科-伪距</a></li>
+<li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/GNSS_positioning_calculation#Note">维基百科-GNSS定位计算</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.aliyun.com/article/11">地图匹配实践</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.infoq.cn/article/axrxvv5h801wkkhekdov">地图数据处理之道路匹配篇</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/83039334">车辆轨迹地图匹配（Map-Matching）</a></li>
+<li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Course_(navigation)">Wikipedia - Course (navigation)</a></li>
+<li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Heading_(navigation)">Wikipedia - Heading (navigation)</a></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2021/12/23/android-ui-system-guide/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1403,109 +1655,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2021/06/30/Android%E4%B8%AD%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%AE%9E%E7%8E%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="章亮">
-      <meta itemprop="description" content="Developer For Android">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="永恒的码流">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/06/30/Android%E4%B8%AD%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%AE%9E%E7%8E%B0/" class="post-title-link" itemprop="url">Android中多线程实现</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-06-30 15:42:53 / 修改时间：15:48:36" itemprop="dateCreated datePublished" datetime="2021-06-30T15:42:53+08:00">2021-06-30</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>Android中涉及线程操作的类或机制主要有：</p>
-<ul>
-<li>Thread。线程操作的最基本的类。</li>
-<li>ThreadPoolExecutor。基于线程池，处理并发多线程操作。</li>
-<li>Handler机制：Handler、Looper、MessageQueue等。Android中多线程处理的基本机制。</li>
-<li>HandlerThread。Thread的子类，维护了一个Looper，Handler机制的辅助类。</li>
-<li>AsyncTask。基于Handler机制。</li>
-<li>IntentService。基于Handler机制。</li>
-</ul>
-<h1 id="Handler机制"><a href="#Handler机制" class="headerlink" title="Handler机制"></a>Handler机制</h1><p>Handler 发消息到MessageQueue中，Looper 循环从MessageQueue中获取消息并消费（执行Handler的回调方法）。</p>
-<p>以线程B向线程A发消息为例，从时间顺序上说明如下：</p>
-<ul>
-<li>在线程A中，创建Looper，通过sThreadLocal与当前绑定，启动Looper的消息循环，线程处于活跃状态；创建Handler，在Looper进行消息循环之前创建，Handler会与当前线程的Looper建立联系。</li>
-<li>在线程B中，使用上面的Handler发送消息。</li>
-<li>在线程A中，Looper循环消息获取消息，由于消息持有Handler引用，最终会执行Handler的回调方法。</li>
-</ul>
-<p>代码示例：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span>  Handler handler;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testHandler</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 创建线程A 、Looper、Handler</span></span><br><span class="line">    Thread threadA = <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">        Looper.prepare();</span><br><span class="line">        <span class="comment">// 创建 Handler。</span></span><br><span class="line">        handler = <span class="keyword">new</span> Handler() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(<span class="meta">@NonNull</span> Message msg)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">super</span>.handleMessage(msg);</span><br><span class="line">                Log.d(<span class="string">&quot;handleMessage&quot;</span>, <span class="string">&quot;msg what == &quot;</span> + msg.what);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        Looper.loop();</span><br><span class="line">    &#125;);</span><br><span class="line">    threadA.start();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建线程B，并利用Handler 发送消息</span></span><br><span class="line">    Thread threadB = <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">        <span class="comment">// 防止ThreadA没有执行完而导致handler为空</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Thread.sleep(<span class="number">3000</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        handler.sendEmptyMessage(<span class="number">111</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">    threadB.start();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>注意：创建Handler有多种方式，以绑定线程A的Looper为例：</p>
-<ul>
-<li>在<code>Looper.prepare()</code>和<code>Looper.loop()</code> 之间创建，<code>handler = new Handler()</code>。Android中主线程的第一个Handler就是如此创建。</li>
-<li>在线程A的某个Handler的回调消息中创建，<code>handler = new Handler()</code>。一般开发时在Activity里创建的Handler就属于这种情况。</li>
-<li>在其他线程中直接利用与线程A绑定的Looper进行创建，<code>handler = new Handler(looper)</code>。IntentService里使用HandlerThread，属于这种情况。</li>
-</ul>
-<h1 id="HandlerThread"><a href="#HandlerThread" class="headerlink" title="HandlerThread"></a>HandlerThread</h1><p><code>Thread</code>的子类，维护了一个<code>Looper</code>，在<code>run()</code>中创建<code>Looper</code>实例、与线程绑定，开启消息循环。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    mTid = Process.myTid();</span><br><span class="line">		<span class="comment">// </span></span><br><span class="line">    Looper.prepare();</span><br><span class="line">    <span class="keyword">synchronized</span> (<span class="keyword">this</span>) &#123;</span><br><span class="line">        mLooper = Looper.myLooper();</span><br><span class="line">        notifyAll();</span><br><span class="line">    &#125;</span><br><span class="line">    Process.setThreadPriority(mPriority);</span><br><span class="line">    onLooperPrepared();</span><br><span class="line">    Looper.loop();</span><br><span class="line">    mTid = -<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>一般使用：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建线程A 、Looper</span></span><br><span class="line">HandlerThread threadA = <span class="keyword">new</span> HandlerThread(<span class="string">&quot;handler thread a&quot;</span>);</span><br><span class="line">threadA.start();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建Handler.</span></span><br><span class="line"><span class="comment">// threadA.getLooper() 中使用了wait()，保证looper不为空</span></span><br><span class="line">handler = <span class="keyword">new</span> Handler(threadA.getLooper()) &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(<span class="meta">@NonNull</span> Message msg)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.handleMessage(msg);</span><br><span class="line">        Log.d(<span class="string">&quot;handleMessage&quot;</span>, <span class="string">&quot;msg what == &quot;</span> + msg.what);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建线程B，并利用Handler 发送消息</span></span><br><span class="line">Thread threadB = <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">    handler.sendEmptyMessage(<span class="number">111</span>);</span><br><span class="line">&#125;);</span><br><span class="line">threadB.start();</span><br></pre></td></tr></table></figure>
-
-<h1 id="AsyncTask"><a href="#AsyncTask" class="headerlink" title="AsyncTask"></a>AsyncTask</h1><p>基于Handler机制。在工作线程执行任务<code>doInBackground</code>，通过Handler发送消息到ui线程，更新进度<code>onProgressUpdate</code>和结果<code>onPostExecute</code>。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">MyAsyncTask</span> <span class="keyword">extends</span> <span class="title">AsyncTask</span>&lt;<span class="title">String</span>, <span class="title">Integer</span>, <span class="title">String</span>&gt; </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onPreExecute</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// on ui thread</span></span><br><span class="line">        <span class="keyword">super</span>.onPreExecute();</span><br><span class="line">        Log.d(<span class="string">&quot;MyAsyncTask&quot;</span>, <span class="string">&quot;onPreExecute&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> String <span class="title">doInBackground</span><span class="params">(String... strings)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// on work thread</span></span><br><span class="line">        publishProgress(<span class="number">0</span>);</span><br><span class="line">        Log.d(<span class="string">&quot;MyAsyncTask&quot;</span>, <span class="string">&quot;doInBackground ==&quot;</span> + Arrays.toString(strings));</span><br><span class="line">        publishProgress(<span class="number">100</span>);</span><br><span class="line">        <span class="keyword">return</span> Arrays.toString(strings);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onPostExecute</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// on ui thread</span></span><br><span class="line">        <span class="keyword">super</span>.onPostExecute(s);</span><br><span class="line">        Log.d(<span class="string">&quot;MyAsyncTask&quot;</span>, <span class="string">&quot;onPostExecute ==&quot;</span> + s);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onProgressUpdate</span><span class="params">(Integer... values)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// on ui thread</span></span><br><span class="line">        <span class="keyword">super</span>.onProgressUpdate(values);</span><br><span class="line">        Log.d(<span class="string">&quot;MyAsyncTask&quot;</span>, <span class="string">&quot;onProgressUpdate ==&quot;</span> + Arrays.toString(values));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testAsyncTask</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    MyAsyncTask asyncTask = <span class="keyword">new</span> MyAsyncTask();</span><br><span class="line">    asyncTask.execute(<span class="string">&quot;a&quot;</span>, <span class="string">&quot;b&quot;</span>, <span class="string">&quot;c&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="IntentService"><a href="#IntentService" class="headerlink" title="IntentService"></a>IntentService</h1><p>基于Handler，相关代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onCreate();</span><br><span class="line">    HandlerThread thread = <span class="keyword">new</span> HandlerThread(<span class="string">&quot;IntentService[&quot;</span> + mName + <span class="string">&quot;]&quot;</span>);</span><br><span class="line">    thread.start();</span><br><span class="line"></span><br><span class="line">    mServiceLooper = thread.getLooper();</span><br><span class="line">    mServiceHandler = <span class="keyword">new</span> ServiceHandler(mServiceLooper);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onStart</span><span class="params">(<span class="meta">@Nullable</span> Intent intent, <span class="keyword">int</span> startId)</span> </span>&#123;</span><br><span class="line">    Message msg = mServiceHandler.obtainMessage();</span><br><span class="line">    msg.arg1 = startId;</span><br><span class="line">    msg.obj = intent;</span><br><span class="line">    mServiceHandler.sendMessage(msg);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1577,20 +1726,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">57</span>
+          <span class="site-state-item-count">58</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">52</span>
+        <span class="site-state-item-count">54</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1625,7 +1774,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -1634,12 +1783,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">231k</span>
+    <span title="站点总字数">236k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">3:30</span>
+    <span title="站点阅读时长">3:35</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>

@@ -164,6 +164,129 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2018/12/16/2018-12-16-PublishToJCenter3ByGradlePlugin/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/12/16/2018-12-16-PublishToJCenter3ByGradlePlugin/" class="post-title-link" itemprop="url">项目发布-BintrayRelease</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-12-16 22:52:56" itemprop="dateCreated datePublished" datetime="2018-12-16T22:52:56+08:00">2018-12-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-29 14:21:14" itemprop="dateModified" datetime="2021-06-29T14:21:14+08:00">2021-06-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%85%B6%E4%BB%96/" itemprop="url" rel="index"><span itemprop="name">其他</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>使用Gradle插件上传Android项目到Bintray平台是目前通用的做法，很方便。目前常用的Gradle插件有两个，一个是官方的<a target="_blank" rel="noopener" href="https://github.com/bintray/gradle-bintray-plugin#readme">gradle-bintray-plugin</a>，另一个是第三方开源的<a target="_blank" rel="noopener" href="https://github.com/novoda/bintray-release">bintray-release</a>。既然官方已经发布了自己的Gradle插件，那为什么还有人发布另外一个呢？可能因为官方自己的插件使用起来比较繁琐吧。</p>
+<p>这篇文章简要介绍如何使用<a target="_blank" rel="noopener" href="https://github.com/novoda/bintray-release">bintray-release</a>发布Android项目到Bintray，并最终发布到JCenter。</p>
+<p>bintray-release使用起来非常简单，具体详情请见<a target="_blank" rel="noopener" href="https://github.com/novoda/bintray-release/wiki">bintray-release wiki</a>。</p>
+<p><strong>源码地址</strong>。本文涉及到的<code>nicelogger</code>项目Github地址：<a target="_blank" rel="noopener" href="https://github.com/zhangliangnbu/nice-logger">https://github.com/zhangliangnbu/nice-logger</a></p>
+<hr>
+<h1 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h1><p>参考上一篇文章，如果已经做了，可以跳过。默认你已经有了一个本地项目，已经创建了Bintray平台账号和Maven仓库。</p>
+<p><strong>定义参数</strong></p>
+<ul>
+<li>Bintray平台仓库名称。<code>android</code>。</li>
+<li>Bintray平台Package名称。<code>nicelogger</code>。</li>
+<li>POM文件<code>groupId</code>。<code>com.liang.android</code>。</li>
+<li>POM文件<code>artifactId</code>。<code>nicelogger</code>。</li>
+<li>POM文件<code>version</code>。取<code>0.0.3</code>。</li>
+</ul>
+<p><strong>准备本地项目</strong>。有的话就不用创建。</p>
+<p><strong>配置Bintray平台</strong>。创建package，如果已经有了就不用创建了。</p>
+<hr>
+<h1 id="发布到Bintray"><a href="#发布到Bintray" class="headerlink" title="发布到Bintray"></a>发布到Bintray</h1><p>这一步使用插件，做如下工作：</p>
+<ul>
+<li>在本地生成构件文件。</li>
+<li>在Bintray平台创建版本。</li>
+<li>上传文件到Bintray平台。</li>
+<li>发布到Bintray平台仓库中。</li>
+</ul>
+<p>具体使用请见<a target="_blank" rel="noopener" href="https://github.com/novoda/bintray-release/wiki">bintray-release wiki</a>，我的配置与wiki略有差异，本质上是一样的。</p>
+<p>一，在工程目录<code>build.gradle</code>中添加插件地址，其中版本号请用最新的：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">buildscript &#123;</span><br><span class="line">    dependencies &#123;</span><br><span class="line">        <span class="comment">// A helper for releasing from gradle up to bintray</span></span><br><span class="line">        classpath <span class="string">&#x27;com.novoda:bintray-release:0.9&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>二，在<code>nicelogger</code>module目录<code>build.gradle</code>中添加参数配置：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">apply <span class="attr">plugin:</span> <span class="string">&#x27;com.novoda.bintray-release&#x27;</span></span><br><span class="line"></span><br><span class="line">publish &#123;</span><br><span class="line">    userOrg = <span class="string">&#x27;zhangliang&#x27;</span></span><br><span class="line">    repoName = <span class="string">&#x27;android&#x27;</span></span><br><span class="line">    groupId = <span class="string">&#x27;com.liang.android&#x27;</span></span><br><span class="line">    artifactId = <span class="string">&#x27;nicelogger&#x27;</span></span><br><span class="line">    publishVersion = <span class="string">&#x27;0.0.3&#x27;</span></span><br><span class="line">    uploadName = <span class="string">&#x27;nicelogger&#x27;</span></span><br><span class="line">    desc = <span class="string">&#x27;Oh hi, this is a nice description for nicelogger, right?&#x27;</span></span><br><span class="line">    website = <span class="string">&#x27;https://github.com/zhangliangnbu/nice-logger&#x27;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>可以在module目录中创建<code>bintrayReleaseUpload.gradle</code>文件，并将上述参数配置写入其中，然后在module目录<code>build.gradle</code>中通过<code>apply from: &#39;./bintrayReleaseUpload.gradle&#39;</code>引入。这样做便于管理。</p>
+</blockquote>
+<p>三，执行上传任务</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./gradlew clean build bintrayUpload -PbintrayUser=BINTRAY_USERNAME -PbintrayKey=BINTRAY_KEY -PdryRun=<span class="literal">false</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>BINTRAY_USERNAME和BINTRAY_KEY填写自己的。</p>
+</blockquote>
+<p>上传完后，即可在Bintray平台<code>nicelogger</code>包下看到发布的<code>0.0.3</code>版本。</p>
+<p>从Bintray仓库发布到JCenter操作较简单，见上篇文章。</p>
+<hr>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://github.com/novoda/bintray-release">bintray-release</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/novoda/bintray-release/wiki">bintray-release wiki</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/novoda/bintray-release/wiki/%E4%B8%AD%E6%96%87%E6%96%87%E6%A1%A3HOME">bintray-release中文文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/bintray/gradle-bintray-plugin#readme">gradle-bintray-plugin</a></li>
+</ol>
+<hr>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2018/12/15/2018-12-15-PublishToJCenter2ByUI/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1345,112 +1468,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2018/12/08/2018-12-08-ResourceIDReuseConflict/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="章亮">
-      <meta itemprop="description" content="Developer For Android">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="永恒的码流">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/12/08/2018-12-08-ResourceIDReuseConflict/" class="post-title-link" itemprop="url">EditText的ID相同而导致的冲突</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-12-08 17:00:03" itemprop="dateCreated datePublished" datetime="2018-12-08T17:00:03+08:00">2018-12-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 14:19:53" itemprop="dateModified" datetime="2021-06-29T14:19:53+08:00">2021-06-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h1><p>最近写项目时，遇到两个自定义ViewGroup中EditText的ID相同而导致冲突的问题，描述如下。</p>
-<ol>
-<li> 我自定义了一个继承FrameLayout名为ClearableEditText的控件，里面包括一个AutoCompleteTextView(EditText的一种) 和一个ImageView。</li>
-<li> 我在LoginFragment（继承Fragment）里使用了两个ClearableEditText，并输入了值分别为123456789和abc。</li>
-<li> 我从LoginFragment里使用FragmentTransaction.replace方法跳转到另外一个Fragment，当回退到LoginFragment时，两个ClearableEditText都显示了abc。</li>
-</ol>
-<p>相关代码如下：</p>
-<p>自定义的ClearableEditText</p>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ClearableEditText</span> <span class="meta">@JvmOverloads</span> <span class="keyword">constructor</span></span>(context: Context, attrs: AttributeSet? = <span class="literal">null</span>, defStyleAttr: <span class="built_in">Int</span> = <span class="number">0</span>, defStyleRes: <span class="built_in">Int</span> = <span class="number">0</span>)</span><br><span class="line">    : FrameLayout(context, attrs, defStyleAttr, defStyleRes) &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">init</span> &#123;</span><br><span class="line">        initView(context, attrs, defStyleAttr, defStyleRes)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">lateinit</span> <span class="keyword">var</span> input: AutoCompleteTextView</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">lateinit</span> <span class="keyword">var</span> clearImage: ImageView</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">initView</span><span class="params">(context: <span class="type">Context</span>, attrs: <span class="type">AttributeSet</span>?, defStyleAttr: <span class="type">Int</span>, defStyleRes: <span class="type">Int</span>)</span></span> &#123;</span><br><span class="line">        <span class="comment">// init view</span></span><br><span class="line">        <span class="keyword">val</span> view = LayoutInflater.from(context).inflate(R.layout.view_clearable_edit_text, <span class="keyword">this</span>, <span class="literal">true</span>)</span><br><span class="line">        input = view.findViewById&lt;AutoCompleteTextView&gt;(R.id.et_clearable)</span><br><span class="line">        clearImage = view.findViewById(R.id.iv_clearable)</span><br><span class="line"></span><br><span class="line">        <span class="comment">// init attr ......</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onSaveInstanceState</span><span class="params">()</span></span>: Parcelable &#123;</span><br><span class="line">        Logger.d(<span class="string">&quot;view life -&gt; onSaveInstanceState&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.onSaveInstanceState()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onRestoreInstanceState</span><span class="params">(state: <span class="type">Parcelable</span>?)</span></span> &#123;</span><br><span class="line">        Logger.d(<span class="string">&quot;view life -&gt; onRestoreInstanceState&quot;</span>)</span><br><span class="line">        <span class="keyword">super</span>.onRestoreInstanceState(state)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>view_clearable_edit_text布局</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">android.support.constraint.ConstraintLayout</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:android</span>=<span class="string">&quot;http://schemas.android.com/apk/res/android&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:app</span>=<span class="string">&quot;http://schemas.android.com/apk/res-auto&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:tool</span>=<span class="string">&quot;http://schemas.android.com/tools&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_width</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_height</span>=<span class="string">&quot;wrap_content&quot;</span></span></span><br><span class="line"><span class="tag">    &gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">AutoCompleteTextView</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:id</span>=<span class="string">&quot;@+id/et_clearable&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">style</span>=<span class="string">&quot;@style/AuthRowValue&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_width</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_marginTop</span>=<span class="string">&quot;@dimen/spacing_row_vertical&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">tool:drawableStart</span>=<span class="string">&quot;@drawable/ic_mobile&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">tool:ignore</span>=<span class="string">&quot;LabelFor&quot;</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">ImageView</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:id</span>=<span class="string">&quot;@+id/iv_clearable&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">style</span>=<span class="string">&quot;@style/MarkDelete&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:visibility</span>=<span class="string">&quot;gone&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">app:layout_constraintBottom_toBottomOf</span>=<span class="string">&quot;parent&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">app:layout_constraintRight_toRightOf</span>=<span class="string">&quot;parent&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">app:layout_constraintTop_toTopOf</span>=<span class="string">&quot;parent&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">tool:ignore</span>=<span class="string">&quot;ContentDescription&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">tool:visibility</span>=<span class="string">&quot;visible&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">android.support.constraint.ConstraintLayout</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-
-<p>LoginFragment</p>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LoginFragment</span> : <span class="type">BaseFragment</span></span>() &#123;</span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">getFragmentID</span><span class="params">()</span></span>: FragmentID &#123;</span><br><span class="line">        <span class="keyword">return</span> FragmentID.LOGIN</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">companion</span> <span class="keyword">object</span> &#123;</span><br><span class="line">        <span class="keyword">val</span> TAG = <span class="keyword">this</span>::<span class="keyword">class</span>.java.simpleName!!</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onCreateView</span><span class="params">(inflater: <span class="type">LayoutInflater</span>, container: <span class="type">ViewGroup</span>?, savedInstanceState: <span class="type">Bundle</span>?)</span></span>: View? &#123;</span><br><span class="line">        Logger.d(<span class="string">&quot;fragment life circle----&gt;onCreateView&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> inflater.inflate(R.layout.fragment_login, container, <span class="literal">false</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onViewCreated</span><span class="params">(view: <span class="type">View</span>, savedInstanceState: <span class="type">Bundle</span>?)</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.onViewCreated(view, savedInstanceState)</span><br><span class="line">   </span><br><span class="line">        <span class="comment">// 注册</span></span><br><span class="line">        tv_register.setOnClickListener &#123; toRegister() &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// .....</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">toRegister</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">val</span> ba = activity <span class="keyword">as</span> BaseActivity</span><br><span class="line">        ba.navigateReplace(RegistrationFragment(), getString(R.string.auth_register), <span class="literal">true</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>fragment_login 布局</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">LinearLayout</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:android</span>=<span class="string">&quot;http://schemas.android.com/apk/res/android&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:app</span>=<span class="string">&quot;http://schemas.android.com/apk/res-auto&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:tool</span>=<span class="string">&quot;http://schemas.android.com/tools&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_width</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_height</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:background</span>=<span class="string">&quot;@color/background_page_dark&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:paddingEnd</span>=<span class="string">&quot;@dimen/spacing_24&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:paddingStart</span>=<span class="string">&quot;@dimen/spacing_24&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:orientation</span>=<span class="string">&quot;vertical&quot;</span></span></span><br><span class="line"><span class="tag">    &gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">include</span> <span class="attr">layout</span>=<span class="string">&quot;@layout/view_logo&quot;</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">cn.yintech.cdam.view.ClearableEditText</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:id</span>=<span class="string">&quot;@+id/cet_auth_mobile&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_width</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_height</span>=<span class="string">&quot;wrap_content&quot;</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">cn.yintech.cdam.view.ClearableEditText</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:id</span>=<span class="string">&quot;@+id/cet_auth_password&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_width</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_height</span>=<span class="string">&quot;wrap_content&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_marginTop</span>=<span class="string">&quot;@dimen/spacing_row_vertical&quot;</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">android.support.constraint.ConstraintLayout</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_width</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_height</span>=<span class="string">&quot;wrap_content&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_marginTop</span>=<span class="string">&quot;@dimen/spacing_24&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">TextView</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:id</span>=<span class="string">&quot;@+id/tv_register&quot;</span></span></span><br><span class="line"><span class="tag">            <span class="attr">style</span>=<span class="string">&quot;@style/ContentText.Large&quot;</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:text</span>=<span class="string">&quot;@string/auth_register&quot;</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:textColor</span>=<span class="string">&quot;@color/white&quot;</span></span></span><br><span class="line"><span class="tag">            /&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">TextView</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:id</span>=<span class="string">&quot;@+id/tv_forget_password&quot;</span></span></span><br><span class="line"><span class="tag">            <span class="attr">style</span>=<span class="string">&quot;@style/ContentText.Large&quot;</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:text</span>=<span class="string">&quot;@string/auth_forget_pwd&quot;</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:textColor</span>=<span class="string">&quot;@color/white&quot;</span></span></span><br><span class="line"><span class="tag">            <span class="attr">app:layout_constraintRight_toRightOf</span>=<span class="string">&quot;parent&quot;</span></span></span><br><span class="line"><span class="tag">            /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">android.support.constraint.ConstraintLayout</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">Button</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:id</span>=<span class="string">&quot;@+id/btn_login&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">style</span>=<span class="string">&quot;@style/Button.Primary&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_width</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_height</span>=<span class="string">&quot;wrap_content&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_marginTop</span>=<span class="string">&quot;@dimen/spacing_section_vertical&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:text</span>=<span class="string">&quot;@string/auth_login&quot;</span></span></span><br><span class="line"><span class="tag">        /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">LinearLayout</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h1><p>这应该是两个ClearableEditText中AutoCompleteTextView的id值相同的导致的。系统会在View的onSaveInstanceState中缓存View的状态，根据id来辨别View，因此相同id的View只保存最后一个的状态，之前的会被覆盖，所以最后都显示为同一个值。</p>
-<h1 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h1><p>可为每个ClearableEditText中的AutoCompleteTextView动态分配一个id，做法如下</p>
-<ol>
-<li><p>在ClearableEditText的属性文件中加入id属性，如</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">resources</span> <span class="attr">xmlns:tools</span>=<span class="string">&quot;http://schemas.android.com/tools&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">declare-styleable</span> <span class="attr">name</span>=<span class="string">&quot;ClearableEditText&quot;</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--省略其他--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">attr</span> <span class="attr">name</span>=<span class="string">&quot;inputId&quot;</span> <span class="attr">format</span>=<span class="string">&quot;reference&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">declare-styleable</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">resources</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
-<li><p>在ClearableEditText中获取并添加id</p>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">initView</span><span class="params">(context: <span class="type">Context</span>, attrs: <span class="type">AttributeSet</span>?, defStyleAttr: <span class="type">Int</span>, defStyleRes: <span class="type">Int</span>)</span></span> &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// init view</span></span><br><span class="line">        <span class="keyword">val</span> view = LayoutInflater.from(context).inflate(R.layout.view_clearable_edit_text, <span class="keyword">this</span>, <span class="literal">true</span>)</span><br><span class="line">        input = view.findViewById&lt;AutoCompleteTextView&gt;(R.id.et_clearable)</span><br><span class="line">        clearImage = view.findViewById(R.id.iv_clearable)</span><br><span class="line"></span><br><span class="line">        <span class="comment">// init attr</span></span><br><span class="line">        <span class="keyword">val</span> ta = context.theme.obtainStyledAttributes(attrs, R.styleable.ClearableEditText, defStyleAttr, defStyleRes)</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">val</span> inputId = ta.getResourceId(R.styleable.ClearableEditText_inputId, <span class="number">0x50</span>)</span><br><span class="line">            input.id = inputId</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            ta.recycle()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>在res/value/ids.xml(没有这个文件的话，创建一个)中，加入各种类型的ClearableEditText需要的id.注意这里的值如0x51、0x52等其实可以不需要，因为应用为每个资源自动生成一个资源id，上面的代码中获取的就是资源id</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">resources</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--自定义ViewGroup中包含EditText，如果EditText相同则只缓存一个--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">&quot;clearable_input_mobile&quot;</span> <span class="attr">type</span>=<span class="string">&quot;id&quot;</span>&gt;</span>0x51<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">&quot;clearable_input_password&quot;</span> <span class="attr">type</span>=<span class="string">&quot;id&quot;</span>&gt;</span>0x52<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">&quot;clearable_input_password_confirmed&quot;</span> <span class="attr">type</span>=<span class="string">&quot;id&quot;</span>&gt;</span>0x53<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">&quot;clearable_input_password_new&quot;</span> <span class="attr">type</span>=<span class="string">&quot;id&quot;</span>&gt;</span>0x54<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">resources</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
-<li><p>在布局中引用资源id </p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">&lt;!--省略--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">cn.yintech.cdam.view.ClearableEditText</span></span></span><br><span class="line"><span class="tag">     <span class="attr">android:id</span>=<span class="string">&quot;@+id/cet_auth_mobile&quot;</span></span></span><br><span class="line"><span class="tag">     <span class="attr">android:layout_width</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag">     <span class="attr">android:layout_height</span>=<span class="string">&quot;wrap_content&quot;</span></span></span><br><span class="line"><span class="tag">     <span class="attr">app:inputId</span>=<span class="string">&quot;@id/clearable_input_mobile&quot;</span>/&gt;</span></span><br><span class="line"></span><br><span class="line"> <span class="tag">&lt;<span class="name">cn.yintech.cdam.view.ClearableEditText</span></span></span><br><span class="line"><span class="tag">     <span class="attr">android:id</span>=<span class="string">&quot;@+id/cet_auth_password&quot;</span></span></span><br><span class="line"><span class="tag">     <span class="attr">android:layout_width</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag">     <span class="attr">android:layout_height</span>=<span class="string">&quot;wrap_content&quot;</span></span></span><br><span class="line"><span class="tag">     <span class="attr">android:layout_marginTop</span>=<span class="string">&quot;@dimen/spacing_row_vertical&quot;</span></span></span><br><span class="line"><span class="tag">     <span class="attr">app:inputId</span>=<span class="string">&quot;@id/clearable_input_password&quot;</span>/&gt;</span></span><br><span class="line"> <span class="comment">&lt;!--省略--&gt;</span></span><br></pre></td></tr></table></figure></li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1522,20 +1539,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">57</span>
+          <span class="site-state-item-count">58</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">52</span>
+        <span class="site-state-item-count">54</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1570,7 +1587,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -1579,12 +1596,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">231k</span>
+    <span title="站点总字数">236k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">3:30</span>
+    <span title="站点阅读时长">3:35</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>
