@@ -164,6 +164,438 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2018/10/23/git-base-command/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/10/23/git-base-command/" class="post-title-link" itemprop="url">版本管理之Git基础与命令</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-10-23 10:18:06" itemprop="dateCreated datePublished" datetime="2018-10-23T10:18:06+08:00">2018-10-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-01-04 15:40:55" itemprop="dateModified" datetime="2022-01-04T15:40:55+08:00">2022-01-04</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%85%B6%E4%BB%96/" itemprop="url" rel="index"><span itemprop="name">其他</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>使用Git也有几年了，涉及场景较多的是：</p>
+<p><strong>学习开源库</strong>。从GitHub上克隆代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git clone ...</span><br></pre></td></tr></table></figure>
+<p><strong>公司开发</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// 分支相关</span><br><span class="line">$ git branch</span><br><span class="line">$ git checkout -b dev</span><br><span class="line">$ git checkout dev</span><br><span class="line"></span><br><span class="line">// 提交代码</span><br><span class="line">$ git status</span><br><span class="line">$ git add .</span><br><span class="line">$ git commit -m &quot;...&quot;</span><br><span class="line">$ git pull</span><br><span class="line">$ git push origin dev</span><br></pre></td></tr></table></figure>
+<p>其他情况使用命令行如<code>git merge</code>等较少，多用IDE（如 Android Studio）自带的版本控制GUI工具。一般情况下，记得上面几个命令就足以应付日常工作了，如果需要使用其他的命令，网上搜一下即可。</p>
+<p>最近开始管理小团队，需要管理分支的创建、代码审核、分支合并、删除、冲突解决等等，开发的人数开始增多，以前不常用的命令，现在也要常用了，因此有必要全面的总结下Git的使用。</p>
+<p>可能有人会问，为什么要学习命令行，熟悉GUI不就可以了吗？答案是不可以的。</p>
+<blockquote>
+<p>只有在命令行模式下你才能执行 Git 的 所有 命令，而大多数的 GUI 软件只实现了 Git 所有功能的一个子集以降低操作难度。 如果你学会了在命令行下如何操作，那么你在操作 GUI 软件时应该也不会遇到什么困难，但是，反之则不成立。 此外，由于每个人的想法与侧重点不同，不同的人常常会安装不同的GUI 软件，但所有人一定会有命令行工具。</p>
+</blockquote>
+<p>本文主要资料参考<a target="_blank" rel="noopener" href="https://git-scm.com/book/zh/v2">Git官网-Pro Git教程</a>和<a target="_blank" rel="noopener" href="https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000">廖雪峰的Git教程</a>。廖写的东西通俗易懂，非常值得一读。我的总结尽可能精简，初学者可以看廖的教程，了解更详细的可以看<a target="_blank" rel="noopener" href="https://git-scm.com/book/zh/v2">Git官网-Pro Git教程</a>，说的非常详细，里面有中文文档。</p>
+<hr>
+<br>
+
+
+
+<h1 id="Git基础"><a href="#Git基础" class="headerlink" title="Git基础"></a>Git基础</h1><p><strong>三个工作区域</strong><br>一个Git项目包括：工作目录、暂存区（stage或index）和仓库目录。基本的 Git 工作流程如下：</p>
+<ol>
+<li>在工作目录中修改文件。如通过<code>$ git clone</code>命令将项目克隆到本地，然后做一些修改。</li>
+<li>暂存文件，将文件的快照放入暂存区域。如通过<code>$ git add .</code>命令进行操作。</li>
+<li>提交更新，找到暂存区域的文件，将快照永久性存储到 Git 仓库目录。如通过<code>$ git commit</code>命令进行操作。</li>
+</ol>
+<p><img src="http://upload-images.jianshu.io/upload_images/2658578-0a3c6479055e37b5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="来源Git官网"></p>
+<p><strong>三种状态</strong><br>工作目录下的文件分为两种状态：已跟踪或未跟踪。</p>
+<ol>
+<li>未跟踪。没有纳入版本控制的文件。</li>
+<li>已跟踪。已跟踪的文件是指那些被纳入了版本控制的文件，在上一次快照中有它们的记录，在工作一段时间后，它们的状态可能处于未修改，已修改或已放入暂存区。</li>
+</ol>
+<p>已跟踪的文件分为三种：</p>
+<ol>
+<li>已提交（committed）。表示数据已经安全的保存在本地仓库目录中。 </li>
+<li>已修改（modified）。表示修改了文件，但还没保存到暂存区中。 </li>
+<li>已暂存（staged）。表示对一个已修改文件的当前版本做了标记，即已经放到了暂存区，使之包含在下次提交的快照中。</li>
+</ol>
+<p><img src="https://upload-images.jianshu.io/upload_images/2658578-dd8bea81c4b8c82f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Git项目文件生命周期"></p>
+<p><strong>分支结构变更示意</strong><br><code>master</code>指向自己分支的最新提交，<code>HEAD</code>指向当前分支</p>
+<ol>
+<li><p>只有一个主分支时<br> <img src="https://upload-images.jianshu.io/upload_images/2658578-3d9b499d978d52fa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="只有一个主分支master"></p>
+</li>
+<li><p>创建并切换到分支dev。即创建一个dev指针指向当前提交，同时HEAD也指向dev分支<br> <img src="https://upload-images.jianshu.io/upload_images/2658578-0e4b492bab51186d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="创建并切换分支dev"></p>
+</li>
+<li><p>修改并提交分支dev<br> <img src="https://upload-images.jianshu.io/upload_images/2658578-7ddb24059a53d93e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="修改并提交分支dev"></p>
+</li>
+<li><p>合并分支dev到master(默认的快速模式)<br> <img src="https://upload-images.jianshu.io/upload_images/2658578-6028d4eab1c70d1f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="合并分支-ff"><br> <img src="https://upload-images.jianshu.io/upload_images/2658578-12b3c045442d59b4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="合并分支-no-ff"></p>
+</li>
+<li><p>删除分支dev<br> <img src="https://upload-images.jianshu.io/upload_images/2658578-c9396e94563a2cfd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="删除分支dev"></p>
+</li>
+</ol>
+<hr>
+<br>
+
+
+
+<h1 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h1><h2 id="使用较多的6个命令"><a href="#使用较多的6个命令" class="headerlink" title="使用较多的6个命令"></a>使用较多的6个命令</h2><p><img src="https://upload-images.jianshu.io/upload_images/2658578-5bf3855193087be8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="日常使用的命令"></p>
+<h2 id="创建"><a href="#创建" class="headerlink" title="创建"></a>创建</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建版本库。在当前文件件创建版本库。</span></span><br><span class="line">$ git init</span><br><span class="line"><span class="comment"># 添加文件。修改文件后，需要把修改后内容添加到暂存区以备提交。“.” 代表所有文件，也可以添加指定的文件。</span></span><br><span class="line">$ git add .</span><br><span class="line"><span class="comment"># 提交到本地版本库。</span></span><br><span class="line">$ git commit -m <span class="string">&quot;本次提交的信息&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 关联远程服务器</span></span><br><span class="line">$ git remote add origin <span class="string">&quot;远程仓库链接&quot;</span></span><br><span class="line"><span class="comment"># 推送当前分支信息到远程服务器。“origin”代表默认的远程服务，“master”代表分支。</span></span><br><span class="line">$ git push -u origin master</span><br></pre></td></tr></table></figure>
+
+<h2 id="查看"><a href="#查看" class="headerlink" title="查看"></a>查看</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看状态。当前版本目录的状态</span></span><br><span class="line">$ git status</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看提交历史</span></span><br><span class="line">$ git <span class="built_in">log</span></span><br><span class="line">$ git <span class="built_in">log</span> --pretty=oneline</span><br><span class="line">$ git <span class="built_in">log</span> --graph</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看命令历史：checkout、commit、reset等</span></span><br><span class="line">$ git reflog</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="回退、撤销与删除"><a href="#回退、撤销与删除" class="headerlink" title="回退、撤销与删除"></a>回退、撤销与删除</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 版本回退。回退到历史版本</span></span><br><span class="line"><span class="comment"># 其中“HEAD^”表示上一个版本，“HEAD^^”表示上上个版本</span></span><br><span class="line"><span class="comment"># 回退到当前版本，并清除所有修改</span></span><br><span class="line">$ git reset --hard HEAD</span><br><span class="line"><span class="comment"># 回退到上个版本，并清除所有修改</span></span><br><span class="line">$ git reset --hard HEAD^</span><br><span class="line"><span class="comment"># 回退到上个版本，本地保留修改</span></span><br><span class="line">$ git reset --soft HEAD^</span><br><span class="line"><span class="comment"># 版本切换。回退到历史版本或跳到最新版本。</span></span><br><span class="line"><span class="comment"># “1094a”表示指定commit id的版本</span></span><br><span class="line"><span class="comment"># 可以通过“git log”命令查看历史版本commit id</span></span><br><span class="line"><span class="comment"># 或通过通过“git reflog”查看提交记录</span></span><br><span class="line">$ git reset --hard 1094a</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 撤销已修改的文件。恢复到最近一次git commit或git add时的状态</span></span><br><span class="line">$ git checkout -- &lt;file&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 撤销已暂存的文件。恢复到已修改状态。</span></span><br><span class="line"><span class="comment"># 然后通过“git checkout -- &lt;file&gt;”，恢复到最近一次git commit或git add时的状态</span></span><br><span class="line">$ git reset HEAD &lt;file&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="分支管理"><a href="#分支管理" class="headerlink" title="分支管理"></a>分支管理</h2><p><strong>命令-创建和切换</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建并切换分支</span></span><br><span class="line">$ git checkout -b dev</span><br><span class="line"><span class="comment"># 查看本地分支</span></span><br><span class="line">$ git branch</span><br><span class="line"><span class="comment"># 查看远程分支</span></span><br><span class="line">$ git branch -a</span><br><span class="line"><span class="comment"># 切换分支</span></span><br><span class="line">$ git checkout dev</span><br><span class="line">$ git checkout tag-v1.0 -b hotfix-v10-xxx</span><br></pre></td></tr></table></figure>
+
+<p><strong>命令-合并</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在其他分支上合并dev分支</span></span><br><span class="line"><span class="comment"># 默认是Fast-forward模式，直接把master指向dev的当前提交，这种模式下，删除分支后，会丢掉分支信息</span></span><br><span class="line">$ git merge dev</span><br><span class="line"><span class="comment"># no-ff模式，合并后会保存分支信息</span></span><br><span class="line">$ git merge dev --no-ff</span><br></pre></td></tr></table></figure>
+
+<p><strong>命令-保存和恢复工作现场</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 保存当前工作现场。不提交情况下，可保存当前工作现场，再并切换到其他分支。</span></span><br><span class="line">$ git stash</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看保存的当前工作现场</span></span><br><span class="line">$ git stash list</span><br><span class="line"></span><br><span class="line"><span class="comment"># 恢复并删除当前工作现场。如果stash有很多，则默认操作最新的一个。</span></span><br><span class="line">$ git stash pop</span><br><span class="line"><span class="comment"># 恢复当前工作现场。仅恢复，不删除</span></span><br><span class="line">$ git stash apply</span><br><span class="line"><span class="comment"># 删除工作现场</span></span><br><span class="line">$ git stash drop</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>命令-删除分支</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 删除本地分支`dev`。</span></span><br><span class="line">$ git branch -d dev</span><br><span class="line"><span class="comment"># 删除本地分支。强行删除没有合并的分支</span></span><br><span class="line">$ git branch -D dev</span><br><span class="line"><span class="comment"># 删除远程分支`dev`。</span></span><br><span class="line">$ git push origin --delete dev</span><br></pre></td></tr></table></figure>
+
+<h2 id="标签管理"><a href="#标签管理" class="headerlink" title="标签管理"></a>标签管理</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 增加标签。默认为HEAD</span></span><br><span class="line">$ git tag v1.0</span><br><span class="line"><span class="comment"># 增加标签。针对历史版本</span></span><br><span class="line">$ git tag v1.0 &lt;commit id&gt;</span><br><span class="line"><span class="comment"># 增加标签。附带说明</span></span><br><span class="line">$ git tag -a v1.0 -m <span class="string">&quot;version 1.0 release&quot;</span> &lt;commit id&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看所有标签</span></span><br><span class="line">$ git tag</span><br><span class="line"><span class="comment"># 查看某个标签</span></span><br><span class="line">$ git show v1.0</span><br><span class="line"></span><br><span class="line"><span class="comment"># 推送标签。增加标签存储在本地，如有必要可以推送到远程。</span></span><br><span class="line">$ git push origin v1.0</span><br><span class="line"><span class="comment"># 推送所有标签。</span></span><br><span class="line">$ git push origin --tags</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除本地标签</span></span><br><span class="line">$ git tag -d v1.0</span><br><span class="line"><span class="comment"># 删除远程标签。先从本地删除，再推送到远程。</span></span><br><span class="line">$ git push origin :refs/tags/v1.0</span><br></pre></td></tr></table></figure>
+<h2 id="远程仓库"><a href="#远程仓库" class="headerlink" title="远程仓库"></a>远程仓库</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 克隆远程库。本地没有建立项目时，使用这个</span></span><br><span class="line">$ git <span class="built_in">clone</span> &lt;远程仓库地址&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 关联本地项目到远程服务。本地有Git项目时，使用这个。</span></span><br><span class="line">$ git remote add origin &lt;远程仓库地址&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 从远程库更新本地库。多人协作，远程有更新时</span></span><br><span class="line"><span class="comment"># 会自动合并</span></span><br><span class="line">$ git pull</span><br><span class="line"><span class="comment"># 不会自动合并</span></span><br><span class="line">$ git fetch</span><br><span class="line"></span><br><span class="line"><span class="comment"># 推动本地内容到远程</span></span><br><span class="line">$ git push -u origin master</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="配置信息"><a href="#配置信息" class="headerlink" title="配置信息"></a>配置信息</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 配置别名</span></span><br><span class="line">$ git config --global alias.st status</span><br><span class="line">$ git config --global alias.co checkout</span><br><span class="line">$ git config --global alias.ci commit</span><br><span class="line">$ git config --global alias.br branch</span><br><span class="line">$ git config --global alias.lg <span class="string">&quot;log --color --graph --pretty=format:&#x27;%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)&lt;%an&gt;%Creset&#x27; --abbrev-commit&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置颜色</span></span><br><span class="line">$ git config --global color.ui <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置用户名和邮件</span></span><br><span class="line">$ git config --global user.name <span class="string">&quot;Your Name&quot;</span></span><br><span class="line">$ git config --global user.email <span class="string">&quot;email@example.com&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看配置</span></span><br><span class="line">$ git config --list</span><br></pre></td></tr></table></figure>
+
+<p>Git配置信息存储在配置文件中，可以在配置文件中直接修改或删除配置信息。</p>
+<ol>
+<li>当期仓库的配置信息在<code>.git/config</code>中</li>
+<li><code>--global</code>的配置信息在用户主目录下的<code>.gitconfig</code>中</li>
+<li><code>--system</code>的配置信息在<code>/etc/gitconfig</code>中</li>
+</ol>
+<p>其中，每一个级别覆盖上一级别的配置</p>
+<h2 id="其他实用命令"><a href="#其他实用命令" class="headerlink" title="其他实用命令"></a>其他实用命令</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看使用手册。&lt;verb&gt;表示要查看的命令名</span></span><br><span class="line">$ git <span class="built_in">help</span> &lt;verb&gt;</span><br><span class="line">$ git &lt;verb&gt; --<span class="built_in">help</span></span><br><span class="line">$ man git-&lt;verb&gt;</span><br></pre></td></tr></table></figure>
+<hr>
+<br>
+
+
+
+<h1 id="常见场景"><a href="#常见场景" class="headerlink" title="常见场景"></a>常见场景</h1><p><strong>创建、提交、推送</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 本地没有项目，远程有Git项目</span></span><br><span class="line">$ git <span class="built_in">clone</span> &lt;远程仓库地址&gt;</span><br><span class="line">$ git add .</span><br><span class="line">$ git commit -m <span class="string">&quot;初始化&quot;</span></span><br><span class="line">$ git push origin master</span><br><span class="line"></span><br><span class="line"><span class="comment"># 本地有项目，远程新创建空Git项目</span></span><br><span class="line">$ git init</span><br><span class="line"><span class="comment"># 修改.gitignore文件</span></span><br><span class="line">$ git add .</span><br><span class="line">$ git commit -m <span class="string">&quot;&quot;</span></span><br><span class="line">$ git remote add origin &lt;远程仓库地址&gt;</span><br><span class="line">$ git push -u origin master</span><br></pre></td></tr></table></figure>
+
+<p><strong>多人协作</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 合并他人分支、解决冲突</span></span><br><span class="line"><span class="comment"># 新建一个分支，与指定的远程分支建立追踪关系</span></span><br><span class="line">$ git branch --track dev origin/dev</span><br><span class="line">$ git checkout dev</span><br><span class="line">$ git pull</span><br><span class="line">$ git checkout master</span><br><span class="line">$ git merge dev --no-ff</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果没有冲突，直接就合并好了，如果有冲突，先解决冲突，然后提交</span></span><br><span class="line"><span class="comment"># 如果冲突没有解决好，希望撤销这次合并</span></span><br><span class="line">$ git merge --abort</span><br><span class="line"></span><br><span class="line"><span class="comment"># 其他待续</span></span><br></pre></td></tr></table></figure>
+<hr>
+<br>
+
+
+
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li>说明。图中图片皆来自参考链接</li>
+<li><a target="_blank" rel="noopener" href="https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000">廖雪峰Git教程</a></li>
+<li><a target="_blank" rel="noopener" href="https://git-scm.com/book/zh/v2">Git官网-Pro Git教程</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2015/12/git-cheat-sheet.html">阮一峰-常用Git命令清单</a></li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2018/10/22/android-build-05-gradle-practise/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/10/22/android-build-05-gradle-practise/" class="post-title-link" itemprop="url">Android构建05-Gradle最佳实践</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-10-22 09:09:26" itemprop="dateCreated datePublished" datetime="2018-10-22T09:09:26+08:00">2018-10-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-29 14:24:03" itemprop="dateModified" datetime="2021-06-29T14:24:03+08:00">2021-06-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="文件分布简述"><a href="#文件分布简述" class="headerlink" title="文件分布简述"></a>文件分布简述</h1><p>详情请见官方文档<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/directory_layout.html">Directory Layout</a>。</p>
+<p>之前官方文档并没有这方面的说明，现在却单独用一个章节来做说明，可能考虑到许多开发者都遇到过这方面的疑惑吧：项目的依赖包在哪里？我去掉了项目里<code>gradle.properties</code>和IDE（如Android Studio）里的代理设置之后，会什么代理还会生效？等等。</p>
+<p>Gradle相关文件包括Wrapper文件、Gradle各版本包、依赖包等。它们并不都存放在项目目录里，如依赖包，你在项目根目录下是找不到的。</p>
+<p>Gradle相关文件分布在两个地方：</p>
+<ol>
+<li>项目根目录。这个目录下的gradle相关文件只对当前项目生效。包括Wrapper配置和可执行命令文件、项目的<code>gradle.properties</code>、<code>build.gradle</code>等构建和配置文件。</li>
+<li>用户目录。<code>$USER_HOME/.gradle</code>，macOS中执行<code>$ cd ~/.gradle</code>即可进入，该目录下的配置对所有的项目生效。包括配置文件<code>gradle.properties</code>、Gradle各版本<code>wrapper/dists/</code>、项目依赖包<code>~/.gradle/caches/modules-2/files-2.1/</code>等。</li>
+</ol>
+<hr>
+<br>
+
+
+
+<h1 id="问题排查"><a href="#问题排查" class="headerlink" title="问题排查"></a>问题排查</h1><p><strong>获取帮助</strong></p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://discuss.gradle.org/c/help-discuss">Gradle Forums</a>。更新缓慢，回复率很低。</li>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/tagged/gradle">StackOverflow #gradle</a> 。在StackOverFlow上一般能找到所需要的解答。</li>
+<li><a target="_blank" rel="noopener" href="https://help.gradle.org/">help.gradle.org</a>。没用过，估计和Gradle论坛一样吧。</li>
+</ol>
+<p><strong>安装问题</strong></p>
+<p>详情请见官网<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/troubleshooting.html#sec:troubleshooting_installation">Troubleshooting Gradle installation</a>，按照官网的教程安装，一般没有什么问题。</p>
+<p><strong>定位一般构建问题</strong></p>
+<ol>
+<li>执行<code>$ ./gradlew [task name] -s</code>。打印栈信息，一般可以定位问题出现在哪里，否则执行下一步操作。</li>
+<li>执行<code>$ ./gradlew assembleDebug -d &gt; gradle.log </code>。打印所有的构建信息到<code>gradle.log </code>文件，通过搜索<code>WARNING</code>或<code>ERROR</code>定位错误。</li>
+</ol>
+<p><strong>依赖解析问题</strong></p>
+<p>参考官网<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/troubleshooting_dependency_resolution.html">Troubleshooting Dependency Resolution</a>，补充如下：</p>
+<ol>
+<li>版本冲突。升级低版本或在某个依赖里排除掉(<code>exclude</code>)低版本。</li>
+<li>依赖下载失败。一般会报错<code>Could not resolve xxx....xxxx timed out</code>，有以下两种解决方法：<ul>
+<li>设置HTTP代理或国内镜像仓库。HTTP代理可在<code>$USER_HOME/.gradle/gradle.properties</code>或项目根目录<code>gradle.properties</code>里设置。镜像仓库可使用<a target="_blank" rel="noopener" href="http://maven.aliyun.com/mvn/view">阿里云的仓库</a>，包括google、Maven Central和jcenter等的镜像仓库。</li>
+<li>下载依赖并从缓存执行构建。从官网下载依赖并放在缓存(<code>$USER_HOME/.gradle/caches/jars-3或modules-2</code>)里，然后使用命令行构建时添加<code>--offline</code>可选项。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<br>
+
+
+
+<h1 id="代理设置"><a href="#代理设置" class="headerlink" title="代理设置"></a>代理设置</h1><p>Gradle的代理一般用于解决Gradle版本和依赖下载失败的问题，代理参数可以设置在两个地方：</p>
+<ul>
+<li>项目根目录下的<code>gradle.properties</code>。仅对当前项目生效。</li>
+<li>用户目录下的<code>$USER_HOME/.gradle/gradle.properties</code>。对所有的Gradle项目生效。</li>
+</ul>
+<p>我的代理策略是使用<a target="_blank" rel="noopener" href="https://www.privoxy.org/">Privoxy</a>做HTTP代理，再让Privoxy监听Shadowsocks端口，真正实现代理的是本地Shadowsocks与远程代理服务中Shadowsocks的通信。</p>
+<blockquote>
+<p>因为Shadowsocks走的是Socks协议，而有些资源一定需要HTTP代理才生效，故需要使用Privoxy做一下转换。</p>
+</blockquote>
+<p>我一般的做法是在<code>$USER_HOME/.gradle/gradle.properties</code>下设置代理，代理参数及说明如下：</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># https代理</span></span><br><span class="line"><span class="comment"># 代理主机地址。本地，因为是先要走本地Privoxy。</span></span><br><span class="line"><span class="meta">systemProp.https.proxyHost</span>=<span class="string">127.0.0.1</span></span><br><span class="line"><span class="comment"># 代理端口号。Privoxy的端口号</span></span><br><span class="line"><span class="meta">systemProp.https.proxyPort</span>=<span class="string">8118</span></span><br><span class="line"><span class="comment"># 不走代理的地址。公司内部Maven库、内网、本地、阿里云OSS文件服务、个推、eclipse资源等，不用走代理，否则连接缓慢或者失败</span></span><br><span class="line"><span class="meta">systemProp.https.nonProxyHosts</span>=<span class="string">maven.xxxx.com|192.168.*|localhost|oss.sonatype.org|mvn.gt.igexin.com|repo.eclipse.org</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"># http代理。与https代理参数一直。</span></span><br><span class="line"><span class="meta">systemProp.http.proxyHost</span>=<span class="string">127.0.0.1</span></span><br><span class="line"><span class="meta">systemProp.http.proxyPort</span>=<span class="string">8118</span></span><br><span class="line"><span class="meta">systemProp.http.nonProxyHosts</span>=<span class="string">maven.xxxx.com|192.168.*|localhost|oss.sonatype.org|mvn.gt.igexin.com|repo.eclipse.org</span></span><br></pre></td></tr></table></figure>
+
+
+
+<blockquote>
+<p>IDE以Andorid Studio 为例，其代理设置（在<code>Preferences-&gt;System Settings-&gt;HTTP Proxy</code>中）仅仅对IDE更新、下载SDK等生效，不会影响到Gradle构建时下载依赖。</p>
+<p>需要注意的是，Andorid Studio中设置了代理后，一般会弹出对话框，问是否要把Studio的代理设置到用户目录下的<code>$USER_HOME/.gradle/gradle.properties</code>中，如果你点击了确定，则Studio会把自己的代理配置更新到用户目录的<code>gradle.properties</code>文件中，这样代理就对Gradle生效了。一般不建议点确定，因为Studio和Gradle的代理的资源不一样，配置也会不一致，有时候一个可能需要代理，而另一个却不需要代理。</p>
+<p>IDE和Gradle的代理应该分别配置。</p>
+</blockquote>
+<hr>
+<br>
+
+
+
+<h1 id="待续"><a href="#待续" class="headerlink" title="待续"></a>待续</h1><p>撰写可维护的构建脚本</p>
+<p><a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/authoring_maintainable_build_scripts.html">Authoring Maintainable Build Scripts</a></p>
+<p>搭建Gradle项目</p>
+<p><a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/organizing_gradle_projects.html">Organizing Gradle Projects</a></p>
+<p>提高构建性能</p>
+<p><a target="_blank" rel="noopener" href="https://guides.gradle.org/performance/">Improving the Performance of Gradle Builds</a></p>
+<p>使用缓存</p>
+<p><a target="_blank" rel="noopener" href="https://guides.gradle.org/using-build-cache/">https://guides.gradle.org/using-build-cache/</a></p>
+<hr>
+<br>
+
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/troubleshooting.html">Troubleshooting</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/troubleshooting_dependency_resolution.html">Troubleshooting Dependency Resolution</a></li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2018/10/21/2018-10-21-%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0-%E7%90%86%E8%A7%A3FileProvider/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/10/21/2018-10-21-%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0-%E7%90%86%E8%A7%A3FileProvider/" class="post-title-link" itemprop="url">理解FileProvider</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2018-10-21 11:53:40 / 修改时间：17:52:48" itemprop="dateCreated datePublished" datetime="2018-10-21T11:53:40+08:00">2018-10-21</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>用于更安全地在APP之间实现文件共享的一种机制，适用于Android 7.0及以上。</p>
+<p>当应用A（如相册）允许其他应用（以应用B为例）调用自己并获取自己的文件时，应用A需要使用<code>FileProvider</code>来转化自己的文件路径为<code>content://Uri</code>，并提供给需要文件的应用B。其中</p>
+<ol>
+<li>Android 7.0以上如果不使用<code>FileProvider</code>，应用A将返回<code>file:///</code> <code>Uri</code>，而报错。</li>
+<li>返回的<code>content://Uri</code>有生命周期，即应用B接收文件的<code>Activity</code>的生命周期，如果这个<code>Activity</code>被销毁了，则返回的<code>content://Uri</code>也将失效而不能获取文件。</li>
+</ol>
+<hr>
+<br>
+
+
+
+<h1 id="场景-从相册获取图片"><a href="#场景-从相册获取图片" class="headerlink" title="场景-从相册获取图片"></a>场景-从相册获取图片</h1><p>这是经常遇到的场景。当我们的APP（开发者APP）需要从相册获取图片时，一般使用如下代码</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">getPicture</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">val</span> intent = Intent()</span><br><span class="line">    intent.type = <span class="string">&quot;image/*&quot;</span></span><br><span class="line">    intent.action = Intent.ACTION_GET_CONTENT</span><br><span class="line">    intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, <span class="literal">true</span>)</span><br><span class="line">    startActivityForResult(Intent.createChooser(intent, <span class="string">&quot;Select Picture&quot;</span>), REQUEST_CODE_ADD_PICTURE)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>并在<code>onActivityResult</code>处理获取到Uri，但需要记住的是，这个Uri是相册应用使用<code>FileProvider</code>处理后的<code>content://Uri</code>，其获取图片的权限是暂时的。</p>
+<p>这个场景中，是开发者APP从相册获取图片，无需在开发者APP中配置<code>FileProvider</code>。</p>
+<hr>
+<br>
+
+
+
+<h1 id="场景-拍照"><a href="#场景-拍照" class="headerlink" title="场景-拍照"></a>场景-拍照</h1><p>开发者APP调用相机拍照并获取照片，官方文档<a target="_blank" rel="noopener" href="https://developer.android.com/training/camera/photobasics#kotlin">TakePhoto</a>对这一块有详细的说明。</p>
+<p>开发者APP调用相机拍照后需要保存在一个文件中，这个文件地址由开发者APP规定。也就是说，相机在拍照后需要读写开发者APP规定的文件，那么这个时候，开发者APP就需要提供文件共享功能，这就需要用到<code>FileProvider</code>了。</p>
+<p>在这个场景中，开发者APP中需要配置<code>FileProvider</code>。</p>
+<hr>
+<br>
+
+
+
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://developer.android.com/reference/android/support/v4/content/FileProvider">FileProvider</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.com/training/camera/photobasics#kotlin">TakePhoto</a></li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2018/10/20/2018-10-20-%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0-Uri%E8%BF%87%E6%9C%9F%E5%AF%BC%E8%87%B4%E5%9B%BE%E7%89%87%E4%B8%8D%E6%98%BE%E7%A4%BA%E7%9A%84%E9%97%AE%E9%A2%98/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1519,156 +1951,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2018/08/27/android-build-01-guide/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="章亮">
-      <meta itemprop="description" content="Developer For Android">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="永恒的码流">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/08/27/android-build-01-guide/" class="post-title-link" itemprop="url">Android构建01-前言</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-08-27 14:52:48" itemprop="dateCreated datePublished" datetime="2018-08-27T14:52:48+08:00">2018-08-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2018-10-17 14:52:48" itemprop="dateModified" datetime="2018-10-17T14:52:48+08:00">2018-10-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h1><p>开发Android应用，就离不开基于Gradle的Android构建系统。刚开始做Android开发的时候，遇到编译问题，一般上网搜索解决之。但一般很难知道问题产生的深层次原因，也不知道以后如何避免，更不知道如何快速解决一般性的编译异常问题。想去学习，但一般的博客或书籍的内容与Android开发者官网介绍的内容相似，没有关于Groovy和Gradle的内容，让人很难理解，只知道是这样，而不知道为什么是这样。于是，一直想对Android构建系统做一个系统性的学习和总结，最近终于能够抽出一些空来做这件事。</p>
-<p>本来只想写一篇文章，但写到Gradle之后，发现篇幅太长，故分开写，当做一个系列。</p>
-<p><strong>核心问题</strong></p>
-<p>当我执行<code>./gradlew assemble</code>命令时，我需要知道Gradle做了哪些事情？它是如何做的（即源码是如何写的）？</p>
-<p><strong>学习目标</strong><br>对于Android Build System，我们应该掌握哪些知识或技能点呢？</p>
-<ol>
-<li>Groovy。语言基础，尤其是闭包概念，API快速查阅等。</li>
-<li>Gradle。项目构建流程、基础概念、基本命令行指令、插件、API和Reference的查阅等。</li>
-<li>Android Plugin。基础概念、Reference的查阅等。</li>
-<li>Android应用构建（编译和打包）流程。</li>
-</ol>
-<p>文章也将主要按照这个学习流程来写。</p>
-<p><strong>参考资料</strong><br>主要参考官方文档</p>
-<ol>
-<li><a target="_blank" rel="noopener" href="http://www.groovy-lang.org/learn.html">Groovy 官网</a></li>
-<li><a target="_blank" rel="noopener" href="https://gradle.org/">Gradle官网</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.android.com/studio/build/">Android开发者官网-Configure your build</a></li>
-</ol>
-<br>
-
-<h1 id="Android构建系统与三大知识块"><a href="#Android构建系统与三大知识块" class="headerlink" title="Android构建系统与三大知识块"></a>Android构建系统与三大知识块</h1><p><strong>Android构建系统</strong><br>Android构建系统，即Android Build System，它的作用是编译app资源和源代码，并将它们打包成APK。之后我们可以对APK进行测试、部署、签名和发布。</p>
-<blockquote>
-<p>The Android build system compiles app resources and source code, and packages them into APKs that you can test, deploy, sign, and distribute</p>
-</blockquote>
-<p><br><strong>三大知识块</strong><br>整个Android Build System基于三大知识块：</p>
-<ul>
-<li><p><a target="_blank" rel="noopener" href="http://groovy-lang.org/">Apache Groovy</a><br>一种功能强大的JVM语言，包含脚本编写、DSL（特定领域语言）创建、运行时和编译时元编程以及函数编程等功能。</p>
-</li>
-<li><p><a target="_blank" rel="noopener" href="https://gradle.org/">Gradle</a><br>一种项目自动化构建工具。综合了Ant和Maven的一些特点，并使用Groovy的DSL来声明项目设置，而不是传统的XML。包含插件（Plugin）等功能。</p>
-<blockquote>
-<p>提示：目前Gradle可以使用Kotlin语言来编写脚本，但建议初学者以Groovy为主，毕竟遗留项目以及当前大多数项目的Gradle脚本都是使用Groovy来编写的。</p>
-</blockquote>
-</li>
-<li><p><a target="_blank" rel="noopener" href="http://google.github.io/android-gradle-dsl/current/">Android Plugin</a><br>Gradle的插件，用于增加一些特定于构建Android应用的功能。</p>
-</li>
-</ul>
-<br>
-
-<h1 id="开发环境"><a href="#开发环境" class="headerlink" title="开发环境"></a>开发环境</h1><ol>
-<li><p>主流操作系统。Gradle能够运行在所有的主流操作系统上，我的系统是<code>masOS High Sierra Version 10.13.6</code> 。</p>
-</li>
-<li><p><a target="_blank" rel="noopener" href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">Java JDK</a> 7+。Gradle基于Groovy，Groovy需要Java开发环境，Gradle官网说Gradle运行的最低Java JDK版本是7。</p>
-<p>我的Java版本如下</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ java -version</span><br><span class="line">java version &quot;1.8.0_91&quot;</span><br><span class="line">Java(TM) SE Runtime Environment (build 1.8.0_91-b14)</span><br><span class="line">Java HotSpot(TM) 64-Bit Server VM (build 25.91-b14, mixed mode)</span><br></pre></td></tr></table></figure></li>
-<li><p>Gradle。Gradle环境中包含Groovy，因此安装Gradle之后就不需要单独安装Groovy了。各平台以及不同安装方式见官网 <a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/installation.html">Installing Gradle</a>。macOS上可以使用<code>Homebrew</code>快速安装<code>$ brew install gradle</code>，安装成功后，查看版本信息如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ gradle -v</span><br><span class="line">------------------------------------------------------------</span><br><span class="line">Gradle 4.8.1</span><br><span class="line">------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">Build time:   2018-06-21 07:53:06 UTC</span><br><span class="line">Revision:     0abdea078047b12df42e7750ccba34d69b516a22</span><br><span class="line"></span><br><span class="line">Groovy:       2.4.12</span><br><span class="line">Ant:          Apache Ant(TM) version 1.9.11 compiled on March 23 2018</span><br><span class="line">JVM:          1.8.0_91 (Oracle Corporation 25.91-b14)</span><br><span class="line">OS:           Mac OS X 10.13.6 x86_64</span><br></pre></td></tr></table></figure></li>
-</ol>
-<br>
-
-<h1 id="Hello-World示例"><a href="#Hello-World示例" class="headerlink" title="Hello World示例"></a>Hello World示例</h1><p>创建一个简单的Gradle项目：包含一个<code>build.gradle</code>文件的目录。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir hello-world</span><br><span class="line">$ <span class="built_in">cd</span> hello-world</span><br><span class="line">$ vim build.gradle</span><br></pre></td></tr></table></figure>
-
-
-<p><code>build.gradle</code>文件</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">task helloworld &#123;</span><br><span class="line">  doLast &#123;</span><br><span class="line">      println<span class="string">&#x27;Hello World!&#x27;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>执行任务</p>
-<figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ gradle helloworld</span><br><span class="line"><span class="comment"># 输出如下：</span></span><br><span class="line">Starting a Gradle Daemon (subsequent builds will be faster)</span><br><span class="line">&gt; Task :helloworld</span><br><span class="line">Hello World!</span><br><span class="line">BUILD SUCCESSFUL <span class="keyword">in</span> 2s</span><br><span class="line">1 actionable task: 1 executed</span><br></pre></td></tr></table></figure>
-
-<p>简单解释下 <code>build.gradle</code>文件：</p>
-<ol>
-<li><code>build.gradle</code>是Gradle的编译脚本，在构建过程中Gradle会据此生成一个<code>Project</code>的Java实例。</li>
-<li><code>task</code>是<code>Gradle DSL</code>的关键字，用于添加任务到当前那项目中。<code>helloworld</code>是任务的名称。后面连接的一个Groovy闭包，构建时，会返回一个名为‘helloworld’的任务。</li>
-<li>闭包中的<code>doLast</code>是<code>Task</code>的方法，根据闭包的语法，省略了方法的对象，写全的话是<code>owner.doLast</code>。表示向任务中添加一个打印’Hello World!’字符串的<code>Action</code>到任务的<code>Action</code>列表的最后。</li>
-<li>一个任务（<code>Task</code>）可以包含很多<code>Action</code>，执行任务的时候，顺序执行<code>Action</code>。</li>
-</ol>
-<br>
-
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
-<li><a target="_blank" rel="noopener" href="http://www.groovy-lang.org/learn.html">Groovy 官网</a></li>
-<li><a target="_blank" rel="noopener" href="https://gradle.org/">Gradle官网</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.android.com/studio/build/">Android开发者官网-Configure your build</a></li>
-<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/innost/article/details/48228651">Gradle轻松入门</a></li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span>
+    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1736,7 +2022,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">58</span>
+          <span class="site-state-item-count">61</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1749,7 +2035,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">54</span>
+        <span class="site-state-item-count">55</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1793,12 +2079,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">236k</span>
+    <span title="站点总字数">249k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">3:35</span>
+    <span title="站点阅读时长">3:47</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>
