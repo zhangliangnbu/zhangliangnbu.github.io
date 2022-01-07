@@ -195,7 +195,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 14:29:06" itemprop="dateModified" datetime="2021-06-29T14:29:06+08:00">2021-06-29</time>
+                <time title="修改时间：2022-01-07 15:32:16" itemprop="dateModified" datetime="2022-01-07T15:32:16+08:00">2022-01-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -228,7 +228,14 @@
 <blockquote>
 <p><em>通过对你导出的每个重要接口都提供一个抽象的骨架实现（skeletal implementation）类，把接口和抽象类的优点结合起来</em>。接口的作用仍然是定义类型，但是骨架实现接管了所有与接口实现相关的工作。</p>
 </blockquote>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/03/28/material-effective-java-2rd/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -278,7 +285,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 14:28:04" itemprop="dateModified" datetime="2021-06-29T14:28:04+08:00">2021-06-29</time>
+                <time title="修改时间：2022-01-07 15:31:43" itemprop="dateModified" datetime="2022-01-07T15:31:43+08:00">2022-01-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -307,41 +314,14 @@
 <li>rebase 提取当前分支的修改，将其复制在了目标分支的最新提交后面；反映了项目过程中发生了什么，关注点在开发过程上面</li>
 <li>区别。<code>merge</code>会保留当前分支的历史记录，而<code>rebase</code>会改动当前分支的历史记录。</li>
 </ul>
-<hr>
-<h1 id="Merge合并方式"><a href="#Merge合并方式" class="headerlink" title="Merge合并方式"></a>Merge合并方式</h1><p>FAST-FORWARD 和非 FAST-FORWARD</p>
-<ul>
-<li>FAST-FORWARD：当前分支HEAD是欲合并入分支的一个祖先节点，无需创建额外的合并提交(create a merge commit)节点，直接更新HEAD指针。</li>
-<li>非FAST-FORWARD：合并后会创建额外的合并提交节点，这是TRUE MERGE，有几种合并策略。</li>
-</ul>
-<p>使用</p>
-<ul>
-<li>执行<code>git merge others</code>。如果系统认为当前分支HEAD是<code>others</code>分支的一个祖先节点，会使用<code>FAST-FORWARD</code>方式，否则使用<code>非FAST-FORWARD</code>方式。</li>
-<li>执行<code>git merge others --ff</code> 。同执行<code>git merge others</code>。</li>
-<li>执行<code>git merge others --no-ff</code>。都会创建一个额外合并提交节点。</li>
-<li>执行<code>git merge others --ff-only</code>。如果系统认为当前分支HEAD是<code>others</code>分支的一个祖先节点，会使用<code>FAST-FORWARD</code>方式，否则不执行合并。</li>
-</ul>
-<hr>
-<h1 id="Merge合并策略"><a href="#Merge合并策略" class="headerlink" title="Merge合并策略"></a>Merge合并策略</h1><p>非FAST-FORWARD的的几种合并策略：</p>
-<ul>
-<li>resolve。采用三路合并，当有多个共同祖先时，系统采用自认为合适的祖先。</li>
-<li>recursive。采用递归三路合并。</li>
-<li>octopus。合并超过两个分支时。</li>
-</ul>
-<blockquote>
-<p><strong>三路合并（3-way merge）算法</strong> 参考<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-hans/%E5%90%88%E5%B9%B6_(%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6)">维基百科-合并 (版本控制)</a></p>
-<ul>
-<li>简单三路合并。两个分支的文件和共同祖先文件做差异分析。</li>
-<li>递归三路合并。有多个共同祖先，先创建虚拟共同祖先。</li>
-</ul>
-</blockquote>
-<hr>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
-<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/c17472d704a0">闲谈 git merge 与 git rebase 的区别</a></li>
-<li><a target="_blank" rel="noopener" href="http://www.cis.upenn.edu/~bcpierce/papers/diff3-short.pdf">A Formal Investigation of Diff3</a></li>
-<li><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-hans/%E5%90%88%E5%B9%B6_(%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6)">维基百科-合并 (版本控制)</a></li>
-<li><a target="_blank" rel="noopener" href="http://blog.fedeoo.cn/2017/02/22/git-%E5%90%88%E5%B9%B6%E7%AD%96%E7%95%A5-%E4%B9%8B-recursive/">git 合并策略 之 recursive</a></li>
-</ol>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/03/27/git-merge-strategy/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -391,7 +371,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 14:28:38" itemprop="dateModified" datetime="2021-06-29T14:28:38+08:00">2021-06-29</time>
+                <time title="修改时间：2022-01-07 15:32:07" itemprop="dateModified" datetime="2022-01-07T15:32:07+08:00">2022-01-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -424,12 +404,14 @@
 <li>Java调用Kotlin。生成重载<code>@JvmOverloads</code>。</li>
 <li>待加强和研究的地方。并发、协程。</li>
 </ul>
-<hr>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
-<li><a target="_blank" rel="noopener" href="https://www.kotlincn.net/docs/reference/">Kotlin Reference 中文</a></li>
-<li><a target="_blank" rel="noopener" href="https://kotlinlang.org/docs/reference/">Kotlin Reference 官网</a></li>
-</ol>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/03/27/kotlin-reference-2019/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -479,7 +461,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 09:13:08" itemprop="dateModified" datetime="2021-06-29T09:13:08+08:00">2021-06-29</time>
+                <time title="修改时间：2022-01-07 15:25:31" itemprop="dateModified" datetime="2022-01-07T15:25:31+08:00">2022-01-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -502,9 +484,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h1><p>流程图如下</p>
-<p><img src="/images/flow-audio-to-caption.png" alt="Android构建流程"></p>
-
+          <p>本文介绍利用讯飞SDK实现音频转文字的流程</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/02/20/android-audio-caption-extraction/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -554,7 +542,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 14:42:32" itemprop="dateModified" datetime="2021-06-29T14:42:32+08:00">2021-06-29</time>
+                <time title="修改时间：2022-01-07 15:29:29" itemprop="dateModified" datetime="2022-01-07T15:29:29+08:00">2022-01-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -577,39 +565,20 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>序列化概念请见<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%BA%8F%E5%88%97%E5%8C%96">wikipedia</a>。</p>
+          <p>序列化概念请见<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%BA%8F%E5%88%97%E5%8C%96">wikipedia</a>。</p>
 <p>为什么需要序列化？</p>
 <ol>
 <li>IPC需要。多进程对应的是不同的内存区域，不能通过共享内存通信，因此传递数据的对象必须可序列化。</li>
 <li>持久化到本地和网络传输。</li>
 </ol>
-<hr>
-<h1 id="Serializable"><a href="#Serializable" class="headerlink" title="Serializable"></a>Serializable</h1><ol>
-<li>使用简单，开销大。</li>
-<li>serialVersionUID保证同一个对象。</li>
-<li>对象序列化，大量I/O操作，临时变量多，频繁GC。</li>
-</ol>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用</span></span><br><span class="line"><span class="keyword">data</span> <span class="class"><span class="keyword">class</span> <span class="title">SerializableUser</span></span>(<span class="keyword">var</span> userId: <span class="built_in">Int</span>, <span class="keyword">var</span> userName: String, <span class="keyword">var</span> isMale: <span class="built_in">Boolean</span>) : Serializable &#123;</span><br><span class="line">    <span class="keyword">companion</span> <span class="keyword">object</span> &#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">const</span> <span class="keyword">val</span> serialVersionUID = <span class="number">1L</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 序列化到disk</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">saveSerializable</span><span class="params">(so: <span class="type">Serializable</span>)</span></span> &#123;</span><br><span class="line">    <span class="keyword">val</span> <span class="keyword">out</span> = ObjectOutputStream(FileOutputStream(getFilePath(USER_CACHE_FILE)))</span><br><span class="line">    <span class="keyword">out</span>.writeObject(so)</span><br><span class="line">    <span class="keyword">out</span>.close()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 反序列化</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">getSerializable</span><span class="params">()</span></span>: Serializable &#123;</span><br><span class="line">    <span class="keyword">val</span> `<span class="keyword">in</span>` = ObjectInputStream(FileInputStream(getFilePath(USER_CACHE_FILE)))</span><br><span class="line">    <span class="keyword">val</span> so = `<span class="keyword">in</span>`.readObject() <span class="keyword">as</span> Serializable</span><br><span class="line">    `<span class="keyword">in</span>`.close()</span><br><span class="line">    <span class="keyword">return</span> so</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h1 id="Parcelable"><a href="#Parcelable" class="headerlink" title="Parcelable"></a>Parcelable</h1><ol>
-<li>使用略复杂，开销小。</li>
-<li>官方建议最好不要持久化到disk或网络传输，因为parceble数据一旦更改，反序列化就会失败，不能保持同一性。</li>
-<li>将一个完整的对象进行分解。</li>
-</ol>
-<p>Parcel与Parcelable的关系？// todo</p>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">data</span> <span class="class"><span class="keyword">class</span> <span class="title">ParcelableBook</span></span>(<span class="keyword">var</span> number: String?, <span class="keyword">var</span> name: String?, <span class="keyword">var</span> price: <span class="built_in">Float</span>): Parcelable &#123;</span><br><span class="line">    <span class="keyword">constructor</span>(parcel: Parcel) : <span class="keyword">this</span>(</span><br><span class="line">            parcel.readString(),</span><br><span class="line">            parcel.readString(),</span><br><span class="line">            parcel.readFloat())</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">writeToParcel</span><span class="params">(parcel: <span class="type">Parcel</span>, flags: <span class="type">Int</span>)</span></span> &#123;</span><br><span class="line">        parcel.writeString(number)</span><br><span class="line">        parcel.writeString(name)</span><br><span class="line">        parcel.writeFloat(price)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">describeContents</span><span class="params">()</span></span>: <span class="built_in">Int</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">companion</span> <span class="keyword">object</span> CREATOR : Parcelable.Creator&lt;ParcelableBook&gt; &#123;</span><br><span class="line">        <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">createFromParcel</span><span class="params">(parcel: <span class="type">Parcel</span>)</span></span>: ParcelableBook &#123;</span><br><span class="line">            <span class="keyword">return</span> ParcelableBook(parcel)</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">newArray</span><span class="params">(size: <span class="type">Int</span>)</span></span>: Array&lt;ParcelableBook?&gt; &#123;</span><br><span class="line">            <span class="keyword">return</span> arrayOfNulls(size)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 持久化Parcelable对象到disk, 但官方不建议这样做，理由如下：</span></span><br><span class="line"><span class="comment"> * changes in the underlying implementation of any of the data in the Parcel can render older data unreadable.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">saveParcelable</span><span class="params">(parcelable: <span class="type">Parcelable</span>)</span></span> &#123;</span><br><span class="line">    <span class="keyword">val</span> parcel = Parcel.obtain()</span><br><span class="line">    parcel.writeParcelable(parcelable, <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">val</span> <span class="keyword">out</span> = DataOutputStream(FileOutputStream(getFilePath(USER_CACHE_FILE2)))</span><br><span class="line">    <span class="keyword">out</span>.write(parcel.marshall())</span><br><span class="line">    parcel.recycle()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 反序列化</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">getParcelable</span><span class="params">()</span></span>: Parcelable? &#123;</span><br><span class="line">    <span class="keyword">val</span> ino = DataInputStream(FileInputStream(getFilePath(USER_CACHE_FILE2)))</span><br><span class="line">    <span class="keyword">val</span> <span class="keyword">data</span> = ino.readBytes()</span><br><span class="line">    <span class="keyword">val</span> parcel = Parcel.obtain()</span><br><span class="line">    parcel.unmarshall(<span class="keyword">data</span>, <span class="number">0</span>, <span class="keyword">data</span>.size)</span><br><span class="line">    parcel.setDataPosition(<span class="number">0</span>)</span><br><span class="line">    <span class="keyword">val</span> parcelable =  parcel.readParcelable&lt;Parcelable&gt;(Thread.currentThread().contextClassLoader)</span><br><span class="line">    ino.close()</span><br><span class="line">    parcel.recycle()</span><br><span class="line">    <span class="keyword">return</span> parcelable</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>本地IPC使用Parcelable，持久化到disk和网络传输使用Serializable</p>
-<hr>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
-<li>《Android开发艺术探索》，任玉刚，电子工业出版社。</li>
-<li><a target="_blank" rel="noopener" href="https://gist.github.com/VladSumtsov/c4af1f4b8fe5099ca809">Cache your data with parcelable and disklrucache</a></li>
-<li><a target="_blank" rel="noopener" href="http://www.developerphil.com/parcelable-vs-serializable/">Parcelable vs Serializable</a></li>
-</ol>
-<hr>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/02/18/android-serializable-vs-parcelable/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -659,7 +628,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 14:25:15" itemprop="dateModified" datetime="2021-06-29T14:25:15+08:00">2021-06-29</time>
+                <time title="修改时间：2022-01-07 15:28:25" itemprop="dateModified" datetime="2022-01-07T15:28:25+08:00">2022-01-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -682,189 +651,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>温故知新，官方文档每年都应该读一遍。</p>
-<hr>
-<h1 id="Animations-amp-Transitions"><a href="#Animations-amp-Transitions" class="headerlink" title="Animations &amp; Transitions"></a>Animations &amp; Transitions</h1><p><strong>动画实现方式</strong> </p>
-<p>Property Animation。最常用、最主要的动画，应用于UI可见性和运动、布局改变过渡、Activity切换过渡等。 </p>
-<ul>
-<li>API。主要位于<code>android.aniamtion</code>包，插补器在<code>android.view.animation</code>包。 基础API有：<code>ValueAnimator</code>、<code>ObjectAnimator</code>、<code>AnimatorListenerAdapter</code>、<code>AnimatorSet</code>。其他API有：过渡-<code>LayoutTransition</code>、状态-<code>StateListAnimator</code>、多动画和便捷-<code>ViewPropertyAnimator</code>。</li>
-<li>XML。位于<code>res/animator</code>，可使用<code>AnimatorInflater</code>加载。</li>
-</ul>
-<p>Drawable Animation。图形动画，静态图片或矢量图动画 </p>
-<ul>
-<li>逐帧图形动画。<code>AnimationDrawable</code>，资源为<code>res/drawable/animation-list</code>。 </li>
-<li>矢量图动画。<code>AnimatedVectorDrawable</code>，资源为 <code>res/drawable/animated-vector</code>。 </li>
-</ul>
-<p>View Animation。有局限，一般情况下，可用Property Animation替代。 </p>
-<blockquote>
-<p>之前许多文档把动画分为属性动画、补间动画和图形动画三种，这里的补间动画就是View Animation，但感觉最新官方文档并没有这样划分。</p>
-<p>对于最新的文档，论述最多的是Property Animation，其他两种动画说的很少，所以主要掌握Property Animation，其他两种动画了解即可。</p>
-</blockquote>
-<p><strong>应用场景</strong> </p>
-<ul>
-<li>View显示和隐藏。前后连续的View的显示切换。crossfade、card flip？circular reveal animation </li>
-<li>View移动。直线、曲线、速度控制等。使用API有：<code>ObjectAnimator</code> 、<code>Path</code> 、<code>Interpolar</code>、<code>FlingAnimation</code>等。 </li>
-<li>View缩放过渡。图片的缩放过渡，如从小图过渡到大图预览。利用属性有：<code>alpha</code>、<code>x</code>、<code>sacleX</code>等。 </li>
-<li>布局变更过渡。布局更改后的多个View位置改变动画；利用系统动画直接设置<code>android:animateLayoutChanges=&quot;true”</code>即可，或自定义动画，利用API有：Scene、Transition、TransitionManager等。 </li>
-<li>Activity及其内部元素切换过渡。用到的API有<code>ActivityOptions.makeSceneTransitionAnimation()</code>等 </li>
-</ul>
-<hr>
-<h1 id="Resources"><a href="#Resources" class="headerlink" title="Resources"></a>Resources</h1><p>资源组织。位于<code>res/</code>和<code>assets/</code>目录，独立于代码，利于复用。</p>
-<p>可选性资源。提供可选性资源用于不同配置的设备。</p>
-<ul>
-<li>资源文件夹名称格式*<resources_name>-<config_qualifier><em>，其中</em><config_qualifier>*(限定符)命名有自己的规则：可多个、有顺序、目录不能嵌套、大小写不敏感、限定类型不能相同。</li>
-<li>资源匹配规则。根据<a target="_blank" rel="noopener" href="https://developer.android.com/guide/topics/resources/providing-resources#BestMatch">匹配规则-BestMatch</a>并依据<a target="_blank" rel="noopener" href="https://developer.android.com/guide/topics/resources/providing-resources#table2">限定符表单</a>从上到下依次匹配。</li>
-<li>必须要设置默认资源，即无限定符的资源，避免APP找不到资源时崩溃。</li>
-</ul>
-<p>代码里引用资源。</p>
-<ul>
-<li>引用一般<code>res/</code>资源，<code>[&lt;package_name&gt;.]R.&lt;resource_type&gt;.&lt;resource_name&gt;</code>；</li>
-<li>引用<code>res/raw</code>资源，<code> Resources.openRawResource()</code>；</li>
-<li>引用<code>assets/</code>资源，<code>AssetManager.open(&quot;filename&quot;)</code>。</li>
-</ul>
-<p>XML里引用资源。</p>
-<ul>
-<li>引用文件资源：<code>@[&lt;package_name&gt;:]&lt;resource_type&gt;/&lt;resource_name&gt;</code>。</li>
-<li>引用样式属性：<code>?[&lt;package_name&gt;:][&lt;resource_type&gt;/]&lt;resource_name&gt;</code></li>
-</ul>
-<p>本地化。使用可选资源、总是在<code>strings.xml</code>定义字符串、使用<code>&lt;xliff:g&gt;</code>保持部分文本不变。</p>
-<p>Unicode和国际化。<a target="_blank" rel="noopener" href="http://userguide.icu-project.org/icufaq#TOC-How-is-the-ICU-licensed-">ICU</a></p>
-<p>使用<code>&lt;aapt:attr&gt;</code>内联复杂的XML资源。</p>
-<p>字符串。数量字符串（Quantity Strings）<code>plurals</code>；样式设置-HTML、Spannables、Annotation。</p>
-<hr>
-<h1 id="Permissions"><a href="#Permissions" class="headerlink" title="Permissions"></a>Permissions</h1><p>Android安全架构的核心设计点是，默认情况下，任何应用都无权执行任何会对其他应用，操作系统或用户产生负面影响的操作。</p>
-<p>概述</p>
-<ul>
-<li>可选硬件功能。如无必须，设置<code>android:required=&quot;false&quot;</code>。</li>
-<li>权限强制。对服务的任何调用都可以强制执行任意细粒度的权限。四大组件、URI等。</li>
-<li>自动权限适配。低<code>targetSdkVersion </code>的APP在高SDK版本平台运行时，可无视新增加的权限限制。</li>
-<li>保护级别。<em>normal</em>, <em>signature</em>, and <em>dangerous</em>。另外，特殊权限如 <code>SYSTEM_ALERT_WINDOW</code> and <code>WRITE_SETTINGS</code>需要发起Intent请求。</li>
-<li>权限组。仅影响<em>dangerous</em>权限用户交互体验，组内被手动授权后，其他自动被授权。</li>
-<li>总是显示请求每个需要的权限。权限级别、组的划分可能会随着版本的更新而有所改变。</li>
-<li>ADB命令自动授权所有权限。<code>$ adb shell install -g MyApp.apk</code></li>
-</ul>
-<p>申请权限</p>
-<ul>
-<li>声明。在Manifest中声明，可附加API等级、最大SDK版本信息等。</li>
-<li>检查。<code>ContextCompat.checkSelfPermission()</code>。</li>
-<li>申请。<code> ActivityCompat.requestPermissions()</code>。</li>
-<li>处理。在<code>onRequestPermissionsResult()</code>处理。</li>
-</ul>
-<p>权限使用原则</p>
-<ul>
-<li>只添加必要权限。如能用其他方式实现则不要添加权限，如用Intent调用其他APP、使<code>onAudioFocusChange()</code>判断电话状态、使用<code>com.google.android.gms.iid</code>或<code>Advertising Identifier</code>获取身份凭证等。</li>
-<li>注意依赖库的权限。添加依赖则会集成其所需权限。</li>
-<li>对用户透明。让用户明白为何需要权限。</li>
-<li>显示使用权限功能。让用户知道你在使用相关权限功能，不要偷偷使用。</li>
-</ul>
-<p>自定义权限。(⊙o⊙)</p>
-<hr>
-<h1 id="Testing"><a href="#Testing" class="headerlink" title="Testing"></a>Testing</h1><p>概述</p>
-<ul>
-<li>测试驱动开发 Test-Driven Development。工作流：Failing Test -&gt; Passing Test -&gt; Refactor -&gt; Failing Test -&gt; … </li>
-<li>测试层级。Small Tests（Unit Tests）70% -&gt; Medium Tests 20% -&gt; Large Tests 10%。</li>
-</ul>
-<p>Small Tests或单元测试</p>
-<ul>
-<li>Local Unit Tests。最主要的单元测试。运行于本地JVM，源码位于*[module-name]/src/test/java/*；如果测试单元引用了Android层框架或三方依赖代码，可使用Robolectric或Mockito等来模拟。依赖库包括JUnit 4、Robolectric、Mockito。</li>
-<li>Instrumented Unit Tests。运行于模拟器或真机，源码位于*[module-name]/src/androidTest/java/*。依赖库包括AndroidX test runner和rules、Hamcrest、Espresso、UI Automator。</li>
-</ul>
-<p>资源</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://github.com/googlesamples/android-testing">googlesamples/<strong>android-testing</strong></a></li>
-<li><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=pK7W5npkhho&start=111">Test-Driven Development on Android with the Android Testing Support Library (Google I/O ‘17)</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/googlesamples/android-sunflower">googlesamples/android-sunflower</a></li>
-<li><a target="_blank" rel="noopener" href="https://codelabs.developers.google.com/codelabs/android-testing/index.html#0">Android Testing Codelab</a>。教程不错，可惜依赖库不是最新的，也没有用Robolectric。</li>
-</ul>
-<p>实践。优化既有项目，测试工具类（单元测试或小型测试）、测试页面逻辑（简单UI测试或中型测试，可先优化MVP结构）、测试页面间逻辑（集成UI测试或大型测试）。</p>
-<hr>
-<h1 id="Activities"><a href="#Activities" class="headerlink" title="Activities"></a>Activities</h1><p>概述。Activity而不是APP，是交互的基本单位。</p>
-<p>生命周期。</p>
-<ul>
-<li><code>onCreate()</code>。一个实例只执行一次，此处完成初始化工作。</li>
-<li><code>onStart()</code>。可见，不能交互；执行很快。</li>
-<li><code>onResume()</code>。可见，获取焦点能交互。</li>
-<li><code>onPause()</code>。失去焦点不能交互；执行很快，不能做较重的操作，如操作数据库等。</li>
-<li><code>onStop()</code>。可执行较重操作，以及释放资源。</li>
-<li><code>onDestory()</code>。释放资源。</li>
-</ul>
-<p>UI状态的保存和恢复。持久化信息系统或本地，并从系统或本地恢复到Activity。</p>
-<p>回退栈和启动模式。哪个状态进栈的？</p>
-<p>SingleTask。</p>
-<ul>
-<li>官方说会开启新栈，但实际上是否进入新栈与”taskAffinity”有关，启动Activity与新建Activity的”taskAffinity”不同则进入新栈，否在在同一栈内。两种方式，一，AndroidManifest文件中设置，<code>android:launchMode=&quot;singleTask&quot;</code>,如果不设置”taskAffinity”，则不会开启新栈，只会在当前栈新建实例；二，如果使用代码<code>flags = Intent.FLAG_ACTIVITY_NEW_TASK</code>，则必须设置不同的”taskAffinity”，否则不能开始”singleTask”模式。</li>
-<li>发现了一个奇怪的情况，启动一个已经存在的”singleTask”的Activity，只是将其所在的任务栈带回前台，显示这个栈顶的Activity，而不是要启动的Activity。示例 Activity启动顺序： A-&gt;B-&gt;C，A和C设置为”singleTask”和不同的”taskAffinity”，执行C-&gt;A，则出现B，返回才看到A。</li>
-</ul>
-<blockquote>
-<p>参考</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/u012889434/article/details/47150739">“singleTask”模式 切换到新的栈中</a></li>
-<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/lincyang/article/details/6802017">启动模式”singleTask”和FLAG_ACTIVITY_NEW_TASK具有不同的行为！</a></li>
-</ul>
-</blockquote>
-<p>进程和应用生命周期。</p>
-<ul>
-<li>进程优先级取决于其中所运行的组件活动状态。</li>
-<li>优先级从高到低：前台进程-&gt;可见进程-&gt;服务进程-&gt;缓存进程。</li>
-</ul>
-<p>Parcelables和Bundles。每个进程的Binder事务缓冲区目前限制在1M以内，对于操作比如<code>savedInstanceState</code>建议缓冲数据不超过50K。</p>
-<p>Fragments</p>
-<ul>
-<li>设计哲学。模块化(避免从Fragment操作其他Fragment)、可复用、UI布局适配。</li>
-<li>测试。验证交互一致性；API <code>FragmentScenario</code>。</li>
-</ul>
-<p>App Links。</p>
-<ul>
-<li>Deep Link。可选择的APP；local intent-filter</li>
-<li>Android App Link。直接进入APP；local intent-filter &amp; remote Digital Asset Links JSON file</li>
-</ul>
-<hr>
-<h1 id="Android-Architecture-Components"><a href="#Android-Architecture-Components" class="headerlink" title="Android Architecture Components"></a>Android Architecture Components</h1><p>Lifecycle</p>
-<ul>
-<li>概述。继承<code>LifecycleOwner</code>的UI控件如Activity或Fragment，能够注册观察者<code>LifecycleObserver</code>来监测其生命周期方法。如此则能够让生命周期敏感的组件在自己内部处理相应的生命周期方法，从而保持UI控件如Activity或Fragment的简洁性。</li>
-<li>涉及类或接口。<code>LifecycleOwner</code>是<code>Lifecycle</code>的容器，使用<code>Lifecycle</code>添加观察者<code>LifecycleObserver</code>。</li>
-<li>使用。创建生命周期敏感的组件继承<code>LifecycleObserver</code>；添加方法或构造方法获取<code>Lifecycle</code>，并使用<code>Lifecycle.addObserver()</code>绑定自身；在UI控件中实例化生命周期敏感的组件即可。</li>
-</ul>
-<p>LiveData</p>
-<ul>
-<li>概述。LiveData只通知处于active状态（<code>STARTD</code>和<code>RESUMED</code>）的<code>LifecycleOwner</code>观察者更新，并在<code>DESTROYED</code>与观察者解绑。通知更新有两种情况：一，数据改变；二，观察者状态从inactive切换到active。</li>
-<li>优点。UI和数据保持同步（观察者模式）、无内存泄漏（自动解绑）、Stoppe状态Activities无Crash（inactive状态不通知更新）、无需手动处理生命周期事件、保持最新数据（后台切前台、配置改变如旋转）、资源分享（继承LiveData的系统服务）。</li>
-<li>使用。创建<code>LiveData</code>、UI线程创<code>Observer</code>并定义<code>onChanged()</code>方法、绑定<code>Observer</code>（生命周期相关或无关）。</li>
-<li>结合Room。Room提供返回LiveData对象的可观察查询，数据库更新时自动更新LiveData对象。</li>
-<li>其他。集成扩展、变换、组合。</li>
-</ul>
-<p>ViewModel</p>
-<ul>
-<li>概述。用生命周期管理的方式，存储和管理UI相关数据。</li>
-<li>生命周期。与所绑定的Lifecycle相关，在Created创建，在Activity Finished或Fragment Detached（并不再马上重新创建）之后销毁。</li>
-<li>用处。Fragment间共享数据，使用相同的Key的ViewModel。在Lifecycle由于Configuration改变而重新创建期间存储数据。</li>
-</ul>
-<p>Room</p>
-<ul>
-<li><p>Dao。自动更新<code>LiveData</code>。返回<code>LiveData</code>的方法会监测数据库（可查看生成的方法实现），当数据库更新数据时，对应的<code>LiveData</code>也会更新。如：</p>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Query(<span class="meta-string">&quot;SELECT * from word_table ORDER BY word ASC&quot;</span>)</span></span><br><span class="line">LiveData&lt;List&lt;Word&gt;&gt; getAllWords();</span><br></pre></td></tr></table></figure></li>
-</ul>
-<p>参考</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://github.com/googlesamples/android-architecture-components">Github-googlesamples/android-architecture-components</a></li>
-<li><a target="_blank" rel="noopener" href="https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#0">Codelabs-android-room-with-a-view</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/googlesamples/android-sunflower">Github-googlesamples/android-sunflower</a></li>
-</ul>
-<hr>
-<h1 id="User-interface-amp-navigation"><a href="#User-interface-amp-navigation" class="headerlink" title="User interface &amp; navigation"></a>User interface &amp; navigation</h1><p>隐藏状态栏。</p>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Hide the status bar.</span></span><br><span class="line">window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN</span><br><span class="line"><span class="comment">// Remember that you should never show the action bar if the</span></span><br><span class="line"><span class="comment">// status bar is hidden, so hide that too if necessary.</span></span><br><span class="line">actionBar?.hide()</span><br></pre></td></tr></table></figure>
-
-<p>三种菜单。应用层级别的<em>Options Menu</em>、当前页面的行为响应或内容菜单、下拉列表<em>Popup Menue</em>。</p>
-<hr>
-<h1 id="Images-and-graphics"><a href="#Images-and-graphics" class="headerlink" title="Images and graphics"></a>Images and graphics</h1><p>优先使用WebP图片格式（API 17+）</p>
-<hr>
-<h1 id="Background-Tasks"><a href="#Background-Tasks" class="headerlink" title="Background Tasks"></a>Background Tasks</h1><p>几种解决方案。WorkManager、Foreground services、AlarmManager、DownloadManager。</p>
-<p>异步编程解决方案。回调、Java 8的 CompletableFuture、Rx 编程、Kotlin协程。</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="http://johnnyshieh.me/posts/kotlin-coroutine-introduction/">Kotlin 协程</a></li>
-<li><a href="%E7%BA%BF%E7%A8%8B%E7%9A%84%E6%8C%82%E8%B5%B7%E5%92%8C%E6%81%A2%E5%A4%8D">Java线程的挂起和恢复</a></li>
-</ul>
-
+          <p>温故知新，官方文档每年都应该读一遍。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/01/19/android-developer-guide-2019/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -914,7 +709,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 14:25:21" itemprop="dateModified" datetime="2021-06-29T14:25:21+08:00">2021-06-29</time>
+                <time title="修改时间：2022-01-07 15:28:40" itemprop="dateModified" datetime="2022-01-07T15:28:40+08:00">2022-01-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -938,23 +733,14 @@
 
       
           <h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>定义了不同的<code>drawable-***dpi</code>的文件夹，但只在其中某些里面放置了图片，比如在<code>drawable-xhdpi</code>里放置了图片，其他的文件夹里没有放置图片，那么非xhdpi的设配如何适配图片资源？如何定位图片以及如何显示？</p>
-<h1 id="图片选择规则"><a href="#图片选择规则" class="headerlink" title="图片选择规则"></a>图片选择规则</h1><p>当前-&gt;高分辨率-&gt;低分辨率。</p>
-<ul>
-<li>先找当前分辨率的drawable文件夹，没有则进行下一步；</li>
-<li>向上寻找高于当前分辨率的drawable文件夹，没有则进行下一步；</li>
-<li>向下寻找低于当前分辨率的drawable文件夹。没有？不可能通过编译。</li>
-</ul>
-<h1 id="图片显示缩放规则"><a href="#图片显示缩放规则" class="headerlink" title="图片显示缩放规则"></a>图片显示缩放规则</h1><p>设备上显示的图片尺寸 =（设配分辨率 / 适配图片定义分辨率）* 适配图片尺寸。</p>
-<p>示例。图片尺寸为144x144，位于<code>drawalbe-xxhdpi/ic_wechat</code>，在Nexus 6（1440 x 2560， 560dpi）显示尺寸为168 x 168，即 （560/480）* 144。</p>
-<blockquote>
-<p>Android Developer Guide对此语焉不详，以上结论来自我的实践，可写DEMO验证。</p>
-<p>另外，mipmap资源适配规则与drawable资源保持一致。</p>
-</blockquote>
-<hr>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.android.com/training/multiscreen/screendensities">Android Developer Guide - Support different pixel densities</a></li>
-</ul>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/01/15/android-drawable-density-adaptation/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1004,7 +790,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 14:22:39" itemprop="dateModified" datetime="2021-06-29T14:22:39+08:00">2021-06-29</time>
+                <time title="修改时间：2022-01-07 15:37:15" itemprop="dateModified" datetime="2022-01-07T15:37:15+08:00">2022-01-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1028,23 +814,14 @@
 
       
           <h1 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h1><p>在apk安装的时候，<code>mipmap-xxx/</code>下的所有分辨率的图片都会保留，而<code>drawablexxx/</code>下的图片只有保留适配设备分辨率的图片，其余图片会丢弃掉，减少了APP安装大小。</p>
-<blockquote>
-<p>It’s best practice to place your app icons in <code>mipmap-</code> folders (not the <code>drawable-</code>folders) because they are used at resolutions different from the device’s current density。——from <a target="_blank" rel="noopener" href="https://android-developers.googleblog.com/2014/10/getting-your-apps-ready-for-nexus-6-and.html">Android Developers Blog</a></p>
-<p>Using a mipmap as the source for your bitmap or drawable is a simple way to provide a quality image and various image scales, which can be particularly useful if you expect your image to be scaled during an animation. ——from <a target="_blank" rel="noopener" href="https://developer.android.com/about/versions/android-4.3">android-4.3</a></p>
-<p> if you are building different versions of your app for different densities, you should know about the “mipmap” resource directory.  This is exactly like “drawable” resources, except it does not participate in density stripping when creating the different apk targets. ——from <a target="_blank" rel="noopener" href="https://plus.google.com/+DianneHackborn/posts/QTA9McYan1L">Google+ Message</a></p>
-</blockquote>
-<h1 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h1><ul>
-<li><code>mipmapxxx/</code>下放置APP启动图标，以及需要高质量缩放动画的图片。</li>
-<li>其他图片资源放在<code>drawablexxx/</code>下。</li>
-</ul>
-<hr>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
-<li><a target="_blank" rel="noopener" href="https://android-developers.googleblog.com/2014/10/getting-your-apps-ready-for-nexus-6-and.html">Android Developers Blog</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.android.com/about/versions/android-4.3">android-4.3</a></li>
-<li><a target="_blank" rel="noopener" href="https://plus.google.com/+DianneHackborn/posts/QTA9McYan1L">Google+ Message</a></li>
-</ul>
-<hr>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/01/14/2019-01-14-android-mipmap-drawable-difference/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1174,7 +951,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 14:22:31" itemprop="dateModified" datetime="2021-06-29T14:22:31+08:00">2021-06-29</time>
+                <time title="修改时间：2022-01-07 15:37:00" itemprop="dateModified" datetime="2022-01-07T15:37:00+08:00">2022-01-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1202,39 +979,14 @@
 <li>英文原版：<a target="_blank" rel="noopener" href="https://leanpub.com/kotlin-for-android-developers">官网书籍地址</a>、<a target="_blank" rel="noopener" href="https://book.douban.com/subject/26916501/">豆瓣地址</a></li>
 <li>中文版：貌似还没有正式出版的中文版，只找到<a target="_blank" rel="noopener" href="https://wangjiegulu.gitbooks.io/kotlin-for-android-developers-zh/content/">Gitbook版本-《Kotlin for android developers》中文版翻译</a></li>
 </ul>
-<hr>
-<h1 id="val-vs-var"><a href="#val-vs-var" class="headerlink" title="val vs var"></a>val vs var</h1><p>一般开发者当然知道不可变对象使用<code>val</code>，可变对象使用<code>var</code>。对二者的解释，书中有段话说得很好：</p>
-<blockquote>
-<p>一个不可变对象意味着它在实例化之后就不能再去改变它的状态了。如果你需要一 个这个对象修改之后的版本，那就会再创建一个新的对象。这个让编程更加具有健壮性和预估性。在Java中，大部分的对象是可变的，那就意味着任何可以访问它这个对象的代码都可以去修改它，从而影响整个程序的其它地方。 </p>
-<p>不可变对象也可以说是线程安全的，因为它们无法去改变，也不需要去定义访问控制，因为所有线程访问到的对象都是同一个。 </p>
-<p>所以在Kotlin中，如果我们想使用不可变性，我们编码时思考的方式需要有一些改变。一个重要的概念是：尽可能地使用 val 。除了个别情况（ 特别是在Android中，有很多类我们是不会去直接调用构造函数的） ，大多数时候是可以的。 </p>
-</blockquote>
-<hr>
-<h1 id="网络请求"><a href="#网络请求" class="headerlink" title="网络请求"></a>网络请求</h1><p>简单的网络请求：<code>val data = URL(url).readText()</code>。使用了Kotlin扩展函数，之前都没有使用过，汗。</p>
-<hr>
-<h1 id="Anko库"><a href="#Anko库" class="headerlink" title="Anko库"></a>Anko库</h1><p>简洁的线程切换。还是要早点使用Anko库啊，汗。</p>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">async() &#123;</span><br><span class="line">	Request(url).run()</span><br><span class="line">	uiThread &#123; longToast(<span class="string">&quot;Request performed&quot;</span>) &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<hr>
-<h1 id="委托和泛型"><a href="#委托和泛型" class="headerlink" title="委托和泛型"></a>委托和泛型</h1><p>委托和泛型估计是全书的难点和重点了。书中有个简单的例子，使用属性委托来封装SharePreference数据的获取与设置，很精彩！</p>
-<p>属性委托的实现</p>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Preference</span>&lt;<span class="type">T</span>&gt;</span>(<span class="keyword">val</span> context: Context, <span class="keyword">val</span> name:String, <span class="keyword">private</span> <span class="keyword">val</span> default: T)</span><br><span class="line">    :ReadWriteProperty&lt;Any?, T&gt; &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">val</span> prefs <span class="keyword">by</span> lazy &#123;</span><br><span class="line">        context.getSharedPreferences(<span class="string">&quot;default&quot;</span>, Context.MODE_PRIVATE)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">getValue</span><span class="params">(thisRef: <span class="type">Any</span>?, property: <span class="type">KProperty</span>&lt;*&gt;)</span></span>: T &#123;</span><br><span class="line">        <span class="keyword">return</span> findPreference(name, default)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">setValue</span><span class="params">(thisRef: <span class="type">Any</span>?, property: <span class="type">KProperty</span>&lt;*&gt;, value: <span class="type">T</span>)</span></span> &#123;</span><br><span class="line">        putPreference(name, value)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">fun</span><span class="type">&lt;T&gt;</span> <span class="title">findPreference</span><span class="params">(name: <span class="type">String</span>, default: <span class="type">T</span>)</span></span>:T = with(prefs) &#123;</span><br><span class="line">        <span class="keyword">val</span> res: Any = <span class="keyword">when</span>(default) &#123;</span><br><span class="line">            <span class="keyword">is</span> <span class="built_in">Int</span> -&gt; getInt(name, default)</span><br><span class="line">            <span class="keyword">is</span> <span class="built_in">Long</span> -&gt; getLong(name, default)</span><br><span class="line">            <span class="keyword">is</span> <span class="built_in">Float</span> -&gt; getFloat(name, default)</span><br><span class="line">            <span class="keyword">is</span> String -&gt; getString(name, default)</span><br><span class="line">            <span class="keyword">is</span> <span class="built_in">Boolean</span> -&gt; getBoolean(name, default)</span><br><span class="line">            <span class="keyword">else</span> -&gt; <span class="keyword">throw</span> IllegalAccessException(<span class="string">&quot;this type can not be gotten from preference&quot;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span><span class="symbol">@with</span> res <span class="keyword">as</span> T</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">fun</span><span class="type">&lt;U&gt;</span> <span class="title">putPreference</span><span class="params">(name: <span class="type">String</span>, value: <span class="type">U</span>)</span></span> = with(prefs.edit()) &#123;</span><br><span class="line">        <span class="keyword">when</span>(value) &#123;</span><br><span class="line">            <span class="keyword">is</span> <span class="built_in">Int</span> -&gt; putInt(name, value)</span><br><span class="line">            <span class="keyword">is</span> <span class="built_in">Long</span> -&gt; putLong(name, value)</span><br><span class="line">            <span class="keyword">is</span> <span class="built_in">Float</span> -&gt; putFloat(name, value)</span><br><span class="line">            <span class="keyword">is</span> String -&gt; putString(name, value)</span><br><span class="line">            <span class="keyword">is</span> <span class="built_in">Boolean</span> -&gt; putBoolean(name, value)</span><br><span class="line">            <span class="keyword">else</span> -&gt; <span class="keyword">throw</span> IllegalAccessException(<span class="string">&quot;this type can not be saved into preference&quot;</span>)</span><br><span class="line">        &#125;.apply()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>封装为方法</p>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">object</span> DelegateExt &#123;</span><br><span class="line">    <span class="function"><span class="keyword">fun</span><span class="type">&lt;T : Any&gt;</span> <span class="title">preference</span><span class="params">(context: <span class="type">Context</span>, name: <span class="type">String</span>, default: <span class="type">T</span>)</span></span> =</span><br><span class="line">        Preference(context, name, default)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>使用</p>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">KotlinForAndroidBookActivity</span> : <span class="type">AppCompatActivity</span></span>() &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">var</span> pName:String <span class="keyword">by</span> DelegateExt.preference(<span class="keyword">this</span>, <span class="string">&quot;person_name&quot;</span>, <span class="string">&quot;default&quot;</span>)</span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onCreate</span><span class="params">(savedInstanceState: <span class="type">Bundle</span>?)</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState)</span><br><span class="line">        setContentView(R.layout.activity_kotlin_for_android_book)</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 设置</span></span><br><span class="line">        pName = <span class="string">&quot;liang&quot;</span></span><br><span class="line">        <span class="comment">// 获取</span></span><br><span class="line">        println(pName)</span><br><span class="line">        <span class="comment">// 抓取本地文件shared_prefs文件可以得到</span></span><br><span class="line">        <span class="comment">// &lt;?xml version=&#x27;1.0&#x27; encoding=&#x27;utf-8&#x27; standalone=&#x27;yes&#x27; ?&gt;</span></span><br><span class="line">        <span class="comment">//&lt;map&gt;</span></span><br><span class="line">        <span class="comment">//    &lt;string name=&quot;person_name&quot;&gt;liang&lt;/string&gt;</span></span><br><span class="line">        <span class="comment">//&lt;/map&gt;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>相关源码请见我的GitHub项目<a target="_blank" rel="noopener" href="https://github.com/zhangliangnbu/android-practice-demo">Android实践示例</a></p>
-<hr>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
-<li><a target="_blank" rel="noopener" href="https://github.com/Kotlin/anko">Anko</a></li>
-</ol>
-<hr>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/12/21/2018-12-21-KotlinForAndroidDevelopersBook/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 

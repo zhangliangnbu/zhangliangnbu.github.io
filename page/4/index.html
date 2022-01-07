@@ -195,7 +195,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 14:26:30" itemprop="dateModified" datetime="2021-06-29T14:26:30+08:00">2021-06-29</time>
+                <time title="修改时间：2022-01-07 15:29:18" itemprop="dateModified" datetime="2022-01-07T15:29:18+08:00">2022-01-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -218,63 +218,16 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>优秀的Android开发入门书籍，对于有几年开发经验的开发人员来说，也值得一读。</p>
+          <p>优秀的Android开发入门书籍，对于有几年开发经验的开发人员来说，也值得一读。</p>
 <p>比较基础，读得很快，说一下日常开发容易忽视的地方。</p>
-<hr>
-<h1 id="Activity回退栈"><a href="#Activity回退栈" class="headerlink" title="Activity回退栈"></a>Activity回退栈</h1><p>获取应用任务栈（或回退栈）信息：</p>
-<blockquote>
-<p>不局限于单个应用，回退栈（Back Stack）作为一个整体共享给操作系统及设备使用。</p>
-</blockquote>
-<p>我们不仅可以获取自己APP的任务栈信息，也可以通过获取系统服务如<code>ACTIVITY_SERVICE</code>等得到其他APP任务栈信息。</p>
-<p>的确可以获取自己以及其他APP任务栈信息，但不同API等级的SDK获取的方式不一样，且获取其他APP任务栈信息越来越严格。</p>
-<p><strong>API 20及以下</strong></p>
-<ul>
-<li>通过<code>ActivityManager.getRunningTasks()</code>可以获取自己和其他APP的任务栈信息，包括栈基和栈顶Activity。</li>
-</ul>
-<p><strong>API 21及以上</strong></p>
-<ul>
-<li>通过<code>ActivityManager.getAppTasks()</code>可以获取自己APP的任务栈信息，包括栈基和栈顶Activity。</li>
-<li><code>API = 21</code>时，通过<code>ActivityManager.getRunningAppProcesses()</code>可以获取相关信息。</li>
-<li><code>API = 22</code>及以上时，通过<code>UsageStatsManager.queryEvents()</code>获取相关信息，但似乎还是只能获取自己APP信息，其他的获取不了。</li>
-</ul>
-<hr>
-<h1 id="Fragment"><a href="#Fragment" class="headerlink" title="Fragment"></a>Fragment</h1><p>尽可能在Fragment里实现UI用户界面，便于复用和扩展。</p>
-<blockquote>
-<p>对于fragment，我们坚持AUF（AlwaysUseFragments）原则，即“总是使用fragment”。不值得为使用fragment还是activity而伤脑筋，相信我们，总是使用fragment！</p>
-</blockquote>
-<p>Activity的Extra和Fragment的Argument Bundle参数的Key值，应该存在使用或消耗这些值的地方。而不应该是其他仅仅传参的地方。</p>
-<blockquote>
-<p>一个比较好的做法是，将crimeID存储在属于CrimeFragment的某个地方，而不是保存在CrimeActivity的私有空间里。这样，无需依赖于CrimeActivity的intent内指定extra的存在，CrimeFragment就能获取自己所需的extra数据。属于fragment的“某个地方”实际就是它的argument bundle。</p>
-</blockquote>
-<p>一般不要在Fragment里直接定义实例变量，需要的话则记得在<code>onSaveInstanceState(Bundle)</code>里保存。</p>
-<blockquote>
-<p>创建实例变量的方式并不可靠。因为，在操作系统重建fragment时，设备配置发生改变时，用户暂时离开当前应用时，甚至操作系统按需回收内存时，任何实例变量都不复存在了。</p>
-</blockquote>
-<hr>
-<h1 id="样式和主题"><a href="#样式和主题" class="headerlink" title="样式和主题"></a>样式和主题</h1><p>覆盖主题属性，便于统一管理。要找到需要覆盖的属性，一层层从下往上定位、查询即可。</p>
-<p>主题和样式应该在开发初期设置，避免后期改动太多。</p>
-<p>覆盖页面背景和按钮样式示例如下：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- Base application theme. --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">name</span>=<span class="string">&quot;AppTheme&quot;</span> <span class="attr">parent</span>=<span class="string">&quot;Theme.AppCompat.Light.DarkActionBar&quot;</span>&gt;</span><span class="xml"></span></span><br><span class="line"><span class="xml">    <span class="comment">&lt;!-- Customize your theme here. --&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">&quot;colorPrimary&quot;</span>&gt;</span>@color/colorPrimary<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">&quot;colorPrimaryDark&quot;</span>&gt;</span>@color/colorPrimaryDark<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">&quot;colorAccent&quot;</span>&gt;</span>@color/colorAccent<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml">    <span class="comment">&lt;!--页面和对话框背景颜色--&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">&quot;android:colorBackground&quot;</span>&gt;</span>@color/white_light<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span></span><br><span class="line"><span class="xml"> </span></span><br><span class="line"><span class="xml">  	<span class="comment">&lt;!--页面和背景颜色--&gt;</span></span></span><br><span class="line"><span class="xml">  	<span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">&quot;android:colorBackground&quot;</span>&gt;</span>@color/white_light<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span></span><br><span class="line"><span class="xml">  </span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">&quot;buttonStyle&quot;</span>&gt;</span>@style/NormalButton<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span></span><br><span class="line"><span class="xml"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-<p>You can also define:</p>
-<ul>
-<li>textColor - The default text color of any given view</li>
-<li>textColorPrimary - The default text color for enabled buttons and Large Textviews</li>
-<li>textColorSecondary - The default text color for Medium and Small Textviews</li>
-<li>textColorTertiary - ?</li>
-</ul>
-<p>(Source <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/39070040/textcolor-vs-textcolorprimary-vs-textcolorsecondary">TextColor vs TextColorPrimary vs TextColorSecondary</a>)</p>
-<hr>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
-<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/AdobeSolo/article/details/77375714">Android 获取前台应用的方法总结</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/39662488">关于 Android，用多个 activity，还是单 activity 配合 fragment？</a></li>
-<li><a target="_blank" rel="noopener" href="https://inthecheesefactory.com/blog/fragment-state-saving-best-practices/en">The Real Best Practices to Save/Restore Activity’s and Fragment’s state</a></li>
-<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/22141193">保存/恢复Activity和Fragment状态的最佳实践(译)</a></li>
-</ol>
-<hr>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/12/20/android-programming-the-big-nerd-ranch-guide-2rd-edition/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -324,7 +277,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 14:24:40" itemprop="dateModified" datetime="2021-06-29T14:24:40+08:00">2021-06-29</time>
+                <time title="修改时间：2022-01-07 15:28:13" itemprop="dateModified" datetime="2022-01-07T15:28:13+08:00">2022-01-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -349,128 +302,14 @@
       
           <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>Android开发工程师进阶学习路线图 。</p>
 <p><em>持续更新中</em></p>
-<hr>
-<h1 id="Android"><a href="#Android" class="headerlink" title="Android"></a>Android</h1><h2 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.android.com/guide/">Android Developer Guides</a>。官方用户指南是一切入门书籍和文档的基础；会持续更新，每年通读一遍。</li>
-<li><a target="_blank" rel="noopener" href="https://developer.android.com/">Android Developer官网</a>。官方其他资料，如API、支持库、SDK新特性、Android Studio文档等。</li>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/26789110/">《Android权威编程指南》</a>。涵盖面全面，用实例引导开发，非常值得一读。</li>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/26340518/">《Android应用程序开发权威指南（第四版）》</a>。</li>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/11501595/">《Learning Android（中文版）》</a></li>
-</ul>
-<h2 id="进阶"><a href="#进阶" class="headerlink" title="进阶"></a>进阶</h2><p>应用层和框架层深化学习</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/26599538/">《Android开发艺术探索》</a>。</li>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/11530748/">《Android开发精要》</a></li>
-</ul>
-<p>高质量APP开发</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/25911738/">《Android编程实战》</a>。</li>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/26649050/">《App研发录》</a>。简单的架构和Crash分析。</li>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/25866305/">《打造高质量Android应用》</a>。各种实用技巧。</li>
-<li><a target="_blank" rel="noopener" href="http://www.ituring.com.cn/book/1705">《码农19期-Android好手》</a>。</li>
-</ul>
-<p>性能优化</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/26891270/">《高性能Android应用开发》</a>。(主)</li>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/27036747/">《Android应用性能优化最佳实践》</a>。</li>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/27021800/">《Android移动性能实战》</a>。</li>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/26891415/">《移动App性能评测与优化》</a>。</li>
-</ul>
-<p>其他</p>
-<ul>
-<li>测试。</li>
-<li>UI设计。<a target="_blank" rel="noopener" href="https://book.douban.com/subject/25769136/">《精彩绝伦的Android UI设计》</a>、<a href="%5Bhttps://book.douban.com/subject/26296679/">《移动应用UI设计模式（第2版）》</a>。</li>
-<li>安全。<a target="_blank" rel="noopener" href="https://book.douban.com/subject/20556210/">《Android软件安全与逆向分析》</a>、<a target="_blank" rel="noopener" href="https://book.douban.com/subject/26348151/">《Android安全攻防权威指南》</a>。</li>
-<li>其他。<a target="_blank" rel="noopener" href="https://book.douban.com/subject/25900200/">《Efficient Android Threading》</a>。</li>
-</ul>
-<h2 id="底层"><a href="#底层" class="headerlink" title="底层"></a>底层</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/10570841/">《Android框架揭秘》</a></li>
-<li>《Android系统源代码情景分析》</li>
-<li>《深入理解Android ***》系列书籍</li>
-<li>《Android源码设计模式》 </li>
-</ul>
-<hr>
-<h1 id="程序设计"><a href="#程序设计" class="headerlink" title="程序设计"></a>程序设计</h1><h2 id="Java语言"><a href="#Java语言" class="headerlink" title="Java语言"></a>Java语言</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/25762168/">《Java核心技术》</a>。</li>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/3360807/">《Effective java 中文版》</a>。</li>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/5362860/">《Java解惑》</a>。</li>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/10484692/">《Java并发编程实战》</a> 。系统全面的介绍了Java的并发，如何设计支持并发的数据结构。</li>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/26274206/">《写给大忙人看的Java SE 8》</a></li>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/26587213/">《函数式编程思维》</a></li>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/24722612/">《深入理解Java虚拟机》</a> 。并不是那么难，Java程序员都该看看</li>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/25828043/">《Java性能优化权威指南》</a> 。后面的章节好像用处不大，前面有些部分还是值得看。</li>
-</ul>
-<h2 id="Kotlin语言"><a href="#Kotlin语言" class="headerlink" title="Kotlin语言"></a>Kotlin语言</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://kotlinlang.org/">Kotlin Programming Language</a>和[<a target="_blank" rel="noopener" href="https://www.kotlincn.net/">Kotlin 语言中文站</a>]。官网和对应的中文网站。</li>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/26916501/">《Kotlin for Android Developers》</a>。Android开发者的Kotlin入门书籍，实用性强，非常赞。</li>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/27093660/">《Kotlin实战》</a>。</li>
-</ul>
-<h2 id="计算机基础"><a href="#计算机基础" class="headerlink" title="计算机基础"></a>计算机基础</h2><ul>
-<li>高教版《计算机组成原理》《深入理解计算机系统》《编码：隐匿在计算机软硬件背后的语言》 </li>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/26397183/">《计算机是怎样跑起来的》</a></li>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/26365491/">《程序是怎样跑起来的》</a></li>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/3351237/">《数据结构与算法 Java语言描述》</a></li>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/26337727/">《算法设计与分析基础》</a></li>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/3227098/">《编程珠玑》</a> </li>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/20432061/">《算法导论》</a></li>
-<li>编译原理。北大出版社《编译原理》，龙书，虎书 </li>
-<li>操作系统。Andrew S. Tanenbaum《现代操作系统》 </li>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/4889838/">《鸟哥的Linux私房菜》</a></li>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/6097773/">《Linux内核设计与实现》</a></li>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/2287506/">《深入理解LINUX内核(第三版)》</a></li>
-</ul>
-<h2 id="通信和网络"><a href="#通信和网络" class="headerlink" title="通信和网络"></a>通信和网络</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/26941639/">《网络是怎样连接的》</a></li>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/25863515/">《图解HTTP》</a></li>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/10746113/">《HTTP权威指南》</a></li>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/24737674/">《图解TCP/IP》</a></li>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/1088054/">《TCP/IP详解》</a></li>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/3519369/">《Java TCP/IP Socket编程》</a></li>
-</ul>
-<h2 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h2><ul>
-<li><a target="_blank" rel="noopener" href="http://iissnan.com/progit/html/zh/ch1_0.html">Git权威指南中文手册</a></li>
-</ul>
-<hr>
-<h1 id="软件工程"><a href="#软件工程" class="headerlink" title="软件工程"></a>软件工程</h1><h2 id="软件质量"><a href="#软件质量" class="headerlink" title="软件质量"></a>软件质量</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/10797189/">《编写可读代码的艺术》</a> （来自Google工程师，专注于代码可读性）</li>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/4199741/">《代码整洁之道》</a>（使用面向对象+敏捷开发原则编写清晰可维护的代码）</li>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/4262627/">《重构-改善既有代码的设计》</a> （学习改善已有代码）</li>
-<li>《代码大全》 </li>
-</ul>
-<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/1239651/">《单元测试之道Java版》</a></li>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/25934516/">《单元测试的艺术》</a></li>
-</ul>
-<h2 id="设计模式"><a href="#设计模式" class="headerlink" title="设计模式"></a>设计模式</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/2334288/">《大话设计模式》</a></li>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/2243615/">《Head First设计模式》</a>(两本入门级的设计模式书籍)</li>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/1052241/">《设计模式-可复用面向对象软件的基础》</a>（设计模式在实际中的应用）</li>
-</ul>
-<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/1790225/">解析极限编程</a></li>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/4037534/">敏捷开发的艺术</a></li>
-<li><a target="_blank" rel="noopener" href="http://book.douban.com/subject/5348122/">敏捷软件开发-原则、模式与实践</a></li>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/11614538/">程序员的是职业素养</a></li>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/5387402/">程序员修炼之道-从小工到专家</a></li>
-<li>《像程序员一样思考》</li>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/6021440/">黑客与画家</a> (硅谷创业之父Paul Craham 的文集，主要介绍黑客及优秀程序员的爱好和动机)</li>
-</ul>
-<hr>
-<h1 id="其他-1"><a href="#其他-1" class="headerlink" title="其他"></a>其他</h1><ul>
-<li><a target="_blank" rel="noopener" href="https://androidweekly.io/">Android 开发技术周报</a></li>
-<li><a target="_blank" rel="noopener" href="http://androidweekly.net/confirmation">AndroidWeekly</a></li>
-<li><a target="_blank" rel="noopener" href="https://hencoder.com/">给高级Android工程师的进阶手册</a></li>
-<li>关注微博、Twitter和Google Plus上开发高手</li>
-<li>不错的个人博客: <a target="_blank" rel="noopener" href="https://keeganlee.me/">https://keeganlee.me/</a>、<a target="_blank" rel="noopener" href="http://blog.zhaiyifan.cn/%E3%80%81http://johnnyshieh.me/%E3%80%81https://blog.csdn.net/innost?t=1">http://blog.zhaiyifan.cn/、http://johnnyshieh.me/、https://blog.csdn.net/innost?t=1</a></li>
-<li>系类丛书。<a target="_blank" rel="noopener" href="https://book.douban.com/series/34135?page=1">图解入门系列</a>、科普、码农系列。</li>
-</ul>
-<hr>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
-<li><a target="_blank" rel="noopener" href="https://www.diycode.cc/wiki/androidbook">Android开发书籍推荐：从入门到精通系列学习路线书籍介绍</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.diycode.cc/topics/122">Android 学习路线图</a></li>
-</ol>
-<hr>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/12/19/android-develop-advance/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -520,7 +359,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 14:21:42" itemprop="dateModified" datetime="2021-06-29T14:21:42+08:00">2021-06-29</time>
+                <time title="修改时间：2022-01-07 15:36:54" itemprop="dateModified" datetime="2022-01-07T15:36:54+08:00">2022-01-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -547,72 +386,14 @@
 <p>主要参考官方的<a target="_blank" rel="noopener" href="https://github.com/bintray/gradle-bintray-plugin#readme">gradle-bintray-plugin wiki</a>和项目示例<a target="_blank" rel="noopener" href="https://github.com/bintray/bintray-examples">bintray-examples</a>。不过说实话官方wiki和示例写得都比较粗糙。</p>
 <p>gradle-bintray-plugin插件在生成构件时有三种方式： Configurations, Publications and Copying files。每种方式的配置都有所不同，我们这里只说比较常见的Configurations和Publications两种方式，这也是wiki上比较推荐的方式。</p>
 <p><strong>源码地址</strong>。本文涉及到的<code>nicelogger</code>项目Github地址：<a target="_blank" rel="noopener" href="https://github.com/zhangliangnbu/nice-logger">https://github.com/zhangliangnbu/nice-logger</a></p>
-<hr>
-<h1 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h1><p>参考上一篇文章，如果已经做了，可以跳过。默认你已经有了一个本地项目，已经创建了Bintray平台账号和Maven仓库。</p>
-<p><strong>定义参数</strong></p>
-<ul>
-<li>Bintray平台仓库名称。<code>android</code>。</li>
-<li>Bintray平台Package名称。<code>nicelogger</code>。</li>
-<li>POM文件<code>groupId</code>。<code>com.liang.android</code>。</li>
-<li>POM文件<code>artifactId</code>。<code>nicelogger</code>。</li>
-<li>POM文件<code>version</code>。取<code>0.0.6</code>。</li>
-</ul>
-<p><strong>准备本地项目</strong>。有的话就不用创建。</p>
-<p><strong>配置Bintray平台</strong>。创建package，如果已经有了就不用创建了。</p>
-<hr>
-<h1 id="使用Publications方式发布项目"><a href="#使用Publications方式发布项目" class="headerlink" title="使用Publications方式发布项目"></a>使用Publications方式发布项目</h1><p><strong>插件仓库配置</strong></p>
-<p>根据wiki上的说明，<code>Gradle &gt;= 2.1</code>之后就可以不用单独配置插件仓库路径了，估计是已经包含在JCenter仓库里，我使用的是Gradle 4.6，也不用单独配置插件仓库路径。</p>
-<p><strong>参数配置</strong></p>
-<p>主要包括三个部分：Bintray平台参数配置、POM和构件文件参数配置、构件文件生成配置。</p>
-<p>单独用一个文件<code>gradleBintrayPluginPublicationsUpload.gradle</code>维护这些配置，然后在module的<code>build.gradle</code>中引用。</p>
-<p>项目<code>build.gradle</code>文件末尾添加：</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apply <span class="attr">from:</span> <span class="string">&#x27;./gradleBintrayPluginPublicationsUpload.gradle&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p><code>gradleBintrayPluginPublicationsUpload.gradle</code>配置如下：</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 插件。无需另外单独配置插件仓库地址</span></span><br><span class="line">apply <span class="attr">plugin:</span> <span class="string">&#x27;maven-publish&#x27;</span></span><br><span class="line">apply <span class="attr">plugin:</span> <span class="string">&#x27;com.jfrog.bintray&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义参数</span></span><br><span class="line"><span class="keyword">def</span> gitUrl = <span class="string">&#x27;https://github.com/zhangliangnbu/nice-logger.git&#x27;</span>   <span class="comment">// Git仓库的url</span></span><br><span class="line"><span class="keyword">def</span> groupIdDefined = <span class="string">&quot;com.liang.android&quot;</span></span><br><span class="line"><span class="keyword">def</span> artifactIdDefined = <span class="string">&quot;nicelogger&quot;</span></span><br><span class="line"><span class="keyword">def</span> versionDefined = <span class="string">&quot;0.0.5&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// bintray平台信息配置</span></span><br><span class="line">Properties properties = <span class="keyword">new</span> Properties()</span><br><span class="line">properties.load(project.rootProject.file(<span class="string">&#x27;local.properties&#x27;</span>).newDataInputStream())</span><br><span class="line">bintray &#123;</span><br><span class="line">    user = properties.getProperty(<span class="string">&quot;bintray.user&quot;</span>) <span class="comment">// local.properties里设置</span></span><br><span class="line">    key = properties.getProperty(<span class="string">&quot;bintray.apikey&quot;</span>) <span class="comment">// local.properties里设置</span></span><br><span class="line">    publications = [<span class="string">&#x27;MyPublication&#x27;</span>] <span class="comment">// &#x27;MyPublication&#x27;与下面的publishing闭包里的名称对应</span></span><br><span class="line">    publish = <span class="literal">true</span> <span class="comment">// 上传后立即发布到Bintray平台</span></span><br><span class="line">    pkg &#123;</span><br><span class="line">        repo = <span class="string">&quot;android&quot;</span>  <span class="comment">// 必填。bintray平台仓库名，必须已经创建过。</span></span><br><span class="line">        name = <span class="string">&quot;nicelogger&quot;</span>  <span class="comment">// 必填。仓库里包package的名称，没有的话会自动创建。</span></span><br><span class="line">        licenses = [<span class="string">&quot;Apache-2.0&quot;</span>] <span class="comment">// 首次创建package则必须，否则选填。</span></span><br><span class="line">        vcsUrl = gitUrl <span class="comment">// 首次创建package则必须，否则选填。</span></span><br><span class="line">        version &#123;</span><br><span class="line">            name = <span class="string">&quot;$versionDefined&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 构件文件和POM信息配置</span></span><br><span class="line">publishing &#123;</span><br><span class="line">    publications &#123;</span><br><span class="line">        MyPublication(MavenPublication) &#123;</span><br><span class="line">            artifact(<span class="string">&quot;$buildDir/outputs/aar/nicelogger-release.aar&quot;</span>)</span><br><span class="line">            artifact sourcesJar</span><br><span class="line">            artifact javadocJar</span><br><span class="line">            groupId <span class="string">&quot;$groupIdDefined&quot;</span></span><br><span class="line">            artifactId <span class="string">&quot;$artifactIdDefined&quot;</span></span><br><span class="line">            version <span class="string">&quot;$versionDefined&quot;</span></span><br><span class="line">            pom.withXml &#123;</span><br><span class="line">                <span class="keyword">def</span> dependenciesNode = asNode().appendNode(<span class="string">&#x27;dependencies&#x27;</span>)</span><br><span class="line">                <span class="comment">// Iterate over the implementation dependencies (we don&#x27;t want the test ones), adding a &lt;dependency&gt; node for each</span></span><br><span class="line">                configurations.implementation.allDependencies.each &#123;</span><br><span class="line">                    <span class="comment">// Ensure dependencies such as fileTree are not included in the pom.</span></span><br><span class="line">                    <span class="keyword">if</span> (it.name != <span class="string">&#x27;unspecified&#x27;</span>) &#123;</span><br><span class="line">                        <span class="keyword">def</span> dependencyNode = dependenciesNode.appendNode(<span class="string">&#x27;dependency&#x27;</span>)</span><br><span class="line">                        dependencyNode.appendNode(<span class="string">&#x27;groupId&#x27;</span>, it.group)</span><br><span class="line">                        dependencyNode.appendNode(<span class="string">&#x27;artifactId&#x27;</span>, it.name)</span><br><span class="line">                        dependencyNode.appendNode(<span class="string">&#x27;version&#x27;</span>, it.version)</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 生成sourceJar和javaDocJar构件</span></span><br><span class="line">task sourcesJar(<span class="attr">type:</span> Jar) &#123;</span><br><span class="line">    from android.sourceSets.main.java.srcDirs</span><br><span class="line">    classifier = <span class="string">&#x27;sources&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">task javadoc(<span class="attr">type:</span> Javadoc) &#123;</span><br><span class="line">    failOnError <span class="literal">false</span></span><br><span class="line">    source = android.sourceSets.main.java.sourceFiles</span><br><span class="line">    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))</span><br><span class="line">    classpath += configurations.compile</span><br><span class="line">&#125;</span><br><span class="line">task javadocJar(<span class="attr">type:</span> Jar, <span class="attr">dependsOn:</span> javadoc) &#123;</span><br><span class="line">    classifier = <span class="string">&#x27;javadoc&#x27;</span></span><br><span class="line">    from javadoc.destinationDir</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">artifacts &#123;</span><br><span class="line">    archives sourcesJar</span><br><span class="line">    archives javadocJar</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>注释里已经有说明了，补充几点如下：</p>
-<ul>
-<li>bintray平台信息配置。<code>user</code>和<code>key</code>是自己的私有参数，写在本地<code>local.properties</code>文件中。</li>
-<li>先要生成构件文件，之后才能上传。</li>
-</ul>
-<p><strong>发布</strong></p>
-<p>执行命令<code>./gradlew clean build bintrayUpload</code>，即可发布项目到Bintray平台，然后一键发布到JCenter。</p>
-<hr>
-<h1 id="使用Configurations方式发布项目"><a href="#使用Configurations方式发布项目" class="headerlink" title="使用Configurations方式发布项目"></a>使用Configurations方式发布项目</h1><p><strong>插件仓库配置</strong></p>
-<p>这种方式需要用到<a target="_blank" rel="noopener" href="https://github.com/dcendents/android-maven-gradle-plugin">android-maven-gradle-plugin</a>。在工程根目录<code>build.gradle</code>中添加仓库路径：</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">buildscript &#123;</span><br><span class="line">    dependencies &#123;</span><br><span class="line">        <span class="comment">// bintray plugin for configuration method</span></span><br><span class="line">        classpath <span class="string">&#x27;com.github.dcendents:android-maven-gradle-plugin:2.1&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p><strong>参数配置</strong></p>
-<p>主要包括三个部分：Bintray平台参数配置、POM和构件文件参数配置、构件文件生成配置。</p>
-<p>单独用一个文件<code>gradleBintrayConfigurationsUpload.gradle</code>维护这些配置，然后在module的<code>build.gradle</code>中引用。</p>
-<p>项目<code>build.gradle</code>文件末尾添加：</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apply <span class="attr">from:</span> <span class="string">&#x27;./gradleBintrayConfigurationsUpload.gradle&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p><code>gradleBintrayConfigurationsUpload.gradle</code>配置如下：</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line">apply <span class="attr">plugin:</span> <span class="string">&#x27;com.github.dcendents.android-maven&#x27;</span></span><br><span class="line">apply <span class="attr">plugin:</span> <span class="string">&#x27;com.jfrog.bintray&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义参数</span></span><br><span class="line"><span class="keyword">def</span> gitUrl = <span class="string">&#x27;https://github.com/zhangliangnbu/nice-logger.git&#x27;</span>   <span class="comment">// Git仓库的url</span></span><br><span class="line"><span class="keyword">def</span> groupIdDefined = <span class="string">&quot;com.liang.android&quot;</span></span><br><span class="line"><span class="keyword">def</span> artifactIdDefined = <span class="string">&quot;nicelogger&quot;</span></span><br><span class="line"><span class="keyword">def</span> versionDefined = <span class="string">&quot;0.0.7&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 待发布项目的groupId和version。android-maven-gradle-plugin插件需要这么配置。</span></span><br><span class="line">group = <span class="string">&quot;$groupIdDefined&quot;</span></span><br><span class="line">version = <span class="string">&quot;$versionDefined&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// bintray平台信息配置</span></span><br><span class="line">Properties properties = <span class="keyword">new</span> Properties()</span><br><span class="line">properties.load(project.rootProject.file(<span class="string">&#x27;local.properties&#x27;</span>).newDataInputStream())</span><br><span class="line">bintray &#123;</span><br><span class="line">    user = properties.getProperty(<span class="string">&quot;bintray.user&quot;</span>) <span class="comment">// local.properties里设置</span></span><br><span class="line">    key = properties.getProperty(<span class="string">&quot;bintray.apikey&quot;</span>) <span class="comment">// local.properties里设置</span></span><br><span class="line">    configurations = [<span class="string">&#x27;archives&#x27;</span>]</span><br><span class="line">    publish = <span class="literal">true</span></span><br><span class="line">    pkg &#123;</span><br><span class="line">        repo = <span class="string">&quot;android&quot;</span>  <span class="comment">// 必填。bintray平台仓库名，必须已经创建过。</span></span><br><span class="line">        name = <span class="string">&quot;nicelogger&quot;</span>  <span class="comment">// 必填。仓库里包package的名称，没有的话会自动创建。</span></span><br><span class="line">        licenses = [<span class="string">&quot;Apache-2.0&quot;</span>] <span class="comment">// 首次创建package则必须，否则选填。</span></span><br><span class="line">        vcsUrl = gitUrl <span class="comment">// 首次创建package则必须，否则选填。</span></span><br><span class="line">        version &#123;</span><br><span class="line">            name = <span class="string">&quot;$versionDefined&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// pom文件信息配置</span></span><br><span class="line">install &#123;</span><br><span class="line">    repositories.mavenInstaller &#123;</span><br><span class="line">        pom.project &#123;</span><br><span class="line">            groupId <span class="string">&quot;$groupIdDefined&quot;</span></span><br><span class="line">            artifactId <span class="string">&quot;$artifactIdDefined&quot;</span></span><br><span class="line">            version <span class="string">&quot;$versionDefined&quot;</span></span><br><span class="line">            packaging <span class="string">&#x27;aar&#x27;</span></span><br><span class="line"></span><br><span class="line">            licenses &#123;</span><br><span class="line">                license &#123;</span><br><span class="line">                    name <span class="string">&#x27;The Apache Software License, Version 2.0&#x27;</span></span><br><span class="line">                    url <span class="string">&#x27;http://www.apache.org/licenses/LICENSE-2.0.txt&#x27;</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 生成sourceJar和javaDocJar</span></span><br><span class="line">task sourcesJar(<span class="attr">type:</span> Jar) &#123;</span><br><span class="line">    from android.sourceSets.main.java.srcDirs</span><br><span class="line">    classifier = <span class="string">&#x27;sources&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">task javadoc(<span class="attr">type:</span> Javadoc) &#123;</span><br><span class="line">    failOnError <span class="literal">false</span></span><br><span class="line">    source = android.sourceSets.main.java.sourceFiles</span><br><span class="line">    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))</span><br><span class="line">    classpath += configurations.compile</span><br><span class="line">&#125;</span><br><span class="line">task javadocJar(<span class="attr">type:</span> Jar, <span class="attr">dependsOn:</span> javadoc) &#123;</span><br><span class="line">    classifier = <span class="string">&#x27;javadoc&#x27;</span></span><br><span class="line">    from javadoc.destinationDir</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">artifacts &#123;</span><br><span class="line">    archives sourcesJar</span><br><span class="line">    archives javadocJar</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 执行 ./gradlew clean bintrayUpload</span></span><br></pre></td></tr></table></figure>
-
-<p>补充说明如下：</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://github.com/dcendents/android-maven-gradle-plugin">android-maven-gradle-plugin</a>的wiki上说需要在<code>settings.gradle</code>里配置<code>artifactId</code>,但我没有配置也发布成功了。</li>
-<li>不需要单独执行构件生成任务，应该是在<code>bintrayUpload</code>中已经做了处理。</li>
-</ul>
-<p><strong>发布</strong></p>
-<p>执行命令<code>./gradlew clean bintrayUpload</code>，即可发布项目到Bintray平台，然后一键发布到JCenter。</p>
-<hr>
-<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>是不是感觉使用官方插件挺繁琐的？我的配置是非常精简的，选填的参数几乎没有填，看官方示例，配置真是繁琐。</p>
-<p>到目前为止，已经介绍了三种发布项目到JCenter的方式，推荐使用BintrayRelease方式，配置简洁、易于维护。</p>
-<hr>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
-<li><a target="_blank" rel="noopener" href="https://github.com/bintray/gradle-bintray-plugin">gradle-bintray-plugin</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/bintray/gradle-bintray-plugin#readme">gradle-bintray-plugin wiki</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/bintray/bintray-examples">bintray-examples</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/dcendents/android-maven-gradle-plugin">android-maven-gradle-plugin</a></li>
-</ol>
-<hr>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/12/17/2018-12-17-PublishToJCenter4ByGradleBintrayPlugin/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -662,7 +443,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 14:21:14" itemprop="dateModified" datetime="2021-06-29T14:21:14+08:00">2021-06-29</time>
+                <time title="修改时间：2022-01-07 15:36:49" itemprop="dateModified" datetime="2022-01-07T15:36:49+08:00">2022-01-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -689,53 +470,14 @@
 <p>这篇文章简要介绍如何使用<a target="_blank" rel="noopener" href="https://github.com/novoda/bintray-release">bintray-release</a>发布Android项目到Bintray，并最终发布到JCenter。</p>
 <p>bintray-release使用起来非常简单，具体详情请见<a target="_blank" rel="noopener" href="https://github.com/novoda/bintray-release/wiki">bintray-release wiki</a>。</p>
 <p><strong>源码地址</strong>。本文涉及到的<code>nicelogger</code>项目Github地址：<a target="_blank" rel="noopener" href="https://github.com/zhangliangnbu/nice-logger">https://github.com/zhangliangnbu/nice-logger</a></p>
-<hr>
-<h1 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h1><p>参考上一篇文章，如果已经做了，可以跳过。默认你已经有了一个本地项目，已经创建了Bintray平台账号和Maven仓库。</p>
-<p><strong>定义参数</strong></p>
-<ul>
-<li>Bintray平台仓库名称。<code>android</code>。</li>
-<li>Bintray平台Package名称。<code>nicelogger</code>。</li>
-<li>POM文件<code>groupId</code>。<code>com.liang.android</code>。</li>
-<li>POM文件<code>artifactId</code>。<code>nicelogger</code>。</li>
-<li>POM文件<code>version</code>。取<code>0.0.3</code>。</li>
-</ul>
-<p><strong>准备本地项目</strong>。有的话就不用创建。</p>
-<p><strong>配置Bintray平台</strong>。创建package，如果已经有了就不用创建了。</p>
-<hr>
-<h1 id="发布到Bintray"><a href="#发布到Bintray" class="headerlink" title="发布到Bintray"></a>发布到Bintray</h1><p>这一步使用插件，做如下工作：</p>
-<ul>
-<li>在本地生成构件文件。</li>
-<li>在Bintray平台创建版本。</li>
-<li>上传文件到Bintray平台。</li>
-<li>发布到Bintray平台仓库中。</li>
-</ul>
-<p>具体使用请见<a target="_blank" rel="noopener" href="https://github.com/novoda/bintray-release/wiki">bintray-release wiki</a>，我的配置与wiki略有差异，本质上是一样的。</p>
-<p>一，在工程目录<code>build.gradle</code>中添加插件地址，其中版本号请用最新的：</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">buildscript &#123;</span><br><span class="line">    dependencies &#123;</span><br><span class="line">        <span class="comment">// A helper for releasing from gradle up to bintray</span></span><br><span class="line">        classpath <span class="string">&#x27;com.novoda:bintray-release:0.9&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>二，在<code>nicelogger</code>module目录<code>build.gradle</code>中添加参数配置：</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">apply <span class="attr">plugin:</span> <span class="string">&#x27;com.novoda.bintray-release&#x27;</span></span><br><span class="line"></span><br><span class="line">publish &#123;</span><br><span class="line">    userOrg = <span class="string">&#x27;zhangliang&#x27;</span></span><br><span class="line">    repoName = <span class="string">&#x27;android&#x27;</span></span><br><span class="line">    groupId = <span class="string">&#x27;com.liang.android&#x27;</span></span><br><span class="line">    artifactId = <span class="string">&#x27;nicelogger&#x27;</span></span><br><span class="line">    publishVersion = <span class="string">&#x27;0.0.3&#x27;</span></span><br><span class="line">    uploadName = <span class="string">&#x27;nicelogger&#x27;</span></span><br><span class="line">    desc = <span class="string">&#x27;Oh hi, this is a nice description for nicelogger, right?&#x27;</span></span><br><span class="line">    website = <span class="string">&#x27;https://github.com/zhangliangnbu/nice-logger&#x27;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>可以在module目录中创建<code>bintrayReleaseUpload.gradle</code>文件，并将上述参数配置写入其中，然后在module目录<code>build.gradle</code>中通过<code>apply from: &#39;./bintrayReleaseUpload.gradle&#39;</code>引入。这样做便于管理。</p>
-</blockquote>
-<p>三，执行上传任务</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./gradlew clean build bintrayUpload -PbintrayUser=BINTRAY_USERNAME -PbintrayKey=BINTRAY_KEY -PdryRun=<span class="literal">false</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>BINTRAY_USERNAME和BINTRAY_KEY填写自己的。</p>
-</blockquote>
-<p>上传完后，即可在Bintray平台<code>nicelogger</code>包下看到发布的<code>0.0.3</code>版本。</p>
-<p>从Bintray仓库发布到JCenter操作较简单，见上篇文章。</p>
-<hr>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
-<li><a target="_blank" rel="noopener" href="https://github.com/novoda/bintray-release">bintray-release</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/novoda/bintray-release/wiki">bintray-release wiki</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/novoda/bintray-release/wiki/%E4%B8%AD%E6%96%87%E6%96%87%E6%A1%A3HOME">bintray-release中文文档</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/bintray/gradle-bintray-plugin#readme">gradle-bintray-plugin</a></li>
-</ol>
-<hr>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/12/16/2018-12-16-PublishToJCenter3ByGradlePlugin/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -785,7 +527,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 14:21:01" itemprop="dateModified" datetime="2021-06-29T14:21:01+08:00">2021-06-29</time>
+                <time title="修改时间：2022-01-07 15:36:42" itemprop="dateModified" datetime="2022-01-07T15:36:42+08:00">2022-01-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -809,110 +551,14 @@
 
       
           <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本文主要说明如何生成项目构件，并手动上传构件文件到Bintray平台，最后发布到JCenter仓库这一流程。</p>
-<p><strong>发布流程</strong>。参考上一篇文章，完整发布流程如下：</p>
-<ol>
-<li>准备工作。定义参数；准备本地待发布项目；配置Bintray平台账号、仓库、Package、版本。</li>
-<li>生成构件文件。本地生成待发布的构件文件(包括POM文件)。</li>
-<li>发布到Bintray。上传和发布本地构件文件到Bintray平台。</li>
-<li>发布到JCenter。发布Bintray平台上的项目到JCenter。</li>
-</ol>
-<p><strong>源码地址</strong>。本文涉及到的<code>nicelogger</code>项目Github地址：<a target="_blank" rel="noopener" href="https://github.com/zhangliangnbu/nice-logger">https://github.com/zhangliangnbu/nice-logger</a></p>
-<hr>
-<h1 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h1><p>参考上一篇文章，如果已经做了，可以跳过。默认你已经有了一个本地项目，已经创建了Bintray平台账号和Maven仓库。</p>
-<p><strong>定义参数</strong></p>
-<ul>
-<li>Bintray平台仓库名称。<code>android</code>。</li>
-<li>Bintray平台Package名称。<code>nicelogger</code>。</li>
-<li>POM文件<code>groupId</code>。<code>com.liang.android</code>。</li>
-<li>POM文件<code>artifactId</code>。<code>nicelogger</code>。</li>
-<li>POM文件<code>version</code>。取<code>0.0.1</code>。</li>
-</ul>
-<p><strong>准备本地项目</strong>。略。</p>
-<p><strong>配置Bintray平台</strong>。根据参数创建Package和版本。</p>
-<br>
-
-<hr>
-<h1 id="生成构件"><a href="#生成构件" class="headerlink" title="生成构件"></a>生成构件</h1><p>生成需要上传到Maven库的四个文件：</p>
-<ul>
-<li><code>nicelogger-0.0.1.aar</code></li>
-<li><code>nicelogger-0.0.1-sources.jar</code></li>
-<li><code>nicelogger-0.0.1-javadoc.jar</code></li>
-<li><code>nicelogger-0.0.1.pom</code></li>
-</ul>
-<p><strong>生成<code>nicelogger-0.0.1.aar</code>文件</strong></p>
-<p>在<code>nicelogger</code>的<code>build.gradle</code>最后中添加如下代码，用于重命名生成的aar文件：</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义pom文件参数</span></span><br><span class="line"><span class="keyword">def</span> groupIdDefined = <span class="string">&quot;com.liang.android&quot;</span></span><br><span class="line"><span class="keyword">def</span> artifactIdDefined = <span class="string">&quot;nicelogger&quot;</span></span><br><span class="line"><span class="keyword">def</span> versionDefined = <span class="string">&quot;0.0.1&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 重命名生成的arr文件</span></span><br><span class="line">android.libraryVariants.all &#123; variant -&gt;</span><br><span class="line">    variant.outputs.all &#123; output -&gt;</span><br><span class="line">        <span class="keyword">if</span> (outputFile != <span class="literal">null</span> &amp;&amp; outputFileName.endsWith(<span class="string">&#x27;.aar&#x27;</span>)) &#123;</span><br><span class="line">            outputFileName = <span class="string">&quot;$&#123;artifactIdDefined&#125;-$&#123;versionDefined&#125;.aar&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>执行<code>./gradlew nicelogger:assembleRelease</code>生成arr文件，位于<code>library/build/outputs/aar/</code>中。</p>
-<p><strong>生成<code>nicelogger-0.0.1-sources.jar</code>文件</strong></p>
-<p>接着在<code>nicelogger</code>的<code>build.gradle</code>最后添加如下代码，建立生成所需文件的任务</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 生成Java源码文件</span></span><br><span class="line">task sourcesJar(<span class="attr">type:</span> Jar) &#123;</span><br><span class="line">    from android.sourceSets.main.java.srcDirs</span><br><span class="line">    baseName = <span class="string">&quot;$&#123;artifactIdDefined&#125;-$&#123;versionDefined&#125;&quot;</span></span><br><span class="line">    classifier = <span class="string">&#x27;sources&#x27;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>然后执行<code>./gradlew nicelogger:sourcesJar</code>，就可以生成Java源码文件，位于<code>nicelogger/build/libs/</code>中。</p>
-<p><strong>生成<code>nicelogger-0.0.1-javadoc.jar</code>文件</strong></p>
-<p>接着在<code>nicelogger</code>的<code>build.gradle</code>最后添加如下代码，建立生成所需文件的任务</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 生成Javadoc文件</span></span><br><span class="line">task javadoc(<span class="attr">type:</span> Javadoc) &#123;</span><br><span class="line">    failOnError <span class="literal">false</span></span><br><span class="line">    source = android.sourceSets.main.java.sourceFiles</span><br><span class="line">    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))</span><br><span class="line">    classpath += configurations.compile</span><br><span class="line">&#125;</span><br><span class="line">task javadocJar(<span class="attr">type:</span> Jar, <span class="attr">dependsOn:</span> javadoc) &#123;</span><br><span class="line">    baseName = <span class="string">&quot;$&#123;artifactIdDefined&#125;-$&#123;versionDefined&#125;&quot;</span></span><br><span class="line">    classifier = <span class="string">&#x27;javadoc&#x27;</span></span><br><span class="line">    from javadoc.destinationDir</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>然后执行<code>./gradlew nicelogger:javadocJar</code>，就可以生成Javadoc文件，位于<code>nicelogger/build/libs/</code>中。</p>
-<p><strong>生成<code>nicelogger-0.0.1.pom</code>文件</strong></p>
-<p>有两种方式创建POM文件：</p>
-<p>一，参考<a target="_blank" rel="noopener" href="http://maven.apache.org/pom.html">POM Reference</a>手动创建POM文件，填入相关参数。</p>
-<p>二，使用<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/maven_plugin.html">Gradle Maven Plugin</a>生成POM，接着在<code>nicelogger</code>的<code>build.gradle</code>最后中添加如下代码</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 生成pom文件</span></span><br><span class="line">apply <span class="attr">plugin:</span> <span class="string">&#x27;maven&#x27;</span></span><br><span class="line"></span><br><span class="line">task createPom &#123;</span><br><span class="line">    doLast &#123;</span><br><span class="line">        pom &#123;</span><br><span class="line">            project &#123;</span><br><span class="line">                groupId <span class="string">&quot;$&#123;groupIdDefined&#125;&quot;</span></span><br><span class="line">                artifactId <span class="string">&quot;$&#123;artifactIdDefined&#125;&quot;</span></span><br><span class="line">                version <span class="string">&quot;$&#123;versionDefined&#125;&quot;</span></span><br><span class="line">                packaging <span class="string">&quot;aar&quot;</span></span><br><span class="line">                licenses &#123;</span><br><span class="line">                    license &#123;</span><br><span class="line">                        name <span class="string">&#x27;The Apache Software License, Version 2.0&#x27;</span></span><br><span class="line">                        url <span class="string">&#x27;http://www.apache.org/licenses/LICENSE-2.0.txt&#x27;</span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;.writeTo(<span class="string">&quot;$libsDir/$&#123;artifactIdDefined&#125;-$&#123;versionDefined&#125;.pom&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>后执行<code>./gradlew nicelogger:createPom</code>，就可以生成所需的POM文件，位于<code>nicelogger/build/libs/</code>中，内容如下：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">project</span> <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://maven.apache.org/POM/4.0.0&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="name">modelVersion</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.liang.android<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>nicelogger<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>0.0.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">packaging</span>&gt;</span>aar<span class="tag">&lt;/<span class="name">packaging</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">licenses</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">license</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">name</span>&gt;</span>The Apache Software License, Version 2.0<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://www.apache.org/licenses/LICENSE-2.0.txt<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">license</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">licenses</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>生成四个文件后，可以把它们放在一个文件夹里，方面之后的上传操作。</p>
-<hr>
-<h1 id="发布到Bintray"><a href="#发布到Bintray" class="headerlink" title="发布到Bintray"></a>发布到Bintray</h1><p><strong>上传文件</strong></p>
-<ul>
-<li>进入上传文件页。在Bintray官网上，进入<code>&#123;usrname&#125;/android/nicelogger/0.0.1</code>版本页，点击“Upload Files”进入上传文件页。</li>
-<li>上传文件。点击“Click to Add Files” 上传四个文件， “Target Repository Path”填<code>com/liang/android/nicelogger/0.0.1</code>，一般上传了POM文件后，就会有提示。然后点击“Save Changes”即可。</li>
-</ul>
-<blockquote>
-<p>Target Repository Path为{groupId}/{artifactId}/{version}，其中“.”都需要替换为“/”。</p>
-</blockquote>
-<p><strong>发布到Bintray仓库</strong></p>
-<p>上传文件完成后，会提示如何处理文件：“Discard”还是“Publish”。选择“Publish”，就会发布文件到Bintray平台的Maven仓库，这样我们就能解析，只不过要带上用户自己的仓库地址而已。</p>
-<blockquote>
-<p>发布到Bintray仓库后，会自动生成<code>maven-metadata.xml</code>文件。</p>
-</blockquote>
-<p>用户Bintray仓库地址。发布后的项目在<code>https://dl.bintray.com/&#123;username&#125;/&#123;repository_name&#125;</code>下可查看，我刚才发布的项目在<code>https://dl.bintray.com/zhangliang/android/com/liang/android/nicelogger/</code>。</p>
-<p><strong>Bintray仓库依赖解析</strong></p>
-<p>Gradle项目使用<code>nicelogger</code>依赖方式如下：</p>
-<p>一，添加仓库地址。</p>
-<p>在需要此依赖的项目<code>build.gradle</code>配置仓库地址：</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">repositories &#123;</span><br><span class="line">    maven &#123;</span><br><span class="line">        url <span class="string">&quot;https://dl.bintray.com/zhangliang/android&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>或工程目录<code>build.gradle</code>下添加配置：</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">allprojects &#123;</span><br><span class="line">    repositories &#123;</span><br><span class="line">        maven &#123;</span><br><span class="line">            url <span class="string">&quot;https://dl.bintray.com/zhangliang/android&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>二，添加依赖。在项目<code>build.gradle</code>配置依赖</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    implementation <span class="string">&#x27;com.liang.android:nicelogger:0.0.1&#x27;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<hr>
-<h1 id="发布到JCenter"><a href="#发布到JCenter" class="headerlink" title="发布到JCenter"></a>发布到JCenter</h1><p>进入<code>nicelogger</code>的package页面，点击“Add to JCenter”，进入下一页，点击“Send”即可。</p>
-<p>发布到JCenter仓库需要审核，主要审核文件格式是否符合规范和以及名称是否唯一等，没有问题的话，一般一个工作日以内都会通过。通过后，可以直接用jcenter作为仓库地址，无需配置用户自己的Bintray仓库地址。</p>
-<p>JCenter仓库地址。<code>http://jcenter.bintray.com/&#123;地址化的groupId&#125;</code>，<code>地址化的groupId</code>即用“/”代替“.”。</p>
-<p>具体详情请见用户指南<a target="_blank" rel="noopener" href="https://www.jfrog.com/confluence/display/BT/Central+Repositories#CentralRepositories-JCenter">发布到JCenter</a>。</p>
-<p><strong>可能遇到的问题</strong></p>
-<p>一，点击“Add to JCenter”报错：</p>
-<blockquote>
-<p>Please fix the following before submitting a JCenter inclusion request: the POM is invalid or was uploaded to the wrong coordinates</p>
-</blockquote>
-<p>我之前是因为文件名不一致才出现这个错误提示。必须为<code>&#123;artifactId&#125;-&#123;version&#125;xxx</code>等。</p>
-<p>终于写完了一个完整的流程，O(∩_∩)O。</p>
-<hr>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
-<li><a target="_blank" rel="noopener" href="https://bintray.com/">Bintray官网</a></li>
-<li><a target="_blank" rel="noopener" href="https://jcenter.bintray.com/">JCenter仓库</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.jfrog.com/confluence/display/BT/Introduction">JFrog用户指南</a></li>
-</ol>
-<hr>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/12/15/2018-12-15-PublishToJCenter2ByUI/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -962,7 +608,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 14:20:47" itemprop="dateModified" datetime="2021-06-29T14:20:47+08:00">2021-06-29</time>
+                <time title="修改时间：2022-01-07 15:36:39" itemprop="dateModified" datetime="2022-01-07T15:36:39+08:00">2022-01-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -986,132 +632,14 @@
 
       
           <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p><strong>发布项目的定义</strong>。发布项目到远程JCenter仓库，准确的说是发布项目构件到JCenter仓库，用英语说是<em>Publishing artifacts to the JCenter</em>。本文所说的发布项目都是指发布项目构建后的生成物，即构件(Artifacts)。</p>
-<p><strong>简介</strong>。JCenter是JFrog公司旗下Bintray平台上一个公开的Java仓库。要发布项目到JCenter，首先需要发布项目到Bintray平台，然后才能发布到它的公开库——JCenter。</p>
-<ul>
-<li>Bintray官网： <a target="_blank" rel="noopener" href="https://bintray.com/">https://bintray.com/</a></li>
-<li>JCenter仓库地址：<a target="_blank" rel="noopener" href="https://jcenter.bintray.com/">https://jcenter.bintray.com/</a></li>
-</ul>
-<p>Bintray平台上可以托管多种类型的库，如比较流行的Maven和npm。</p>
-<p><strong>本文写作目的</strong>。本文目的是介绍如何上传Android Library项目构件到Bintray Maven库，并最终发布到JCenter这一整个流程。其实关于发布项目到JCenter这方面的介绍，网上已经有许多文章了，官网也有用户指南，那为什么我还有写这篇文章呢？</p>
-<ul>
-<li>博客介绍不全。一般博客只是介绍如何使用Gradle插件如<em>gradle-bintray-plugin</em>等上传项目Artifacts，但参数为什么要那样配置？上传失败如何定位问题？等等都没有介绍。如果不使用插件，又该如何做？</li>
-<li>官方用户指南较凌乱。</li>
-</ul>
-<p><strong>源码地址</strong>。本文涉及到的<code>nicelogger</code>项目Github地址：<a target="_blank" rel="noopener" href="https://github.com/zhangliangnbu/nice-logger">https://github.com/zhangliangnbu/nice-logger</a></p>
-<hr>
-<h1 id="Maven相关"><a href="#Maven相关" class="headerlink" title="Maven相关"></a>Maven相关</h1><p>详细介绍请见<a target="_blank" rel="noopener" href="https://maven.apache.org/index.html">Apach Maven</a>。简单讲，Maven就是项目构建和管理的工具，Maven仓库就是利用Maven来管理项目的仓库。</p>
-<p><strong>Maven仓库文件规范</strong></p>
-<p>上传文件到Maven仓库有一定的规范。</p>
-<p>对于Android项目，必须上传的文件包括：</p>
-<ul>
-<li><code>.aar</code>文件。<a target="_blank" rel="noopener" href="https://developer.android.com/studio/projects/android-library">Android ARchive</a>，Android构件特有文件，类似于<code>.jar</code>文件<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/JAR_(file_format)">Java ARchive</a>，但包含一些资源文件。</li>
-<li><code>.pom</code>文件。Maven仓库中必须有的文件，XML格式，包含项目的所有信息，详情请见<a target="_blank" rel="noopener" href="https://maven.apache.org/pom.html">POM Reference</a>。</li>
-</ul>
-<p>有些Maven仓库审核比较严格，需要上传另外的两个文件：</p>
-<ul>
-<li><code>-sources.jar</code>文件。Java源码文件。</li>
-<li><code>-javadoc.jar</code>文件。Java文档文件。</li>
-</ul>
-<p><strong>POM文件</strong></p>
-<p>有四个必填的参数，以著名的<a target="_blank" rel="noopener" href="http://square.github.io/okhttp/">OkHttp项目</a>作为示例进行说明如下：</p>
-<ol>
-<li><code>modelVersion</code>。<code>POM</code>版本，一般都写<code>4.0.0</code>，支持Maven 2和3。</li>
-<li><code>groupId</code>。项目所在的项目组标识，如OkHttp所在的项目组标识是<code>com.squareup.okhttp3</code>。</li>
-<li><code>artifactId</code>。项目的标识，如<code>okhttp</code>。</li>
-<li><code>version</code>。项目当前版本号，如OkHttp项目的<code>3.12.0</code>。</li>
-</ol>
-<p>另外还有一个参数<code>packaging</code>，对于Android项目来一般不能缺少，它表示打包方式，默认是<code>jar</code>，Android项目一般为<code>aar</code>。</p>
-<blockquote>
-<p>我们用Gradle解析依赖的时候，会这样写：<code>implementation &#39;com.squareup.okhttp3:okhttp:3.12.0&#39;</code>，其中<code>com.squareup.okhttp3</code>就是当前依赖的<code>groupId</code>，<code>okhttp</code>是依赖的<code>artifactId</code>,<code>3.12.0</code>是当前要解析的版本<code>version</code>。</p>
-<p>注意：<code>groupId</code>、<code>artifactId</code>和<code>version</code>都是非常重要的参数，在上传文件之前必须先定义好，在之后的过程中会用到。</p>
-</blockquote>
-<p>Android项目基本<code>POM</code>文件如下：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">project</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://maven.apache.org/POM/4.0.0&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://maven.apache.org/POM/4.0.0</span></span></span><br><span class="line"><span class="string"><span class="tag">                      http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="name">modelVersion</span>&gt;</span></span><br><span class="line"> </span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.squareup.okhttp3<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>okhttp<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.12.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">packaging</span>&gt;</span>aar<span class="tag">&lt;/<span class="name">packaging</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-
-
-<p><strong>文件名统一</strong></p>
-<p>发布到JCenter里的四个文件名称必须统一如下：</p>
-<ul>
-<li><code>&#123;artifactId&#125;-&#123;version&#125;.aar</code></li>
-<li><code>&#123;artifactId&#125;-&#123;version&#125;-sources.jar</code></li>
-<li><code>&#123;artifactId&#125;-&#123;version&#125;-javadoc.jar</code></li>
-<li><code>&#123;artifactId&#125;-&#123;version&#125;.pom</code></li>
-</ul>
-<hr>
-<h1 id="用户手册"><a href="#用户手册" class="headerlink" title="用户手册"></a>用户手册</h1><p>见<a target="_blank" rel="noopener" href="https://www.jfrog.com/confluence/display/BT/Introduction">JFrog用户指南</a>。里面详细介绍各种概念、使用、操作等。浏览一遍即可，有许多是用不上的。主要章节如下：</p>
-<ul>
-<li>了解核心概念：仓库、包和版本。见章节：<a target="_blank" rel="noopener" href="https://www.jfrog.com/confluence/display/BT/Key+Concepts">Key Concepts</a>。</li>
-<li>了解发布的三个步骤：创建版本、上传、发布。见章节：<a target="_blank" rel="noopener" href="https://www.jfrog.com/confluence/display/BT/Uploading">Uploading</a>、<a target="_blank" rel="noopener" href="https://www.jfrog.com/confluence/display/BT/Uploads">Uploads</a></li>
-<li>了解上传的方法：UI手动、cURL、Maven、Gradle。见章节：<a target="_blank" rel="noopener" href="https://www.jfrog.com/confluence/display/BT/Maven+Repositories">Maven Repositories</a></li>
-</ul>
-<blockquote>
-<p>任何个人博客和文章都不能代替官方用户手册，这是必须要读的，它应当是一切非官方文档的参考。</p>
-</blockquote>
-<hr>
-<h1 id="发布流程"><a href="#发布流程" class="headerlink" title="发布流程"></a>发布流程</h1><p>一般发布流程如下：</p>
-<ol>
-<li>准备工作。定义参数；准备本地待发布项目；配置Bintray平台账号、仓库、Package、版本。</li>
-<li>生成构件文件。本地生成待发布的构件文件(包括POM文件)。</li>
-<li>发布到Bintray。上传和发布本地构件文件到Bintray平台。</li>
-<li>发布到JCenter。发布Bintray平台上的项目到JCenter。</li>
-</ol>
-<br>
-
-<hr>
-<h1 id="发布方式"><a href="#发布方式" class="headerlink" title="发布方式"></a>发布方式</h1><p>发布项目到JCenter有许多方式：</p>
-<ol>
-<li>UI手动上传。通过Bintray网站UI，手动上传项目构件文件。</li>
-<li>cURL上传。通过cURL调用REST API接口上传。</li>
-<li>Maven上传。使用Maven客户端上传项目构件文件到Bintray平台的maven仓库。</li>
-<li>Gradle插件上传。通<a target="_blank" rel="noopener" href="https://github.com/bintray/gradle-bintray-plugin#readme">gradle-bintray-plugin</a>和<a target="_blank" rel="noopener" href="https://github.com/novoda/bintray-release">bintray-release</a>等Gradle插件上传。</li>
-</ol>
-<p>不同的方式会导致发布流程略微有所不同，有些操作可以合并在一起。比如Gradle插件上传方式中，创建pacakge、版本、创建构件文件和上传操作可以一起执行。</p>
-<br>
-
-<hr>
-<h1 id="准备工作说明"><a href="#准备工作说明" class="headerlink" title="准备工作说明"></a>准备工作说明</h1><p>主要描述定义参数、准备本地项目和配置Bintray平台这三步操作。</p>
-<p><strong>定义参数</strong></p>
-<ul>
-<li>Bintray平台仓库名称。你要发布到哪个仓库，当然要知道它的名称了。我这里是<code>android</code>。</li>
-<li>Bintray平台Package名称。没有规定，我这里取为<code>nicelogger</code>。</li>
-<li>POM文件<code>groupId</code>。没有规定，一般为<code>xxx.xxx.xxx</code>，我这里取<code>com.liang.android</code>。</li>
-<li>POM文件<code>artifactId</code>。没有规定，我这里取<code>nicelogger</code>。</li>
-<li>POM文件<code>version</code>。版本号，我这里取<code>0.0.1</code>，作为第一个版本。</li>
-</ul>
-<blockquote>
-<p>注意：Bintray平台Package名称和POM文件<code>artifactId</code>不必取相同的名称，可以不一致。为了方便说明和记忆，我取为一致。</p>
-</blockquote>
-<p><strong>准备项目</strong></p>
-<p>可以创建一个然后发布到GitHub或者从GitHub fork一个。为了描述方便工程名称为<code>NiceLoggerDemo</code>, Library Module名称为<code>nicelogger</code>。</p>
-<p>项目的GitHub地址在之后的配置中，需要用到。</p>
-<p><strong>配置Bintray平台</strong></p>
-<ul>
-<li>创建账户。如果已经有账户了，就不用创建。在<a target="_blank" rel="noopener" href="https://bintray.com/">Bintray官网</a>注册账号，参考<a target="_blank" rel="noopener" href="https://www.jfrog.com/confluence/display/BT/Getting+Started">官网指南-Creating an Account</a>。</li>
-<li>创建Maven库。如果已经创建过Maven仓库，可以不用创建。进入个人中心主页，点击“Add New Repository”，进入填写仓库信息页。填写信息：“Name”，看其他博客许多人写了“maven”，我写了“android”，表示是一个用于存储Android项目的Maven仓库，这个名字需要记住，以后使用Gradle插件上传项目的时候用得着。“Type”选择“Maven”。其他选填。点击“Create”就可以创建一个Maven仓库了。</li>
-<li>创建Package。用Gradle插件方式时可以不用手动创建。进入Maven仓库，点击“Add New Package”，进入仓库信息填写页。信息填写：“Name”填之前规定的<code>nicelogger</code>，“Version control”填你上传到Github上的项目地址，其他选填。点击“Create Package”即可。</li>
-<li>创建版本。用Gradle插件方式时可以不用手动创建。从Package页面进入“Create New Version”页面，“Name”填写定义好的<code>0.0.1</code>，其他选填，点击“Create Version”即可。</li>
-</ul>
-<p>准备工作做好后，接下来就可以通过不同的方式进行后续操作了。</p>
-<br>
-
-<hr>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
-<li><a target="_blank" rel="noopener" href="https://www.geekhub.cn/a/1295.html">JCenter是什么</a></li>
-<li><a target="_blank" rel="noopener" href="https://bintray.com/">Bintray官网</a></li>
-<li><a target="_blank" rel="noopener" href="https://jcenter.bintray.com/">JCenter仓库</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.jfrog.com/confluence/display/BT/Introduction">JFrog用户指南</a></li>
-<li><a target="_blank" rel="noopener" href="https://maven.apache.org/index.html">Apach Maven</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/novoda/bintray-release">bintray-release</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/bintray/gradle-bintray-plugin#readme">使用Gradle插件上传Artifacts到Bintrary</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/bintray/bintray-examples/tree/master/gradle-bintray-plugin-examples">使用Gradle插件上传示例</a></li>
-<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/xiangzhihong8/article/details/53869957">博客-上传Gradle项目到Maven仓库</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/905411bf4f8f">从Travis到Bintray</a></li>
-</ol>
-<br>
-
-<hr>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/12/13/2018-12-13-PublishToJCenter1Base/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1161,7 +689,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 14:20:15" itemprop="dateModified" datetime="2021-06-29T14:20:15+08:00">2021-06-29</time>
+                <time title="修改时间：2022-01-07 15:36:29" itemprop="dateModified" datetime="2022-01-07T15:36:29+08:00">2022-01-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1185,35 +713,14 @@
 
       
           <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>最近编译一个行情Android APP，里面使用到<a target="_blank" rel="noopener" href="https://zeroc.com/">ZeroC ICE</a>工具，将ice文件转换成Java文件(当然不止于此)。初次使用，做一点总结。</p>
-<br>
-
-<h1 id="macOS上安装"><a href="#macOS上安装" class="headerlink" title="macOS上安装"></a>macOS上安装</h1><p><a target="_blank" rel="noopener" href="https://zeroc.com/downloads/ice#macos">利用homebrew安装最新版本</a></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install ice</span><br></pre></td></tr></table></figure>
-<p>由于要编译的代码很老旧，使用的ice需要3.6.3版本的，但我根据官网文档，只能安装3.6.4的，最后也能跑的通</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">brew uninstall ice // 首先卸载之前最新版本</span><br><span class="line">brew install zeroc-ice/tap/ice@3.6 // ice</span><br><span class="line">brew install zeroc-ice/tap/icetouch@3.6  //ice touch  是为iphone和ipod touch开发的版本，开发Android的话可以不用安装</span><br></pre></td></tr></table></figure>
-<br>
-
-<h1 id="Android项目配置"><a href="#Android项目配置" class="headerlink" title="Android项目配置"></a>Android项目配置</h1><p><a target="_blank" rel="noopener" href="https://doc.zeroc.com/ice/3.7/release-notes/using-ice-on-android">具体可以见官网 using-ice-on-android</a><br>我自己的相关配置如下</p>
-<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 项目根目录gradle文件</span></span><br><span class="line"><span class="keyword">buildscript</span> &#123;</span><br><span class="line">    <span class="keyword">repositories</span> &#123;</span><br><span class="line">        google()</span><br><span class="line">        jcenter()</span><br><span class="line">        maven &#123;</span><br><span class="line">            url <span class="string">&#x27;https://repo.zeroc.com/nexus/content/repositories/releases&#x27;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">dependencies</span> &#123;</span><br><span class="line">        <span class="keyword">classpath</span> <span class="string">&#x27;com.android.tools.build:gradle:3.1.2&#x27;</span></span><br><span class="line">        <span class="keyword">classpath</span> <span class="keyword">group</span>: <span class="string">&#x27;com.zeroc.gradle.ice-builder&#x27;</span>, name: <span class="string">&#x27;slice&#x27;</span>, version: <span class="string">&#x27;1.3.14&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">allprojects</span> &#123;</span><br><span class="line">    <span class="keyword">repositories</span> &#123;</span><br><span class="line">        google()</span><br><span class="line">        jcenter()</span><br><span class="line">        maven &#123;</span><br><span class="line">            url <span class="string">&#x27;https://repo.zeroc.com/nexus/content/repositories/releases&#x27;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">task</span> clean(type: <span class="keyword">Delete</span>) &#123;</span><br><span class="line">    <span class="keyword">delete</span> rootProject.buildDir</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<br>
-
-<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 应用的gradle文件</span></span><br><span class="line">apply plugin: <span class="string">&#x27;com.android.application&#x27;</span></span><br><span class="line">apply plugin: <span class="string">&#x27;slice&#x27;</span></span><br><span class="line">slice &#123;</span><br><span class="line">    java &#123;</span><br><span class="line">        srcDir = <span class="string">&#x27;.&#x27;</span></span><br><span class="line">        <span class="comment">// 这是ice文件中需要引入的文件，可以拉出来放在工程目录，我这里图方便就这样写了</span></span><br><span class="line">        <span class="keyword">include</span> = [<span class="string">&quot;/usr/local/Cellar/ice@3.6/3.6.4_1/share/Ice-3.6.4/slice/&quot;</span>] </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 这是ice文件转成Java文件后的输出目录</span></span><br><span class="line"><span class="keyword">project</span>.slice.output = <span class="keyword">project</span>.<span class="keyword">file</span>(<span class="string">&quot;$&#123;project.buildDir&#125;/generated/source/ice&quot;</span>)</span><br><span class="line"></span><br><span class="line">android &#123;</span><br><span class="line">    compileSdkVersion <span class="number">27</span></span><br><span class="line">    defaultConfig &#123;</span><br><span class="line">        applicationId <span class="string">&quot;com.slm.tradeclient&quot;</span></span><br><span class="line">        minSdkVersion <span class="number">16</span></span><br><span class="line">        targetSdkVersion <span class="number">27</span></span><br><span class="line">        versionCode <span class="number">1</span></span><br><span class="line">        versionName <span class="string">&quot;1.0&quot;</span></span><br><span class="line">        testInstrumentationRunner <span class="string">&quot;android.support.test.runner.AndroidJUnitRunner&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">sourceSets</span> &#123;</span><br><span class="line">        main &#123;</span><br><span class="line">            java &#123;</span><br><span class="line">                <span class="comment">// 这是ice文件的源目录，也就是把这个目录里的ice文件转成Java文件</span></span><br><span class="line">                srcDirs = [<span class="string">&#x27;src/main/java&#x27;</span>, <span class="keyword">project</span>.slice.output]</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    buildTypes &#123;</span><br><span class="line">        debug &#123;</span><br><span class="line">            debuggable <span class="keyword">true</span></span><br><span class="line">        &#125;</span><br><span class="line">        release &#123;</span><br><span class="line">            minifyEnabled <span class="keyword">false</span></span><br><span class="line">            proguardFiles getDefaultProguardFile(<span class="string">&#x27;proguard-android.txt&#x27;</span>), <span class="string">&#x27;proguard-rules.pro&#x27;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    compileOptions &#123;</span><br><span class="line">        <span class="keyword">sourceCompatibility</span> JavaVersion.VERSION_1_8</span><br><span class="line">        <span class="keyword">targetCompatibility</span> JavaVersion.VERSION_1_8</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">dependencies</span> &#123;</span><br><span class="line">    implementation <span class="string">&#x27;com.zeroc:ice:3.6.4&#x27;</span></span><br><span class="line">    implementation <span class="keyword">fileTree</span>(<span class="keyword">include</span>: [<span class="string">&#x27;*.jar&#x27;</span>], dir: <span class="string">&#x27;libs&#x27;</span>)</span><br><span class="line">    <span class="comment">//  ...</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>在Gradle Projects里</p>
-<ol>
-<li>先编译slice。-&gt;compileSlice</li>
-<li>然后生成应用项。-&gt;assembleDebug</li>
-</ol>
-<p>最后安装无误，顺利通过。</p>
-<hr>
-<br>
-
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
-<li><a target="_blank" rel="noopener" href="https://baike.baidu.com/item/ZeroC%20Ice">中文简单介绍</a></li>
-<li><a target="_blank" rel="noopener" href="https://zeroc.com/">官网</a></li>
-<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/robertaqi/article/details/5900695">某个博客</a></li>
-</ol>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/12/08/2018-12-08-ZeroCICEPreliminaryUse/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1263,7 +770,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 14:19:30" itemprop="dateModified" datetime="2021-06-29T14:19:30+08:00">2021-06-29</time>
+                <time title="修改时间：2022-01-07 15:34:48" itemprop="dateModified" datetime="2022-01-07T15:34:48+08:00">2022-01-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1286,31 +793,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>目前流行的Git项目工作流程有<a target="_blank" rel="noopener" href="https://nvie.com/posts/a-successful-git-branching-model/">Git Flow</a>、<a target="_blank" rel="noopener" href="https://guides.github.com/introduction/flow/index.html">GitHub Flow</a>和<a target="_blank" rel="noopener" href="https://docs.gitlab.com/ee/workflow/gitlab_flow.html">GitLab Flow</a>，对于不同的项目应该选择不同的工作流程以提交开发效率。</p>
-<hr>
-<br>
-
-<h1 id="选择"><a href="#选择" class="headerlink" title="选择"></a>选择</h1><ol>
-<li>持续构建的项目，优先选择GitHub Flow。例如Web项目，每次更新后即可随时发布。</li>
-<li>有明显的版本迭代或有发布窗口期的项目，优先选择GitLab Flow，如iOS项目。</li>
-<li>任何项目，如果不想选择以上二者，都可以选择Git Flow。</li>
-</ol>
-<hr>
-<br>
-
-<h1 id="待续"><a href="#待续" class="headerlink" title="待续"></a>待续</h1><p>不够详细，待续</p>
-<hr>
-<br>
-
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
-<li><a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2015/12/git-workflow.html">阮一峰-Git 工作流程</a></li>
-<li><a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2012/07/git.html">阮一峰-Git分支管理策略</a></li>
-<li><a target="_blank" rel="noopener" href="https://nvie.com/posts/a-successful-git-branching-model/">A successful Git branching model</a></li>
-<li><a target="_blank" rel="noopener" href="https://guides.github.com/introduction/flow/index.html">GitHub Flow</a></li>
-<li><a target="_blank" rel="noopener" href="https://docs.gitlab.com/ee/workflow/gitlab_flow.html">GitLab Flow</a></li>
-<li><a target="_blank" rel="noopener" href="https://medium.com/@patrickporto/4-branching-workflows-for-git-30d0aaee7bf">Four git workflow</a></li>
-</ol>
-
+          <p>目前流行的Git项目工作流程有<a target="_blank" rel="noopener" href="https://nvie.com/posts/a-successful-git-branching-model/">Git Flow</a>、<a target="_blank" rel="noopener" href="https://guides.github.com/introduction/flow/index.html">GitHub Flow</a>和<a target="_blank" rel="noopener" href="https://docs.gitlab.com/ee/workflow/gitlab_flow.html">GitLab Flow</a>，对于不同的项目应该选择不同的工作流程以提交开发效率。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/12/08/2018-12-08-GitManagementStratety/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1360,7 +851,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 14:18:47" itemprop="dateModified" datetime="2021-06-29T14:18:47+08:00">2021-06-29</time>
+                <time title="修改时间：2022-01-07 15:34:29" itemprop="dateModified" datetime="2022-01-07T15:34:29+08:00">2022-01-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1383,56 +874,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>一个基于Git的分支管理策略。<br><strong>注意</strong>：Git Flow并没有涵盖开发流程中的所有步骤，其中不包含代码审查等，这些步骤需要另外处理。</p>
-<hr>
-<br>
-
-<h1 id="结构示意与说明"><a href="#结构示意与说明" class="headerlink" title="结构示意与说明"></a>结构示意与说明</h1><p><img src="https://upload-images.jianshu.io/upload_images/2658578-c8ad6c20ec5ee6e8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Git Flow"></p>
-<p>Git Flow包含两个永久性分支（<code>master</code>和<code>develop</code>）和三类暂时性分支（<code>feature</code>、<code>release</code>和<code>hotfix</code>）</p>
-<ol>
-<li><code>master</code>分支。用于发布版本。每次发布版本后都需要建立一个<code>tag</code>，如0.10、0.11、1.0等。</li>
-<li><code>develop</code>分支。从<code>master</code>分出来的，所有的开发都在这个分支上做。</li>
-<li><code>feature</code>分支。从<code>develop</code>分出来的，开发特定的功能，开发完后合并到<code>develop</code>，并删除该分支。命名格式<code>feature-*</code>。</li>
-<li><code>release</code>分支。从<code>develop</code>分出来的，预发布分支。用于发布版本之前的测试，测试无误后合并到<code>develop</code>和<code>master</code>，最后删除该分支。命名格式<code>release-*</code>。</li>
-<li><code>hotfix</code>分支。从<code>master</code>分出来的，修补bug分支。用于修补已经发布的版本的bug，修补分支确认无误后，合并到<code>develop</code>和<code>master</code>，最后删除该分支。命名格式<code>hotfix-*</code>。</li>
-</ol>
-<hr>
-<br>
-
-<h1 id="流程与操作"><a href="#流程与操作" class="headerlink" title="流程与操作"></a>流程与操作</h1><hr>
-<ol>
-<li><p>创建<code>develop</code>分支。创建Git项目后默认会创建<code>master</code>分支，在<code>master</code>上创建并切换到<code>develop</code>分支</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout -b develop</span><br></pre></td></tr></table></figure></li>
-<li><p>开发功能。创建并切换<code>feature</code>分支，开发完后合并到<code>develop</code>，最后删除<code>feature</code>。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建并切换feature分支</span></span><br><span class="line">$ git checkout -b feature-x develop</span><br><span class="line">$ git add .</span><br><span class="line">$ git commit -m <span class="string">&quot;xxx&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 合并到develop分支</span></span><br><span class="line">$ git checkout develop</span><br><span class="line">$ git merge --no-ff feature-x -m <span class="string">&quot;xxx&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除 feature</span></span><br><span class="line">$ git branch -d feature-x</span><br></pre></td></tr></table></figure></li>
-<li><p>发布版本。创建并切换<code>release</code>分支，测试无误后，合并到<code>develop</code>和<code>master</code>。在<code>master</code>打<code>tag</code>并发布版本。最后删除<code>release</code>。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout -b release-1.2 develop</span><br><span class="line">$ git add .</span><br><span class="line">$ git commit -m <span class="string">&quot;xxx&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 合并到 master</span></span><br><span class="line">$ git checkout master</span><br><span class="line">$ git merge --no-ff release-1.2 -m <span class="string">&quot;xxx&quot;</span></span><br><span class="line">$ git tag -a 1.2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 合并到 develop</span></span><br><span class="line">$ git checkout develop</span><br><span class="line">$ git merge --no-ff release-1.2 -m <span class="string">&quot;xxx&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除预发布分支</span></span><br><span class="line">$ git branch -d release-1.2</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
-<li><p>修复bug。在上次发布的1.2版本中发现了一个bug，必须修复。创建并切换<code>hotfix</code>分支，测试无误后，合并到<code>develop</code>和<code>master</code>。在<code>master</code>打<code>tag</code>并发布版本。最后删除<code>hotfix</code>。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout -b hotfix-1.2 master</span><br><span class="line">$ git add .</span><br><span class="line">$ git commit -m <span class="string">&quot;xxx&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 合并到 master</span></span><br><span class="line">$ git checkout master</span><br><span class="line">$ git merge --no-ff hotfix-1.2 -m <span class="string">&quot;xxx&quot;</span></span><br><span class="line">$ git tag -a 1.2.1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 合并到 develop</span></span><br><span class="line">$ git checkout develop</span><br><span class="line">$ git merge --no-ff hotfix-1.2 -m <span class="string">&quot;xxx&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除hotfix</span></span><br><span class="line">$ git branch -d hotfix-1.2</span><br></pre></td></tr></table></figure></li>
-</ol>
-<hr>
-<br>
-
-<h1 id="实践心得"><a href="#实践心得" class="headerlink" title="实践心得"></a>实践心得</h1><hr>
-<p>之前有一个项目由我和另外两个小伙伴开发，使用了Git Flow策略，代码托管在GitLab上。项目包含<code>master</code>分支、<code>develop</code>分支、三个功能分支（每人一个）。部分心得如下：</p>
-<ol>
-<li>功能分支的划分问题。创建功能分支的时候是按照业务逻辑大致划分的，并没有仔细分出他们的边界，最后导致功能分支之间有部分耦合，如<code>feature-a</code>和<code>feature-b</code>有部分逻辑依赖于<code>feature-c</code>。这样的话，<code>feature-c</code>需要经常合并到<code>develop</code>分支，合并后，其他两个分支需要将<code>develop</code>合并到自己的分支上，以更新代码。这与以上的功能分支合并策略有部分出入。Git Flow策略对于功能分支的划分是很理想的，要求多个并行开发的功能分支之间没有关联，但如果划分不仔细就难以做到这点。因此，对于功能分支的划分需要考虑周全，尽可能划分得小，减少耦合。</li>
-<li>分支权限控制。我将<code>master</code>分支和<code>develop</code>分支设置为受保护的，其他两个小伙伴没有权限在这两个分支上做提交。当他们想要把功能分支合并到<code>develop</code>上时，需要在GitLab上提交Merge Request，经常代码审核后由我来合并代码，这样可以发现部分逻辑bug以及保证代码规范。</li>
-<li>每次提交都应该是一个比较完整的功能点：比如优化某个方法、增加一个界面、删除一个接口等。</li>
-<li>每次提交前，检查更改的文件，不要更改与自己无关的文件。不要随意格式化他人代码。 </li>
-<li>分支的删除。开发者自己创建的短期分支，在合并以及测试无误后，需要及时删除 </li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 查看所有分支 </span><br><span class="line">git branch -a </span><br><span class="line">// 删除本地</span><br><span class="line">git branch -d &lt;分支名&gt; </span><br><span class="line">// 删除远程 </span><br><span class="line">git push --delete origin &lt;分支名&gt; </span><br><span class="line">// 刷新本地索引 </span><br><span class="line">git fetch --all —prune </span><br></pre></td></tr></table></figure>
-
-<hr>
-<br>
-
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><hr>
-<ol>
-<li><a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2012/07/git.html">阮一峰-Git分支管理策略</a></li>
-<li><a target="_blank" rel="noopener" href="https://nvie.com/posts/a-successful-git-branching-model/">A successful Git branching model</a></li>
-</ol>
-
+          <p>一个基于Git的分支管理策略。<br><strong>注意</strong>：Git Flow并没有涵盖开发流程中的所有步骤，其中不包含代码审查等，这些步骤需要另外处理。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/12/08/2018-12-08-GitFlow/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1482,7 +932,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 14:19:11" itemprop="dateModified" datetime="2021-06-29T14:19:11+08:00">2021-06-29</time>
+                <time title="修改时间：2022-01-07 15:34:38" itemprop="dateModified" datetime="2022-01-07T15:34:38+08:00">2022-01-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1508,69 +958,14 @@
           <blockquote>
 <p><strong>原文链接</strong> <a target="_blank" rel="noopener" href="https://docs.gitlab.com/ee/workflow/gitlab_flow.html">Introduction to GitLab Flow</a></p>
 </blockquote>
-<p><img src="https://upload-images.jianshu.io/upload_images/2658578-4fbe838c70462bed.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"></p>
-<p>在分支管理和合并方面，用Git做版本管理比用以前的版本管理系统如SVN更容易。Git版本管理允许各种各样的分支策略和工作流程。这些策略和流程是对以前的版本管理方法上的一种改进和提升。但是许多企业的工作流程或者不清晰，或者过于复杂，或者未集成问题跟踪系统（issue tracking systems）。鉴于此，我们提出Gitlab工作流(GitLab flow)，作为定义清晰的最佳实践模式。它结合了<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Feature-driven_development">功能驱动开发模式</a>和<a target="_blank" rel="noopener" href="https://martinfowler.com/bliki/FeatureBranch.html">功能分支模式</a>，并集成了问题跟踪功能。</p>
-<p>从其他版本管理系统迁移到Git的团队一般很难用高效的流程进行开发。本文介绍Gitlab工作流，它结合了Git工作流和问题追踪系统，是一种简单、透明和有效的使用Git进行版本管理的工作方式。</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/2658578-5050f3e3155da858.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"></p>
-<p>将工作副本提交到远程服务，大多数版本管理系统只需要一步，而Git需要三步：从工作区添加文件到暂存区（staging area）、提交暂存区内容到本地库、推动本地库信息到远程库。熟悉这三步后，开发人员又面临另一个挑战——Git的分支模型。</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/2658578-e88141fe2d2ee890.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"></p>
-<p>由于许多刚接触Git的团队并没有约定如何使用它，就会导致之后的开发变得一团糟。 他们遇到的最大问题是许多长期运行的分支都包含部分变更，这就很难确定应该在哪个分支上开发，在哪个分支上部署生产版本。 对此问题的解决方法通常是采用标准化模式，例如Git flow和GitHub流。 我们认为仍有改进的余地，并将详细介绍我们称之为最佳实践的GitLab流。</p>
-<h1 id="Git-Flow和它的问题"><a href="#Git-Flow和它的问题" class="headerlink" title="Git Flow和它的问题"></a>Git Flow和它的问题</h1><p><img src="https://upload-images.jianshu.io/upload_images/2658578-215fdb1fb9e423c2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Git Flow"></p>
-<p>Git Flow是最早提出的分支工作模型之一，引起了广泛的关注。它包含两个长期分支，master主分支和开发分支，以及其他的暂时分支，功能分支、发布分支以及程序修复分支。工作流程是，在开发分支上开发，之后转移动发布分支，最后合并到master分支。Git Flow的分支模型定义清晰、明确，但过于复杂，存在两个问题。</p>
-<ol>
-<li>开发使用开发分支而不是master分支。master分支的作用仅仅是存储生产版本的代码，没有发挥更大的作用。一般的开发惯例是在默认分支上开发，在此分支上创建分支以及合并。由于大多数工具会自动将主分支设置为默认分支，并且默认显示该分支，因此每次必须切换到另一个分支上开发是很烦人的事情。</li>
-<li>过于复杂。引入了程序修复分支和发布分支，导致Git Flow过于复杂。这些分支对某些项目来说可能是必要的，但对绝大多数项目来说则是没有必要的。如今大多数项目都是持续发布的，这意味着你的默认分支会被发布。这样就没有必要引入修复分支和发布分支，以及相关的复杂操作。这些操作的一个例子是发布分支的合并，通常开发人员会犯错误，例如，更改只合并到master中，而忘记合并到develop分支中，但执行发布并不意味着也会执行修补程序。这些错误的根本原因是Git Flow的使用相对较复杂。</li>
-</ol>
-<br>
-# GitHub Flow，一个简单的替代者
-
-<p><img src="https://upload-images.jianshu.io/upload_images/2658578-341bb1faacc1e34f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
-<p>针对Git Flow的简单替代方案是<a target="_blank" rel="noopener" href="https://guides.github.com/introduction/flow/index.html">GitHub Flow</a>。这个流程只包含一个主分支和一些功能分支，简单、干净。许多企业已经都在采用这个工作流，并取得了巨大的成功。Atlassian推荐了一个类似的流程，只是修改了功能分支( rebase feature branches)。 将所有内容合并到主分支并部署，这会让你的代码库更简洁，符合持续交付的最佳实践。 但是这个流程仍然存在很多关于部署、环境、发布和议题集成(integrations with issues)的问题。 而GitLab Flow会解决这些问题。<br><br></p>
-<h1 id="GitLab-Flow的Production分支策略"><a href="#GitLab-Flow的Production分支策略" class="headerlink" title="GitLab Flow的Production分支策略"></a>GitLab Flow的Production分支策略</h1><p><img src="https://upload-images.jianshu.io/upload_images/2658578-1df9470b1c257e6a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="GitLab Flow的Production分支"></p>
-<p>GitHub Flow是假设你每次合并功能分支后都能部署到生产环境。这可以用于像SaaS之类的应用程序，但在许多情况下并不能这样做。一种情况是你自己无法控制确切的发布时间，例如IOS应用程序，需要通过App Store审核。另一种情况是你有部署的窗口期（如工作日的上午10点到下午4点，运营团队才帮助你部署），但是你也需要在其他时间合并其他的代码（不能傻等）。在这些情况下，您可以创建一个反映需要部署的代码的生产分支。您可以通过将master分支合并到生产分支来部署新版本。如果你需要知道生产中的代码，您可以查看生产分支。在版本控制系统中，合并提交都有记录，很容易看到部署的大致时间。如果你自动部署生产分支，则这个时间会非常准确。如果你需要更加准确的时间，则可以利用脚本文件在每个部署版本上创建标记。此流程无需Git Flow中常见的发布、标记和合并操作。</p>
-<blockquote>
-<p>这句话怎么理解？原文:This flow prevents the overhead of releasing, tagging and merging that is common to git flow</p>
-</blockquote>
-<br>
-
-<h1 id="GitLab-Flow的Environment分支策略"><a href="#GitLab-Flow的Environment分支策略" class="headerlink" title="GitLab Flow的Environment分支策略"></a>GitLab Flow的Environment分支策略</h1><p><img src="https://upload-images.jianshu.io/upload_images/2658578-69c8a8b6177f39ad.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="GitLab Flow的Environment分支"></p>
-<p>可以在master分支上自动更新环境(开发、测试、生产等)，在这种情况下环境名和分支名可能不一致。假设你有一个开发环境(staging environment)，一个预生产环境(pre-production environment)和一个生产环境(production environment)。在这种情况下，master分支部署在开发环境中，当要部署到预生产时，创建从master分支到预生产分支的合并请求，之后再将预生产分支合并到生产分支中用于发布生产版本。这种只向下游做提交的工作流程(master-&gt;pre-production-&gt;production)可确保代码在所有环境中都经过测试。如果您需<code>cherry-pick</code>一个热修复提交，通常是在功能分支上开发它，之后将其合并到master分支中，但不要删除该功能分支。如果master分支运行良好（假设你正在开发持续部署类项目），然后你需要将修复补丁分支合并到其他分支中。</p>
-<blockquote>
-<p>疑问：这和Git Flow中打紧急修复补丁的做法有什么区别吗？都是需要在开发分支和生产分支上合并修复的代码啊？<br>这段感觉他说的不是很清楚，或者我翻译的太糟。我看阮一峰的<a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2015/12/git-workflow.html">Git 工作流程</a>，也有些迷惑，如下:</p>
-<blockquote>
-<p>开发分支是预发分支的”上游”，预发分支又是生产分支的”上游”。代码的变化，必须由”上游”向”下游”发展。比如，生产环境出现了bug，这时就要新建一个功能分支，先把它合并到<code>master</code>，确认没有问题，再<code>cherry-pick</code>到<code>pre-production</code>，这一步也没有问题，才进入<code>production</code>。</p>
-</blockquote>
-</blockquote>
-<blockquote>
-<p>这里“新建一个功能分支”是在哪里创建？master的最新提交还是对应的创建生产分支的那个提交？。<code>herry-pick</code>哪个分支上的提交？功能分支还是master分支？<br>正文中说“不要删除该功能分支”，加上实践，只能是在master对应的创建生产分支的那个提交上新建分功能分支，然后<code>cherry-pick</code>功能分支上提交到预生产和生产分支上。</p>
-</blockquote>
-<p>如果由于需要许多手动测试而无法实现，则可以发送合并请求，将功能分支合并到下游分支。</p>
-<blockquote>
-<p>这句话不甚理解。原文: If this is not possible because more manual testing is required you can send merge requests from the feature branch to the downstream branches</p>
-</blockquote>
-<br>
-
-<h1 id="GitLab-Flow的发布分支策略"><a href="#GitLab-Flow的发布分支策略" class="headerlink" title="GitLab Flow的发布分支策略"></a>GitLab Flow的发布分支策略</h1><p><img src="https://upload-images.jianshu.io/upload_images/2658578-7d01159cf93fa25a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="GitLab Flow的Release分支"></p>
-<p>只有在你向外界发布软件时，才需要使用发布分支。在这种情况下，每个分支包含较小的版本（2-3-stable, 2-4-stable等）。stable分支从master分支检出，并尽可能晚地创建。越晚创建stable分支，错误越少，最大限度地避免将错误修复补丁应用于多个分支。在创建发布分支后，发布分支中仅允许修复严重的错误。如果需要修复，那么这些错误修复要首先合并到master分支中，然后<code>cherry-pick</code>到发布分支中，这样能避免在后续版本中遇到相同的bug。这就是所谓的“上游优先”策略，也是Google和Red Hat实施的策略。每次在发布分支中增加错误修复补丁时，都会通过设置新标记来发布补丁版本（以符合语义版本控制）。有些项目还有一个稳定的分支，指向与最新发布的分支相同的提交。在此流程中，拥有生产分支（或git flow master分支）并不常见。</p>
-<blockquote>
-<p>这是向外发布软件的工作流，需要维护历史版本的时候，可以利用这个。软件的每个版本都有一个对应的分支来维护。</p>
-</blockquote>
-<blockquote>
-<p>修复历史版本的Bug的工作流程是怎样的？我的理解如下：当发现历史版本如v1.3中有错误需要修复的时候，首先在master分支中对应v1.3的提交上创建hotfix分支，测试无误后提交，首先合并到master分支（以后在maser分支上创建的发布分支就不会出现这个Bug），然后<code>cherry-pick</code>hotfix分支上的提交到v1.3及以后的所有的发布分支上。<br>是不是如此呢？我想不出其他的。</p>
-</blockquote>
-<blockquote>
-<p>上游优先策略。master是所有发布分支的上游，要改动发布分支上的代码，必须先改动<code>master</code>，然后<code>cherry-pick</code>到发布分支上。<br>问题：<code>cherry-pick</code>的提交一定是在<code>master</code>分支上的吗？不是的，只是说先改动<code>master</code>，并不是说一定<code>cherry-pick</code> <code>master</code>分支上的提交。</p>
-</blockquote>
-<br>
-
-<h1 id="待续"><a href="#待续" class="headerlink" title="待续"></a>待续</h1><p>翻译得心累(⊙o⊙)，待以后完全理解了GitlabFlow再把接下来的几节翻译完。</p>
-<ul>
-<li>GitLab Flow的Merge/pull requests</li>
-<li>GitLab Flow的议题追踪</li>
-<li>在merge requests中关联或关闭议题</li>
-<li>使用<code>rebase</code>合并<code>commits</code></li>
-</ul>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/12/08/2018-12-08-GitlabFlow/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
