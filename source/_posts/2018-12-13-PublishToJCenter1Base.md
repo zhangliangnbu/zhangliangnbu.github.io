@@ -13,6 +13,8 @@ categories:
 
 **发布项目的定义**。发布项目到远程JCenter仓库，准确的说是发布项目构件到JCenter仓库，用英语说是*Publishing artifacts to the JCenter*。本文所说的发布项目都是指发布项目构建后的生成物，即构件(Artifacts)。
 
+<!-- more -->
+
 **简介**。JCenter是JFrog公司旗下Bintray平台上一个公开的Java仓库。要发布项目到JCenter，首先需要发布项目到Bintray平台，然后才能发布到它的公开库——JCenter。
 
 - Bintray官网： https://bintray.com/

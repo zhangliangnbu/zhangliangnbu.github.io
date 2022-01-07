@@ -19,6 +19,8 @@ gradle-bintray-plugin插件在生成构件时有三种方式： Configurations, 
 
 **源码地址**。本文涉及到的`nicelogger`项目Github地址：https://github.com/zhangliangnbu/nice-logger
 
+<!-- more -->
+
 ---
 
 # 准备工作

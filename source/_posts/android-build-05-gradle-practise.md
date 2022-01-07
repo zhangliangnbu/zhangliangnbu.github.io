@@ -10,7 +10,9 @@ categories:
 - Android开发
 ---
 
+介绍Gradle最佳实践，持续更新
 
+<!-- more -->
 
 # 文件分布简述
 

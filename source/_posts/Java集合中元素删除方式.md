@@ -14,6 +14,8 @@ categories:
 
 删除的方式有：使用Java API （java 8）、从后往前的循环、使用迭代器、使用新的集合。
 
+<!-- more -->
+
 # Java API
 
 - `List#remove(int index)`。最基本API，删除特定索引处元素，O(1)。

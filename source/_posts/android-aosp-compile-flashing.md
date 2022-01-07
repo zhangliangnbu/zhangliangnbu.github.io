@@ -23,6 +23,8 @@ AOSP官网有两个，国际版本和国内版本，内容一致，但国内版�
 - 国际版本：https://source.android.com
 - 国内版本：https://source.android.google.cn
 
+<!-- more -->
+
 # 搭建编译环境
 
 **硬件环境说明**

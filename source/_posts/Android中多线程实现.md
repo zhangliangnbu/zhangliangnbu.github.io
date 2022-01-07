@@ -19,6 +19,8 @@ Android中涉及线程操作的类或机制主要有：
 - AsyncTask。基于Handler机制。
 - IntentService。基于Handler机制。
 
+<!-- more -->
+
 # Handler机制
 
 Handler 发消息到MessageQueue中，Looper 循环从MessageQueue中获取消息并消费（执行Handler的回调方法）。

@@ -17,7 +17,7 @@ categories:
 - `build.gradle`会转化为`Project`对象。
 - 其他gradle文件，没有定义为class的，会转换为一个实现了`Script`接口的对象
 
-
+<!-- more -->
 
 # 任务
 

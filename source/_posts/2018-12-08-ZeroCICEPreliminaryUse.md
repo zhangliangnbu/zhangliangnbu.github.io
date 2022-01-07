@@ -11,7 +11,7 @@ categories:
 
 最近编译一个行情Android APP，里面使用到[ZeroC ICE](https://zeroc.com/)工具，将ice文件转换成Java文件(当然不止于此)。初次使用，做一点总结。
 
-<br>
+<!-- more -->
 
 # macOS上安装
 

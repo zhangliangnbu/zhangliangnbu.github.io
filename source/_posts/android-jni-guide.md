@@ -17,6 +17,8 @@ JNI提供的接口声明位于：`<JDK_HOME>/include/jni.h`中
 
 > 注意：JNI是Java的特性而非Android独有特性，只因为Android使用了Java语言，因此可以利用JNI的功能。
 
+<!-- more -->
+
 ## 基本原理
 
 **Java虚拟机**利用**函数原型**将Java声明的本地方法与运行库中的C函数通过函数映射表对应起来，这样Java代码就能与C/C++代码交互。

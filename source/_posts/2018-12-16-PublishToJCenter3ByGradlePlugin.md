@@ -19,6 +19,8 @@ bintray-release使用起来非常简单，具体详情请见[bintray-release wik
 
 **源码地址**。本文涉及到的`nicelogger`项目Github地址：https://github.com/zhangliangnbu/nice-logger
 
+<!-- more -->
+
 ---
 
 # 准备工作

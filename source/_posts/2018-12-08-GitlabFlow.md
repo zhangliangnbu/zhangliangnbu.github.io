@@ -9,6 +9,8 @@ categories:
 
 > **原文链接** [Introduction to GitLab Flow](https://docs.gitlab.com/ee/workflow/gitlab_flow.html)
 
+<!-- more -->
+
 
 
 ![](https://upload-images.jianshu.io/upload_images/2658578-4fbe838c70462bed.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)

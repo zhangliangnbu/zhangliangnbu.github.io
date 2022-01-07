@@ -10,16 +10,12 @@ categories:
 - Android开发
 ---
 
-
-
-
-
 # 构建的生命周期
 
 Gradle项目的构建分为三个阶段：初始化、配置、执行。
 参考官方手册 [Build Lifecycle](https://docs.gradle.org/current/userguide/build_lifecycle.html)。
 
-
+<!-- more -->
 
 ## 初始化（Initialization）
 

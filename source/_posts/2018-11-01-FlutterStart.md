@@ -11,7 +11,7 @@ categories:
 
 照着官方[get-started](https://flutter.io/get-started/install/)教程做，略作补充。
 
------
+<!-- more -->
 
 # 入门
 

@@ -9,13 +9,9 @@ categories:
 - Android开发
 ---
 
-# 概述
-
 之前上线了一个项目，姑且称为TestApp，开发过程中遇到了一些坑，决定对网络层做一点总结。项目的网络层使用了目前比较流行的Retrofit和Rxjava框架，编程语言使用了Kotlin。
 
----
-
-<br>
+<!-- more -->
 
 # 配置
 

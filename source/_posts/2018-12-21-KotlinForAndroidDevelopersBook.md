@@ -15,7 +15,7 @@ categories:
 - 英文原版：[官网书籍地址](https://leanpub.com/kotlin-for-android-developers)、[豆瓣地址](https://book.douban.com/subject/26916501/)
 - 中文版：貌似还没有正式出版的中文版，只找到[Gitbook版本-《Kotlin for android developers》中文版翻译](https://wangjiegulu.gitbooks.io/kotlin-for-android-developers-zh/content/)
 
----
+<!-- more -->
 
 # val vs var
 

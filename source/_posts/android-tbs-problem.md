@@ -10,13 +10,11 @@ categories:
 - Android开发
 ---
 
-# 前言
-
 最近得空，记录下这几月Android开发中遇到的坑。
 
 这篇文章主要记录集成腾讯浏览服务（TBS Tencent Browse Server）时遇到的问题以及解决方案。
 
----
+<!-- more -->
 
 # 问题：H5加载异常
 

@@ -8,7 +8,9 @@ categories:
 - Android开发
 ---
 
+本文主要探讨如何在子线程中不通过Handler而直接更新主线程的UI的问题，仅探讨。
 
+<!-- more -->
 
 # 问题场景
 

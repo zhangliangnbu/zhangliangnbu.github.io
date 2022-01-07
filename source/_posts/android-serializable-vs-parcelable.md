@@ -9,8 +9,6 @@ categories:
 - Android开发
 ---
 
-# 前言
-
 序列化概念请见[wikipedia](https://zh.wikipedia.org/wiki/%E5%BA%8F%E5%88%97%E5%8C%96)。
 
 为什么需要序列化？
@@ -18,7 +16,7 @@ categories:
 1. IPC需要。多进程对应的是不同的内存区域，不能通过共享内存通信，因此传递数据的对象必须可序列化。
 2. 持久化到本地和网络传输。
 
----
+<!-- more -->
 
 # Serializable
 

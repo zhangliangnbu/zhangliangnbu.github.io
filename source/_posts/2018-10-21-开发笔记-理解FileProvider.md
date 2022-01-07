@@ -9,8 +9,6 @@ categories:
 - Android开发
 ---
 
-
-
 # 介绍
 
 用于更安全地在APP之间实现文件共享的一种机制，适用于Android 7.0及以上。
@@ -20,9 +18,7 @@ categories:
 1. Android 7.0以上如果不使用`FileProvider`，应用A将返回`file:///` `Uri`，而报错。
 2. 返回的`content://Uri`有生命周期，即应用B接收文件的`Activity`的生命周期，如果这个`Activity`被销毁了，则返回的`content://Uri`也将失效而不能获取文件。
 
--- -- --
-
-<br>
+<!-- more -->
 
 
 

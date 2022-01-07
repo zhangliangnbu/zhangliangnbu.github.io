@@ -11,10 +11,6 @@ categories:
 - Android开发
 ---
 
-
-
-
-
 # 问题描述
 
 之前构建Android项目时，经常出现以下WARNING：
@@ -30,9 +26,7 @@ It will be removed at the end of 2018. For more information see: http://d.androi
 
 {% asset_image warning1.png  Sync后的Warning提示 %}
 
-
-
-<br>
+<!-- more -->
 
 # 问题分析和解决
 

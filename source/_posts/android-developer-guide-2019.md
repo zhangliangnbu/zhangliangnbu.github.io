@@ -8,12 +8,9 @@ categories:
   - Android开发
 ---
 
-
-# 前言
-
 温故知新，官方文档每年都应该读一遍。
 
----
+<!-- more -->
 
 # Animations & Transitions
 

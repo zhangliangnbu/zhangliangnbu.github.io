@@ -15,7 +15,7 @@ categories:
 2.  我在LoginFragment（继承Fragment）里使用了两个ClearableEditText，并输入了值分别为123456789和abc。
 3.  我从LoginFragment里使用FragmentTransaction.replace方法跳转到另外一个Fragment，当回退到LoginFragment时，两个ClearableEditText都显示了abc。
 
-
+<!-- more -->
 
 相关代码如下：
 

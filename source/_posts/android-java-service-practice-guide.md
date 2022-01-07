@@ -12,6 +12,8 @@ categories:
 
 参考闹钟服务编写一个HelloWorldService服务，功能为打印字符串"Hello, World!"，然后基于编译后的系统，编写APP使用该服务。
 
+<!-- more -->
+
 ```bash
 闹钟服务相关接口和类
 - /frameworks/base/core/java/android/app/IAlarmManager.aidl  接口定义

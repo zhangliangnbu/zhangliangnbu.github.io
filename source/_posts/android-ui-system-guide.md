@@ -8,13 +8,13 @@ categories:
 - Android系统开发
 ---
 
-# 说明
-
 当我们调用`TextView.setTextColor()`之后，UI就会更新，这一过程是怎样的？本文通过较完整的视图绘制流程分析Android的图形系统。
 
 > 这里的绘制流程是指UI从数据更改触发到最终更新的流程。
 
 代码基于Android 10。
+
+<!-- more -->
 
 # 概述
 

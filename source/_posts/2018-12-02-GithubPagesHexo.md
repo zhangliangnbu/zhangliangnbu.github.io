@@ -18,9 +18,7 @@ categories:
 
 **博客框架**。建立GitHub Pages后，默认使用[Jekyll](https://help.github.com/articles/using-jekyll-with-pages)框架，目前比较流行的是Hexo。
 
----
-
-<br>
+<!-- more -->
 
 # Hexo
 

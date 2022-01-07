@@ -17,6 +17,8 @@ categories:
 
 两者主流程基本一致，区别在于根Activity启动流程还包含启动APP进程和实例化Application的流程。
 
+<!-- more -->
+
 # 普通Activity启动流程
 
 ## 流程概述

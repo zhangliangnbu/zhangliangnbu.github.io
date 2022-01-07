@@ -9,15 +9,11 @@ categories:
 - Android开发
 ---
 
-
-
 # 简介
 
 Android构建流程是指将Android源代码转换成Apk（Android Application Package）这一过程，里面涉及到许多步骤和[工具](https://developer.android.com/studio/command-line/)。构建流程由Gradle和Android Gradle Plugin插件来管理，既可以通过IDE方式，也可以通过命令行方式来进行。
 
--- -- --
-
-<br>
+<!-- more -->
 
 
 

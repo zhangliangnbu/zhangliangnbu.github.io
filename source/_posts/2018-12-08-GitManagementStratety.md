@@ -7,13 +7,9 @@ categories:
 - 其他
 ---
 
-# 前言
-
 目前流行的Git项目工作流程有[Git Flow](https://nvie.com/posts/a-successful-git-branching-model/)、[GitHub Flow](https://guides.github.com/introduction/flow/index.html)和[GitLab Flow](https://docs.gitlab.com/ee/workflow/gitlab_flow.html)，对于不同的项目应该选择不同的工作流程以提交开发效率。
 
-----
-
-<br>
+<!-- more -->
 
 # 选择
 

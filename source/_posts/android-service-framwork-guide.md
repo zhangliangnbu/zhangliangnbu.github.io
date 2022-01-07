@@ -14,6 +14,8 @@ Android服务框架包括Java服务框架（Java层）和本地服务框架（C+
 
 代码分析版本：Android 10
 
+<!-- more -->
+
 # 框架概览
 
 ### **Android服务框架结构图**

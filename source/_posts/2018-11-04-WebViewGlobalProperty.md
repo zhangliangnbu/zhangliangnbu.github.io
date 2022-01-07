@@ -14,9 +14,7 @@ categories:
 1. 先进入A，webview可以正常加载；然后进入B，WebView也可以正常加载。
 2. 先进入B，webview可以正常加载；然后进入A，WebView不能正常加载！
 
--- -- --
-
-<br>
+<!-- more -->
 
 # 查找原因
 

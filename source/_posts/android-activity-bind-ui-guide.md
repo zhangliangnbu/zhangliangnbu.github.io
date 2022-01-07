@@ -8,9 +8,9 @@ categories:
 - Android系统开发
 ---
 
-# 说明
-
 我们在`Activity.onCreate()`方法里调用`setContentView()`方法后，待Activity处于RESUME状态时就会呈现视图。这一过程涉及到Activity的启动以及视图的创建和绘制，那么Activity是如何与视图(Window、View)产生联系或绑定在一起的？
+
+<!-- more -->
 
 # 概述
 
