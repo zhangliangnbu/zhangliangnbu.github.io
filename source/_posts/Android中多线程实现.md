@@ -1,9 +1,9 @@
 ---
-title: Android中多线程实现
-date: 2021-06-30 15:42:53
+title: Android中的多线程
+date: 2018-08-11 15:14:22
+updated: 2022-01-10 17:52:48
 tags:
 - android
-- thread
 categories:
 - Android开发
 ---
@@ -182,3 +182,7 @@ public void onStart(@Nullable Intent intent, int startId) {
     mServiceHandler.sendMessage(msg);
 }
 ```
+
+# 相关问题
+
+一，主线程 Looper.loop（） 为什么不会造成程序卡死？
