@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zhangliangnbu.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="概述Fragment 表示应用界面中可重复使用的一部分，不能独立存在，而是必须由 Activity 或另一个 Fragment 托管。 模块化和可重用性：Fragment之间需要解耦，避免让一个 Fragment 依赖于另一个 Fragment 或从一个 Fragment 操控另一个 Fragment。 添加 Fragment 到 Activity 中的两种方法：  直接在布局里定义fragmen">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android应用开发基础三：Fragment">
+<meta property="og:url" content="https://zhangliangnbu.github.io/2018/08/12/android-app-dev-base-3/index.html">
+<meta property="og:site_name" content="永恒的码流">
+<meta property="og:description" content="概述Fragment 表示应用界面中可重复使用的一部分，不能独立存在，而是必须由 Activity 或另一个 Fragment 托管。 模块化和可重用性：Fragment之间需要解耦，避免让一个 Fragment 依赖于另一个 Fragment 或从一个 Fragment 操控另一个 Fragment。 添加 Fragment 到 Activity 中的两种方法：  直接在布局里定义fragmen">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://zhangliangnbu.github.io/images/android-fragment-lifecycle.png">
+<meta property="article:published_time" content="2018-08-12T07:14:22.000Z">
+<meta property="article:modified_time" content="2022-01-10T09:52:48.000Z">
+<meta property="article:author" content="章亮">
+<meta property="article:tag" content="android">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zhangliangnbu.github.io/images/android-fragment-lifecycle.png">
+
+<link rel="canonical" href="https://zhangliangnbu.github.io/2018/08/12/android-app-dev-base-3/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Android应用开发基础三：Fragment | 永恒的码流</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">永恒的码流</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">万物皆流，无物常驻</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2018/08/12/android-app-dev-base-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Android应用开发基础三：Fragment
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-08-12 15:14:22" itemprop="dateCreated datePublished" datetime="2018-08-12T15:14:22+08:00">2018-08-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-01-10 17:52:48" itemprop="dateModified" datetime="2022-01-10T17:52:48+08:00">2022-01-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>Fragment 表示应用界面中可重复使用的一部分，不能独立存在，而是必须由 Activity 或另一个 Fragment 托管。</p>
+<p>模块化和可重用性：Fragment之间需要解耦，避免让一个 Fragment 依赖于另一个 Fragment 或从一个 Fragment 操控另一个 Fragment。</p>
+<p>添加 Fragment 到 Activity 中的两种方法：</p>
+<ul>
+<li>直接在布局里定义fragment元素。</li>
+<li>在布局定义 fragment 容器，然后在代码中将 fragment 添加到容器中。推荐使用 AndroidX 的FragmentContainerView。此控件中也可以直接定义 Fragment 进行初始化。</li>
+</ul>
+<p>Fragment 创建时处于 INITIALIZED 状态，之后需要添加到 FragmentManager 才能转移到下一个状态。Fragment 的状态转移由 FragmentManger 通过 FragmentTransaction 来管理。</p>
+<span id="more"></span>
+
+<h1 id="生命周期"><a href="#生命周期" class="headerlink" title="生命周期"></a>生命周期</h1><p>生命周期回调方法都发生在 onAttach() 和 onDetach() 之间，图中未标记。</p>
+<img src="/images/android-fragment-lifecycle.png" width="70%" height="70%">
+
+<h1 id="FragmentManager-amp-FragmentTransaction"><a href="#FragmentManager-amp-FragmentTransaction" class="headerlink" title="FragmentManager &amp; FragmentTransaction"></a>FragmentManager &amp; FragmentTransaction</h1><p>FragmentManager 中有两个数据集合：一个是存储 Fragment 的集合，一个是存储事务 Transaction 的回退栈（BackStack）。</p>
+<p>两种对象的操作：</p>
+<ul>
+<li>Fragment 的操作通过 FragmentTransaction 的 add/replace/remove来管理。</li>
+<li>Transaction 的操作通过 FragmentTransaction#addToBackStack 和 FragmentManager#popBackStack 来管理。Transaction 的返回操作可以通过按手机返回键回调。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 示例：</span></span><br><span class="line"><span class="comment">// 连续添加两个Fragment，只添加一个Transaction，回退栈 count = 1</span></span><br><span class="line"><span class="comment">// 如果连续remove Fragment 则当前Activity不再显示任何C和D, 而回退栈 count = 1</span></span><br><span class="line"><span class="comment">// 此时按返回键，则显示C和D进入销毁和Detach状态。</span></span><br><span class="line"><span class="comment">// 再次按返回键，则回退到上一个Activity</span></span><br><span class="line"><span class="comment">// 按返回键会调用 FragmentManager#popBackStack </span></span><br><span class="line">supportFragmentManager.beginTransaction()</span><br><span class="line">    .add(R.id.fl_container, SampleCFragment(), <span class="string">&quot;C&quot;</span>)</span><br><span class="line">    .add(R.id.fl_container, SampleDFragment(), <span class="string">&quot;D&quot;</span>)</span><br><span class="line">    .addToBackStack(<span class="string">&quot;CD&quot;</span>)</span><br><span class="line">    .commit()</span><br></pre></td></tr></table></figure>
+
+<p>FragmentTransaction 方法</p>
+<ul>
+<li>add。添加一个新的 Fragment</li>
+<li>remove。移除一个Fragment</li>
+<li>replacement。先remove 容器里所有的Fragment，再添加一个新的 Fragment。</li>
+<li>hide / show。前者隐藏一个Fragment，后者将隐藏的Fragment展示出来。不走方法回调。</li>
+<li>detach：View 结构被销毁，处于STOPPED状态，但依旧保存在FragmentManager的集合中 。</li>
+<li>attach：重新创建并展示。</li>
+</ul>
+<blockquote>
+<p>💡 FragmentTransaction 的 detach() 和 attach() 方法与 Fragment 的 onAttach() 和 Attach() 无关。</p>
+</blockquote>
+<h1 id="Fragment-之间添加动画过度效果"><a href="#Fragment-之间添加动画过度效果" class="headerlink" title="Fragment 之间添加动画过度效果"></a>Fragment 之间添加动画过度效果</h1><p>方法一，动画框架（Animation Framework）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义动画</span></span><br><span class="line">...</span><br><span class="line"><span class="comment">// 设置动画</span></span><br><span class="line">Fragment fragment = <span class="keyword">new</span> FragmentB();</span><br><span class="line">getSupportFragmentManager().beginTransaction()</span><br><span class="line">    .setCustomAnimations(</span><br><span class="line">        R.anim.slide_in,  <span class="comment">// enter</span></span><br><span class="line">        R.anim.fade_out,  <span class="comment">// exit</span></span><br><span class="line">        R.anim.fade_in,   <span class="comment">// popEnter</span></span><br><span class="line">        R.anim.slide_out  <span class="comment">// popExit</span></span><br><span class="line">    )</span><br><span class="line">    .replace(R.id.fragment_container, fragment)</span><br><span class="line">    .addToBackStack(<span class="keyword">null</span>)</span><br><span class="line">    .commit();</span><br></pre></td></tr></table></figure>
+
+<p>方法二，转场框架（Transition Framework）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FragmentA</span> <span class="keyword">extends</span> <span class="title">Fragment</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> View <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        TransitionInflater inflater = TransitionInflater.from(requireContext());</span><br><span class="line">        setExitTransition(inflater.inflateTransition(R.transition.fade));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FragmentB</span> <span class="keyword">extends</span> <span class="title">Fragment</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> View <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        TransitionInflater inflater = TransitionInflater.from(requireContext());</span><br><span class="line">        setEnterTransition(inflater.inflateTransition(R.transition.slide_right));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="Fragment-通信"><a href="#Fragment-通信" class="headerlink" title="Fragment 通信"></a>Fragment 通信</h1><p>ViewModel 和 Fragment Result API 。</p>
+<p><strong>ViewModel</strong>：在多个 Fragment 之间或 Fragment 与其宿主 Activity 之间共享数据。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 示例</span></span><br><span class="line"><span class="comment">// 在 Activity 里 ...</span></span><br><span class="line">viewModel = <span class="keyword">new</span> ViewModelProvider(<span class="keyword">this</span>,</span><br><span class="line">                <span class="keyword">new</span> ViewModelProvider.AndroidViewModelFactory(getApplication()))</span><br><span class="line">          .get(ItemViewModel.class);</span><br><span class="line">viewModel.getSelectedItem().observe(<span class="keyword">this</span>, <span class="keyword">new</span> Observer&lt;ItemViewModel.Item&gt;() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onChanged</span><span class="params">(ItemViewModel.Item item)</span> </span>&#123;</span><br><span class="line">        tvTitle.setText(item.content);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 在Fragment 里 ...</span></span><br><span class="line">viewModel = <span class="keyword">new</span> ViewModelProvider(requireActivity(),</span><br><span class="line">                ViewModelProvider.AndroidViewModelFactory.getInstance(getActivity().getApplication()))</span><br><span class="line">                .get(ItemViewModel.class);</span><br><span class="line"></span><br><span class="line">OnItemClickListener listener = <span class="keyword">new</span> OnItemClickListener() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(ItemViewModel.Item item)</span> </span>&#123;</span><br><span class="line">        viewModel.selectItem(item);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><strong>使用 Fragment Result API</strong></p>
+<ul>
+<li>要求：<code>androidx.fragment:fragment:1.3.0</code> 之后。</li>
+<li>使用<code>FragmentManager#setFragmentResultListener</code> 和 <code>FragmentManager#setFragmentResult</code></li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 示例</span></span><br><span class="line"><span class="comment">// Activity 中</span></span><br><span class="line">getSupportFragmentManager().setFragmentResultListener(<span class="string">&quot;msgKey&quot;</span>, <span class="keyword">this</span>, <span class="keyword">new</span> FragmentResultListener() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onFragmentResult</span><span class="params">(<span class="meta">@NonNull</span> <span class="meta">@NotNull</span> String requestKey, <span class="meta">@NonNull</span> <span class="meta">@NotNull</span> Bundle result)</span> </span>&#123;</span><br><span class="line">        String results = result.getString(<span class="string">&quot;bundleKey&quot;</span>);</span><br><span class="line">        tvTitleByApi.setText(results);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Fragment 中</span></span><br><span class="line">btn_send_msg.setOnClickListener &#123;</span><br><span class="line">    val result = Bundle()</span><br><span class="line">    result.putString(<span class="string">&quot;bundleKey&quot;</span>, <span class="string">&quot;result 来啦 haha&quot;</span>)</span><br><span class="line">    parentFragmentManager.setFragmentResult(<span class="string">&quot;msgKey&quot;</span>, result)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="Fragment-懒加载实现"><a href="#Fragment-懒加载实现" class="headerlink" title="Fragment 懒加载实现"></a>Fragment 懒加载实现</h1><p>普通方式</p>
+<ul>
+<li><code>add+show+hide</code> 模式。利用 <code>onHiddenChanged()</code>回调方法，以及<code>isHidden()</code> 判断；在 <code>onResume()</code> 和 <code>onHiddenChanged()</code>里编写加载数据的代码 。</li>
+<li><code>ViewPager+Fragment</code>模式。利用 <code>setUserVisibleHint()</code>回调方法。</li>
+</ul>
+<p>缺点：onResume都会被调用</p>
+<p>Androidx 下的懒加载</p>
+<ul>
+<li>利用 <code>FragmentTransaction#setMaxLifecycle</code> 方法，强行限制Fragment所能达到的最大状态。</li>
+</ul>
+<p>缺点：Fragment 的嵌套时，失效。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/fragments?hl=zh-cn">Android 官方开发文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844904050698223624">Androidx 下 Fragment 懒加载的新实现</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/android/" rel="tag"># android</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/08/11/android-app-dev-base-2/" rel="prev" title="Android应用开发基础二：Activity">
+      <i class="fa fa-chevron-left"></i> Android应用开发基础二：Activity
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/08/13/android-app-dev-base-4/" rel="next" title="Android应用开发基础四：Service、Broadcast和ContentProvider">
+      Android应用开发基础四：Service、Broadcast和ContentProvider <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="nav-number">2.</span> <span class="nav-text">生命周期</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#FragmentManager-amp-FragmentTransaction"><span class="nav-number">3.</span> <span class="nav-text">FragmentManager &amp; FragmentTransaction</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Fragment-%E4%B9%8B%E9%97%B4%E6%B7%BB%E5%8A%A0%E5%8A%A8%E7%94%BB%E8%BF%87%E5%BA%A6%E6%95%88%E6%9E%9C"><span class="nav-number">4.</span> <span class="nav-text">Fragment 之间添加动画过度效果</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Fragment-%E9%80%9A%E4%BF%A1"><span class="nav-number">5.</span> <span class="nav-text">Fragment 通信</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Fragment-%E6%87%92%E5%8A%A0%E8%BD%BD%E5%AE%9E%E7%8E%B0"><span class="nav-number">6.</span> <span class="nav-text">Fragment 懒加载实现</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">7.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="章亮"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">章亮</p>
+  <div class="site-description" itemprop="description">Developer For Android</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">54</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zhangliangnbu" title="GitHub → https://github.com/zhangliangnbu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhangliangnbu@qq.com" title="E-Mail → mailto:zhangliangnbu@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">章亮</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">286k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">4:20</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

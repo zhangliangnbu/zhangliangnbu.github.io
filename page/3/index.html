@@ -164,96 +164,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2019/03/28/material-effective-java-2rd/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="章亮">
-      <meta itemprop="description" content="Developer For Android">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="永恒的码流">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/03/28/material-effective-java-2rd/" class="post-title-link" itemprop="url">Effective Java 2rd</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-03-28 09:01:14" itemprop="dateCreated datePublished" datetime="2019-03-28T09:01:14+08:00">2019-03-28</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-01-07 15:32:16" itemprop="dateModified" datetime="2022-01-07T15:32:16+08:00">2022-01-07</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>浏览《Effective Java 第二版》中文版，资源<a target="_blank" rel="noopener" href="https://zhengyq.gitbooks.io/effective-java-2/content/chapter1.html">Gitbook Effective Java 2rd</a></p>
-<hr>
-<p>第9条：覆盖<code>equals</code>时总要覆盖<code>hashCode</code></p>
-<blockquote>
-<p><em>在每个覆盖了equals方法的类中，也必须覆盖hashCode方法</em>。如果不这样做的话，就会违反<code>Object.hashcode</code>的通用约定，从而导致该类无法结合所有基于散列的集合一起正常工作，这样的集合包括<code>HashMap</code>、<code>HashSet</code>和<code>Hashtable</code>。</p>
-</blockquote>
-<p>第18条：接口优于抽象类</p>
-<blockquote>
-<p><em>通过对你导出的每个重要接口都提供一个抽象的骨架实现（skeletal implementation）类，把接口和抽象类的优点结合起来</em>。接口的作用仍然是定义类型，但是骨架实现接管了所有与接口实现相关的工作。</p>
-</blockquote>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/03/28/material-effective-java-2rd/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2019/03/27/git-merge-strategy/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -790,7 +700,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-01-07 15:37:15" itemprop="dateModified" datetime="2022-01-07T15:37:15+08:00">2022-01-07</time>
+                <time title="修改时间：2022-01-10 15:19:12" itemprop="dateModified" datetime="2022-01-10T15:19:12+08:00">2022-01-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -814,6 +724,11 @@
 
       
           <h1 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h1><p>在apk安装的时候，<code>mipmap-xxx/</code>下的所有分辨率的图片都会保留，而<code>drawablexxx/</code>下的图片只有保留适配设备分辨率的图片，其余图片会丢弃掉，减少了APP安装大小。</p>
+<blockquote>
+<p>It’s best practice to place your app icons in <code>mipmap-</code> folders (not the <code>drawable-</code>folders) because they are used at resolutions different from the device’s current density。——from <a target="_blank" rel="noopener" href="https://android-developers.googleblog.com/2014/10/getting-your-apps-ready-for-nexus-6-and.html">Android Developers Blog</a></p>
+<p>Using a mipmap as the source for your bitmap or drawable is a simple way to provide a quality image and various image scales, which can be particularly useful if you expect your image to be scaled during an animation. ——from <a target="_blank" rel="noopener" href="https://developer.android.com/about/versions/android-4.3">android-4.3</a></p>
+<p> if you are building different versions of your app for different densities, you should know about the “mipmap” resource directory.  This is exactly like “drawable” resources, except it does not participate in density stripping when creating the different apk targets. ——from <a target="_blank" rel="noopener" href="https://plus.google.com/+DianneHackborn/posts/QTA9McYan1L">Google+ Message</a></p>
+</blockquote>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2019/01/14/2019-01-14-android-mipmap-drawable-difference/#more" rel="contents">
@@ -871,7 +786,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 14:29:37" itemprop="dateModified" datetime="2021-06-29T14:29:37+08:00">2021-06-29</time>
+                <time title="修改时间：2022-01-07 15:39:36" itemprop="dateModified" datetime="2022-01-07T15:39:36+08:00">2022-01-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1001,6 +916,88 @@
   
   
 
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2018/12/20/android-programming-the-big-nerd-ranch-guide-2rd-edition/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/12/20/android-programming-the-big-nerd-ranch-guide-2rd-edition/" class="post-title-link" itemprop="url">Android编程权威指南第2版</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-12-20 06:57:46" itemprop="dateCreated datePublished" datetime="2018-12-20T06:57:46+08:00">2018-12-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-01-07 15:29:18" itemprop="dateModified" datetime="2022-01-07T15:29:18+08:00">2022-01-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>优秀的Android开发入门书籍，对于有几年开发经验的开发人员来说，也值得一读。</p>
+<p>比较基础，读得很快，说一下日常开发容易忽视的地方。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/12/20/android-programming-the-big-nerd-ranch-guide-2rd-edition/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
 
   
   <nav class="pagination">
@@ -1072,7 +1069,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">61</span>
+          <span class="site-state-item-count">68</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1085,7 +1082,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">55</span>
+        <span class="site-state-item-count">54</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1129,12 +1126,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">249k</span>
+    <span title="站点总字数">286k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">3:47</span>
+    <span title="站点阅读时长">4:20</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>

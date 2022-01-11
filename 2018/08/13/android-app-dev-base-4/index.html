@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zhangliangnbu.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Service使用服务两种方式  启动服务。外部通过调用startService()启动服务，后者回调方法 onStartCommand()。之后服务在后台无限期运行，直到调用stopSelf()、stopService()停止。 绑定服务。外部通过调用 bindService() 绑定服务，后者回调方法  onBind()。之后一直运行，直到取消绑定为止。  这两种方式可以同时使用，一般单独调用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android应用开发基础四：Service、Broadcast和ContentProvider">
+<meta property="og:url" content="https://zhangliangnbu.github.io/2018/08/13/android-app-dev-base-4/index.html">
+<meta property="og:site_name" content="永恒的码流">
+<meta property="og:description" content="Service使用服务两种方式  启动服务。外部通过调用startService()启动服务，后者回调方法 onStartCommand()。之后服务在后台无限期运行，直到调用stopSelf()、stopService()停止。 绑定服务。外部通过调用 bindService() 绑定服务，后者回调方法  onBind()。之后一直运行，直到取消绑定为止。  这两种方式可以同时使用，一般单独调用">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://zhangliangnbu.github.io/images/android-service-lifecycle.png">
+<meta property="article:published_time" content="2018-08-13T07:14:22.000Z">
+<meta property="article:modified_time" content="2022-01-10T09:52:48.000Z">
+<meta property="article:author" content="章亮">
+<meta property="article:tag" content="android">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zhangliangnbu.github.io/images/android-service-lifecycle.png">
+
+<link rel="canonical" href="https://zhangliangnbu.github.io/2018/08/13/android-app-dev-base-4/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Android应用开发基础四：Service、Broadcast和ContentProvider | 永恒的码流</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">永恒的码流</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">万物皆流，无物常驻</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2018/08/13/android-app-dev-base-4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Android应用开发基础四：Service、Broadcast和ContentProvider
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-08-13 15:14:22" itemprop="dateCreated datePublished" datetime="2018-08-13T15:14:22+08:00">2018-08-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-01-10 17:52:48" itemprop="dateModified" datetime="2022-01-10T17:52:48+08:00">2022-01-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Service"><a href="#Service" class="headerlink" title="Service"></a>Service</h1><p>使用服务两种方式</p>
+<ul>
+<li>启动服务。外部通过调用<code>startService()</code>启动服务，后者回调方法 <code>onStartCommand()</code>。之后服务在后台无限期运行，直到调用<code>stopSelf()</code>、<code>stopService()</code>停止。</li>
+<li>绑定服务。外部通过调用 <code>bindService()</code> 绑定服务，后者回调方法  <code>onBind()</code>。之后一直运行，直到取消绑定为止。</li>
+</ul>
+<p>这两种方式可以同时使用，一般单独调用。</p>
+<p><code>stopSelf()</code> vs <code>stopSelf(int startId)</code> ：前者立即停止服务；后者在最近的startId与参数相匹配时才停止，防止有任务未完成时而服务停止的情况。</p>
+<span id="more"></span>
+
+<h2 id="服务和线程的选择"><a href="#服务和线程的选择" class="headerlink" title="服务和线程的选择"></a>服务和线程的选择</h2><p>如果在用户与应用交互期间，需要在主线程外执行操作，则应创建新线程，并虑使用 AsyncTask 或 HandlerThread，而非传统的 Thread 类。</p>
+<p>服务默认会在应用的主线程中运行，因此，如果服务执行的是密集型或阻止性操作，则您仍应在服务内创建新线程。</p>
+<h2 id="Service-和-IntentService"><a href="#Service-和-IntentService" class="headerlink" title="Service 和 IntentService"></a>Service 和 IntentService</h2><ul>
+<li>Service。服务的基类。由于服务默认使用应用的主线程，继承此类时需要手动创建新线程。</li>
+<li>IntentService。Service 的子类，内部实现了工作线程，可逐一处理任务。不要求同时处理多个任务时可选择此类。实现 onHandleIntent()，该方法会接收每个启动请求的 Intent，以便执行后台工作。</li>
+</ul>
+<h2 id="前台服务"><a href="#前台服务" class="headerlink" title="前台服务"></a>前台服务</h2><p>前台服务是用户主动意识到的一种服务，因此在内存不足时，系统也不会考虑将其终止。前台服务必须为状态栏提供通知，将其放在运行中的标题下方。</p>
+<p>调用<code>startForeground(ONGOING_NOTIFICATION_ID, Notification);</code> 让服务在前台运行。</p>
+<blockquote>
+<p>💡 注意：Android 9（API 级别 28）或更高版本并使用前台服务，则其必须请求 FOREGROUND_SERVICE 权限。这是一种普通权限，因此，系统会自动为请求权限的应用授予此权限。</p>
+</blockquote>
+<h2 id="生命周期"><a href="#生命周期" class="headerlink" title="生命周期"></a>生命周期</h2><p><img src="/images/android-service-lifecycle.png" alt="android-service-lifecycle"></p>
+<h2 id="通信"><a href="#通信" class="headerlink" title="通信"></a>通信</h2><p><strong>本地通信（非跨进程通信）</strong></p>
+<p>组件通过实现 Binder 类来创建接口，直接持有Service的引用，进而直接调用Service方法。</p>
+<p><strong>跨进程通信</strong></p>
+<p>方法一，使用Messenger，会将所有服务调用加入到队列，一次只能处理一个调用。Service中定义Messenger，组件通过Binder持有Messenger，发送消息到Service中处理。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Service 核心代码</span></span><br><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">IncomingHandler</span> <span class="keyword">extends</span> <span class="title">Handler</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Context applicationContext;</span><br><span class="line">    IncomingHandler(Context context) &#123;</span><br><span class="line">        applicationContext = context.getApplicationContext();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(Message msg)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">switch</span> (msg.what) &#123;</span><br><span class="line">            <span class="keyword">case</span> MSG_SAY_HELLO:</span><br><span class="line">                Toast.makeText(applicationContext, <span class="string">&quot;hello!&quot;</span>, Toast.LENGTH_SHORT).show();</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">default</span>:</span><br><span class="line">                <span class="keyword">super</span>.handleMessage(msg);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> IBinder <span class="title">onBind</span><span class="params">(Intent intent)</span> </span>&#123;</span><br><span class="line">    mMessenger = <span class="keyword">new</span> Messenger(<span class="keyword">new</span> IncomingHandler(<span class="keyword">this</span>));</span><br><span class="line">    <span class="keyword">return</span> mMessenger.getBinder();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Activity 核心代码</span></span><br><span class="line"><span class="keyword">private</span> ServiceConnection mConnection = <span class="keyword">new</span> ServiceConnection() &#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onServiceConnected</span><span class="params">(ComponentName className, IBinder service)</span> </span>&#123;</span><br><span class="line">        mService = <span class="keyword">new</span> Messenger(service);</span><br><span class="line">        bound = <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onServiceDisconnected</span><span class="params">(ComponentName className)</span> </span>&#123;</span><br><span class="line">        mService = <span class="keyword">null</span>;</span><br><span class="line">        bound = <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onStart</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onStart();</span><br><span class="line">    bindService(<span class="keyword">new</span> Intent(<span class="keyword">this</span>, MessengerService.class), mConnection,</span><br><span class="line">        Context.BIND_AUTO_CREATE);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onStop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onStop();</span><br><span class="line">    <span class="comment">// Unbind from the service</span></span><br><span class="line">    <span class="keyword">if</span> (bound) &#123;</span><br><span class="line">        unbindService(mConnection);</span><br><span class="line">        bound = <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sayHello</span><span class="params">(View v)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!bound) <span class="keyword">return</span>;</span><br><span class="line">    Message msg = Message.obtain(<span class="keyword">null</span>, MessengerService.MSG_SAY_HELLO, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        mService.send(msg);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (RemoteException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>方法二：使用aidl，利用多线程可同时处理多个调用。</p>
+<p>定义.aidl文件，Android SDK 工具会生成基于该 .aidl 文件的 IBinder 接口，并将其保存到项目的 gen/ 目录中。服务必须视情况实现 IBinder 接口。然后，客户端应用便可绑定到该服务，并调用 IBinder 中的方法来执行 IPC。</p>
+<p>如要使用 AIDL 创建绑定服务，请执行以下步骤：</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/components/aidl?hl=zh-cn#Create">创建 .aidl 文件</a>。此文件定义带有方法签名的编程接口。</li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/components/aidl?hl=zh-cn#ImplementTheInterface">实现接口</a>。Android SDK 工具会基于您的 <code>.aidl</code> 文件，使用 Java 编程语言生成接口。此接口拥有一个名为 <code>Stub</code> 的内部抽象类，用于扩展 <code>Binder</code> 类并实现 AIDL 接口中的方法。您必须扩展 <code>Stub</code> 类并实现这些方法。</li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/components/aidl?hl=zh-cn#ExposeTheInterface">向客户端公开接口</a>。实现 <code>Service</code> 并重写 <code>onBind()</code>，从而返回 <code>Stub</code> 类的实现。</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// IBookManager 为aidl借口</span></span><br><span class="line"><span class="comment">// Service 核心代码</span></span><br><span class="line"><span class="keyword">private</span> Binder binder = <span class="keyword">new</span> IBookManager.Stub() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;Book&gt; <span class="title">getBookList</span><span class="params">()</span> <span class="keyword">throws</span> RemoteException </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> bookList;</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> IBinder <span class="title">onBind</span><span class="params">(Intent intent)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> binder;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Activity 核心代码</span></span><br><span class="line">IBookManager iBookManager;</span><br><span class="line"><span class="keyword">private</span> ServiceConnection connection = <span class="keyword">new</span> ServiceConnection() &#123;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onServiceConnected</span><span class="params">(ComponentName name, IBinder service)</span> </span>&#123;</span><br><span class="line">		iBookManager = IBookManager.Stub.asInterface(service);</span><br><span class="line">		List&lt;Book&gt; bookList = iBookManager.getBookList();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h1 id="BroadcastReceiver"><a href="#BroadcastReceiver" class="headerlink" title="BroadcastReceiver"></a>BroadcastReceiver</h1><p>广播可用于应用内和应用间IPC通信。使用流程：注册广播接收者，发送广播。</p>
+<p>注册广播接收者的两种方式：</p>
+<ul>
+<li>静态：在Manifest清单中声明。Android 8及以上有限制，只允许少数的系统级Action。</li>
+<li>动态：在 Application 或 Activity 等组件中声明。</li>
+</ul>
+<p>发送广播的三种方式：</p>
+<ul>
+<li><code>sendOrderedBroadcast(Intent, String)</code> 顺序发送，可中止。</li>
+<li><code>sendBroadcast(Intent)</code> 随机通知发送。</li>
+<li><code>LocalBroadcastManager.sendBroadcast()</code> 仅限本地应用发送。</li>
+</ul>
+<h2 id="广播接收的限制"><a href="#广播接收的限制" class="headerlink" title="广播接收的限制"></a>广播接收的限制</h2><p>三种方式限制其他应用接收你的广播：</p>
+<ul>
+<li>您可以在发送广播时指定权限。</li>
+<li>在 Android 4.0 及更高版本中，您可以在发送广播时使用 <code>setPackage(String)</code> 指定<a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/topics/manifest/manifest-element?hl=zh-cn#package">软件包</a>。系统会将广播限定到与该软件包匹配的一组应用。</li>
+<li>您可以使用 <code>LocalBroadcastManager</code> 发送本地广播。</li>
+</ul>
+<p>三种方式限制你的应用可以接收的广播：</p>
+<ul>
+<li>您可以在注册广播接收器时指定权限。</li>
+<li>对于清单声明的接收器，您可以在清单中将 <code>android:exported</code>属性设置为“false”。这样一来，接收器就不会接收来自应用外部的广播。</li>
+<li>您可以使用 <code>LocalBroadcastManager</code> 限制您的应用只接收本地广播。</li>
+</ul>
+<h1 id="ContentProvider"><a href="#ContentProvider" class="headerlink" title="ContentProvider"></a>ContentProvider</h1><p>使其他应用安全地访问和修改您的应用数据。</p>
+<p>ContentProvider 实例详解。<strong>TODO</strong></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/android/" rel="tag"># android</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/08/12/android-app-dev-base-3/" rel="prev" title="Android应用开发基础三：Fragment">
+      <i class="fa fa-chevron-left"></i> Android应用开发基础三：Fragment
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/08/14/android-app-dev-base-5/" rel="next" title="Android应用开发基础五：事件和绘制">
+      Android应用开发基础五：事件和绘制 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Service"><span class="nav-number">1.</span> <span class="nav-text">Service</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E5%92%8C%E7%BA%BF%E7%A8%8B%E7%9A%84%E9%80%89%E6%8B%A9"><span class="nav-number">1.1.</span> <span class="nav-text">服务和线程的选择</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Service-%E5%92%8C-IntentService"><span class="nav-number">1.2.</span> <span class="nav-text">Service 和 IntentService</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E5%8F%B0%E6%9C%8D%E5%8A%A1"><span class="nav-number">1.3.</span> <span class="nav-text">前台服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="nav-number">1.4.</span> <span class="nav-text">生命周期</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%9A%E4%BF%A1"><span class="nav-number">1.5.</span> <span class="nav-text">通信</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#BroadcastReceiver"><span class="nav-number">2.</span> <span class="nav-text">BroadcastReceiver</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%BF%E6%92%AD%E6%8E%A5%E6%94%B6%E7%9A%84%E9%99%90%E5%88%B6"><span class="nav-number">2.1.</span> <span class="nav-text">广播接收的限制</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ContentProvider"><span class="nav-number">3.</span> <span class="nav-text">ContentProvider</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="章亮"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">章亮</p>
+  <div class="site-description" itemprop="description">Developer For Android</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">54</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zhangliangnbu" title="GitHub → https://github.com/zhangliangnbu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhangliangnbu@qq.com" title="E-Mail → mailto:zhangliangnbu@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">章亮</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">286k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">4:20</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

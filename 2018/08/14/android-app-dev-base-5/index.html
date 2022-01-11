@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zhangliangnbu.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="本章介绍触摸事件分发机制和View绘制流程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android应用开发基础五：事件和绘制">
+<meta property="og:url" content="https://zhangliangnbu.github.io/2018/08/14/android-app-dev-base-5/index.html">
+<meta property="og:site_name" content="永恒的码流">
+<meta property="og:description" content="本章介绍触摸事件分发机制和View绘制流程">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://zhangliangnbu.github.io/images/android-view-group-touch.png">
+<meta property="og:image" content="https://zhangliangnbu.github.io/images/android-view-touch.png">
+<meta property="article:published_time" content="2018-08-14T07:14:22.000Z">
+<meta property="article:modified_time" content="2022-01-10T09:52:48.000Z">
+<meta property="article:author" content="章亮">
+<meta property="article:tag" content="android">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zhangliangnbu.github.io/images/android-view-group-touch.png">
+
+<link rel="canonical" href="https://zhangliangnbu.github.io/2018/08/14/android-app-dev-base-5/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Android应用开发基础五：事件和绘制 | 永恒的码流</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">永恒的码流</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">万物皆流，无物常驻</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2018/08/14/android-app-dev-base-5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Android应用开发基础五：事件和绘制
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-08-14 15:14:22" itemprop="dateCreated datePublished" datetime="2018-08-14T15:14:22+08:00">2018-08-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-01-10 17:52:48" itemprop="dateModified" datetime="2022-01-10T17:52:48+08:00">2022-01-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>本章介绍触摸事件分发机制和View绘制流程</p>
+<span id="more"></span>
+
+<h1 id="事件分发机制"><a href="#事件分发机制" class="headerlink" title="事件分发机制"></a>事件分发机制</h1><p>点击事件中相关类的传递顺序为：Activity -&gt; Window -&gt; View。</p>
+<p>对于ViewGroup，发生点击事件后的流程为：</p>
+<ol>
+<li><code>ViewGroup.dispatchTouchEvent()</code> 。父布局分发事件</li>
+<li>事件拦截。若拦截则进入View处理事件的流程，不拦截则分发事件给子视图。事件拦截判断由<code>ViewGroup.onInterceptTouchEvent()</code>和<code>FLAG_DISALLOW_INTERCEPT</code>共同决定，其中<code>FLAG_DISALLOW_INTERCEPT</code>优先级高。如果<code>FLAG_DISALLOW_INTERCEPT</code>为不拦截，则最终结果为不拦截，否则才会根据<code>ViewGroup.onInterceptTouchEvent()</code>的结果判断。<code>FLAG_DISALLOW_INTERCEPT</code>可以通过子视图调用父视图的<code>ViewParent.requestDisallowInterceptTouchEvent()</code>方法进行设置。</li>
+<li>不拦截且ViewGroup有子视图处理事件。子视图调用<code>View.dispatchTouchEvent()</code>继续处理事件分发流程，直到事件被拦截或视图没有子视图处理事件为止。如果<code>View.dispatchTouchEvent()</code>返回False，表示子视图不消费事件，则事件会返回给父视图处理，如果父视图不处理，则事件会继续往根视图方向传递。</li>
+<li>拦截或ViewGroup没有子视图处理事件。调用<code>super.dispatchTouchEvent()</code>，之后先调用<code>OnTouchListener.onTouch()</code>，如果没有设置OnTouchListener或返回为False，则采取调用<code>View.onTouchEvent()</code>方法。在<code>View.onTouchEvent()</code>方法内，Touch事件会被解析成Click之类的事件。</li>
+</ol>
+<p>一旦一个元素拦截了某事件，那么一个事件序列里面后续的Move、Down事件都会交给它处理。并且它的<code>onInterceptTouchEvent()</code>不会再调用。</p>
+<p><code>View.onTouchEvent()</code>默认都会消耗事件，除非它的clickable和longClickable都是false(不可点击)，但是enable属性不会影响。</p>
+<p><strong>ViewGroup事件分发流程：</strong></p>
+<img src="\images\android-view-group-touch.png" alt="android-view-group-touch" style="zoom: 80%;" />
+
+<p><strong>View事件流程：</strong></p>
+<p><img src="/images/android-view-touch.png" alt="示意图"></p>
+<h1 id="View-绘制机制"><a href="#View-绘制机制" class="headerlink" title="View 绘制机制"></a>View 绘制机制</h1><p>当View需要绘制的时候，首先计算脏区，然后遍历到顶层<code>ViewParent</code>即<code>ViewRootImpl</code>，调用流程的入口方法<code>ViewRootImpl.performTraversals()</code>，之后根据条件执行 measure、layout 和 draw三大操作。每个操作都是顺着视图树自父视图到子视图逐层进行的。</p>
+<h2 id="Measure"><a href="#Measure" class="headerlink" title="Measure"></a>Measure</h2><p>该流程的结果是计算出视图树中每个视图的宽高。每一个 ViewGroup 负责测绘它所有的子视图，而最底层的 View 会负责测绘自身。</p>
+<p><strong>一般流程：</strong>measure 过程由<code>measure(int, int)</code>方法发起，从上到下有序的测量 View，在 measure 过程的最后，每个视图存储了自己的尺寸大小和测量规格MeasureSpec，子视图会根据父视图的MeasureSpec测量自身宽高。</p>
+<p><strong>二次测量：</strong>measure 过程会为一个 View 及所有子节点的 mMeasuredWidth 和 mMeasuredHeight 变量赋值，该值可以通过 <code>getMeasuredWidth()</code>和<code>getMeasuredHeight()</code>方法获得。而且这两个值必须在父视图约束范围之内，这样才可以保证所有的父视图都接收所有子视图的测量。如果子视图对于 Measure 得到的大小不满意的时候，父视图会介入并设置测量规则进行第二次 measure。比如，父视图可以先根据未给定的 dimension 去测量每一个子视图，如果最终子视图的未约束尺寸太大或者太小的时候，父视图就会使用一个确切的大小再次对子视图进行 measure。</p>
+<p><strong>测量入参：</strong>ViewGroup.LayoutParams，视图自身的布局参数，以及MeasureSpec，父视图对子视图的测量限制。</p>
+<p>MeasureSpec有三种模式：</p>
+<ol>
+<li>UNSPECIFIED。父视图不对子视图有任何约束，它可以达到所期望的任意尺寸。比如 ListView、ScrollView，一般自定义 View 中用不到</li>
+<li>EXACTLY。父视图为子视图指定一个确切的尺寸，而且无论子视图期望多大，它都必须在该指定大小的边界内，对应的属性为match_parent 或具体值，比如 100dp，父控件可以通过<code>MeasureSpec.getSize(measureSpec)</code>直接得到子控件的尺寸。</li>
+<li>AT_MOST。父视图为子视图指定一个最大尺寸。子视图必须确保它自己所有子视图可以适应在该尺寸范围内，对应的属性为 wrap_content。这种模式下，父控件无法确定子 View 的尺寸，只能由子控件自己根据需求去计算自己的尺寸，这种模式就是我们自定义视图需要实现测量逻辑的情况。</li>
+</ol>
+<p><strong>核心方法：</strong></p>
+<ul>
+<li><code>View.measure(int widthMeasureSpec, int heightMeasureSpec)</code> 。不可被复写，但 measure 调用链最终会回调 View/ViewGroup 对象的 <code>onMeasure()</code>方法，因此自定义视图时，只需要复写 <code>onMeasure()</code> 方法即可。</li>
+<li><code>View.onMeasure(int widthMeasureSpec, int heightMeasureSpec) </code>。该方法就是我们自定义视图中实现测量逻辑的方法，该方法的参数是父视图对子视图的 width 和 height 的测量要求。在我们自身的自定义视图中，要做的就是根据该 widthMeasureSpec 和 heightMeasureSpec 计算视图的 width 和 height，不同的模式处理方式不同。</li>
+<li><code>View.setMeasuredDimension()</code>。 测量阶段终极方法，在 <code>onMeasure(int widthMeasureSpec, int heightMeasureSpec)</code> 方法中调用，将计算得到的尺寸，传递给该方法，测量阶段即结束。该方法也是必须要调用的方法，否则会报异常。在我们在自定义视图的时候，不需要关心系统复杂的 Measure 过程的，只需调用<code>setMeasuredDimension()</code>设置根据 MeasureSpec 计算得到的尺寸即可。</li>
+</ul>
+<h2 id="Layout"><a href="#Layout" class="headerlink" title="Layout"></a>Layout</h2><p> layout 过程由<code>layout(int, int, int, int)</code>方法发起，也是自上而下进行遍历。在该过程中，每个父视图会根据 measure 过程得到的尺寸来摆放自己的子视图。</p>
+<p>首先要明确的是，子视图的具体位置都是相对于父视图而言的。View 的 onLayout 方法为空实现，而 ViewGroup 的 onLayout 为 abstract 的，因此，如果自定义的 View 要继承 ViewGroup 时，必须实现 onLayout 函数。</p>
+<p>在 layout 过程中，子视图会调用getMeasuredWidth()和getMeasuredHeight()方法获取到 measure 过程得到的 mMeasuredWidth 和 mMeasuredHeight，作为自己的 width 和 height。然后调用每一个子视图的layout(l, t, r, b)函数，来确定每个子视图在父视图中的位置。</p>
+<p><strong>LinearLayout 的 onLayout 源码分析</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onLayout</span><span class="params">(<span class="keyword">boolean</span> changed, <span class="keyword">int</span> l, <span class="keyword">int</span> t, <span class="keyword">int</span> r, <span class="keyword">int</span> b)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mOrientation == VERTICAL) &#123;</span><br><span class="line">        layoutVertical(l, t, r, b);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        layoutHorizontal(l, t, r, b);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  * 遍历所有的子 View，为其设置相对父视图的坐标</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">layoutVertical</span><span class="params">(<span class="keyword">int</span> left, <span class="keyword">int</span> top, <span class="keyword">int</span> right, <span class="keyword">int</span> bottom)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; count; i++) &#123;</span><br><span class="line">        <span class="keyword">final</span> View child = getVirtualChildAt(i);</span><br><span class="line">        <span class="keyword">if</span> (child == <span class="keyword">null</span>) &#123;</span><br><span class="line">            childTop += measureNullChild(i);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (child.getVisibility() != GONE) </span><br><span class="line">            <span class="keyword">final</span> <span class="keyword">int</span> childWidth = child.getMeasuredWidth();<span class="comment">//measure 过程确定的 Width</span></span><br><span class="line">            <span class="keyword">final</span> <span class="keyword">int</span> childHeight = child.getMeasuredHeight();<span class="comment">//measure 过程确定的 height</span></span><br><span class="line">            setChildFrame(child, childLeft, childTop + getLocationOffset(child),childWidth, childHeight);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">setChildFrame</span><span class="params">(View child, <span class="keyword">int</span> left, <span class="keyword">int</span> top, <span class="keyword">int</span> width, <span class="keyword">int</span> height)</span> </span>&#123;        </span><br><span class="line">    child.layout(left, top, left + width, top + height);</span><br><span class="line">&#125;   </span><br><span class="line"></span><br><span class="line"><span class="comment">// View.java</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">layout</span><span class="params">(<span class="keyword">int</span> l, <span class="keyword">int</span> t, <span class="keyword">int</span> r, <span class="keyword">int</span> b)</span> </span>&#123;</span><br><span class="line">    setFrame(l, t, r, b)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Draw"><a href="#Draw" class="headerlink" title="Draw"></a>Draw</h2><p>Draw流程也是自顶（根视图）向下（子视图）进行Draw操作的。执行的入口为<code>View.draw()</code>，该方法实现步骤为先调用<code>View.onDraw()</code>绘制自身，然后在调用<code>View.dispatchDraw()</code>绘制子视图。</p>
+<p><code>View.onDraw（Canvas）</code>默认是空实现，自定义绘制过程需要复写的方法，绘制自身的内容。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Manually render this view (and all of its children) to the given Canvas.</span></span><br><span class="line"><span class="comment"> * The view must have already done a full layout before this function is</span></span><br><span class="line"><span class="comment"> * called.  When implementing a view, implement</span></span><br><span class="line"><span class="comment"> * &#123;<span class="doctag">@link</span> #onDraw(android.graphics.Canvas)&#125; instead of overriding this method.</span></span><br><span class="line"><span class="comment"> * If you do need to override this method, call the superclass version.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> canvas The Canvas to which the View is rendered.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@CallSuper</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">draw</span><span class="params">(Canvas canvas)</span> </span>&#123;</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * Draw traversal performs several drawing steps which must be executed</span></span><br><span class="line"><span class="comment">     * in the appropriate order:</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     *      1. Draw the background</span></span><br><span class="line"><span class="comment">     *      2. If necessary, save the canvas&#x27; layers to prepare for fading</span></span><br><span class="line"><span class="comment">     *      3. Draw view&#x27;s content</span></span><br><span class="line"><span class="comment">     *      4. Draw children</span></span><br><span class="line"><span class="comment">     *      5. If necessary, draw the fading edges and restore layers</span></span><br><span class="line"><span class="comment">     *      6. Draw decorations (scrollbars for instance)</span></span><br><span class="line"><span class="comment">     *      7. If necessary, draw the default focus highlight</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">&#125;</span><br><span class="line">  </span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Draw流程其实比较复杂，涉及到软件绘制和硬件加速，Surface、SurfaceFlinger等，详情请见我的相关博客。此处略</p>
+</blockquote>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://juejin.im/post/5cc030686fb9a0323c526adf">https://juejin.im/post/5cc030686fb9a0323c526adf</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/android/" rel="tag"># android</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/08/13/android-app-dev-base-4/" rel="prev" title="Android应用开发基础四：Service、Broadcast和ContentProvider">
+      <i class="fa fa-chevron-left"></i> Android应用开发基础四：Service、Broadcast和ContentProvider
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/08/14/Android%E4%B8%AD%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%AE%9E%E7%8E%B0/" rel="next" title="Android中的多线程">
+      Android中的多线程 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6%E5%88%86%E5%8F%91%E6%9C%BA%E5%88%B6"><span class="nav-number">1.</span> <span class="nav-text">事件分发机制</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#View-%E7%BB%98%E5%88%B6%E6%9C%BA%E5%88%B6"><span class="nav-number">2.</span> <span class="nav-text">View 绘制机制</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Measure"><span class="nav-number">2.1.</span> <span class="nav-text">Measure</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Layout"><span class="nav-number">2.2.</span> <span class="nav-text">Layout</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Draw"><span class="nav-number">2.3.</span> <span class="nav-text">Draw</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">3.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="章亮"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">章亮</p>
+  <div class="site-description" itemprop="description">Developer For Android</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">54</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zhangliangnbu" title="GitHub → https://github.com/zhangliangnbu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhangliangnbu@qq.com" title="E-Mail → mailto:zhangliangnbu@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">章亮</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">286k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">4:20</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

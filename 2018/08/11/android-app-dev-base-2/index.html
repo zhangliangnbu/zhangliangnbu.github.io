@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zhangliangnbu.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Activity 生命周期完整生命周期流程：  一般的流程：onCreate() → onStart() → onResume() → onPause() → onStop() → onDestory() 非正常销毁：onCreate() → onStart() → onResume() → onPause() → onCreate() 非正常销毁：onCreate() → onStart() →">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android应用开发基础二：Activity">
+<meta property="og:url" content="https://zhangliangnbu.github.io/2018/08/11/android-app-dev-base-2/index.html">
+<meta property="og:site_name" content="永恒的码流">
+<meta property="og:description" content="Activity 生命周期完整生命周期流程：  一般的流程：onCreate() → onStart() → onResume() → onPause() → onStop() → onDestory() 非正常销毁：onCreate() → onStart() → onResume() → onPause() → onCreate() 非正常销毁：onCreate() → onStart() →">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://zhangliangnbu.github.io/images/android-activity-lifecycle.png">
+<meta property="article:published_time" content="2018-08-11T07:14:22.000Z">
+<meta property="article:modified_time" content="2022-01-10T09:52:48.000Z">
+<meta property="article:author" content="章亮">
+<meta property="article:tag" content="android">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zhangliangnbu.github.io/images/android-activity-lifecycle.png">
+
+<link rel="canonical" href="https://zhangliangnbu.github.io/2018/08/11/android-app-dev-base-2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Android应用开发基础二：Activity | 永恒的码流</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">永恒的码流</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">万物皆流，无物常驻</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2018/08/11/android-app-dev-base-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Android应用开发基础二：Activity
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-08-11 15:14:22" itemprop="dateCreated datePublished" datetime="2018-08-11T15:14:22+08:00">2018-08-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-01-10 17:52:48" itemprop="dateModified" datetime="2022-01-10T17:52:48+08:00">2022-01-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Activity-生命周期"><a href="#Activity-生命周期" class="headerlink" title="Activity 生命周期"></a>Activity 生命周期</h1><p>完整生命周期流程：</p>
+<ol>
+<li>一般的流程：onCreate() → onStart() → onResume() → onPause() → onStop() → onDestory()</li>
+<li>非正常销毁：onCreate() → onStart() → onResume() → onPause() → onCreate()</li>
+<li>非正常销毁：onCreate() → onStart() → onResume() → onPause() → onStop() →  onCreate()</li>
+<li>可见的返回：onCreate() → onStart() → onResume() → onPause() → onResume()</li>
+<li>不可见返回：onCreate() → onStart() → onResume() → onPause() → onStop() → onRestart() → onStart()</li>
+</ol>
+<span id="more"></span>
+
+<p><img src="/images/android-activity-lifecycle.png" alt="android-activity-lifecycle"></p>
+<p><strong>生命周期回调方法</strong></p>
+<ul>
+<li>onCreate()：执行基本启动逻辑。该逻辑在 Activity 的整个生命周期中只应发生一次，比如：声明界面、定义成员变量、配置界面、将数据绑定到列表，将 Activity 与 ViewModel 相关联、实例化某些类作用域变量等。</li>
+<li>onStart()：1. onStart() 调用后 Activity 对用户可见。2.初始化维护界面的代码。3. 回调会非常快速地完成。</li>
+<li>onResume()：可见并获得焦点；初始化在 onPause() 期间释放的组件。</li>
+<li>onPause()：1. 触发场景有常见的导航等打断事件、多窗口、半透明对话框等。2. 释放界面交互资源，如相机预览等。3. 回调会非常快速地完成，不能执行高负荷的任务。</li>
+<li>onStop()：1. 释放或调整在应用对用户不可见时的无用资源，例如，应用可以暂停动画效果，或从精确位置更新切换到粗略位置更新。2. 可以执行高负荷的任务，比如操作数据库等。3. 进入“已停止”状态后，对象将维护所有状态和成员信息，待恢复后，Activity 会重新调用这些信息。比如用户在 EditText 微件中输入文本，系统将保留文本内容，因此您无需保存和恢复文本。</li>
+<li>onDestory：释放先前的回调（例如 onStop()）尚未释放的所有资源。</li>
+</ul>
+<p>注意</p>
+<ul>
+<li>在onStart()中初始化的内容，需要在onStop里释放。</li>
+<li>在onResume()初始化的内容，需要在onPause()里释放。</li>
+<li>系统永远不会直接终止 Activity 以释放内存（直接kill），而是会终止 Activity 所在的进程。系统不仅会销毁 Activity，还会销毁在该进程中运行的所有其他内容。</li>
+</ul>
+<h1 id="Activity-状态的变更"><a href="#Activity-状态的变更" class="headerlink" title="Activity 状态的变更"></a>Activity 状态的变更</h1><p>涉及用户和系统触发的事件导致 Activity状态的变更</p>
+<h2 id="配置发生了更改"><a href="#配置发生了更改" class="headerlink" title="配置发生了更改"></a>配置发生了更改</h2><ul>
+<li>场景：横竖屏切换、语言或输入设备的改变</li>
+<li>配置发生更改时，Activity 会被销毁并重新创建。原始 Activity 实例将触发 onPause()、onStop() 和 onDestroy() 回调。系统将创建新的 Activity 实例，并触发 onCreate()、onStart() 和 onResume() 回调。</li>
+<li>可使用 onSaveInstanceState() 方法和/或持久性本地存储，可使 Activity 的界面状态在配置发生更改后保持不变。</li>
+</ul>
+<h2 id="Activity-或对话框显示在前台"><a href="#Activity-或对话框显示在前台" class="headerlink" title="Activity 或对话框显示在前台"></a>Activity 或对话框显示在前台</h2><p>当一个 Activity 启动另一个 Activity 时，它们都会经历生命周期转换。其原则为：首先自身失去焦点，然后把目标 Activity 尽快展示出来，最后在后台执行自身的 onStop()，以及 onDestroy()。</p>
+<p>Activity A 进入 B :</p>
+<ol>
+<li>Activity A 的 <code>onPause()</code> 方法执行。</li>
+<li>Activity B 的 <code>onCreate()</code>、<code>onStart()</code>和 <code>onResume()</code>方法依次执行（Activity B 现在具有用户焦点）。</li>
+<li>Activity A 不可见时，其 <code>onStop()</code>方法执行。</li>
+</ol>
+<p>从 Activity B 返回 A ：</p>
+<ol>
+<li>Activity B 的<code>onPause()</code> 方法执行。</li>
+<li>Activity A 的 <code>onRestart()</code>、<code>onStart() </code>和 <code>onResume()</code>方法依次执行。</li>
+<li>Activity B 的 <code>onStop()</code>方法执行。</li>
+</ol>
+<h2 id="用户点按“返回”按钮"><a href="#用户点按“返回”按钮" class="headerlink" title="用户点按“返回”按钮"></a>用户点按“返回”按钮</h2><p>如果 Activity 位于前台，并且用户点按了返回按钮，Activity 将依次经历 onPause()、onStop() 和 onDestroy() 回调。活动不仅会被销毁，还会从返回堆栈中移除。</p>
+<p>需要注意的是，在这种情况下，默认不会触发 onSaveInstanceState() 回调。此行为基于的假设是，用户点按返回按钮时不期望返回 Activity 的同一实例。不过，您可以通过替换 onBackPressed() 方法实现某种自定义行为，例如“confirm-quit”对话框。</p>
+<h2 id="系统终止应用进程"><a href="#系统终止应用进程" class="headerlink" title="系统终止应用进程"></a>系统终止应用进程</h2><p>如果某个应用处于后台并且系统需要为前台应用释放额外的内存，则系统可能会终止后台应用以释放更多内存。</p>
+<h1 id="状态保持和恢复"><a href="#状态保持和恢复" class="headerlink" title="状态保持和恢复"></a>状态保持和恢复</h1><p>用户预期和系统行为：根据用户执行的操作，他们会希望系统清除或保留 Activity 状态。在某些情况下，系统会自动执行用户预期的操作。但有时，系统会执行与用户预期相反的操作。</p>
+<p>状态保存：一般在onStop()之后，会触发 onSaveInstanceState() 回调，在此执行保存数据的操作。</p>
+<p>状态恢复：在onCreate()和onRestoreInstanceState()回调中会传递 Bundle，恢复数据。</p>
+<h2 id="用户发起的清除界面场景"><a href="#用户发起的清除界面场景" class="headerlink" title="用户发起的清除界面场景"></a>用户发起的清除界面场景</h2><p>用户可以通过以下方式完全关闭 Activity：</p>
+<ul>
+<li>从 Activity 向上导航</li>
+<li>按返回按钮。不会触发 onSaveInstanceState() 回调</li>
+<li>完成某种“完成”操作（由 Activity.finish() 提供支持）。不会触发 onSaveInstanceState() 回调</li>
+<li>从“概览”（“最近使用的应用”）屏幕中滑动关闭 Activity</li>
+<li>从“设置”中终止应用</li>
+</ul>
+<blockquote>
+<p>💡 Android 是否会保存数据状态，主要依据用户的预期。主动销毁的 Activity 一般不会保存状态，也不会触发 onSaveInstanceState() 回调。</p>
+</blockquote>
+<h2 id="系统发起的清除界面场景"><a href="#系统发起的清除界面场景" class="headerlink" title="系统发起的清除界面场景"></a>系统发起的清除界面场景</h2><p>用户希望下次能恢复界面状态，但系统可能会清除的场景</p>
+<ul>
+<li>配置更改。如横竖屏切换。</li>
+<li>用户暂时切换到其他应用，稍后再返回到当前应用。在这种情况下，您的应用会被置于后台，系统会尽最大努力将您的应用进程留在内存中。但是，当用户转而去与其他应用进行互动时，系统可能会销毁该应用进程。在这种情况下，Activity 实例连同其中存储的任何状态都会一起被销毁。</li>
+</ul>
+<p>这两种场景中，onSaveInstanceState()都会被调用，保存的数据在配置更改和进程终止后都会保留。</p>
+<p>这里特别说下 配置更改的情况：</p>
+<ul>
+<li>在配置更改时，系统自己会自动恢复界面控件的一些状态数据，比如EditText里的输入，但不会保存TextView等设置的数据，也不会保存 Activity 自定义的成员变量的数据。</li>
+<li>可在 Android.Manifest 中设置 Activity 的属性，如：<code>android:configChanges=&quot;orientation|screenSize&quot;</code>，使 Activity 在配置变化时不再销毁而重新创建实例，仅仅调用了<code>onConfigurationChanged</code>方法，可保持数据不变化。但官方并不建议这种自行处理配置变更的方法。</li>
+</ul>
+<blockquote>
+<p>💡 注意：自行处理配置变更可能会提高使用备用资源的难度，因为系统不会为您自动应用这些资源。只有在必须避免 Activity 因配置变更而重启的无奈情况下，您才可考虑使用此方法，并且不建议对大多数应用使用此方法。</p>
+</blockquote>
+<ul>
+<li><p>详细示例说明：状态改变及数据保存</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* </span></span><br><span class="line"><span class="comment">经过横竖屏切换后，回调如下</span></span><br><span class="line"><span class="comment">Application.onConfigurationChanged</span></span><br><span class="line"><span class="comment">Activity.onPause()</span></span><br><span class="line"><span class="comment">Activity.onStop()</span></span><br><span class="line"><span class="comment">Activity.onSaveInstanceState</span></span><br><span class="line"><span class="comment">Activity.onDestory()</span></span><br><span class="line"><span class="comment">Activity.onCrate()</span></span><br><span class="line"><span class="comment">Activity.onStart()</span></span><br><span class="line"><span class="comment">Activity.onRestoreInstanceState()</span></span><br><span class="line"><span class="comment">Activity.onResume()</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">EditText里输入数据，横竖屏切换后不改变，保存了状态</span></span><br><span class="line"><span class="comment">TextView btn_showTest 输入的4，横竖屏切换后重置，没有保存状态</span></span><br><span class="line"><span class="comment">成员变量testInt只能通过onSaveInstanceState保存。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">------</span></span><br><span class="line"><span class="comment">在AndroidManifest文件，给 Activity 添加 android:configChanges=&quot;orientation|screenSize&quot;</span></span><br><span class="line"><span class="comment">再次切换横竖屏，回调如下</span></span><br><span class="line"><span class="comment">Application.onConfigurationChanged</span></span><br><span class="line"><span class="comment">Activity.onConfigurationChanged</span></span><br><span class="line"><span class="comment">EditText、TextView、testInt状态都不变，都得到保存</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ActLearnActivity</span> : <span class="type">AppCompatActivity</span></span>() &#123;</span><br><span class="line">    <span class="keyword">companion</span> <span class="keyword">object</span> &#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">const</span> <span class="keyword">val</span> TAG = <span class="string">&quot;ActLearnSample&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">var</span> testInt = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onCreate</span><span class="params">(savedInstanceState: <span class="type">Bundle</span>?)</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState)</span><br><span class="line">        setContentView(R.layout.activity_act_learn)</span><br><span class="line">				<span class="comment">// testInt = 0</span></span><br><span class="line">        Logger.d(<span class="string">&quot;testInt = <span class="variable">$testInt</span>&quot;</span>)</span><br><span class="line">				<span class="comment">// 切换前为 null， 切换后为4</span></span><br><span class="line">        Logger.d(<span class="string">&quot;savedInstanceState testInt = &quot;</span> + savedInstanceState?.<span class="keyword">get</span>(<span class="string">&quot;testInt&quot;</span>)?.toString())</span><br><span class="line">				<span class="comment">// 点击4次后切换横竖屏</span></span><br><span class="line">        btn_changeTest.setOnClickListener &#123;</span><br><span class="line">            testInt = testInt.inc()</span><br><span class="line">            btn_showTest.text = testInt.toString()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onRestoreInstanceState</span><span class="params">(savedInstanceState: <span class="type">Bundle</span>)</span></span> &#123;</span><br><span class="line">				<span class="keyword">super</span>.onRestoreInstanceState(savedInstanceState)</span><br><span class="line">        Logger.d(<span class="string">&quot;testInt = &quot;</span> + savedInstanceState.<span class="keyword">get</span>(<span class="string">&quot;testInt&quot;</span>)?.toString())</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onSaveInstanceState</span><span class="params">(outState: <span class="type">Bundle</span>)</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.onSaveInstanceState(outState)</span><br><span class="line">        outState.putInt(<span class="string">&quot;testInt&quot;</span>, testInt)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onConfigurationChanged</span><span class="params">(newConfig: <span class="type">Configuration</span>)</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.onConfigurationChanged(newConfig)</span><br><span class="line">        Logger.d(<span class="string">&quot;orientation = <span class="subst">$&#123;newConfig.orientation&#125;</span>&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="保存并恢复数据的三种方法"><a href="#保存并恢复数据的三种方法" class="headerlink" title="保存并恢复数据的三种方法"></a>保存并恢复数据的三种方法</h2><p>您可以通过在各种类型的持久性机制之间划分工作，高效地保存和恢复界面状态。在大多数情况下，这些机制中的每一种都应存储 Activity 中使用的不同类型的数据，具体取决于数据复杂度、访问速度和生命周期的权衡：</p>
+<ul>
+<li>本地持久性存储：存储在您打开和关闭 Activity 时不希望丢失的所有数据。示例：歌曲对象的集合，其中可能包括音频文件和元数据。</li>
+<li><code>ViewModel</code>：在内存中存储显示关联界面控制器所需的所有数据。示例：最近搜索的歌曲对象和最近的搜索查询。</li>
+<li><code>onSaveInstanceState()]</code>：存储当系统停止后又重新创建界面控制器时轻松重新加载 Activity 状态所需的少量数据。这里指的是将复杂的对象保留在本地存储空间中，并将这些对象的唯一 ID 存储在 <code>onSaveInstanceState()</code>中，而不是存储复杂的对象。示例：存储最近的搜索查询。</li>
+</ul>
+<h1 id="任务和回退栈"><a href="#任务和回退栈" class="headerlink" title="任务和回退栈"></a>任务和回退栈</h1><p>任务（Task）和回退栈（Back Stack）：任务是用户在执行某项工作时与之互动的一系列 Activity 的集合。这些 Activity 按照打开的顺序排列在一个回退栈中。</p>
+<h2 id="管理任务"><a href="#管理任务" class="headerlink" title="管理任务"></a>管理任务</h2><p>一般情况，Activity 遵循”先进后出“的行为，可以通过设置&lt;activity&gt; 清单元素或Intent改变这种行为。</p>
+<blockquote>
+<p>💡 注意：大多数应用不应打破 Activity 和任务的默认行为。如果您确定需要让 Activity 改变默认行为，请谨慎操作，并且务必要测试该 Activity 在以下情况下的可用性：启动期间以及您通过返回按钮从其他 Activity 和任务返回该 Activity 时。务必要测试是否存在可能与用户预期的行为冲突的导航行为。</p>
+</blockquote>
+<p>相关 <code>&lt;activity&gt;</code>属性包括：</p>
+<ul>
+<li><code>taskAffinity</code>。亲和性，表示 Activity 在启动时倾向于添加到哪个回退栈中。默认情况下，同一应用中的所有 Activity 具有同一亲和性值。两种情况起作用：intent 包含 FLAG_ACTIVITY_NEW_TASK 标记时，以及Activity 的 allowTaskReparenting 属性设为 “true” 时。</li>
+<li><code>launchMode</code>。启动模式。</li>
+<li><code>allowTaskReparenting</code>。允许实例重新分配回退栈。</li>
+<li><code>clearTaskOnLaunch</code>。</li>
+<li><code>alwaysRetainTaskState</code>。</li>
+<li><code>finishOnTaskLaunch</code>。</li>
+</ul>
+<p>相关 intent 标记包括：</p>
+<ul>
+<li><code>FLAG_ACTIVITY_NEW_TASK</code>。</li>
+<li><code>FLAG_ACTIVITY_CLEAR_TOP</code>。</li>
+<li><code>FLAG_ACTIVITY_SINGLE_TOP</code>。</li>
+</ul>
+<h2 id="启动模式及设置"><a href="#启动模式及设置" class="headerlink" title="启动模式及设置"></a>启动模式及设置</h2><p>设置启动模式，指定Activity应该如何关联到任务中。可通过清单或Intent 设置启动模式。</p>
+<p>通过清单<code>launchMode</code> 属性可设置四种启动模式：</p>
+<ul>
+<li>“standard”（默认模式）。Activity 可以多次实例化，每个实例可以属于不同的任务，一个任务可以拥有多个实例。</li>
+<li>“singleTop”。基于”standard”，但回退栈顶部只能有一个实例。顶部没有实例时会创建实例，有实例时则调用 onNewIntent() 复用。</li>
+<li>“singleTask”。基于”singleTop”，但整个系统只有一个实例。没有实例时一般会创建新回退栈和实例，有实例时则调用 onNewIntent() 复用。</li>
+<li>“singleInstance”。基于”singleTask”，但实例所在的回退栈只有其一个 Activity实例而没有其他。没有实例时一般会创建新回退栈和实例，有实例时则调用 onNewIntent() 复用。</li>
+</ul>
+<blockquote>
+<p>💡 从一个回退栈 A 启动在另一个回退栈 B 里的Activity实例后，连续返回则先把 B 里的Activity清除完后在清除A里的。</p>
+</blockquote>
+<blockquote>
+<p>💡 onNewIntent()：当启动一个Activity，不是新建实例而是复用已有的实例时，已有实例会回调此方法。onNewIntent() 在 onStart() 后、onResume()前调用。</p>
+</blockquote>
+<p>使用 Intent 标记，指定待启动 Activity 的模式：</p>
+<ul>
+<li>FLAG_ACTIVITY_NEW_TASK。与 “singleTask” launchMode 相同。</li>
+<li>FLAG_ACTIVITY_SINGLE_TOP。与 “singleTop” launchMode 相同。</li>
+<li>FLAG_ACTIVITY_CLEAR_TOP。如果要启动的 Activity 已经在当前任务中运行，则不会启动该 Activity 的新实例，而是会销毁位于它之上的所有其他 Activity，并通过 onNewIntent() 将此 intent 传送给它的已恢复实例（现在位于堆栈顶部）。FLAG_ACTIVITY_CLEAR_TOP 最常与 FLAG_ACTIVITY_NEW_TASK 结合使用。</li>
+</ul>
+<p><strong>注意：清单和代码冲突时，以 Intent 标记为准</strong>。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li>官网-<a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/components/activities/activity-lifecycle?hl=zh-cn#java">了解 Activity 生命周期</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/components/activities/tasks-and-back-stack?hl=zh-cn">官网-了解任务和返回堆栈</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/topic/libraries/architecture/saving-states#ui-dismissal-system">保存界面状态</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.google.cn/guide/topics/resources/runtime-changes#HandlingTheChange">处理配置变更</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/android/" rel="tag"># android</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/08/10/android-app-dev-base/" rel="prev" title="Android应用开发基础一：应用和Application">
+      <i class="fa fa-chevron-left"></i> Android应用开发基础一：应用和Application
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/08/12/android-app-dev-base-3/" rel="next" title="Android应用开发基础三：Fragment">
+      Android应用开发基础三：Fragment <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Activity-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="nav-number">1.</span> <span class="nav-text">Activity 生命周期</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Activity-%E7%8A%B6%E6%80%81%E7%9A%84%E5%8F%98%E6%9B%B4"><span class="nav-number">2.</span> <span class="nav-text">Activity 状态的变更</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E5%8F%91%E7%94%9F%E4%BA%86%E6%9B%B4%E6%94%B9"><span class="nav-number">2.1.</span> <span class="nav-text">配置发生了更改</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Activity-%E6%88%96%E5%AF%B9%E8%AF%9D%E6%A1%86%E6%98%BE%E7%A4%BA%E5%9C%A8%E5%89%8D%E5%8F%B0"><span class="nav-number">2.2.</span> <span class="nav-text">Activity 或对话框显示在前台</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E7%82%B9%E6%8C%89%E2%80%9C%E8%BF%94%E5%9B%9E%E2%80%9D%E6%8C%89%E9%92%AE"><span class="nav-number">2.3.</span> <span class="nav-text">用户点按“返回”按钮</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E7%BB%88%E6%AD%A2%E5%BA%94%E7%94%A8%E8%BF%9B%E7%A8%8B"><span class="nav-number">2.4.</span> <span class="nav-text">系统终止应用进程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%8A%B6%E6%80%81%E4%BF%9D%E6%8C%81%E5%92%8C%E6%81%A2%E5%A4%8D"><span class="nav-number">3.</span> <span class="nav-text">状态保持和恢复</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E5%8F%91%E8%B5%B7%E7%9A%84%E6%B8%85%E9%99%A4%E7%95%8C%E9%9D%A2%E5%9C%BA%E6%99%AF"><span class="nav-number">3.1.</span> <span class="nav-text">用户发起的清除界面场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E5%8F%91%E8%B5%B7%E7%9A%84%E6%B8%85%E9%99%A4%E7%95%8C%E9%9D%A2%E5%9C%BA%E6%99%AF"><span class="nav-number">3.2.</span> <span class="nav-text">系统发起的清除界面场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%9D%E5%AD%98%E5%B9%B6%E6%81%A2%E5%A4%8D%E6%95%B0%E6%8D%AE%E7%9A%84%E4%B8%89%E7%A7%8D%E6%96%B9%E6%B3%95"><span class="nav-number">3.3.</span> <span class="nav-text">保存并恢复数据的三种方法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E5%92%8C%E5%9B%9E%E9%80%80%E6%A0%88"><span class="nav-number">4.</span> <span class="nav-text">任务和回退栈</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%A1%E7%90%86%E4%BB%BB%E5%8A%A1"><span class="nav-number">4.1.</span> <span class="nav-text">管理任务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E6%A8%A1%E5%BC%8F%E5%8F%8A%E8%AE%BE%E7%BD%AE"><span class="nav-number">4.2.</span> <span class="nav-text">启动模式及设置</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="章亮"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">章亮</p>
+  <div class="site-description" itemprop="description">Developer For Android</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">54</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zhangliangnbu" title="GitHub → https://github.com/zhangliangnbu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhangliangnbu@qq.com" title="E-Mail → mailto:zhangliangnbu@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">章亮</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">286k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">4:20</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
