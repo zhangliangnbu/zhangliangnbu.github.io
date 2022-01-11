@@ -182,7 +182,3 @@ public void onStart(@Nullable Intent intent, int startId) {
     mServiceHandler.sendMessage(msg);
 }
 ```
-
-# 相关问题
-
-一，主线程 Looper.loop（） 为什么不会造成程序卡死？
