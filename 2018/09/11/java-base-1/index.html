@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zhangliangnbu.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="本文介绍Java里并发相关的内容，包括多线程、线程池、锁等。 当多个线程同时访问对象并要求操作相同资源时，分割了原子操作就有可能出现数据的不一致或数据不完整的情况，为避免这种情况的发生，需要采取同步机制，以确保在某一时刻，方法内只允许有一个线程。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java基础一：并发概览">
+<meta property="og:url" content="https://zhangliangnbu.github.io/2018/09/11/java-base-1/index.html">
+<meta property="og:site_name" content="永恒的码流">
+<meta property="og:description" content="本文介绍Java里并发相关的内容，包括多线程、线程池、锁等。 当多个线程同时访问对象并要求操作相同资源时，分割了原子操作就有可能出现数据的不一致或数据不完整的情况，为避免这种情况的发生，需要采取同步机制，以确保在某一时刻，方法内只允许有一个线程。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-09-11T07:14:22.000Z">
+<meta property="article:modified_time" content="2022-01-10T09:52:48.000Z">
+<meta property="article:author" content="章亮">
+<meta property="article:tag" content="java">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://zhangliangnbu.github.io/2018/09/11/java-base-1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Java基础一：并发概览 | 永恒的码流</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">永恒的码流</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">万物皆流，无物常驻</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2018/09/11/java-base-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java基础一：并发概览
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-09-11 15:14:22" itemprop="dateCreated datePublished" datetime="2018-09-11T15:14:22+08:00">2018-09-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-01-10 17:52:48" itemprop="dateModified" datetime="2022-01-10T17:52:48+08:00">2022-01-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>本文介绍Java里并发相关的内容，包括多线程、线程池、锁等。</p>
+<p>当多个线程同时访问对象并要求操作相同资源时，分割了原子操作就有可能出现数据的不一致或数据不完整的情况，为避免这种情况的发生，需要采取同步机制，以确保在某一时刻，方法内只允许有一个线程。</p>
+<span id="more"></span>
+
+<h1 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h1><p>并发编程涉及的三个特性：原子性、可见性、有序性</p>
+<ul>
+<li>原子性：要么全都做，要么全都不做。</li>
+<li>可见性：多个线程访问同一个变量时，这个变量被修改后，能被其他的线程看到。</li>
+<li>有序性。</li>
+</ul>
+<p>并发与并行：</p>
+<ul>
+<li>并发：同一时间段，多个任务都在执行 (单位时间内不一定同时执行)；</li>
+<li>并行： 单位时间内，多个任务同时执行。</li>
+</ul>
+<p>线程的生命周期：初始 、运行(调用<code>start()</code>方法后)、阻塞(被锁阻塞)、等待（调用<code>wait()</code>方法）、超时等待（可在指定时间自己返回）、终止。</p>
+<p>线程死锁：多个线程同时被阻塞，它们中的一个或者全部都在等待某个资源被释放。由于线程被无限期地阻塞，因此程序不可能正常终止。</p>
+<p>死锁必须具备以下四个条件：</p>
+<ol>
+<li>互斥条件：该资源任意一个时刻只由一个线程占用。</li>
+<li>请求与保持条件：一个进程因请求资源而阻塞时，对已获得的资源保持不放。</li>
+<li>不剥夺条件:线程已获得的资源在末使用完之前不能被其他线程强行剥夺，只有自己使用完毕后才释放资源。</li>
+<li>循环等待条件:若干进程之间形成一种头尾相接的循环等待资源关系。</li>
+</ol>
+<h1 id="synchronized关键字"><a href="#synchronized关键字" class="headerlink" title="synchronized关键字"></a><code>synchronized</code>关键字</h1><p><code>synchronized</code> 是 Java 中的关键字，是利用锁的机制来实现同步的。如果多个线程访问的是同一个对象，哪个线程先执行带<code>synchronized</code>关键字的方法，则哪个线程就持有该方法，那么其他线程只能呈等待状态。</p>
+<p>内部机制：<code>synchronized</code> 同步语句块的实现使用的是 <code>monitorenter</code> 和 <code>monitorexit</code>指令，其中 <code>monitorenter</code> 指令指向同步代码块的开始位置，<code>monitorexit</code> 指令则指明同步代码块的结束位置。 当执行 <code>monitorenter</code> 指令时，线程试图获取锁也就是获取 <code>monitor</code>(monitor对象存在于每个Java对象的对象头中，<code>synchronized</code> 锁便是通过这种方式获取锁的，也是为什么Java中任意对象可以作为锁的原因) 的持有权。当计数器为0则可以成功获取，获取后将锁计数器设为1也就是加1。相应的在执行 <code>monitorexit</code> 指令后，将锁计数器设为0，表明锁被释放。如果获取对象锁失败，那当前线程就要阻塞等待，直到锁被另外一个线程释放为止。</p>
+<p><code>synchronized</code>对应两种锁：对象锁和类锁</p>
+<ul>
+<li>对象锁。每个Java对象都有一个 monitor 对象，即 Java 对象的锁，通常被称为“内置锁”或“对象锁”。类的对象可以有多个，所以每个对象有其独立的对象锁，互不干扰。</li>
+<li> 类锁。在 Java 中，针对每个类也有一个锁，可以称为“类锁”，类锁实际上是通过对象锁实现的，即类的 Class 对象锁。每个类只有一个 Class 对象，所以每个类只有一个类锁。</li>
+</ul>
+<p>内置锁的特性：</p>
+<ul>
+<li>可重入性。如果某个线程试图获得一个已经由它自己持有的锁，那么这个请求就会成功。即同一个线程可以再次获取自己的锁而不会阻塞。比如可以在同步方法里再次调用相同锁的同步方法。</li>
+</ul>
+<p>使用说明：</p>
+<ul>
+<li>同步普通方法，锁的是当前对象。如：<code>public synchronized void method()&#123;...&#125;</code></li>
+<li>同步静态方法，锁的是当前的 Class对象。如：<code>public static synchronized void method()&#123;...&#125;</code></li>
+<li>同步块，锁的是 <code>()</code> 中的对象或Class对象。比如<code>synchronized (this)&#123;...&#125;</code> 或 <code>synchronized (A.class)&#123;...&#125;</code>。</li>
+</ul>
+<p><strong>其他锁对象：Lock、ReenTrantLock等</strong></p>
+<p>TODO</p>
+<h1 id="volatile关键字"><a href="#volatile关键字" class="headerlink" title="volatile关键字"></a><code>volatile</code>关键字</h1><p><code>volatile</code>，中文含义为“易改变”。用于修饰变量，告知系统该变量易改变，并发处理需直接读写主存，而非各自CPU内的缓存。</p>
+<p><code>volatile</code>只能保证变量的可见性、有序性，但是不能保证原子性。比如变量的自增操作，包括三个操作，读、加法、写，就是不是原子操作。在执行加法之前，其他线程可能更改了值，这样最终的结果可能不是预期的结果。</p>
+<p>局限：</p>
+<ol>
+<li>不能替代synchronized。无法提供完全同步的能力，它只能提供改变可见性的能力，可称为一种轻量级的同步，多线程写的时候会出现问题。</li>
+<li>性能低。由于总是读写主存，它的读写性能要低于普通的变量。 </li>
+</ol>
+<p>一般使用的情景为：一个线程写，多个线程读。 大部分情况下，完全不需要使用这个关键字。 </p>
+<h1 id="线程相关方法：wait、notify、sleep、interrupt等"><a href="#线程相关方法：wait、notify、sleep、interrupt等" class="headerlink" title="线程相关方法：wait、notify、sleep、interrupt等"></a>线程相关方法：wait、notify、sleep、interrupt等</h1><ul>
+<li><code>Object.wait()</code>：在同步方法或同步块中调用；将当前线程置入休眠状态，直到接到通知或被中断为止；调用后会并释放锁。</li>
+<li><code>Object.notify()</code>：在同步方法或同步块中调用；通知等待该对象的其他线程，多个线程时随机通知一个；当前程序退出<code>synchronized</code>代码块后，等待线程程序才能获取锁，即被唤醒。</li>
+<li><code>Object.notifyAll()</code>：与<code>Object.notify()</code>一样，通知待该对象的所有线程。</li>
+<li><code>Thread.sleep()</code>：暂停执行，超时后继续执行，不释放锁。</li>
+<li><code>Thread.interrupt()</code>：中断睡眠中的线程，并抛出中断异常信息。</li>
+</ul>
+<p><code>wait()</code>和<code>sleep()</code>比较：</p>
+<ul>
+<li>两者最主要的区别在于：sleep 方法没有释放锁，而 wait 方法释放了锁 。</li>
+<li>两者都可以暂停线程的执行。</li>
+<li>Wait 通常被用于线程间交互/通信，sleep 通常被用于暂停执行。</li>
+<li>wait() 方法被调用后，线程不会自动苏醒，需要别的线程调用同一个对象上的 notify() 或者 notifyAll() 方法。sleep() 方法执行完成后，线程会自动苏醒。或者可以使用 wait(long timeout)超时后线程会自动苏醒。</li>
+</ul>
+<h1 id="线程池与Executor-框架"><a href="#线程池与Executor-框架" class="headerlink" title="线程池与Executor 框架"></a>线程池与Executor 框架</h1><p>线程池的作用：减少资源消耗，提高资源利用率，提高响应速度。</p>
+<p>Executor 框架包括线程池管理、线程工厂、队列以及拒绝策略等，Executor 框架让并发编程变得更加简单。</p>
+<p>Executor 框架结构，主要由三大部分组成：</p>
+<ul>
+<li>任务(<code>Runnable</code> /<code>Callable</code>)：执行任务需要实现的 <strong><code>Runnable</code> 接口</strong> 或 <strong><code>Callable</code>接口</strong>。</li>
+<li>任务的执行(<code>Executor</code>)：包括任务执行机制的核心接口 <strong><code>Executor</code></strong> ，以及继承自 <code>Executor</code> 接口的 <code>ExecutorService</code> 接口，以及继承自<code>ExecutorService</code>的<code>ThreadPoolExecutor</code>类。</li>
+<li>异步计算的结果(<code>Future</code>)：**<code>Future</code>** 接口以及 <code>Future</code> 接口的实现类 <strong><code>FutureTask</code></strong> 类都可以代表异步计算的结果。当我们把 <strong><code>Runnable</code>接口</strong> 或 <strong><code>Callable</code> 接口</strong> 的实现类提交给 <code>ThreadPoolExecutor</code> 或 <code>ScheduledThreadPoolExecutor</code> 执行即调用 <code>submit()</code> 方法时，会返回一个 <code>FutureTask</code> 对象</li>
+</ul>
+<p><code>ThreadPoolExecutor</code> 的构造</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 用给定的初始参数创建一个新的ThreadPoolExecutor。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ThreadPoolExecutor</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="keyword">int</span> corePoolSize,//线程池的核心线程数量</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="keyword">int</span> maximumPoolSize,//线程池的最大线程数</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="keyword">long</span> keepAliveTime,//当线程数大于核心线程数时，多余的空闲线程存活的最长时间</span></span></span><br><span class="line"><span class="params"><span class="function">    TimeUnit unit,//时间单位</span></span></span><br><span class="line"><span class="params"><span class="function">    BlockingQueue&lt;Runnable&gt; workQueue,//任务队列，用来储存等待执行任务的队列</span></span></span><br><span class="line"><span class="params"><span class="function">    ThreadFactory threadFactory,//线程工厂，用来创建线程，一般默认即可</span></span></span><br><span class="line"><span class="params"><span class="function">    RejectedExecutionHandler handler//拒绝策略，当提交的任务过多而不能及时处理时，我们可以定制策略来处理任务</span></span></span><br><span class="line"><span class="params"><span class="function">)</span> </span>&#123;...&#125;</span><br></pre></td></tr></table></figure>
+
+<p>两种方法构造线程池：</p>
+<ol>
+<li>通过<code>ThreadPoolExecutor</code>构造函数实现（推荐）</li>
+<li>通过 Executor 框架的工具类 <code>Executors</code> 来实现。三种特定的线程池<ul>
+<li><code>FixedThreadPool</code></li>
+<li><code>SingleThreadExecutor</code></li>
+<li><code>CachedThreadPool</code></li>
+</ul>
+</li>
+</ol>
+<h1 id="ThreadLocal"><a href="#ThreadLocal" class="headerlink" title="ThreadLocal"></a>ThreadLocal</h1><p>通常情况下，我们创建的变量是可以被任何一个线程访问并修改的。如果想实现每一个线程都有自己的专属本地变量该如何解决呢？ JDK中提供的<code>ThreadLocal</code>类正是为了解决这样的问题。 <code>ThreadLocal</code>类主要解决的就是让每个线程绑定自己的值，可以将<code>ThreadLocal</code>类形象的比喻成存放数据的盒子，盒子中可以存储每个线程的私有数据。</p>
+<p>如果你创建了一个<code>ThreadLocal</code>变量，那么访问这个变量的每个线程都会有这个变量的本地副本，这也是<code>ThreadLocal</code>变量名的由来。他们可以使用 <code>get（）</code> 和 <code>set()</code> 方法来获取默认值或将其值更改为当前线程所存的副本的值，从而避免了线程安全问题。</p>
+<p><code>Thread</code>有成员<code>ThreadLocalMap</code>，而<code>ThreadLocalMap</code>可以存储以<code>ThreadLocal</code>为key的键值对。 比如我们在同一个线程中声明了两个 <code>ThreadLocal</code> 对象的话，会使用 <code>Thread</code>内部<code>ThreadLocalMap</code>存放数据的，<code>ThreadLocalMap</code>的 key 就是 <code>ThreadLocal</code>对象，value 就是 <code>ThreadLocal</code> 对象调用<code>set</code>方法设置的值。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/79602008">volatile的作用及正确的使用模式</a></li>
+<li>《Java 并发编程的艺术》</li>
+<li><a target="_blank" rel="noopener" href="https://www.journaldev.com/2340/java-scheduler-scheduledexecutorservice-scheduledthreadpoolexecutor-example" title="Java Scheduler ScheduledExecutorService ScheduledThreadPoolExecutor Example">Java Scheduler ScheduledExecutorService ScheduledThreadPoolExecutor Example</a></li>
+<li><a target="_blank" rel="noopener" href="https://examples.javacodegeeks.com/core-java/util/concurrent/scheduledthreadpoolexecutor/java-util-concurrent-scheduledthreadpoolexecutor-example/" title="java.util.concurrent.ScheduledThreadPoolExecutor Example">java.util.concurrent.ScheduledThreadPoolExecutor Example</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.journaldev.com/1069/threadpoolexecutor-java-thread-pool-example-executorservice" title="ThreadPoolExecutor – Java Thread Pool Example">ThreadPoolExecutor – Java Thread Pool Example</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/09/10/2018-09-10-%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0-Complie%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%97%B6WARNING%E8%A7%A3%E5%86%B3/" rel="prev" title="Complie关键字过时警告问题">
+      <i class="fa fa-chevron-left"></i> Complie关键字过时警告问题
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/09/12/java-base-2/" rel="next" title="Java基础二：生产者消费者模型">
+      Java基础二：生产者消费者模型 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">1.</span> <span class="nav-text">基本概念</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#synchronized%E5%85%B3%E9%94%AE%E5%AD%97"><span class="nav-number">2.</span> <span class="nav-text">synchronized关键字</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#volatile%E5%85%B3%E9%94%AE%E5%AD%97"><span class="nav-number">3.</span> <span class="nav-text">volatile关键字</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E7%9B%B8%E5%85%B3%E6%96%B9%E6%B3%95%EF%BC%9Await%E3%80%81notify%E3%80%81sleep%E3%80%81interrupt%E7%AD%89"><span class="nav-number">4.</span> <span class="nav-text">线程相关方法：wait、notify、sleep、interrupt等</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E6%B1%A0%E4%B8%8EExecutor-%E6%A1%86%E6%9E%B6"><span class="nav-number">5.</span> <span class="nav-text">线程池与Executor 框架</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ThreadLocal"><span class="nav-number">6.</span> <span class="nav-text">ThreadLocal</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">7.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="章亮"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">章亮</p>
+  <div class="site-description" itemprop="description">Developer For Android</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">73</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">54</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zhangliangnbu" title="GitHub → https://github.com/zhangliangnbu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhangliangnbu@qq.com" title="E-Mail → mailto:zhangliangnbu@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">章亮</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">301k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">4:33</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
