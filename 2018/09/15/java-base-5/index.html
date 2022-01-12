@@ -20,18 +20,20 @@
     var CONFIG = {"hostname":"zhangliangnbu.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="Developer For Android">
-<meta property="og:type" content="website">
-<meta property="og:title" content="永恒的码流">
-<meta property="og:url" content="https://zhangliangnbu.github.io/archives/page/4/index.html">
+  <meta name="description" content="简介垃圾回收（Garbage Collection）是Java虚拟机垃圾回收器提供的一种用于在空闲时间不定时回收无任何对象引用的对象所占据内存空间的一种机制。  注意：垃圾回收器回收的是无用对象占据的内存空间。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java基础四：Java虚拟机垃圾回收机制">
+<meta property="og:url" content="https://zhangliangnbu.github.io/2018/09/15/java-base-5/index.html">
 <meta property="og:site_name" content="永恒的码流">
-<meta property="og:description" content="Developer For Android">
+<meta property="og:description" content="简介垃圾回收（Garbage Collection）是Java虚拟机垃圾回收器提供的一种用于在空闲时间不定时回收无任何对象引用的对象所占据内存空间的一种机制。  注意：垃圾回收器回收的是无用对象占据的内存空间。">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-09-15T07:14:22.000Z">
+<meta property="article:modified_time" content="2022-01-11T07:52:48.000Z">
 <meta property="article:author" content="章亮">
-<meta property="article:tag" content="Andriod">
+<meta property="article:tag" content="java">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://zhangliangnbu.github.io/archives/page/4/">
+<link rel="canonical" href="https://zhangliangnbu.github.io/2018/09/15/java-base-5/">
 
 
 <script id="page-configurations">
@@ -39,12 +41,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>归档 | 永恒的码流</title>
+  <title>Java基础四：Java虚拟机垃圾回收机制 | 永恒的码流</title>
   
 
 
@@ -158,235 +160,126 @@
         <div class="content-wrap">
           
 
-          <div class="content archive">
+          <div class="content post posts-expand">
             
 
+    
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        
-        <span class="collection-header">不错! 目前共计 74 篇日志。 继续努力。</span>
-      </div>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2018/09/15/java-base-5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java基础四：Java虚拟机垃圾回收机制
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-09-15 15:14:22" itemprop="dateCreated datePublished" datetime="2018-09-15T15:14:22+08:00">2018-09-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-01-11 15:52:48" itemprop="dateModified" datetime="2022-01-11T15:52:48+08:00">2022-01-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2018</span>
-    </div>
+        <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>垃圾回收（Garbage Collection）是Java虚拟机垃圾回收器提供的一种用于在空闲时间不定时回收无任何对象引用的对象所占据内存空间的一种机制。</p>
+<blockquote>
+<p>注意：垃圾回收器回收的是无用对象占据的内存空间。</p>
+</blockquote>
+<span id="more"></span>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2018-12-19T09:02:39+08:00"
-              content="2018-12-19">
-          12-19
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2018/12/19/android-develop-advance/" itemprop="url">
-            <span itemprop="name">Android开发进阶</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2018-12-17T17:01:45+08:00"
-              content="2018-12-17">
-          12-17
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2018/12/17/2018-12-17-PublishToJCenter4ByGradleBintrayPlugin/" itemprop="url">
-            <span itemprop="name">项目发布-GradleBintrayPlugin</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2018-12-16T22:52:56+08:00"
-              content="2018-12-16">
-          12-16
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2018/12/16/2018-12-16-PublishToJCenter3ByGradlePlugin/" itemprop="url">
-            <span itemprop="name">项目发布-BintrayRelease</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2018-12-15T21:09:18+08:00"
-              content="2018-12-15">
-          12-15
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2018/12/15/2018-12-15-PublishToJCenter2ByUI/" itemprop="url">
-            <span itemprop="name">项目发布-手动</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2018-12-13T09:42:50+08:00"
-              content="2018-12-13">
-          12-13
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2018/12/13/2018-12-13-PublishToJCenter1Base/" itemprop="url">
-            <span itemprop="name">项目发布-基础</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2018-12-08T22:25:42+08:00"
-              content="2018-12-08">
-          12-08
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2018/12/08/2018-12-08-ZeroCICEPreliminaryUse/" itemprop="url">
-            <span itemprop="name">ZeroCICE使用初步</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2018-12-08T20:46:51+08:00"
-              content="2018-12-08">
-          12-08
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2018/12/08/2018-12-08-GitManagementStratety/" itemprop="url">
-            <span itemprop="name">版本管理之Git分支管理策略的选择</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2018-12-08T20:36:59+08:00"
-              content="2018-12-08">
-          12-08
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2018/12/08/2018-12-08-GitFlow/" itemprop="url">
-            <span itemprop="name">版本管理之GitFlow</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2018-12-08T20:36:59+08:00"
-              content="2018-12-08">
-          12-08
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2018/12/08/2018-12-08-GitlabFlow/" itemprop="url">
-            <span itemprop="name">版本管理之GitlabFlow简介</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2018-12-08T19:57:18+08:00"
-              content="2018-12-08">
-          12-08
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2018/12/08/2018-12-08-NetworkPractice/" itemprop="url">
-            <span itemprop="name">使用Rxjava&Retrofit搭建网络层</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
+<h1 id="判断对象可被回收的方法"><a href="#判断对象可被回收的方法" class="headerlink" title="判断对象可被回收的方法"></a>判断对象可被回收的方法</h1><p><strong>引用计数算法</strong>。给对象中添加一个引用计数器，每当有一个地方引用它时，计数器就加1；当引用失效时，计数器值就减1；任何时刻计数器都为0的对象就是不可能再被使用的。但是Java语言没有选用引用计数法来管理内存，因为引用计数法不能很好的解决循环引用的问题。</p>
+<p><strong>根搜索算法</strong>。在主流的商用语言中，都是使用根搜索算法来判定对象是否存活的。GC Root Tracing 算法思路就是通过一系列的名为”GC  Roots”的对象作为起始点，从这些节点开始向下搜索，搜索所走过的路径称为引用链（Reference Chain），当一个对象到GC Roots没有任何引用链相连，即从GC Roots到这个对象不可达，则证明此对象是不可用的。</p>
+<p>可作为GC Roots的对象：</p>
+<ul>
+<li>方法区中的常量引用的对象</li>
+<li>方法区中的类静态属性引用的对象</li>
+<li>虚拟机栈（栈帧中的本地变量表）中的引用的对象</li>
+<li>本地方法栈中JNI（Native方法）的引用对象</li>
+</ul>
+<h1 id="GC流程"><a href="#GC流程" class="headerlink" title="GC流程"></a>GC流程</h1><p>HotSpot JVM 将堆分成了 二个大区<strong>Young</strong> 和<strong>Old</strong>，而Young 区又分为 Eden、Servivor1、Servivor2。</p>
+<p>所有新new出来的对象都会最先出现在Eden区中，当Eden区内存满了之后，就会触发一次Minor GC，这种收集通常比较快，因为新生代的大部分对象都是需要回收的，那些暂时无法回收的就会被移动到老年代。</p>
+<blockquote>
+<p>minor garbage collections都是<strong>Stop the World</strong>事件</p>
+</blockquote>
+<p>升到老年代的对象大于老年代剩余空间时full gc，或者小于时被HandlePromotionFailure参数强制full gc。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://www.iteye.com/topic/894148">问答</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/35164211/answer/68265045">https://www.zhihu.com/question/35164211/answer/68265045</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/5261a62e4d29">https://www.jianshu.com/p/5261a62e4d29</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/justloveyou_/article/details/71216049">https://blog.csdn.net/justloveyou_/article/details/71216049</a></li>
+<li>[<a target="_blank" rel="noopener" href="https://liuchi.coding.me/2017/08/05/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90Java%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6/]">https://liuchi.coding.me/2017/08/05/%E6%B7%B1%E5%85%A5%E8%A7%A3%E6%9E%90Java%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6/]</a>(</li>
+</ul>
 
     </div>
-  </div>
-  
-  
-  
 
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/09/14/java-base-4/" rel="prev" title="Java基础四：Java虚拟机基础">
+      <i class="fa fa-chevron-left"></i> Java基础四：Java虚拟机基础
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/09/29/2018-09-29-%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0-Gradle%E4%B8%8B%E8%BD%BD%E5%85%AC%E5%8F%B8%E5%86%85%E9%83%A8%E4%BE%9D%E8%B5%96%E5%A4%B1%E8%B4%A5%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/" rel="next" title="Gradle下载公司内部依赖失败问题排查">
+      Gradle下载公司内部依赖失败问题排查 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
   
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/archives/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/archives/">1</a><span class="space">&hellip;</span><a class="page-number" href="/archives/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/archives/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/archives/page/8/">8</a><a class="extend next" rel="next" href="/archives/page/5/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
-  </nav>
+  
+  
 
 
 
@@ -438,6 +331,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%A4%E6%96%AD%E5%AF%B9%E8%B1%A1%E5%8F%AF%E8%A2%AB%E5%9B%9E%E6%94%B6%E7%9A%84%E6%96%B9%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">判断对象可被回收的方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GC%E6%B5%81%E7%A8%8B"><span class="nav-number">3.</span> <span class="nav-text">GC流程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
