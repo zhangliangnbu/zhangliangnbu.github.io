@@ -18,19 +18,16 @@ Android 应用的生命周期由系统控制，包括三个阶段：启动、运
 
 ## 应用的启动
 
-启动流程：
+通过Launcher启动App的流程：
 
-1. 点击桌面App图标，Launcher进程通过Binder IPC向AMS进程发起`startActivity`请求。
-2. AMS接收到请求后，执行解析Intent、检查权限等操作，之后向Zygote进程发送`创建进程的请求`。
-3. Zygote进程fork出新的子进程即App进程，并返回一个pid，通过pid进入应用进程。
-4. 应用进程进行初始化，初始化Binder线程池、运行时环境、创建Application对象、通过ActivityThread创建主线程，开启Loop循环等，并通过Binder向AMS发送`attachApplication(绑定Application)`的请求。
-5. AMS 进程收到请求后，把Application和进程进行绑定，再通过通过Binder机制请求启动Activity。
-6. App进程的binder线程（ApplicationThread）收到请求后，通过handler向主线程发送LAUNCH_ACTIVITY消息；
-7. 主线程在收到Message后，通过反射机制创建目标Activity，并回调Activity.onCreate()等方法。 到此，App便正式启动，开始进入Activity生命周期，执行完onCreate/onStart/onResume方法，UI渲染结束后便可以看到App的主界面。
+- Launcher进程请求SystemServer进程创建Activity。
+- SystemServer进程解析Intent等，并检查目标APP进程是否存在，不存在则去创建进程。
+- SystemServer进程通过Socket方式请求Zygote进程创建APP进程，返回进程号等信息。
+- App进程入口为`ActivityThread.main()`方法，执行此方法，初始化进程并请求SystemServer绑定App进程。绑定进程的工作包括，一，通知App进程去启动Application；二，通知APP进程去启动Activity。
 
 <img src="/images/android-app-start-simple-flow.png" width="70%" height="70%">
 
-总结：当用户点击应用图标的时候，系统会去检测进程是否存在，如果不存在，则通过Zygote创建进程，创建完进程后，则需要将进程与App进行绑定，将App的资源加载到内存中，当加载完毕，各种条件准备就绪，接下来就是启动Activity了，如此，App的界面就展示出来了。
+总结：当用户点击应用图标的时候，系统会去检测进程是否存在，如果不存在，则通过Zygote创建进程，创建完进程后，则需要将进程与App进行绑定，将App的资源加载到内存中，当加载完毕，各种条件准备就绪，接下来就是启动Application和Activity了，如此，App的界面就展示出来了。
 
 ## 应用的销毁
 

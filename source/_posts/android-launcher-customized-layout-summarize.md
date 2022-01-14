@@ -1,6 +1,6 @@
 ---
 title: 拖拽和动画实践总结
-date: 2022-01-06 15:10:09
+date: 2020-12-27 15:10:09
 tags:
 - android
 categories:

@@ -1,6 +1,6 @@
 ---
 title: Activity绑定视图流程概览
-date: 2021-12-20 15:59:11
+date: 2021-09-20 15:59:11
 tags:
 - android
 - android系统开发

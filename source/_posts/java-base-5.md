@@ -1,5 +1,5 @@
 ---
-title: Java基础四：Java虚拟机垃圾回收机制
+title: Java基础五：Java虚拟机垃圾回收机制
 date: 2018-09-15 15:14:22
 updated: 2022-01-11 15:52:48
 tags:

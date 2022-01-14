@@ -1,6 +1,6 @@
 ---
-title: Andoird 10 Activity启动流程概览
-date: 2021-12-17 15:49:34
+title: Activity启动流程概览
+date: 2021-09-17 15:49:34
 tags:
 - android
 - android系统开发
