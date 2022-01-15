@@ -12,6 +12,39 @@ categories:
 
 <!--more-->
 
+# 虚拟机和编译模式
+
+## VM对字节码的执行
+
+VM有java虚拟机也有Android虚拟机，它们对字节码的执行是不一样的，即便都是JVM，不同的java虚拟机对字节码的执行也是不一样的。
+ HotSpot VM采用解释器+自适应编译的执行引擎执行字节码，具体看[HotSpot VM](http://www.4k8k.xyz/article/lizhongyisailang/106555297#HotSpotVM)，JRockit VM采用JIT编译器+自适应编译器的执行引擎执行字节码，具体看[JRockit VM](http://www.4k8k.xyz/article/lizhongyisailang/106555297#JRockitVM)。  Dalvik和ART发展历程 ：
+
+- 2008年9月，Android发布，Dalvik VM的执行引擎是只有解释器的；
+- 2010年5月，Android 2.2发布，Dalvik VM引入了JIT编译器，JIT的引入使得Dalvik的性能提升了3～6倍；
+- 2013年10月，Android 4.4发布，Dalvik和ART并存；
+- 2014年10月，Android 5.0发布，ART取代了Dalvik成为了VM，同时AOT也成为了唯一的编译模式；单纯的使用JIT和AOT都是有缺点的，具体看[JIT编译和AOT编译比较](http://www.4k8k.xyz/article/lizhongyisailang/106555297#JITandAOT)
+-  2016年8月，Android 7.0发布，JIT编译器回归，形成了[AOT/JIT混合编译模式](http://www.4k8k.xyz/article/lizhongyisailang/106555297#AOTJIT)，吸取了两者的优点同时克服了缺点。
+
+## 编译模式
+
+自适应编译（adaptive compilation）： 在所有执行过的代码里只寻找一部分来编译的做法，叫做自适应编译。为了实现自适应编译，执行引擎通常需要有多层：至少要有一层能够处理初始阶段的执行，然后再自适应编译其中部分代码。每次都要编译，部分编译。
+
+JIT编译：全称just-in-time compilation，按照其原始的、严格的定义，是每当一部分代码准备要第一次执行的时候，将这部分代码编译，然后跳进编译好的代码里执行。这样，所有执行过的代码都必然会被编译过。早期的JIT编译系统对同一块代码只会编译一次。JIT编译的单元也可以选择是方法/函数级别，或者别的，如trace。第一次执行时编译，需要执行的部分全量编译。
+
+动态编译（dynamic compilation）：JIT编译和自适应编译都属于动态编译，或者叫**运行时编译**的范畴，特点是在程序运行的时候进行编译，而不是在程序开始运行之前就完成了编译。**现在“JIT编译”这个名称已经被泛化为等价于“动态编译”**，所以包含了严格的JIT编译和自适应编译。按照绝大多少文章的上下文，JIT编译说的是根据热点进行编译的自适应编译。
+
+JIT和AOT的比较：JIT是在运行时进行编译，是动态编译，并且每次运行程序的时候都需要对odex重新进行编译；而AOT是静态编译，应用在安装的时候会启动dex2oat把dex预编译成ELF文件（二进制可执行文件），每次运行程序的时候不用重新编译，是真正意义上的本地应用。
+
+> 这里说的JIT编译是泛化的概念，具体指的是自适应编译
+
+- **JIT编译模式的缺点：**    每次启动应用都需要重新编译；  运行时比较耗电，造成电池额外的开销； 
+-  **AOT编译模式的缺点：**    应用安装和系统升级之后的应用优化比较耗时；  优化后文件会占用额外的存储空间； 
+
+## ART VM中AOT/JIT混合编译
+
+应用在安装的时候dex不会被编译，在运行dex文件先通过解释器（Interpreter）解释执行（这一步骤跟Android2.2-Android4.4的行为是一致的），与此同时，热点函数（hot code）会被识别并被JIT编译后存储在jit code  cache中并生成profile文件以记录热点函数的信息。手机进入IDLE（空闲）或者Charging（充电）状态的时候，系统会扫描App目录下的profile文件并执行AOT编译。
+ 也就说，应用在安装的时候没有编译，所以安装会很快，首次启动和运行时还是采用解释器+JIT编译的模式，虽然也有慢和耗电问题，但是，被系统AOT编译后，以后启动和运行就很快了，也不耗电。
+
 # Class文件结构
 
 Java虚拟机可以理解的代码就叫做`字节码`（即扩展名为 `.class` 的文件）。根据 Java 虚拟机规范，类文件由单个 ClassFile 结构组成：

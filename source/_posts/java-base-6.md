@@ -395,3 +395,6 @@ String s = input.readLine();
 - https://stackoverflow.com/questions/1906445/what-is-the-difference-between-jdk-and-jre
 - https://www.educba.com/oracle-vs-openjdk/
 - https://stackoverflow.com/questions/22358071/differences-between-oracle-jdk-and-openjdk?answertab=active#tab-top
+- [一文让你搞懂各种虚拟机、解释器、JIT和AOT编译器](http://www.4k8k.xyz/article/lizhongyisailang/106555297)
+
+]
