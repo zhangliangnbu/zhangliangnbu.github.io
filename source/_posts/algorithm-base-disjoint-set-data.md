@@ -1,5 +1,5 @@
 ---
-title: algorithm-base-disjoint-set-data
+title: 数据结构和算法-并查集
 date: 2020-01-19 15:12:03
 tags:
 - algorithm
