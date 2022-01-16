@@ -58,6 +58,8 @@ categories:
 * 生成Hexo项目。进入博客所在的文件目录中，`hexo init {博客名}`，
 * 测试。`hexo server`查看是否在本地生成静态站点。
 
+> 注意：安装Hexo需要nodejs，请安装版本12，不要安装最新的，避免出现问题。或者使用nvm管理node版本。
+
 详细命令如下：
 
 ```bash
