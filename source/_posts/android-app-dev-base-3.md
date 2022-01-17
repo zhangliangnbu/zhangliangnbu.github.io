@@ -29,6 +29,22 @@ Fragment 创建时处于 INITIALIZED 状态，之后需要添加到 FragmentMana
 
 <img src="/images/android-fragment-lifecycle.png" width="70%" height="70%">
 
+与Activity声明周期对应关系
+
+```bash
+onAttach()：和宿主Activity建立关联时调用
+onCreate()：创建时调用
+onCreateView()：加载Fragment的布局时调用
+onActivityCreated()：宿主Activity创建完毕时调用
+onStart()：可见时调用
+onResume()：获取焦点时用
+onPause()：失去焦点时调用
+onStop()：不可见时调用
+onDestoryView()：移除Fragment的布局时调用
+onDestory()：销毁时调用
+onDetach()：与宿主Activity解除关联时调用
+```
+
 # FragmentManager & FragmentTransaction
 
 FragmentManager 中有两个数据集合：一个是存储 Fragment 的集合，一个是存储事务 Transaction 的回退栈（BackStack）。
