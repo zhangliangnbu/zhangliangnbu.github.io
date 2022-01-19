@@ -14,7 +14,39 @@ categories:
 
 # 事件分发机制
 
-点击事件中相关类的传递顺序为：Activity -> Window -> View。
+点击事件中相关类的传递顺序为：Activity -> Window -> View，具体调用链如下：
+
+- `Activity.dispatchTouchEvent() -> Window.superDispatchTouchEvent() -> View.dispatchTouchEvent()`。
+
+对于Activity：
+
+```java
+public boolean dispatchTouchEvent(MotionEvent ev) {
+    if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+        onUserInteraction();
+    }
+    // 传给Window
+    if (getWindow().superDispatchTouchEvent(ev)) {
+        return true;
+    }
+    return onTouchEvent(ev);
+}
+```
+
+对于PhoneWindow（继承Window）：
+
+```java
+// Window
+public boolean superDispatchTouchEvent(MotionEvent event) {
+    // 传给DecorView
+    return mDecor.superDispatchTouchEvent(event);
+}
+
+// DecorView
+public boolean superDispatchTouchEvent(MotionEvent event) {
+    return super.dispatchTouchEvent(event);
+}
+```
 
 对于ViewGroup，发生点击事件后的流程为：
 

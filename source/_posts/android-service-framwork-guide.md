@@ -14,11 +14,9 @@ Android服务框架包括Java服务框架（Java层）和本地服务框架（C+
 
 代码分析版本：Android 10
 
-<!-- more -->
-
 # 框架概览
 
-### **Android服务框架结构图**
+## 静态分层结构
 
 ![](/images/android-service-framwork-structure.svg)
 
@@ -29,7 +27,39 @@ Android服务框架包括Java服务框架（Java层）和本地服务框架（C+
 3. IPC层：将RPC代码和数据封装为Binder IPC数据，并传递给Binder Driver。
 4. Binder Driver层：根据Binder IPC数据查找指定服务并返回。
 
-### **Android系统服务框架各类相互作用**
+<!-- more -->
+
+### RPC层说明
+
+- 客户端：调用Proxy具体方法，通过`BinderProxy.transact(code, data, reply, flag)`将方法名和入参等信息传给IPC层
+- 服务端：调用`Stub.onTransact(code, data, reply, flag)`方法，根据code定位具体方法，根据data获取入参。
+
+```java
+// Proxy
+private static class Proxy implements IFoo {
+    public int foo(int value) {
+        // mRemote表示BinderProxy
+        boolean _status = mRemote.transact(Stub.TRANSACTION_foo, _data, _reply, 0);
+    }
+}
+
+// Stub
+public static abstract class Stub extends android.os.Binder implements IFoo {
+    // 根据code找到对应方法，根据data获取入参
+    public boolean onTransact(int code, Parcel data, Parcel reply, int flags){
+        switch (code) {
+            case TRANSACTION_foo: {
+                this.foo(data.readInt());
+                reply.writeString(descriptor);
+                return true;
+            }
+        }
+    }
+}
+
+```
+
+## **Android系统服务框架各类相互作用**
 
 ![](/images/android-service-framwork-class-work.svg)
 
@@ -39,7 +69,7 @@ Android服务框架包括Java服务框架（Java层）和本地服务框架（C+
 
 **注意：以上举例适用于Java服务，本地服务类似，需要将最上层的Java代码改为C++代码，细节待确定 TODO**
 
-### 主要类和文件
+## 主要类和文件
 
 ```bash
 java
@@ -81,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
 }
 ```
 
-### 注册服务
+## 注册服务
 
 Java系统服务在SystemServer进程启动时开始实例化并注册。首先调用SystemServer.main()方法，该方法内部会实例化SystemServer并调用其run()方法，run()方法中接着调用startOtherServices()方法，该方法中会执行AlarmManagerService的服务实例化和注册操作。
 
@@ -142,7 +172,7 @@ public static final native IBinder getContextObject()
 
 **(2) 如何从BBinder进入service_manager.c的binder_loop()方法中? TODO**
 
-### 检索服务
+## 检索服务
 
 调用Context.getSystemService()方法，具体是调用ContextImpl.getSystemService()方法。
 
@@ -197,7 +227,7 @@ public AlarmManager createService(ContextImpl ctx) throws ServiceNotFoundExcepti
 });
 ```
 
-### 使用服务
+## 使用服务
 
 调用AlarmManager.setTime()
 
