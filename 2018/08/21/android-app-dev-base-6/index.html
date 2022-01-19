@@ -238,28 +238,46 @@
 <li>热启动。仅包含冷启动的最后一个工作，系统将后台运行的应用带入前台。</li>
 <li>温启动。仅包含冷启动的部分工作，比热启动工作多。</li>
 </ul>
-<h2 id="冷启动耗时分析"><a href="#冷启动耗时分析" class="headerlink" title="冷启动耗时分析"></a>冷启动耗时分析</h2><p>中，一般耗时主要发生在应用创建和Activity创建两个阶段，重点一般为<code>Application.onCreate()</code>方法和<code>Activity.onCreate()</code>方法：</p>
+<h2 id="冷启动耗时分析"><a href="#冷启动耗时分析" class="headerlink" title="冷启动耗时分析"></a>冷启动耗时分析</h2><p>冷启动是指应用从头开始启动，具体情况为应用自设备启动后或系统终止应用后首次启动。包括系统进程工作阶段和应用进程工作阶段：</p>
+<p>系统进程的工作：</p>
+<ol>
+<li>加载并启动应用。</li>
+<li>在启动后立即显示应用的空白启动窗口。</li>
+<li>创建应用进程。</li>
+</ol>
+<p>应用进程的工作：</p>
+<ol>
+<li>创建应用对象<code>Application</code>。</li>
+<li>启动主线程。</li>
+<li>创建主 Activity。</li>
+<li>填充视图。</li>
+<li>布局屏幕。</li>
+<li>执行初始绘制。</li>
+</ol>
+<p>最后一个工作：应用进程完成第一次绘制后，系统进程就会换掉当前显示的后台窗口，替换为主 Activity。此时，用户可以开始使用应用。</p>
+<p>一般耗时主要发生在应用创建和Activity创建两个阶段，重点一般为<code>Application.onCreate()</code>方法、<code>Activity.onCreate()</code>、<code>Activity.onResume()</code>方法：</p>
 <ul>
 <li>应用创建。创建Application对象，调用其<code>Application.onCreate()</code>方法。开发者一般会在该方法中进行全局变量或对象的初始化任务，任务过重时会显著增加耗时。</li>
 <li>Activity 创建。应用进程创建Activity后，Activity 会回调周期方法，其中<code>onCreate()</code>方法对加载时间的影响最大，因为它执行工作的开销最高：加载和填充视图，以及初始化运行 Activity 所需的对象。</li>
+<li>Activity 视图显示。绘制操作。</li>
 </ul>
 <h2 id="耗时监测和分析"><a href="#耗时监测和分析" class="headerlink" title="耗时监测和分析"></a>耗时监测和分析</h2><p><strong>使用 logcat 输出应用启动时间</strong></p>
-<p>输出应用初步显示时间：初步显示的时间，即页面初次显示的时间，不包括延迟加载而导致页面重绘的耗时。在 Android 4.4（API 级别 19）及更高版本中，logcat 包含一个输出行，其中包含名为 <code>Displayed</code> 的值。此值代表从启动应用进程到完成 Activity 绘制所用的时间。经过的时间包括以下事件序列：</p>
+<p>输出应用初步显示时间：初步显示的时间，即页面初次显示的时间，不包括延迟加载而导致页面重绘的耗时。在 Android 4.4（API 级别 19）及更高版本中，logcat 包含一个输出行，其中包含名为 <code>Displayed</code> 的值。此值代表从启动应用进程到完成 Activity 绘制所用的时间。</p>
 <p><strong>使用adb命令输出应用初步显示时间</strong></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&gt; adb shell am start -S -W com.liang.androidskilldemo/.MainActivity</span><br><span class="line"></span><br><span class="line">Stopping: com.liang.androidskilldemo</span><br><span class="line">Starting: Intent &#123; act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=com.liang.androidskilldemo/.MainActivity &#125;</span><br><span class="line">Status: ok</span><br><span class="line">LaunchState: COLD</span><br><span class="line">Activity: com.liang.androidskilldemo/.MainActivity</span><br><span class="line">TotalTime: 1002  <span class="comment"># 表示启动过程中，所有的 Activity 的启动时间，关注 TotalTime 就可以</span></span><br><span class="line">WaitTime: 1012 <span class="comment"># 表示应用进程的创建时间 + TotalTime</span></span><br><span class="line">Complete</span><br></pre></td></tr></table></figure>
 
 <h2 id="常见问题及优化措施"><a href="#常见问题及优化措施" class="headerlink" title="常见问题及优化措施"></a>常见问题及优化措施</h2><p>常见问题：常见导致启动速度慢的问题为在应用初始化和Activity初始化时做了较多的耗时工作。</p>
-<p>优化方向：减少<code>Application.onCreate()</code>和<code>Activity.onCreate()</code> 耗时。</p>
+<p>优化方向：减少<code>Application.onCreate()</code>、<code>Activity.onCreate()</code> 以及首屏视图绘制耗时。</p>
 <p>具体措施：</p>
 <ul>
-<li>延迟加载不立即使用的对象。比如以下全局单例对象，应该在使用它们时初始化。</li>
+<li>延迟加载不立即使用的对象。比如全局单例对象，应该在使用它们时初始化。</li>
 <li>非主线处理磁盘IO、网络IO、加载和解码位图等耗时工作。线程过多时使用线程池。</li>
 <li>对于Activity初始化，还需要精简页面布局（降低控件层级、减少控件个数）。</li>
 </ul>
 <blockquote>
 <p>💡 可使用CPU Profiler分析方法耗时</p>
 </blockquote>
-<h1 id="页面显示优化"><a href="#页面显示优化" class="headerlink" title="页面显示优化"></a>页面显示优化</h1><p>界面显示是指从应用生成帧并将其显示在屏幕上的动作。要确界面显示流畅，应用应达到每秒 60 帧的呈现速度，即呈现每帧的时间不超过 16ms。界面呈现慢即界面的某帧在16ms内没有绘制完并显示处理而导致跳帧，让用户感觉界面显示不流畅，这种情况称为“卡顿”。</p>
+<h1 id="页面显示优化"><a href="#页面显示优化" class="headerlink" title="页面显示优化"></a>页面显示优化</h1><p>界面显示是指从应用生成帧并将其显示在屏幕上的动作。要确保界面显示流畅，应用应达到每秒 60 帧的呈现速度，即呈现每帧的时间不超过 16ms。界面呈现慢即界面的某帧在16ms内没有绘制完并显示处理而导致跳帧，让用户感觉界面显示不流畅，这种情况称为“卡顿”。</p>
 <p>界面绘制原理简介：在界面绘制的过程中， CPU 主要的任务是计算出屏幕上所有 View 对应的图形和向量等信息。 GPU 的主要任务就是把 CPU 计算出的图形栅格化并转化为位图，可以简单理解为屏幕像素点对应的值。如果操作过程中卡顿了，一般就是 CPU 和 GPU 其中的一个或者多个无法短时间完成对应的任务。</p>
 <p>一般而言，CPU 除了需要计算 View 对应的图形和向量等信息，还要做逻辑运算和文件读写等任务，所以 CPU 造成卡顿更常 见。一般也是通过减少 CPU 的计算任务来优化卡顿。</p>
 <h2 id="卡顿本质"><a href="#卡顿本质" class="headerlink" title="卡顿本质"></a>卡顿本质</h2><p>所谓卡顿，即在 16.6ms 内 CPU 无法完成相应的计算，从而造成重复显示同一帧的现象。影响屏幕绘制的因素有：</p>
@@ -414,7 +432,7 @@
 </ol>
 <p><strong>分析和解决</strong></p>
 <ol>
-<li>在内存引用上做些处理，常用的有软引用、强化引用、弱引用</li>
+<li>在内存引用上做些处理，常用的有软引用、弱引用、虚引用</li>
 <li>在内存中加载图片时直接在内存中作处理，如边界压缩</li>
 <li>动态回收内存</li>
 <li>优化Dalvik虚拟机的堆内存分配</li>
@@ -547,7 +565,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">74</span>
+          <span class="site-state-item-count">86</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -560,7 +578,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">54</span>
+        <span class="site-state-item-count">56</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -604,12 +622,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">304k</span>
+    <span title="站点总字数">376k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">4:36</span>
+    <span title="站点阅读时长">5:42</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>

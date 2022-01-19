@@ -235,6 +235,9 @@
 <h1 id="生命周期"><a href="#生命周期" class="headerlink" title="生命周期"></a>生命周期</h1><p>生命周期回调方法都发生在 onAttach() 和 onDetach() 之间，图中未标记。</p>
 <img src="/images/android-fragment-lifecycle.png" width="70%" height="70%">
 
+<p>与Activity声明周期对应关系</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">onAttach()：和宿主Activity建立关联时调用</span><br><span class="line">onCreate()：创建时调用</span><br><span class="line">onCreateView()：加载Fragment的布局时调用</span><br><span class="line">onActivityCreated()：宿主Activity创建完毕时调用</span><br><span class="line">onStart()：可见时调用</span><br><span class="line">onResume()：获取焦点时用</span><br><span class="line">onPause()：失去焦点时调用</span><br><span class="line">onStop()：不可见时调用</span><br><span class="line">onDestoryView()：移除Fragment的布局时调用</span><br><span class="line">onDestory()：销毁时调用</span><br><span class="line">onDetach()：与宿主Activity解除关联时调用</span><br></pre></td></tr></table></figure>
+
 <h1 id="FragmentManager-amp-FragmentTransaction"><a href="#FragmentManager-amp-FragmentTransaction" class="headerlink" title="FragmentManager &amp; FragmentTransaction"></a>FragmentManager &amp; FragmentTransaction</h1><p>FragmentManager 中有两个数据集合：一个是存储 Fragment 的集合，一个是存储事务 Transaction 的回退栈（BackStack）。</p>
 <p>两种对象的操作：</p>
 <ul>
@@ -386,7 +389,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">74</span>
+          <span class="site-state-item-count">86</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -399,7 +402,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">54</span>
+        <span class="site-state-item-count">56</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -443,12 +446,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">304k</span>
+    <span title="站点总字数">376k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">4:36</span>
+    <span title="站点阅读时长">5:42</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>

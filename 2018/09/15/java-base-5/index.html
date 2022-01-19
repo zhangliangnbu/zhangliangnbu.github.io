@@ -22,16 +22,18 @@
 
   <meta name="description" content="简介垃圾回收（Garbage Collection）是Java虚拟机垃圾回收器提供的一种用于在空闲时间不定时回收无任何对象引用的对象所占据内存空间的一种机制。  注意：垃圾回收器回收的是无用对象占据的内存空间。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java基础四：Java虚拟机垃圾回收机制">
+<meta property="og:title" content="Java基础五：Java虚拟机垃圾回收机制">
 <meta property="og:url" content="https://zhangliangnbu.github.io/2018/09/15/java-base-5/index.html">
 <meta property="og:site_name" content="永恒的码流">
 <meta property="og:description" content="简介垃圾回收（Garbage Collection）是Java虚拟机垃圾回收器提供的一种用于在空闲时间不定时回收无任何对象引用的对象所占据内存空间的一种机制。  注意：垃圾回收器回收的是无用对象占据的内存空间。">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://zhangliangnbu.github.io/images/java-gc-generations-16424312637001.jpg">
 <meta property="article:published_time" content="2018-09-15T07:14:22.000Z">
 <meta property="article:modified_time" content="2022-01-11T07:52:48.000Z">
 <meta property="article:author" content="章亮">
 <meta property="article:tag" content="java">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zhangliangnbu.github.io/images/java-gc-generations-16424312637001.jpg">
 
 <link rel="canonical" href="https://zhangliangnbu.github.io/2018/09/15/java-base-5/">
 
@@ -46,7 +48,7 @@
   };
 </script>
 
-  <title>Java基础四：Java虚拟机垃圾回收机制 | 永恒的码流</title>
+  <title>Java基础五：Java虚拟机垃圾回收机制 | 永恒的码流</title>
   
 
 
@@ -180,7 +182,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Java基础四：Java虚拟机垃圾回收机制
+          Java基础五：Java虚拟机垃圾回收机制
         </h1>
 
         <div class="post-meta">
@@ -241,6 +243,29 @@
 <p>minor garbage collections都是<strong>Stop the World</strong>事件</p>
 </blockquote>
 <p>升到老年代的对象大于老年代剩余空间时full gc，或者小于时被HandlePromotionFailure参数强制full gc。</p>
+<h1 id="GC算法有哪些？"><a href="#GC算法有哪些？" class="headerlink" title="GC算法有哪些？"></a>GC算法有哪些？</h1><h2 id="1-标记-清除算法"><a href="#1-标记-清除算法" class="headerlink" title="1. 标记-清除算法"></a>1. 标记-清除算法</h2><p>该算法分为“标记”和“清除”阶段：首先标记出所有需要回收的对象，在标记完成后统一回收所有被标记的对象。它是最基础的收集算法，后续的算法都是对其不足进行改进得到。这种垃圾收集算法会带来两个明显的问题：</p>
+<ol>
+<li><strong>效率问题</strong></li>
+<li><strong>空间问题（标记清除后会产生大量不连续的碎片）</strong></li>
+</ol>
+<h2 id="2-复制算法"><a href="#2-复制算法" class="headerlink" title="2. 复制算法"></a>2. 复制算法</h2><p>为了解决效率问题，“复制”收集算法出现了。它可以将内存分为大小相同的两块，每次使用其中的一块。当这一块的内存使用完后，就将还存活的对象复制到另一块去，然后再把使用的空间一次清理掉。这样就使每次的内存回收都是对内存区间的一半进行回收。</p>
+<h2 id="3-标记-整理算法"><a href="#3-标记-整理算法" class="headerlink" title="3. 标记-整理算法"></a>3. 标记-整理算法</h2><p>根据老年代的特点提出的一种标记算法，标记过程仍然与“标记-清除”算法一样，但后续步骤不是直接对可回收对象回收，而是让所有存活的对象向一端移动，然后直接清理掉端边界以外的内存。</p>
+<h2 id="4-分代收集算法"><a href="#4-分代收集算法" class="headerlink" title="4. 分代收集算法"></a>4. 分代收集算法</h2><p>分代收集算法是基于这样一个事实：不同的对象的生命周期(存活情况)是不一样的，而不同生命周期的对象位于堆中不同的区域，因此对堆内存不同区域采用不同的策略进行回收可以提高 JVM 的执行效率。<strong>当代商用虚拟机使用的都是分代收集算法：新生代对象存活率低，就采用复制算法；老年代存活率高，就用标记清除算法或者标记整理算法</strong>。Java堆内存一般可以分为新生代、老年代和永久代三个模块（目前流行的没有永久代），如下图所示：</p>
+<p><img src="/images/java-gc-generations-16424312637001.jpg" alt="java-gc-generations"></p>
+<h1 id="目前商业JVM中GC完整流程"><a href="#目前商业JVM中GC完整流程" class="headerlink" title="目前商业JVM中GC完整流程"></a>目前商业JVM中GC完整流程</h1><p>JVM将堆内存分为新生代、老年代两个区。新生代使用复制算法，老年代使用标记整理算法。</p>
+<p>新生代的目标就是尽可能快速的收集掉那些生命周期短的对象。一般情况下，所有新生成的对象首先都是放在新生代的。新生代内存按照 8:1:1 的比例分为一个eden区和两个survivor(survivor0，survivor1)区，大部分对象在Eden区中生成。</p>
+<p>在进行垃圾回收时，先将eden区存活对象复制到survivor0区，然后清空eden区；当eden区再次满时，触发gc，则将eden区和survivor0区存活对象复制到survivor1区，然后清空eden和这个survivor0区；此时survivor0区是空的，然后交换survivor0区和survivor1区的角色（即下次垃圾回收时会扫描Eden区和survivor1区），即保持survivor0区为空，如此往复。特别地，当survivor1区也不足以存放eden区和survivor0区的存活对象时，就将存活对象直接存放到老年代。如果老年代也满了，就会触发一次FullGC，也就是新生代、老年代都进行回收。注意，新生代发生的GC也叫做MinorGC，MinorGC发生频率比较高，不一定等 Eden区满了才触发。</p>
+<p><strong>更详细的流程</strong></p>
+<ul>
+<li>第一步 所有new出来的对象都会最先分配到新生代eden区域中，两个survivor区域初始化是为空的</li>
+<li>第二步，当eden区域满了之后，就引发一次 minor garbage collection</li>
+<li>第三步，当在minor garbage collection，存活下来的对象就会被移动到survivor-0区</li>
+<li>第四步，然后当eden区域又填满的时候，又会发生下一次的垃圾回收，存活的对象会被移动到survivor区域而未存活对象会被直接删除。但是，不同的是，在这次的垃圾回收中，存活对象和之前的survivor中的对象都会被移动到s1中。一旦所有对象都被移动到s1中，那么s0中的对象就会被清除，仔细观察图中的对象，数字表示经历的垃圾收集的次数。目前我们已经有不同的年龄对象了。</li>
+<li>第五步，下一次垃圾回收的时候，又会重复上次的步骤，清除需要回收的对象，并且又切换一次survivor区域，所有存活的对象都被移动至s0。eden和s1区域被清除。</li>
+<li>第六步，重复以上步骤，并记录对象的年龄，当有对象的年龄到达一定的阈值的时候，就将新生代中的对象移动到老年代中。在本例中，这个阈值为8.</li>
+<li>第七步，接下来垃圾收集器就会重复以上步骤，不断的进行对象的清除和年代的移动</li>
+<li>最后，我们观察上述过程可以发现，大部分的垃圾收集过程都是在新生代进行的，直到老年代中的内存不够用了才会发起一次 major GC，会进行标记和整理压缩。</li>
+</ul>
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
 <li><a target="_blank" rel="noopener" href="https://www.iteye.com/topic/894148">问答</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/35164211/answer/68265045">https://www.zhihu.com/question/35164211/answer/68265045</a></li>
@@ -270,8 +295,8 @@
       <i class="fa fa-chevron-left"></i> Java基础四：Java虚拟机基础
     </a></div>
       <div class="post-nav-item">
-    <a href="/2018/09/29/2018-09-29-%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0-Gradle%E4%B8%8B%E8%BD%BD%E5%85%AC%E5%8F%B8%E5%86%85%E9%83%A8%E4%BE%9D%E8%B5%96%E5%A4%B1%E8%B4%A5%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/" rel="next" title="Gradle下载公司内部依赖失败问题排查">
-      Gradle下载公司内部依赖失败问题排查 <i class="fa fa-chevron-right"></i>
+    <a href="/2018/09/17/java-base-6/" rel="next" title="Java基础六：其他">
+      Java基础六：其他 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -331,7 +356,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%A4%E6%96%AD%E5%AF%B9%E8%B1%A1%E5%8F%AF%E8%A2%AB%E5%9B%9E%E6%94%B6%E7%9A%84%E6%96%B9%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">判断对象可被回收的方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GC%E6%B5%81%E7%A8%8B"><span class="nav-number">3.</span> <span class="nav-text">GC流程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%A4%E6%96%AD%E5%AF%B9%E8%B1%A1%E5%8F%AF%E8%A2%AB%E5%9B%9E%E6%94%B6%E7%9A%84%E6%96%B9%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">判断对象可被回收的方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GC%E6%B5%81%E7%A8%8B"><span class="nav-number">3.</span> <span class="nav-text">GC流程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GC%E7%AE%97%E6%B3%95%E6%9C%89%E5%93%AA%E4%BA%9B%EF%BC%9F"><span class="nav-number">4.</span> <span class="nav-text">GC算法有哪些？</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%A0%87%E8%AE%B0-%E6%B8%85%E9%99%A4%E7%AE%97%E6%B3%95"><span class="nav-number">4.1.</span> <span class="nav-text">1. 标记-清除算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%A4%8D%E5%88%B6%E7%AE%97%E6%B3%95"><span class="nav-number">4.2.</span> <span class="nav-text">2. 复制算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E6%A0%87%E8%AE%B0-%E6%95%B4%E7%90%86%E7%AE%97%E6%B3%95"><span class="nav-number">4.3.</span> <span class="nav-text">3. 标记-整理算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E5%88%86%E4%BB%A3%E6%94%B6%E9%9B%86%E7%AE%97%E6%B3%95"><span class="nav-number">4.4.</span> <span class="nav-text">4. 分代收集算法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%9B%AE%E5%89%8D%E5%95%86%E4%B8%9AJVM%E4%B8%ADGC%E5%AE%8C%E6%95%B4%E6%B5%81%E7%A8%8B"><span class="nav-number">5.</span> <span class="nav-text">目前商业JVM中GC完整流程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -347,7 +372,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">74</span>
+          <span class="site-state-item-count">86</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -360,7 +385,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">54</span>
+        <span class="site-state-item-count">56</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -404,12 +429,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">304k</span>
+    <span title="站点总字数">376k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">4:36</span>
+    <span title="站点阅读时长">5:42</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>

@@ -164,7 +164,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2019/03/27/git-merge-strategy/">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2020/01/21/algorithm-base-grap-2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -178,7 +178,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2019/03/27/git-merge-strategy/" class="post-title-link" itemprop="url">版本管理之Git分支合并方式和策略</a>
+            <a href="/2020/01/21/algorithm-base-grap-2/" class="post-title-link" itemprop="url">数据结构和算法-图论的拓扑排序</a>
         </h2>
 
         <div class="post-meta">
@@ -188,14 +188,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2019-03-27 09:47:58" itemprop="dateCreated datePublished" datetime="2019-03-27T09:47:58+08:00">2019-03-27</time>
+              <time title="创建时间：2020-01-21 16:12:03" itemprop="dateCreated datePublished" datetime="2020-01-21T16:12:03+08:00">2020-01-21</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-01-07 15:31:43" itemprop="dateModified" datetime="2022-01-07T15:31:43+08:00">2022-01-07</time>
+                <time title="修改时间：2022-01-18 08:58:29" itemprop="dateModified" datetime="2022-01-18T08:58:29+08:00">2022-01-18</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -218,272 +218,21 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="Merge和Rebase"><a href="#Merge和Rebase" class="headerlink" title="Merge和Rebase"></a>Merge和Rebase</h1><p>区别。参考<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/c17472d704a0">闲谈 git merge 与 git rebase 的区别</a></p>
-<ul>
-<li>merge 合并两个分支的Head；提交历史忠实地记录了实际发生过什么，关注点在真实的提交历史上面。</li>
-<li>rebase 提取当前分支的修改，将其复制在了目标分支的最新提交后面；反映了项目过程中发生了什么，关注点在开发过程上面</li>
-<li>区别。<code>merge</code>会保留当前分支的历史记录，而<code>rebase</code>会改动当前分支的历史记录。</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/03/27/git-merge-strategy/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2019/03/27/kotlin-reference-2019/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="章亮">
-      <meta itemprop="description" content="Developer For Android">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="永恒的码流">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/03/27/kotlin-reference-2019/" class="post-title-link" itemprop="url">文档-Kotlin Reference 2019</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-03-27 09:04:03" itemprop="dateCreated datePublished" datetime="2019-03-27T09:04:03+08:00">2019-03-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-01-07 15:32:07" itemprop="dateModified" datetime="2022-01-07T15:32:07+08:00">2022-01-07</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Kotlin-Reference"><a href="#Kotlin-Reference" class="headerlink" title="Kotlin Reference"></a>Kotlin Reference</h1><p>官方文档每年需要浏览一遍。<a target="_blank" rel="noopener" href="https://www.kotlincn.net/">Kotlin中文网</a>已经很全面了，更新也比较及时，这次主要看这个上的Reference，兼顾<a target="_blank" rel="noopener" href="https://kotlinlang.org/">官网</a>。</p>
-<p>需要注意的地方</p>
-<ul>
-<li>编码规范。与Java基本一致，需要注意的是Kotlin自己特有的语法糖，多看即可。</li>
-<li>泛型。PECS；Kotlin中数组是不型变的。</li>
-<li>委托。可使用可观察属性（observable properties）。</li>
-<li>作用域函数。一般使用<code>apply</code>和<code>let</code>即可。</li>
-<li>Java调用Kotlin。生成重载<code>@JvmOverloads</code>。</li>
-<li>待加强和研究的地方。并发、协程。</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/03/27/kotlin-reference-2019/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2019/02/20/android-audio-caption-extraction/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="章亮">
-      <meta itemprop="description" content="Developer For Android">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="永恒的码流">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/02/20/android-audio-caption-extraction/" class="post-title-link" itemprop="url">Android音频转文字</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-02-20 12:26:51" itemprop="dateCreated datePublished" datetime="2019-02-20T12:26:51+08:00">2019-02-20</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-01-07 15:25:31" itemprop="dateModified" datetime="2022-01-07T15:25:31+08:00">2022-01-07</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>本文介绍利用讯飞SDK实现音频转文字的流程</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/02/20/android-audio-caption-extraction/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2019/02/18/android-serializable-vs-parcelable/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="章亮">
-      <meta itemprop="description" content="Developer For Android">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="永恒的码流">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/02/18/android-serializable-vs-parcelable/" class="post-title-link" itemprop="url">Android序列化总结初步</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-02-18 14:57:23" itemprop="dateCreated datePublished" datetime="2019-02-18T14:57:23+08:00">2019-02-18</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-01-07 15:29:29" itemprop="dateModified" datetime="2022-01-07T15:29:29+08:00">2022-01-07</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>序列化概念请见<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%BA%8F%E5%88%97%E5%8C%96">wikipedia</a>。</p>
-<p>为什么需要序列化？</p>
+          <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>在图论中，由一个<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E6%9C%89%E5%90%91%E6%97%A0%E7%8E%AF%E5%9B%BE">有向无环图</a>的顶点组成的序列，当且仅当满足下列条件时，才能称为该<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%9B%BE">图</a>的一个拓扑排序（英语：Topological sorting）：</p>
 <ol>
-<li>IPC需要。多进程对应的是不同的内存区域，不能通过共享内存通信，因此传递数据的对象必须可序列化。</li>
-<li>持久化到本地和网络传输。</li>
+<li>序列中包含每个顶点，且每个顶点只出现一次；</li>
+<li>若A在序列中排在B的前面，则在图中不存在从B到A的<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E8%B7%AF%E5%BE%84_(%E5%9B%BE%E8%AE%BA)">路径</a>。</li>
 </ol>
+<p>当且仅当图中没有定向环时（即有向无环图），才有可能进行拓扑排序。有向无环图与拓扑排序互为充要条件。</p>
+<p>两个推论：</p>
+<ul>
+<li>如果图G存在环，则图G不存在拓扑排序。</li>
+<li>如果图G是有向无环图，则可能存在多个拓扑排序。</li>
+</ul>
+<p>求有向无环图的拓扑排序有两种方法：DFS 和 卡恩算法</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2019/02/18/android-serializable-vs-parcelable/#more" rel="contents">
+              <a class="btn" href="/2020/01/21/algorithm-base-grap-2/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -507,7 +256,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2019/01/19/android-developer-guide-2019/">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2020/01/21/algorithm-base-grap-guide/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -521,7 +270,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2019/01/19/android-developer-guide-2019/" class="post-title-link" itemprop="url">Android Developer Guide 2019</a>
+            <a href="/2020/01/21/algorithm-base-grap-guide/" class="post-title-link" itemprop="url">数据结构和算法-图论基础</a>
         </h2>
 
         <div class="post-meta">
@@ -531,262 +280,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2019-01-19 09:13:38" itemprop="dateCreated datePublished" datetime="2019-01-19T09:13:38+08:00">2019-01-19</time>
+              <time title="创建时间：2020-01-21 15:12:03" itemprop="dateCreated datePublished" datetime="2020-01-21T15:12:03+08:00">2020-01-21</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-01-07 15:28:25" itemprop="dateModified" datetime="2022-01-07T15:28:25+08:00">2022-01-07</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>温故知新，官方文档每年都应该读一遍。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/01/19/android-developer-guide-2019/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2019/01/15/android-drawable-density-adaptation/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="章亮">
-      <meta itemprop="description" content="Developer For Android">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="永恒的码流">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/01/15/android-drawable-density-adaptation/" class="post-title-link" itemprop="url">Drawable分辨率适配</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-01-15 15:10:24" itemprop="dateCreated datePublished" datetime="2019-01-15T15:10:24+08:00">2019-01-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-01-07 15:28:40" itemprop="dateModified" datetime="2022-01-07T15:28:40+08:00">2022-01-07</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>定义了不同的<code>drawable-***dpi</code>的文件夹，但只在其中某些里面放置了图片，比如在<code>drawable-xhdpi</code>里放置了图片，其他的文件夹里没有放置图片，那么非xhdpi的设配如何适配图片资源？如何定位图片以及如何显示？</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/01/15/android-drawable-density-adaptation/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2019/01/14/2019-01-14-android-mipmap-drawable-difference/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="章亮">
-      <meta itemprop="description" content="Developer For Android">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="永恒的码流">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/01/14/2019-01-14-android-mipmap-drawable-difference/" class="post-title-link" itemprop="url">Drawable和Mipmap资源的区别</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-01-14 11:25:12" itemprop="dateCreated datePublished" datetime="2019-01-14T11:25:12+08:00">2019-01-14</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-01-10 15:19:12" itemprop="dateModified" datetime="2022-01-10T15:19:12+08:00">2022-01-10</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h1><p>在apk安装的时候，<code>mipmap-xxx/</code>下的所有分辨率的图片都会保留，而<code>drawablexxx/</code>下的图片只有保留适配设备分辨率的图片，其余图片会丢弃掉，减少了APP安装大小。</p>
-<blockquote>
-<p>It’s best practice to place your app icons in <code>mipmap-</code> folders (not the <code>drawable-</code>folders) because they are used at resolutions different from the device’s current density。——from <a target="_blank" rel="noopener" href="https://android-developers.googleblog.com/2014/10/getting-your-apps-ready-for-nexus-6-and.html">Android Developers Blog</a></p>
-<p>Using a mipmap as the source for your bitmap or drawable is a simple way to provide a quality image and various image scales, which can be particularly useful if you expect your image to be scaled during an animation. ——from <a target="_blank" rel="noopener" href="https://developer.android.com/about/versions/android-4.3">android-4.3</a></p>
-<p> if you are building different versions of your app for different densities, you should know about the “mipmap” resource directory.  This is exactly like “drawable” resources, except it does not participate in density stripping when creating the different apk targets. ——from <a target="_blank" rel="noopener" href="https://plus.google.com/+DianneHackborn/posts/QTA9McYan1L">Google+ Message</a></p>
-</blockquote>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/01/14/2019-01-14-android-mipmap-drawable-difference/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2019/01/07/tools-mac/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="章亮">
-      <meta itemprop="description" content="Developer For Android">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="永恒的码流">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/01/07/tools-mac/" class="post-title-link" itemprop="url">效率-Mac技巧</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-01-07 10:17:08" itemprop="dateCreated datePublished" datetime="2019-01-07T10:17:08+08:00">2019-01-07</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-01-07 15:39:36" itemprop="dateModified" datetime="2022-01-07T15:39:36+08:00">2022-01-07</time>
+                <time title="修改时间：2022-01-18 08:58:29" itemprop="dateModified" datetime="2022-01-18T08:58:29+08:00">2022-01-18</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -809,94 +310,35 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="命令行方式打开文件"><a href="#命令行方式打开文件" class="headerlink" title="命令行方式打开文件"></a>命令行方式打开文件</h1><p>执行两条命令即可，以“Sublime Text” APP为例： </p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 设置命令 sublime</span></span><br><span class="line">$ <span class="built_in">echo</span> <span class="string">&quot;open -a &#x27;Sublime Text&#x27; \$*&quot;</span> &gt; /usr/<span class="built_in">local</span>/bin/sublime</span><br><span class="line">$ chmod +x /usr/<span class="built_in">local</span>/bin/sublime</span><br><span class="line"><span class="comment"># 用 sublime 打开文件</span></span><br><span class="line">$ sublime readme</span><br></pre></td></tr></table></figure>
-
-<p>其实质是使用<code>open</code>命令以某个APP打开文件。 </p>
-<blockquote>
-<p>注意：应用名称”Sublime Text”取自”Applications/“文件夹下的对应的应用名称，无后缀名。</p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2018/12/21/2018-12-21-KotlinForAndroidDevelopersBook/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="章亮">
-      <meta itemprop="description" content="Developer For Android">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="永恒的码流">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/12/21/2018-12-21-KotlinForAndroidDevelopersBook/" class="post-title-link" itemprop="url">Android开发者的Kotlin入门指南</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-12-21 08:43:10" itemprop="dateCreated datePublished" datetime="2018-12-21T08:43:10+08:00">2018-12-21</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-01-07 15:37:00" itemprop="dateModified" datetime="2022-01-07T15:37:00+08:00">2022-01-07</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>这是一个本为Android开发者写的Kotlin入门书籍，适合想入门kotlin或使用还不够熟练的Android开发者们，可以让他们少走很多弯路。我已经使用Kotlin开发Android已有一年多了，快读读完后依旧有所收获。</p>
+          <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>图（Grap）是用来对对象之间的成对关系建模的数学结构，由”节点”或”顶点”(Vertex）以及连接这些顶点的”边”（Edge）组成。</p>
+<p>图包含一个有限（可能是可变的）的集合作为节点集合，以及一个无序对（对应无向图）或有序对（对应有向图）的集合作为边（有向图中也称作弧）的集合。</p>
+<p>图的数据结构还可能包含和每条边相关联的数值（edge value），例如一个标号或一个数值（即权重，weight；表示花费、容量、长度等），表示加权图。</p>
+<p><strong>图的分类</strong></p>
 <ul>
-<li>英文原版：<a target="_blank" rel="noopener" href="https://leanpub.com/kotlin-for-android-developers">官网书籍地址</a>、<a target="_blank" rel="noopener" href="https://book.douban.com/subject/26916501/">豆瓣地址</a></li>
-<li>中文版：貌似还没有正式出版的中文版，只找到<a target="_blank" rel="noopener" href="https://wangjiegulu.gitbooks.io/kotlin-for-android-developers-zh/content/">Gitbook版本-《Kotlin for android developers》中文版翻译</a></li>
+<li>无向图和有向图。</li>
+<li>无权图和有权图。每条边是否有相关联的数值，有的话就是有权图，否则就是无权图。</li>
+</ul>
+<p><strong>图的连通性</strong></p>
+<p>在图论中，连通图基于连通的概念。在一个无向图 G 中，若从顶点 i 到顶点 j 有路径相连（当然从j到i也一定有路径），则称 i 和 j 是连通的。如果 G 是有向图，那么连接i和j的路径中所有的边都必须同向。如果图中任意两点都是连通的，那么图被称作连通图。如果此图是有向图，则称为强连通图（注意：需要双向都有路径）。图的连通性是图的基本性质。</p>
+<p><strong>完全图：</strong>完全是一个简单的无向图，其中每对不同的顶点之间都恰连有一条边相连。</p>
+<p><strong>自环边：</strong>一条边的起点终点是一个点。</p>
+<p><strong>平行边：</strong>两个顶点之间存在多条边相连接。</p>
+<p><strong>节点的度</strong></p>
+<p>无向图中，节点的度（英语：degree或valency）表示该节点作为一个端点的边的数目。</p>
+<p>有向图中，分别为节点的入度和出度</p>
+<ul>
+<li>入度：（英语：in-degree）是指终点为该节点的边的数量。</li>
+<li>出度：（英语：out-degree）是指起点为该节点的边的数量。</li>
+</ul>
+<p><strong>路径和回路</strong></p>
+<ul>
+<li>路径。无论是无向图还是有向图，从一个顶点到另一顶点途径的所有顶点组成的序列（包含这两个顶点），称为一条路径。若路径中各顶点都不重复，此路径又被称为”简单路径”。</li>
+<li>回路或环。如果路径中第一个顶点和最后一个顶点相同，则此路径称为”回路”（或”环”）。同样，若回路中的顶点互不重复，此回路被称为”简单回路”（或简单环）。</li>
+<li>路径长度。是指一条路径上经过的边的数量。</li>
 </ul>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2018/12/21/2018-12-21-KotlinForAndroidDevelopersBook/#more" rel="contents">
+              <a class="btn" href="/2020/01/21/algorithm-base-grap-guide/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -920,7 +362,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2018/12/20/android-programming-the-big-nerd-ranch-guide-2rd-edition/">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2020/01/19/algorithm-base-disjoint-set-data/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -934,7 +376,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2018/12/20/android-programming-the-big-nerd-ranch-guide-2rd-edition/" class="post-title-link" itemprop="url">Android编程权威指南第2版</a>
+            <a href="/2020/01/19/algorithm-base-disjoint-set-data/" class="post-title-link" itemprop="url">数据结构和算法-并查集</a>
         </h2>
 
         <div class="post-meta">
@@ -944,14 +386,325 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2018-12-20 06:57:46" itemprop="dateCreated datePublished" datetime="2018-12-20T06:57:46+08:00">2018-12-20</time>
+              <time title="创建时间：2020-01-19 15:12:03" itemprop="dateCreated datePublished" datetime="2020-01-19T15:12:03+08:00">2020-01-19</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-01-07 15:29:18" itemprop="dateModified" datetime="2022-01-07T15:29:18+08:00">2022-01-07</time>
+                <time title="修改时间：2022-01-18 08:58:29" itemprop="dateModified" datetime="2022-01-18T08:58:29+08:00">2022-01-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%85%B6%E4%BB%96/" itemprop="url" rel="index"><span itemprop="name">其他</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>并查集（英文：Disjoint-set data structure，直译为不交集数据结构），用于处理一些不交集（Disjoint sets，一系列没有重复元素的集合）的合并及查询问题。并查集支持如下操作：</p>
+<ul>
+<li>查询：查询某个元素属于哪个集合，通常是返回集合内的一个“代表元素”（一般为根节点）。这个操作是为了判断两个元素是否在同一个集合之中。</li>
+<li>合并：将两个集合合并为一个。</li>
+<li>添加：添加一个新集合，其中有一个新元素。添加操作不如查询和合并操作重要，常常被忽略</li>
+</ul>
+<p>由于支持查询和合并这两种操作，并查集在英文中也被称为联合-查找数据结构（Union-find data structure）或者合并-查找集合（Merge-find set）。</p>
+<p>一般来说，“并查集”特指其中最常见的一种实现：不交集森林（Disjoint-set forest）。经过优化的不交集森林有线性的空间复杂度，以及接近常数的单次操作平均时间复杂度，是效率最高的常见数据结构之一。</p>
+<p>并查集是用于计算最小生成树的克鲁斯克尔算法中的关键。由于最小生成树在网络路由等场景下十分重要，并查集也得到了广泛的引用。此外，并查集在符号计算，寄存器分配等方面也有应用。</p>
+<p>具体适用场景：凡是涉及到元素的分组管理问题，都可以考虑使用并查集进行维护。</p>
+<ul>
+<li>维护无向图的连通性：支持判断两个点是否在同一连通块内。</li>
+<li>判断增加一条边是否会产生环：用在求解最小生成树的Kruskal算法里。</li>
+</ul>
+<h1 id="不交集森林"><a href="#不交集森林" class="headerlink" title="不交集森林"></a>不交集森林</h1><h2 id="表示"><a href="#表示" class="headerlink" title="表示"></a><strong>表示</strong></h2><p>不交集森林把每一个集合以一棵树表示，每一个节点即是一个元素。节点保存着到它的父节点的<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%BC%95%E7%94%A8">引用</a>，树的根节点则保存一个空引用或者到自身的引用或者其他无效值，以表示自身为根节点。</p>
+<h2 id="添加（初始化）"><a href="#添加（初始化）" class="headerlink" title="添加（初始化）"></a><strong>添加（初始化）</strong></h2><p>添加操作<code>MakeSet(x)</code>添加一个元素<code>x</code>，这个元素单独属于一个仅有它自己的集合。在不交集森林中，添加操作仅需将元素标记为根节点。用伪代码表示如下：</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">function <span class="title">MakeSet</span><span class="params">(x)</span></span></span><br><span class="line"><span class="function">     x.parent :=</span> x</span><br><span class="line">end function</span><br></pre></td></tr></table></figure>
+
+<p>在经过优化的不交集森林中，添加操作还会初始化一些有关节点的信息，例如集合的大小或者秩。</p>
+<h2 id="查询（带路径压缩优化）"><a href="#查询（带路径压缩优化）" class="headerlink" title="查询（带路径压缩优化）"></a><strong>查询（带路径压缩优化）</strong></h2><p>在不交集森林中，每个集合的代表即是集合的根节点。查询操作<code>Find(x)</code>从<code>x</code>开始，根据节点到父节点的引用向根行进，直到找到根节点。用伪代码表示如下：</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">function <span class="title">Find</span><span class="params">(x)</span></span></span><br><span class="line"><span class="function">		<span class="keyword">if</span> x.parent </span>= <span class="function">x then</span></span><br><span class="line"><span class="function">				<span class="keyword">return</span> x</span></span><br><span class="line"><span class="function">		<span class="keyword">else</span> </span></span><br><span class="line"><span class="function">				<span class="keyword">return</span> <span class="title">Find</span><span class="params">(x.parent)</span></span></span><br><span class="line"><span class="function">		end <span class="keyword">if</span></span></span><br><span class="line"><span class="function">end function</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>路径压缩优化</strong></p>
+<p>在集合很大或者树很不平衡时，上述代码的效率很差，最坏情况下（树退化成一条链时），单次查询的时间复杂度高达O(n)。一个常见的优化是路径压缩：在查询时，把被查询的节点到根节点的路径上的所有节点的父节点设置为根结点，从而减小树的高度。也就是说，在向上查询的同时，把在路径上的每个节点都直接连接到根上，以后查询时就能直接查询到根节点。注意，这仅仅只是压缩了某一个路径上的节点。用伪代码表示如下：</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">function <span class="title">Find</span><span class="params">(x)</span></span></span><br><span class="line"><span class="function">     <span class="keyword">if</span> x.parent </span>= x then</span><br><span class="line">         <span class="keyword">return</span> x</span><br><span class="line">     <span class="keyword">else</span></span><br><span class="line">         x.parent := <span class="built_in">Find</span>(x.parent)</span><br><span class="line">         <span class="keyword">return</span> x.parent</span><br><span class="line">     end <span class="keyword">if</span></span><br><span class="line"> end function</span><br></pre></td></tr></table></figure>
+
+<h2 id="合并（按大小或按秩合并）"><a href="#合并（按大小或按秩合并）" class="headerlink" title="合并（按大小或按秩合并）"></a>合并（按大小或按秩合并）</h2><p>合并操作<code>Union(x, y)</code>把元素<code>x</code>所在的集合与元素<code>y</code>所在的集合合并为一个。合并操作首先找出节点<code>x</code>与节点<code>y</code>对应的两个根节点，如果两个根节点其实是同一个，则说明元素<code>x</code>与元素<code>y</code>已经位于同一个集合中，否则，使其中一个根节点成为另一个的父节点。</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 普通合并</span></span><br><span class="line"><span class="function">function <span class="title">Union</span><span class="params">(x, y)</span></span></span><br><span class="line"><span class="function">     xRoot :=</span> <span class="built_in">Find</span>(x)</span><br><span class="line">     yRoot := <span class="built_in">Find</span>(y)</span><br><span class="line">     </span><br><span class="line">     <span class="keyword">if</span> xRoot ≠ yRoot then</span><br><span class="line">         xRoot.parent := yRoot</span><br><span class="line">     end <span class="keyword">if</span></span><br><span class="line"> end function</span><br></pre></td></tr></table></figure>
+
+<p><strong>按秩合并优化</strong></p>
+<p>上述代码的问题在于，可能会使得树不平衡，增大树的深度，从而增加查询的耗时。一个控制树的深度的办法是，在合并时，比较两棵树的大小，较大的一棵树的根节点成为合并后的树的根节点，较小的一棵树的根节点则成为前者的子节点。判断树的大小有两种常用的方法，一个是以树中元素的数量作为树的大小，这被称为<strong>按大小合并</strong>。另一种做法则是使用“秩”来比较树的大小。”秩“的定义如下：</p>
+<ul>
+<li>只有根节点的树（即只有一个元素的集合），秩为0；</li>
+<li>当两棵秩不同的树合并后，新的树的秩为原来两棵树的秩的较大者；</li>
+<li>当两棵秩相同的树合并后，新的树的秩为原来的树的秩加一。</li>
+</ul>
+<p>容易发现，在没有路径压缩优化时，树的秩等于树的深度减一。在有路径压缩优化时，树的秩仍然能反映出树的深度和大小。在合并时根据两棵树的秩的大小，决定新的根节点，这被称作<strong>按秩合并</strong>。用伪代码表示如下：</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">function <span class="title">MakeSet</span><span class="params">(x)</span></span></span><br><span class="line"><span class="function">     x.parent :=</span> x</span><br><span class="line">     x.rank := <span class="number">0</span></span><br><span class="line"> end function</span><br><span class="line"> </span><br><span class="line"> function <span class="built_in">Union</span>(x, y)</span><br><span class="line">     xRoot := <span class="built_in">Find</span>(x)</span><br><span class="line">     yRoot := <span class="built_in">Find</span>(y)</span><br><span class="line">     </span><br><span class="line">     <span class="keyword">if</span> xRoot ≠ yRoot then</span><br><span class="line">         <span class="keyword">if</span> xRoot.rank &lt; yRoot.rank then</span><br><span class="line">             large := yRoot</span><br><span class="line">             small := xRoot</span><br><span class="line">         <span class="keyword">else</span></span><br><span class="line">             large := xRoot</span><br><span class="line">             small := yRoot</span><br><span class="line">         end <span class="keyword">if</span></span><br><span class="line">         </span><br><span class="line">         small.parent := large</span><br><span class="line">         <span class="keyword">if</span> large.rank = small.rank then</span><br><span class="line">             large.rank := large.rank + <span class="number">1</span></span><br><span class="line">         end <span class="keyword">if</span></span><br><span class="line">     end <span class="keyword">if</span></span><br><span class="line"> end function</span><br></pre></td></tr></table></figure>
+
+<p>只有根节点的rank有意义，非根节点的rank是没有意义的。</p>
+<h3 id="时间及空间复杂度"><a href="#时间及空间复杂度" class="headerlink" title="时间及空间复杂度"></a>时间及空间复杂度</h3><p><strong>空间复杂度：</strong>容易看出，不交集森林的空间复杂度是$O(n)</p>
+<p>空间复杂度：对于同时使用路径压缩和按秩合并优化的不交集森林，每个查询和合并操作的平均时间复杂度仅为<em>O(\alpha(n))<em>，$\alpha(n)$是反阿克曼函数。由于阿克曼函数$A$增加极度迅速，所以$\alpha(n)$增长极度缓慢，对于任何在实践中有意义的元素数目</em>n</em>，$\alpha(n)$均小于5，因此，也可以粗略地认为，并查集的操作有常数的时间复杂度。</p>
+<h1 id="示例-省份数量"><a href="#示例-省份数量" class="headerlink" title="示例-省份数量"></a>示例-省份数量</h1><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/number-of-provinces/">547. 省份数量</a></p>
+<p>有 n 个城市，其中一些彼此相连，另一些没有相连。如果城市 a 与城市 b 直接相连，且城市 b 与城市 c 直接相连，那么城市 a 与城市 c 间接相连。</p>
+<p>省份 是一组直接或间接相连的城市，组内不含其他没有相连的城市。</p>
+<p>给你一个 n x n 的矩阵 isConnected ，其中 isConnected[i][j] = 1 表示第 i 个城市和第 j 个城市直接相连，而 isConnected[i][j] = 0 表示二者不直接相连。</p>
+<p>返回矩阵中 省份 的数量。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">findCircleNum</span><span class="params">(<span class="keyword">int</span>[][] isConnected)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = isConnected.length;</span><br><span class="line">        <span class="comment">// 初始化</span></span><br><span class="line">        UnionFind uf = <span class="keyword">new</span> UnionFind(n);</span><br><span class="line">        <span class="comment">// 遍历两个点之间的关系，做处理</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i ++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = i + <span class="number">1</span>; j &lt; n; j ++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (isConnected[i][j] == <span class="number">1</span>) &#123;</span><br><span class="line">                    uf.union(i, j);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> uf.size;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 并查集对象</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UnionFind</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 每个节点对应的父节点</span></span><br><span class="line">    <span class="keyword">int</span>[] parent;</span><br><span class="line">    <span class="comment">// 不交集个数</span></span><br><span class="line">    <span class="keyword">int</span> size;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">UnionFind</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 初始化：n个不交集</span></span><br><span class="line">        parent = <span class="keyword">new</span> <span class="keyword">int</span>[n];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i ++) &#123;</span><br><span class="line">            parent[i] = i;</span><br><span class="line">        &#125;</span><br><span class="line">        size = n;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 查找：带路径压缩优化</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">find</span><span class="params">(<span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (parent[index] != index) &#123;</span><br><span class="line">            parent[index] = find(parent[index]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> parent[index];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 普通合并</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">union</span><span class="params">(<span class="keyword">int</span> p, <span class="keyword">int</span> q)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> pRoot = find(p);</span><br><span class="line">        <span class="keyword">int</span> qRoot = find(q);</span><br><span class="line">        <span class="keyword">if</span> (pRoot != qRoot) &#123;</span><br><span class="line">            parent[pRoot] = qRoot;</span><br><span class="line">            size --;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="示例：连通网络的操作次数"><a href="#示例：连通网络的操作次数" class="headerlink" title="示例：连通网络的操作次数"></a>示例：连通网络的操作次数</h1><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/number-of-operations-to-make-network-connected/">1319. 连通网络的操作次数</a></p>
+<p>用以太网线缆将 n 台计算机连接成一个网络，计算机的编号从 0 到 n-1。线缆用 connections 表示，其中 connections[i] = [a, b] 连接了计算机 a 和 b。</p>
+<p>网络中的任何一台计算机都可以通过网络直接或者间接访问同一个网络中其他任意一台计算机。</p>
+<p>给你这个计算机网络的初始布线 connections，你可以拔开任意两台直连计算机之间的线缆，并用它连接一对未直连的计算机。请你计算并返回使所有计算机都连通所需的最少操作次数。如果不可能，则返回 -1 。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">makeConnected</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span>[][] connections)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 并查集</span></span><br><span class="line">        <span class="comment">// 连接数小于n-1的必定不能链接，返回-1</span></span><br><span class="line">        <span class="comment">// 连接数大约等于n-1的必定能链接，链接操作数等于不交集个数-1</span></span><br><span class="line">        <span class="comment">// 遍历连接数，合并</span></span><br><span class="line">        <span class="keyword">int</span> m = connections.length;</span><br><span class="line">        <span class="keyword">if</span> (m &lt; n - <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        UnionFind nf = <span class="keyword">new</span> UnionFind(n);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; m; i ++) &#123;</span><br><span class="line">            nf.union(connections[i][<span class="number">0</span>], connections[i][<span class="number">1</span>]);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> nf.size - <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UnionFind</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 数组值为父节点</span></span><br><span class="line">    <span class="keyword">int</span>[] parent;</span><br><span class="line">    <span class="comment">// 秩</span></span><br><span class="line">    <span class="keyword">int</span>[] rank;</span><br><span class="line">    <span class="comment">// 不交集个数</span></span><br><span class="line">    <span class="keyword">int</span> size;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">UnionFind</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        parent = <span class="keyword">new</span> <span class="keyword">int</span>[n];</span><br><span class="line">        rank = <span class="keyword">new</span> <span class="keyword">int</span>[n];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i ++) &#123;</span><br><span class="line">            parent[i] = i;</span><br><span class="line">            rank[i] = <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        size = n;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">find</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (parent[x] == x) &#123;</span><br><span class="line">            <span class="keyword">return</span> x;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            parent[x] = find(parent[x]);</span><br><span class="line">            <span class="keyword">return</span> parent[x];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">union</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> xRoot = find(x);</span><br><span class="line">        <span class="keyword">int</span> yRoot = find(y);</span><br><span class="line">        <span class="keyword">if</span> (xRoot == yRoot) &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (rank[xRoot] &lt; rank[yRoot]) &#123;</span><br><span class="line">            parent[xRoot] = yRoot;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (rank[xRoot] &gt; rank[yRoot])&#123;</span><br><span class="line">            parent[yRoot] = xRoot;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (rank[xRoot] == rank[yRoot]) &#123;</span><br><span class="line">            parent[yRoot] = xRoot;</span><br><span class="line">            rank[xRoot] = rank[xRoot] + <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        size --;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="相关题目"><a href="#相关题目" class="headerlink" title="相关题目"></a>相关题目</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/number-of-provinces/">547. 省份数量</a></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/regions-cut-by-slashes/">959. 由斜杠划分区域</a>，二维点格一维话，将点格分为四个部分</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/number-of-operations-to-make-network-connected/">1319. 连通网络的操作次数</a></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/smallest-string-with-swaps/">1202. 交换字符串中的元素</a>，并查集，优先队列</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/redundant-connection/">684. 冗余连接</a></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/most-stones-removed-with-same-row-or-column/">947. 移除最多的同行或同列石头</a>，按点合并，或按边合并（一个点代表两个边）</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/accounts-merge/">721. 账户合并</a>，字符串映射为整数，再做处理</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/evaluate-division/">399. 除法求值</a>，带权并查集</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/couples-holding-hands/">765. 情侣牵手</a>，理解题意，逐步推导</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/bricks-falling-when-hit/">803. 打砖块</a></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/swim-in-rising-water/">778. 水位上升的泳池中游泳</a></li>
+</ul>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-cn/%E5%B9%B6%E6%9F%A5%E9%9B%86">维基百科-并查集</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/93647900">三方笔记-并查集</a></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2020/01/18/algorithm-base-binary-tree/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/01/18/algorithm-base-binary-tree/" class="post-title-link" itemprop="url">数据结构和算法-二叉树</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-01-18 15:12:03" itemprop="dateCreated datePublished" datetime="2020-01-18T15:12:03+08:00">2020-01-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-01-18 08:58:29" itemprop="dateModified" datetime="2022-01-18T08:58:29+08:00">2022-01-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%85%B6%E4%BB%96/" itemprop="url" rel="index"><span itemprop="name">其他</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>树形结构包括：线段树、自平衡二叉查找树、B树、二叉树、AA树、AVL树、红黑树、平衡树、伸展树、二叉查找树、堆、二叉堆、左偏树、二项堆、斐波那契堆、R树、R*树、R+树、Hilbert R树、前缀树、哈希树、图等等。本章介绍最基本的二叉树，其他所有的树都能转变为二叉树处理。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/01/18/algorithm-base-binary-tree/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2020/01/16/algorithm-base-guide/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/01/16/algorithm-base-guide/" class="post-title-link" itemprop="url">数据结构和算法-概览</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-01-16 15:12:03" itemprop="dateCreated datePublished" datetime="2020-01-16T15:12:03+08:00">2020-01-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-01-18 08:58:29" itemprop="dateModified" datetime="2022-01-18T08:58:29+08:00">2022-01-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%85%B6%E4%BB%96/" itemprop="url" rel="index"><span itemprop="name">其他</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p><strong>数据结构</strong></p>
+<p>数据结构的存储方式只有两种：数组（顺序存储）和链表（链式存储），其他的都可以用这两者来实现，比如队列、栈、图、散列表、树等。</p>
+<p>数据结构的遍历和访问：线性方式即迭代，非线性方式即递归（或队列栈加迭代）。</p>
+<p><strong>算法</strong></p>
+<p>核心在于穷举，然后剪枝。剪枝可利用记录表。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/01/16/algorithm-base-guide/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2019/11/15/android-tbs-problem/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/11/15/android-tbs-problem/" class="post-title-link" itemprop="url">Android集成TBS填坑记录</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-11-15 09:01:50" itemprop="dateCreated datePublished" datetime="2019-11-15T09:01:50+08:00">2019-11-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-01-07 15:30:05" itemprop="dateModified" datetime="2022-01-07T15:30:05+08:00">2022-01-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -974,11 +727,373 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>优秀的Android开发入门书籍，对于有几年开发经验的开发人员来说，也值得一读。</p>
-<p>比较基础，读得很快，说一下日常开发容易忽视的地方。</p>
+          <p>最近得空，记录下这几月Android开发中遇到的坑。</p>
+<p>这篇文章主要记录集成腾讯浏览服务（TBS Tencent Browse Server）时遇到的问题以及解决方案。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2018/12/20/android-programming-the-big-nerd-ranch-guide-2rd-edition/#more" rel="contents">
+              <a class="btn" href="/2019/11/15/android-tbs-problem/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2019/05/15/android-build-07-gradle-advance/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/05/15/android-build-07-gradle-advance/" class="post-title-link" itemprop="url">Android构建07-进阶</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-05-15 14:51:42" itemprop="dateCreated datePublished" datetime="2019-05-15T14:51:42+08:00">2019-05-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-01-07 15:28:02" itemprop="dateModified" datetime="2022-01-07T15:28:02+08:00">2022-01-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="脚本和对象"><a href="#脚本和对象" class="headerlink" title="脚本和对象"></a>脚本和对象</h1><p>构建时，脚本文件会转化为对象；写脚本时不懂的地方查对应对象API即可。</p>
+<ul>
+<li><code>settings.gradle</code>会转化为<code>Settings</code>对象。</li>
+<li><code>build.gradle</code>会转化为<code>Project</code>对象。</li>
+<li>其他gradle文件，没有定义为class的，会转换为一个实现了<code>Script</code>接口的对象</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/05/15/android-build-07-gradle-advance/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2019/04/26/tools-alfred/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/04/26/tools-alfred/" class="post-title-link" itemprop="url">工具-Alfred</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-04-26 16:06:15" itemprop="dateCreated datePublished" datetime="2019-04-26T16:06:15+08:00">2019-04-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-29 09:13:08" itemprop="dateModified" datetime="2021-06-29T09:13:08+08:00">2021-06-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%85%B6%E4%BB%96/" itemprop="url" rel="index"><span itemprop="name">其他</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>入门</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://louiszhai.github.io/2018/05/31/alfred/#5-%E5%BF%AB%E6%8D%B7%E7%BD%91%E9%A1%B5%E6%90%9C%E7%B4%A2">Alfred神器使用手册</a></li>
+</ul>
+<p>Workflow</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/wensonsmith/YoudaoTranslate">Alfred Youdao Translate Workflow</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/gharlan/alfred-github-workflow">GitHub Workflow for Alfred 3</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.packal.org/workflow/colors">Colors</a></li>
+</ul>
+<p>参考</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/zenorocha/alfred-workflows">workflows集合</a></li>
+<li>Packal](<a target="_blank" rel="noopener" href="http://www.packal.org/">http://www.packal.org/</a>)</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2019/04/11/android-source-not-match/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/04/11/android-source-not-match/" class="post-title-link" itemprop="url">Android源码与字节码不匹配问题</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-04-11 17:50:17" itemprop="dateCreated datePublished" datetime="2019-04-11T17:50:17+08:00">2019-04-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-01-07 15:29:56" itemprop="dateModified" datetime="2022-01-07T15:29:56+08:00">2022-01-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>在调试应用时经常会碰到如下提示：</p>
+<blockquote>
+<p>source code does not match the bytecode （源码与字节码不匹配）</p>
+</blockquote>
+<p>一般发生在调试的手机或模拟器运行的SDK版本与应用编译版本<code>compileSdkVersion</code>不一致导致的。比如你的手机Android版本是7.1.1即SDK版本为25，而你的IDE配置的<code>compileSdkVersion</code>不是25而是其他的，比如28，那么在调试的过程中，跟随断点进入Android源码时，就会出现以上提示。而此时一般是没法定位具体代码的。</p>
+<p>这是其实Android Studio的Bug，详见：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://issuetracker.google.com/issues/37123373">Source Code does not match the bytecode</a></li>
+<li><a target="_blank" rel="noopener" href="https://issuetracker.google.com/issues/37058409">Debug android sources always default to compileSdkVersion and not the version on the running emulator/device</a></li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/04/11/android-source-not-match/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2019/04/11/android-modularization/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/04/11/android-modularization/" class="post-title-link" itemprop="url">Android组件化实践</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-04-11 09:02:21" itemprop="dateCreated datePublished" datetime="2019-04-11T09:02:21+08:00">2019-04-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-01-07 15:29:07" itemprop="dateModified" datetime="2022-01-07T15:29:07+08:00">2022-01-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="导引"><a href="#导引" class="headerlink" title="导引"></a>导引</h1><p>主要参考以下两种组件化方案</p>
+<p> <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/45374964">知乎 Android 客户端组件化实践</a></p>
+<ul>
+<li>多工程多仓库。主工程通过 aar 依赖各个组件。</li>
+<li>组件划分：主工程、业务组件（完整业务）、基础组件（基础业务）、基础SDK（业务无关）</li>
+<li>组件解耦：公用代码处理、初始化（任务依赖）、通信（路由、接口、EventBus、组件 API 模块）。</li>
+<li>组件半自动拆分。</li>
+<li>联合编译完整包。动态引入组件。</li>
+<li>包含子业务线的组件的处理。子业务模块独立配置、编译和运行，组合发布。</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/59245063">网易友品 Android 客户端组件化演进</a></p>
+<ul>
+<li>通信：路由、服务和全局通知</li>
+<li>路由。公共路由表、注解路由地址</li>
+<li>接口。</li>
+<li>拆分流程：建Module -&gt; 移动业务代码到Module -&gt; 根据编译报错修改 -&gt; 接口解耦 -&gt; 配置独立编译功能。</li>
+<li>组件库的独立发布和维护；本地开发调试模式，开发时使用本地Module依赖，发布时使用远程ARR依赖。</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/04/11/android-modularization/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1001,7 +1116,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1069,7 +1184,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">74</span>
+          <span class="site-state-item-count">86</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1082,7 +1197,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">54</span>
+        <span class="site-state-item-count">56</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1126,12 +1241,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">304k</span>
+    <span title="站点总字数">376k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">4:36</span>
+    <span title="站点阅读时长">5:42</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>

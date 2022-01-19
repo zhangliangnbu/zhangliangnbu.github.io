@@ -164,87 +164,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2022/01/06/android-launcher-customized-layout-summarize/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="章亮">
-      <meta itemprop="description" content="Developer For Android">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="永恒的码流">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/01/06/android-launcher-customized-layout-summarize/" class="post-title-link" itemprop="url">拖拽和动画实践总结</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-01-06 15:10:09" itemprop="dateCreated datePublished" datetime="2022-01-06T15:10:09+08:00">2022-01-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-01-07 15:15:14" itemprop="dateModified" datetime="2022-01-07T15:15:14+08:00">2022-01-07</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android系统开发</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>之前参与了Launcher项目，负责样式的自定义布局部分。这部分主要涉及到的技术点是自定义布局和动画，难度适中，但略繁杂，其中有几个技术相关的难点记录如下。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/01/06/android-launcher-customized-layout-summarize/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2022/01/05/auto-base-guide/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -276,7 +195,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-01-07 15:15:37" itemprop="dateModified" datetime="2022-01-07T15:15:37+08:00">2022-01-07</time>
+                <time title="修改时间：2022-01-13 14:48:31" itemprop="dateModified" datetime="2022-01-13T14:48:31+08:00">2022-01-13</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -300,6 +219,70 @@
 
       
           <p>介绍实际车机开发中会用到的基础知识和概念，持续更新。</p>
+<h1 id="常见术语"><a href="#常见术语" class="headerlink" title="常见术语"></a>常见术语</h1><table>
+<thead>
+<tr>
+<th>简写</th>
+<th>全称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>BAT</td>
+<td>Battery</td>
+<td>蓄电池，BAT+一般表示电池有电状态</td>
+</tr>
+<tr>
+<td>ACC</td>
+<td>Accessory</td>
+<td>附件档，ACC-ON时可为部分车载附属设备供电，空调等除外。</td>
+</tr>
+<tr>
+<td>IGN</td>
+<td>Ignition</td>
+<td>点火档，IGN-ON时，可为所有设备供电，包括空调</td>
+</tr>
+<tr>
+<td>IVI</td>
+<td>In-Vehicle Infotainment</td>
+<td>车载娱乐信息系统，车机SoC是其中的核心部分</td>
+</tr>
+<tr>
+<td>HVAC</td>
+<td>Heating, Ventilation and Air Conditioning</td>
+<td>供热通风与空气调节，即空调</td>
+</tr>
+<tr>
+<td>DVR</td>
+<td>Drive Video Recorder</td>
+<td>行车记录仪</td>
+</tr>
+<tr>
+<td>HUD</td>
+<td>Head-Up Display</td>
+<td>抬头显示，在驾驶位正前方，一般与前车窗重合</td>
+</tr>
+<tr>
+<td>M-CAN</td>
+<td>Multimedia CAN</td>
+<td>多媒体CAN协议</td>
+</tr>
+<tr>
+<td>V-CAN</td>
+<td>Vehicle CAN</td>
+<td>车身CAN协议</td>
+</tr>
+<tr>
+<td>RVC / RVM</td>
+<td>Rear View Camera / Monitor</td>
+<td>后方车辆摄像头或监控，一般称为倒车影像，包括实时路况显示和雷达信息显示（距离）</td>
+</tr>
+<tr>
+<td>AVM</td>
+<td>Around View Monitor</td>
+<td>360度全景影像系统</td>
+</tr>
+</tbody></table>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2022/01/05/auto-base-guide/#more" rel="contents">
@@ -326,7 +309,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2022/01/05/auto-navi-ar-guide/">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2021/12/05/auto-navi-ar-guide/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -340,7 +323,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/01/05/auto-navi-ar-guide/" class="post-title-link" itemprop="url">车载AR导航开发</a>
+            <a href="/2021/12/05/auto-navi-ar-guide/" class="post-title-link" itemprop="url">车载AR导航开发</a>
         </h2>
 
         <div class="post-meta">
@@ -350,14 +333,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-01-05 11:05:42" itemprop="dateCreated datePublished" datetime="2022-01-05T11:05:42+08:00">2022-01-05</time>
+              <time title="创建时间：2021-12-05 11:05:42" itemprop="dateCreated datePublished" datetime="2021-12-05T11:05:42+08:00">2021-12-05</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-01-07 15:17:24" itemprop="dateModified" datetime="2022-01-07T15:17:24+08:00">2022-01-07</time>
+                <time title="修改时间：2022-01-14 11:11:38" itemprop="dateModified" datetime="2022-01-14T11:11:38+08:00">2022-01-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -383,7 +366,7 @@
           <p>本文档主要介绍利用某导航SDK开发AR导航的流程（获取并传递图片）和注意事项，基础导航、图像的检测、AR融合算法皆由SDK提供。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2022/01/05/auto-navi-ar-guide/#more" rel="contents">
+              <a class="btn" href="/2021/12/05/auto-navi-ar-guide/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -407,7 +390,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2021/12/27/auto-navigation-system-guide/">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2021/12/02/auto-navigation-system-guide/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -421,7 +404,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/12/27/auto-navigation-system-guide/" class="post-title-link" itemprop="url">车载导航系统概览</a>
+            <a href="/2021/12/02/auto-navigation-system-guide/" class="post-title-link" itemprop="url">车载导航系统概览</a>
         </h2>
 
         <div class="post-meta">
@@ -431,14 +414,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-12-27 17:27:42" itemprop="dateCreated datePublished" datetime="2021-12-27T17:27:42+08:00">2021-12-27</time>
+              <time title="创建时间：2021-12-02 17:27:42" itemprop="dateCreated datePublished" datetime="2021-12-02T17:27:42+08:00">2021-12-02</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-01-07 15:18:17" itemprop="dateModified" datetime="2022-01-07T15:18:17+08:00">2022-01-07</time>
+                <time title="修改时间：2022-01-14 11:12:06" itemprop="dateModified" datetime="2022-01-14T11:12:06+08:00">2022-01-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -464,7 +447,7 @@
           <p>之前做了基于某流行的导航SDK开发车机导航App的项目，现在做一个总结，仅仅总结与特定导航无关的基础知识和概念。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/12/27/auto-navigation-system-guide/#more" rel="contents">
+              <a class="btn" href="/2021/12/02/auto-navigation-system-guide/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -488,7 +471,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2021/12/23/android-ui-system-guide/">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2021/11/15/android-aosp-compile-flashing/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -502,7 +485,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/12/23/android-ui-system-guide/" class="post-title-link" itemprop="url">Android图形系统概览</a>
+            <a href="/2021/11/15/android-aosp-compile-flashing/" class="post-title-link" itemprop="url">Android10系统编译和烧录</a>
         </h2>
 
         <div class="post-meta">
@@ -512,266 +495,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-12-23 17:01:27" itemprop="dateCreated datePublished" datetime="2021-12-23T17:01:27+08:00">2021-12-23</time>
+              <time title="创建时间：2021-11-15 15:10:20" itemprop="dateCreated datePublished" datetime="2021-11-15T15:10:20+08:00">2021-11-15</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-01-07 15:19:34" itemprop="dateModified" datetime="2022-01-07T15:19:34+08:00">2022-01-07</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android系统开发</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>当我们调用<code>TextView.setTextColor()</code>之后，UI就会更新，这一过程是怎样的？本文通过较完整的视图绘制流程分析Android的图形系统。</p>
-<blockquote>
-<p>这里的绘制流程是指UI从数据更改触发到最终更新的流程。</p>
-</blockquote>
-<p>代码基于Android 10。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/12/23/android-ui-system-guide/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2021/12/20/android-activity-bind-ui-guide/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="章亮">
-      <meta itemprop="description" content="Developer For Android">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="永恒的码流">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/12/20/android-activity-bind-ui-guide/" class="post-title-link" itemprop="url">Activity绑定视图流程概览</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-12-20 15:59:11" itemprop="dateCreated datePublished" datetime="2021-12-20T15:59:11+08:00">2021-12-20</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-01-07 15:19:51" itemprop="dateModified" datetime="2022-01-07T15:19:51+08:00">2022-01-07</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android系统开发</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>我们在<code>Activity.onCreate()</code>方法里调用<code>setContentView()</code>方法后，待Activity处于RESUME状态时就会呈现视图。这一过程涉及到Activity的启动以及视图的创建和绘制，那么Activity是如何与视图(Window、View)产生联系或绑定在一起的？</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/12/20/android-activity-bind-ui-guide/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2021/12/17/android-activity-start-guide/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="章亮">
-      <meta itemprop="description" content="Developer For Android">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="永恒的码流">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/12/17/android-activity-start-guide/" class="post-title-link" itemprop="url">Andoird 10 Activity启动流程概览</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-12-17 15:49:34" itemprop="dateCreated datePublished" datetime="2021-12-17T15:49:34+08:00">2021-12-17</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-01-07 15:21:45" itemprop="dateModified" datetime="2022-01-07T15:21:45+08:00">2022-01-07</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android系统开发</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>基于Android 10 源码 。Activity启动分为两种：</p>
-<ul>
-<li>普通Activity启动：APP已经启动，一般在APP内从一个Activity启动另一个Activity。</li>
-<li>根Activity启动：也称为APP冷启动，App还没有启动，一般从Launcher界面启动。</li>
-</ul>
-<p>两者主流程基本一致，区别在于根Activity启动流程还包含启动APP进程和实例化Application的流程。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/12/17/android-activity-start-guide/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2021/12/15/android-aosp-compile-flashing/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="章亮">
-      <meta itemprop="description" content="Developer For Android">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="永恒的码流">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/12/15/android-aosp-compile-flashing/" class="post-title-link" itemprop="url">Android10系统编译和烧录</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-12-15 15:10:20" itemprop="dateCreated datePublished" datetime="2021-12-15T15:10:20+08:00">2021-12-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-01-07 15:22:29" itemprop="dateModified" datetime="2022-01-07T15:22:29+08:00">2022-01-07</time>
+                <time title="修改时间：2022-01-14 11:13:10" itemprop="dateModified" datetime="2022-01-14T11:13:10+08:00">2022-01-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -807,7 +538,7 @@
 </ul>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/12/15/android-aosp-compile-flashing/#more" rel="contents">
+              <a class="btn" href="/2021/11/15/android-aosp-compile-flashing/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -831,7 +562,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2021/12/09/android-jni-guide/">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2021/11/13/android-java-service-practice-guide/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -845,7 +576,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/12/09/android-jni-guide/" class="post-title-link" itemprop="url">JNI开发概览</a>
+            <a href="/2021/11/13/android-java-service-practice-guide/" class="post-title-link" itemprop="url">编写Android的Java系统服务</a>
         </h2>
 
         <div class="post-meta">
@@ -855,14 +586,351 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-12-09 17:14:28" itemprop="dateCreated datePublished" datetime="2021-12-09T17:14:28+08:00">2021-12-09</time>
+              <time title="创建时间：2021-11-13 17:55:19" itemprop="dateCreated datePublished" datetime="2021-11-13T17:55:19+08:00">2021-11-13</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-01-07 15:21:59" itemprop="dateModified" datetime="2022-01-07T15:21:59+08:00">2022-01-07</time>
+                <time title="修改时间：2022-01-14 11:16:15" itemprop="dateModified" datetime="2022-01-14T11:16:15+08:00">2022-01-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android系统开发</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h1><p>参考闹钟服务编写一个HelloWorldService服务，功能为打印字符串”Hello, World!”，然后基于编译后的系统，编写APP使用该服务。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/11/13/android-java-service-practice-guide/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2021/11/10/android-service-framwork-guide/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/11/10/android-service-framwork-guide/" class="post-title-link" itemprop="url">Android服务框架概览</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-11-10 17:59:47" itemprop="dateCreated datePublished" datetime="2021-11-10T17:59:47+08:00">2021-11-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-01-19 16:11:15" itemprop="dateModified" datetime="2022-01-19T16:11:15+08:00">2022-01-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android系统开发</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h1><p>Android服务框架包括Java服务框架（Java层）和本地服务框架（C++层），两层通过JNI交互。</p>
+<p>代码分析版本：Android 10</p>
+<h1 id="框架概览"><a href="#框架概览" class="headerlink" title="框架概览"></a>框架概览</h1><h2 id="静态分层结构"><a href="#静态分层结构" class="headerlink" title="静态分层结构"></a>静态分层结构</h2><p><img src="/images/android-service-framwork-structure.svg"></p>
+<p>说明：Android服务框架可分为四层</p>
+<ol>
+<li>服务层：包含特定功能函数的服务层。IFooService规定服务提供的函数，继承IInterface；FooManager引用IFooService；FooService继承Binder和IFooService。</li>
+<li>RPC层：客户端生成RPC代码和数据，服务端根据RPC代码查找对应函数并传递RPC数据。IFooService.Stub.Proxy持有BinderProxy引用，BinderProxy由用户检索服务时获得。IFooService.Stub为抽象类，由FooService或其成员实现。</li>
+<li>IPC层：将RPC代码和数据封装为Binder IPC数据，并传递给Binder Driver。</li>
+<li>Binder Driver层：根据Binder IPC数据查找指定服务并返回。</li>
+</ol>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/11/10/android-service-framwork-guide/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2021/11/07/android-update-ui-in-sub-thread/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/11/07/android-update-ui-in-sub-thread/" class="post-title-link" itemprop="url">探讨-如何在子线程直接刷新主线程的UI</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-11-07 15:18:11" itemprop="dateCreated datePublished" datetime="2021-11-07T15:18:11+08:00">2021-11-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-01-14 11:15:37" itemprop="dateModified" datetime="2022-01-14T11:15:37+08:00">2022-01-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>本文主要探讨如何在子线程中不通过Handler而直接更新主线程的UI的问题，仅探讨。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/11/07/android-update-ui-in-sub-thread/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2021/10/23/android-ui-system-guide/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/10/23/android-ui-system-guide/" class="post-title-link" itemprop="url">Android图形系统概览</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-10-23 17:01:27" itemprop="dateCreated datePublished" datetime="2021-10-23T17:01:27+08:00">2021-10-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-01-14 11:14:56" itemprop="dateModified" datetime="2022-01-14T11:14:56+08:00">2022-01-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android系统开发</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>当我们调用<code>TextView.setTextColor()</code>之后，UI就会更新，这一过程是怎样的？本文通过较完整的视图绘制流程分析Android的图形系统。</p>
+<blockquote>
+<p>这里的绘制流程是指UI从数据更改触发到最终更新的流程。</p>
+</blockquote>
+<p>代码基于Android 10。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/10/23/android-ui-system-guide/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2021/10/09/android-jni-guide/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/10/09/android-jni-guide/" class="post-title-link" itemprop="url">JNI开发概览</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-10-09 17:14:28" itemprop="dateCreated datePublished" datetime="2021-10-09T17:14:28+08:00">2021-10-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-01-14 11:15:17" itemprop="dateModified" datetime="2022-01-14T11:15:17+08:00">2022-01-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -892,7 +960,7 @@
 </blockquote>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/12/09/android-jni-guide/#more" rel="contents">
+              <a class="btn" href="/2021/10/09/android-jni-guide/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -916,7 +984,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2021/12/07/android-update-ui-in-sub-thread/">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2021/09/20/android-activity-bind-ui-guide/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -930,7 +998,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/12/07/android-update-ui-in-sub-thread/" class="post-title-link" itemprop="url">探讨-如何在子线程直接刷新主线程的UI</a>
+            <a href="/2021/09/20/android-activity-bind-ui-guide/" class="post-title-link" itemprop="url">Activity绑定视图流程概览</a>
         </h2>
 
         <div class="post-meta">
@@ -940,14 +1008,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-12-07 15:18:11" itemprop="dateCreated datePublished" datetime="2021-12-07T15:18:11+08:00">2021-12-07</time>
+              <time title="创建时间：2021-09-20 15:59:11" itemprop="dateCreated datePublished" datetime="2021-09-20T15:59:11+08:00">2021-09-20</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-01-07 15:21:25" itemprop="dateModified" datetime="2022-01-07T15:21:25+08:00">2022-01-07</time>
+                <time title="修改时间：2022-01-14 11:17:17" itemprop="dateModified" datetime="2022-01-14T11:17:17+08:00">2022-01-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -955,7 +1023,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
+                  <a href="/categories/Android%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android系统开发</span></a>
                 </span>
             </span>
 
@@ -970,10 +1038,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>本文主要探讨如何在子线程中不通过Handler而直接更新主线程的UI的问题，仅探讨。</p>
+          <p>我们在<code>Activity.onCreate()</code>方法里调用<code>setContentView()</code>方法后，待Activity处于RESUME状态时就会呈现视图。这一过程涉及到Activity的启动以及视图的创建和绘制，那么Activity是如何与视图(Window、View)产生联系或绑定在一起的？</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/12/07/android-update-ui-in-sub-thread/#more" rel="contents">
+              <a class="btn" href="/2021/09/20/android-activity-bind-ui-guide/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -996,7 +1064,7 @@
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1064,7 +1132,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">74</span>
+          <span class="site-state-item-count">86</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1077,7 +1145,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">54</span>
+        <span class="site-state-item-count">56</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1121,12 +1189,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">304k</span>
+    <span title="站点总字数">376k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">4:36</span>
+    <span title="站点阅读时长">5:42</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>

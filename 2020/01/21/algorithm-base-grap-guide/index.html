@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zhangliangnbu.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="简介图（Grap）是用来对对象之间的成对关系建模的数学结构，由”节点”或”顶点”(Vertex）以及连接这些顶点的”边”（Edge）组成。 图包含一个有限（可能是可变的）的集合作为节点集合，以及一个无序对（对应无向图）或有序对（对应有向图）的集合作为边（有向图中也称作弧）的集合。 图的数据结构还可能包含和每条边相关联的数值（edge value），例如一个标号或一个数值（即权重，weight；表示">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构和算法-图论基础">
+<meta property="og:url" content="https://zhangliangnbu.github.io/2020/01/21/algorithm-base-grap-guide/index.html">
+<meta property="og:site_name" content="永恒的码流">
+<meta property="og:description" content="简介图（Grap）是用来对对象之间的成对关系建模的数学结构，由”节点”或”顶点”(Vertex）以及连接这些顶点的”边”（Edge）组成。 图包含一个有限（可能是可变的）的集合作为节点集合，以及一个无序对（对应无向图）或有序对（对应有向图）的集合作为边（有向图中也称作弧）的集合。 图的数据结构还可能包含和每条边相关联的数值（edge value），例如一个标号或一个数值（即权重，weight；表示">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-01-21T07:12:03.000Z">
+<meta property="article:modified_time" content="2022-01-18T00:58:29.459Z">
+<meta property="article:author" content="章亮">
+<meta property="article:tag" content="algorithm">
+<meta property="article:tag" content="cs">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://zhangliangnbu.github.io/2020/01/21/algorithm-base-grap-guide/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>数据结构和算法-图论基础 | 永恒的码流</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">永恒的码流</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">万物皆流，无物常驻</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2020/01/21/algorithm-base-grap-guide/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          数据结构和算法-图论基础
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-01-21 15:12:03" itemprop="dateCreated datePublished" datetime="2020-01-21T15:12:03+08:00">2020-01-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-01-18 08:58:29" itemprop="dateModified" datetime="2022-01-18T08:58:29+08:00">2022-01-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%85%B6%E4%BB%96/" itemprop="url" rel="index"><span itemprop="name">其他</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>图（Grap）是用来对对象之间的成对关系建模的数学结构，由”节点”或”顶点”(Vertex）以及连接这些顶点的”边”（Edge）组成。</p>
+<p>图包含一个有限（可能是可变的）的集合作为节点集合，以及一个无序对（对应无向图）或有序对（对应有向图）的集合作为边（有向图中也称作弧）的集合。</p>
+<p>图的数据结构还可能包含和每条边相关联的数值（edge value），例如一个标号或一个数值（即权重，weight；表示花费、容量、长度等），表示加权图。</p>
+<p><strong>图的分类</strong></p>
+<ul>
+<li>无向图和有向图。</li>
+<li>无权图和有权图。每条边是否有相关联的数值，有的话就是有权图，否则就是无权图。</li>
+</ul>
+<p><strong>图的连通性</strong></p>
+<p>在图论中，连通图基于连通的概念。在一个无向图 G 中，若从顶点 i 到顶点 j 有路径相连（当然从j到i也一定有路径），则称 i 和 j 是连通的。如果 G 是有向图，那么连接i和j的路径中所有的边都必须同向。如果图中任意两点都是连通的，那么图被称作连通图。如果此图是有向图，则称为强连通图（注意：需要双向都有路径）。图的连通性是图的基本性质。</p>
+<p><strong>完全图：</strong>完全是一个简单的无向图，其中每对不同的顶点之间都恰连有一条边相连。</p>
+<p><strong>自环边：</strong>一条边的起点终点是一个点。</p>
+<p><strong>平行边：</strong>两个顶点之间存在多条边相连接。</p>
+<p><strong>节点的度</strong></p>
+<p>无向图中，节点的度（英语：degree或valency）表示该节点作为一个端点的边的数目。</p>
+<p>有向图中，分别为节点的入度和出度</p>
+<ul>
+<li>入度：（英语：in-degree）是指终点为该节点的边的数量。</li>
+<li>出度：（英语：out-degree）是指起点为该节点的边的数量。</li>
+</ul>
+<p><strong>路径和回路</strong></p>
+<ul>
+<li>路径。无论是无向图还是有向图，从一个顶点到另一顶点途径的所有顶点组成的序列（包含这两个顶点），称为一条路径。若路径中各顶点都不重复，此路径又被称为”简单路径”。</li>
+<li>回路或环。如果路径中第一个顶点和最后一个顶点相同，则此路径称为”回路”（或”环”）。同样，若回路中的顶点互不重复，此回路被称为”简单回路”（或简单环）。</li>
+<li>路径长度。是指一条路径上经过的边的数量。</li>
+</ul>
+<span id="more"></span>
+
+<h1 id="图的存储结构"><a href="#图的存储结构" class="headerlink" title="图的存储结构"></a>图的存储结构</h1><ul>
+<li>邻接表。节点存储为记录或对象，且为每个节点创建一个列表。这些列表可以按节点存储其余的信息；例如，若每条边也是一个对象，则将边存储到边起点的列表上，并将边的终点存储在边这个的对象本身。</li>
+<li>邻接矩阵。一个二维矩阵，其中行与列分别表示边的起点和终点。顶点上的值存储在外部。矩阵中可以存储边的值。</li>
+</ul>
+<p>邻接表在稀疏图上比较有效率。邻接矩阵则常在图比较稠密的时候使用，判断标准一般为边的数量|E |接近于节点的数量的平方；邻接矩阵也在查找两节点邻接情况较为频繁时使用。</p>
+<h1 id="图的遍历"><a href="#图的遍历" class="headerlink" title="图的遍历"></a>图的遍历</h1><p>图的遍历方法有深度优先搜索法DFS和广度(宽度)优先搜索法BFS。BFS 和 DFS 常用来解决树形数据结构（包括图）的问题。核心思想是把一些问题抽象成图，从一个点开始，向四周或下级开始扩散。</p>
+<ul>
+<li>BFS，广度优先搜索。使用迭代和队列，根据树的层级从上往下遍历。常用于求最短路径、最少步数之类，较DFS耗时少，但耗空间。一般实现：从一个顶点开始，尝试访问尽可能靠近它的顶点。本质上这种搜索在图上是逐层移动的，首先检查最靠近第一个顶点的层，再逐渐向下移动到离起始顶点最远的层。</li>
+<li>DFS，深度优先搜索。使用递归，可使用先序、中序或后序遍历等。BFS能做的，DFS也能完成，可记录路径。一般较BFS耗时，但省空间，逻辑也比较清晰。一般实现：访问一个没有访问过的顶点，将它标记为已访问，再递归地去访问在起始点的邻接表中其他没有访问过的顶点。深度优先遍历可以用来求连通分量。</li>
+</ul>
+<p>解决问题的核心：</p>
+<ul>
+<li>节点其实是一种状态，节点的扩散是状态的演变。</li>
+<li>如何确定节点（或状态），节点之间如何连接或转移？</li>
+<li>如何简化状态的存储？比如用字符串代替数组等。</li>
+</ul>
+<h2 id="框架"><a href="#框架" class="headerlink" title="框架"></a>框架</h2><p>BFS 框架，求最短路径或步数等：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 计算从起点 start 到终点 target 的最近距离</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">BFS</span><span class="params">(Node start, Node target)</span> </span>&#123;</span><br><span class="line">    Queue&lt;Node&gt; q; <span class="comment">// 核心数据结构</span></span><br><span class="line">    Set&lt;Node&gt; visited; <span class="comment">// 避免走回头路</span></span><br><span class="line"></span><br><span class="line">    q.offer(start); <span class="comment">// 将起点加入队列</span></span><br><span class="line">    visited.add(start);</span><br><span class="line">    <span class="keyword">int</span> step = <span class="number">0</span>; <span class="comment">// 记录扩散的步数</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (q not empty) &#123;</span><br><span class="line">        <span class="keyword">int</span> sz = q.size();</span><br><span class="line">        <span class="comment">/* 将当前队列中的所有节点向四周扩散 */</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; sz; i++) &#123;</span><br><span class="line">            Node cur = q.poll();</span><br><span class="line">            <span class="comment">/* 划重点：这里判断是否到达终点 */</span></span><br><span class="line">            <span class="keyword">if</span> (cur is target)</span><br><span class="line">                <span class="keyword">return</span> step;</span><br><span class="line">            <span class="comment">/* 将 cur 的相邻节点加入队列 */</span></span><br><span class="line">            <span class="keyword">for</span> (Node x : cur.adj())</span><br><span class="line">                <span class="keyword">if</span> (x not in visited) &#123;</span><br><span class="line">                    q.offer(x);</span><br><span class="line">                    visited.add(x);</span><br><span class="line">                &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">/* 划重点：更新步数在这里 */</span></span><br><span class="line">        step++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>DFS框架，多叉树的遍历，如果是图则增加备忘录数组：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dfs</span><span class="params">(Node node, Set&lt;Node&gt; visited)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (visited.contains(node)) &#123;</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 对node 进行处理 前序</span></span><br><span class="line">	<span class="keyword">for</span> (Node child : node.children()) &#123;</span><br><span class="line">		dfs(child)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 对node 进行处理 后序</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="题目-BFS"><a href="#题目-BFS" class="headerlink" title="题目-BFS"></a>题目-BFS</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/minimum-depth-of-binary-tree">111.二叉树的最小深度（简单）</a></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/list-of-depth-lcci/">面试题 04.03. 特定深度节点链表</a></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/open-the-lock">752.打开转盘锁（中等）</a> 将状态作为图的节点，遍历状态</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/minimum-genetic-mutation/">433. 最小基因变化</a>（中等）</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/sliding-puzzle/">773.滑动谜题（困难）</a>，将状态作为图的节点，遍历状态</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/word-ladder/">127. 单词接龙</a></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/word-ladder-ii/">126. 单词接龙 II</a>，需要返回具体路径！BFS确定步数、Map记录演变，DFS回溯求具体路径。</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/minimum-number-of-flips-to-convert-binary-matrix-to-zero-matrix/">1284. 转化为全零矩阵的最少反转次数</a></li>
+</ul>
+<h2 id="题目-DFS-和-BFS"><a href="#题目-DFS-和-BFS" class="headerlink" title="题目-DFS 和 BFS"></a>题目-DFS 和 BFS</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/max-area-of-island/">695. 岛屿的最大面积</a>，DFS 或 BFS</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/number-of-provinces/">547. 省份数量</a>，DFS或BFS</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/surrounded-regions/">130. 被围绕的区域</a>， DFS或BFS</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/employee-importance/">690. 员工的重要性</a>，DFS 或 BFS</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/water-and-jug-problem/">365. 水壶问题</a>， DFS 或 BFS</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/pond-sizes-lcci/">面试题 16.19. 水域大小</a></li>
+<li><em><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/longest-increasing-path-in-a-matrix/">329. 矩阵中的最长递增路径</a></em> （困难），增加备忘录减少耗时。可逆向求出具体路径。</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/swim-in-rising-water/">778. 水位上升的泳池中游泳</a></li>
+</ul>
+<h2 id="求具体路径：单词接龙-二"><a href="#求具体路径：单词接龙-二" class="headerlink" title="求具体路径：单词接龙 二"></a>求具体路径：单词接龙 二</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> List&lt;List&lt;String&gt;&gt; findLadders(String beginWord, String endWord, List&lt;String&gt; wordList) &#123;</span><br><span class="line">	<span class="comment">// BFS 求步数和记录 + DFS 求具体路径</span></span><br><span class="line">	Queue&lt;String&gt; queue = <span class="keyword">new</span> LinkedList&lt;&gt;();</span><br><span class="line">	Set&lt;String&gt; visited = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line">	Set&lt;String&gt; bank = <span class="keyword">new</span> HashSet&lt;&gt;(wordList);</span><br><span class="line">	<span class="comment">// 辅助，单词（key）从哪些单词（value）演变而来，用于DFS求具体路径</span></span><br><span class="line">	Map&lt;String, HashSet&lt;String&gt;&gt; from = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">	<span class="comment">// 辅助from，演变到单词（key）时的最小步数</span></span><br><span class="line">	Map&lt;String, Integer&gt; steps = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">	<span class="keyword">boolean</span> found = <span class="keyword">false</span>;</span><br><span class="line">	<span class="keyword">int</span> step = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 异常条件</span></span><br><span class="line">	<span class="keyword">if</span> (!bank.contains(endWord)) &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">int</span> len = beginWord.length();</span><br><span class="line">	queue.offer(beginWord);</span><br><span class="line">	visited.add(beginWord);</span><br><span class="line">	steps.put(beginWord, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span>(!queue.isEmpty()) &#123;</span><br><span class="line">		<span class="keyword">int</span> size = queue.size();</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size; i ++) &#123;</span><br><span class="line">			<span class="comment">// 当前单词</span></span><br><span class="line">			String cur = queue.poll();</span><br><span class="line"></span><br><span class="line">			<span class="keyword">if</span> (cur.equals(endWord)) &#123;</span><br><span class="line">				found = <span class="keyword">true</span>;</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; len; j ++) &#123;</span><br><span class="line">				<span class="keyword">char</span> src = cur.charAt(j);</span><br><span class="line">				<span class="keyword">for</span> (<span class="keyword">char</span> target = <span class="string">&#x27;a&#x27;</span>; target &lt;= <span class="string">&#x27;z&#x27;</span>; target ++) &#123;</span><br><span class="line">					<span class="keyword">if</span> (target == src) &#123;</span><br><span class="line">						<span class="keyword">continue</span>;</span><br><span class="line">					&#125;</span><br><span class="line">					<span class="comment">// 下一个单词</span></span><br><span class="line">					String chg = changChar(cur, j, target);</span><br><span class="line"></span><br><span class="line">					<span class="comment">// 第一次出现 或者 同一层次，相同的单词</span></span><br><span class="line">					<span class="keyword">if</span> (!steps.containsKey(chg) || (steps.containsKey(chg) &amp;&amp; steps.get(chg) == step)) &#123;</span><br><span class="line">						<span class="keyword">if</span> (!from.containsKey(chg)) &#123;</span><br><span class="line">							from.put(chg, <span class="keyword">new</span> HashSet&lt;&gt;());</span><br><span class="line">						&#125;</span><br><span class="line">						from.get(chg).add(cur);</span><br><span class="line">					&#125;</span><br><span class="line">					<span class="keyword">if</span> (!steps.containsKey(chg)) &#123;</span><br><span class="line">						steps.put(chg, step);</span><br><span class="line">					&#125;</span><br><span class="line"></span><br><span class="line">					<span class="keyword">if</span> (!visited.contains(chg) &amp;&amp; bank.contains(chg)) &#123;</span><br><span class="line">						queue.offer(chg);</span><br><span class="line">						visited.add(chg);</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		step ++;</span><br><span class="line">		<span class="keyword">if</span> (found) &#123;</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// DFS 从endWord -&gt; startWord</span></span><br><span class="line">	List&lt;List&lt;String&gt;&gt; res = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">	<span class="keyword">if</span> (found) &#123;</span><br><span class="line">	    Deque&lt;String&gt; path = <span class="keyword">new</span> ArrayDeque&lt;&gt;();</span><br><span class="line">	  	path.offerFirst(endWord);</span><br><span class="line">	  	dfs(res, path, from, beginWord, endWord);	</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">changChar</span><span class="params">(String str, <span class="keyword">int</span> index, <span class="keyword">char</span> c)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">char</span>[] arr = str.toCharArray();</span><br><span class="line">	arr[index] = c;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">new</span> String(arr);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">dfs</span><span class="params">(List&lt;List&lt;String&gt;&gt; res, Deque&lt;String&gt; path, Map&lt;String, HashSet&lt;String&gt;&gt; select, </span></span></span><br><span class="line"><span class="params"><span class="function">	String startWord, String cur)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (cur.equals(startWord)) &#123;</span><br><span class="line">		res.add(<span class="keyword">new</span> ArrayList&lt;&gt;(path));</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span>(String word : select.get(cur)) &#123;</span><br><span class="line">		path.offerFirst(word);</span><br><span class="line">		dfs(res, path, select, startWord, word);</span><br><span class="line">		path.pollFirst();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="其他应用和算法"><a href="#其他应用和算法" class="headerlink" title="其他应用和算法"></a>其他应用和算法</h1><p><strong>拓扑排序（Topological Sorting）</strong></p>
+<p>是一个有向无环图（DAG, Directed Acyclic Graph）的所有顶点的线性序列。</p>
+<p><strong>最短路径</strong></p>
+<p>对于无权图，最短路径就是起点到终点的最短边数。一般用BFS计算，借助“剥洋葱”特性，看从起点到终点需要剥几个洋葱圈，剥的层数即是最短路径长度。DFS也可以求，但耗时。</p>
+<p>对于有权图，最短路径就是找图中连接两个顶点所有边权重和最小的路径。</p>
+<ul>
+<li>如果给定起点，则是单源最短路径，即从一固定起点到任意终点的最短路径。相关算法有：<code>Dijkstra</code>算法。</li>
+<li>如果起点不确定，则是多源最短路径，即求任意两个顶点的最短路径。相关算法有：<code>Dijkstra</code>算法（将Djikstra算法在每个顶点调用一遍）、Floyd算法。</li>
+</ul>
+<p><strong>最小生成树</strong></p>
+<p>TODO</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%9B%BE_(%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84)">维基百科-图 (数据结构)</a></li>
+<li><a target="_blank" rel="noopener" href="http://data.biancheng.net/view/200.html">（数据结构）图的存储结构完全攻略</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/algorithm/" rel="tag"># algorithm</a>
+              <a href="/tags/cs/" rel="tag"># cs</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/01/19/algorithm-base-disjoint-set-data/" rel="prev" title="数据结构和算法-并查集">
+      <i class="fa fa-chevron-left"></i> 数据结构和算法-并查集
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/01/21/algorithm-base-grap-2/" rel="next" title="数据结构和算法-图论的拓扑排序">
+      数据结构和算法-图论的拓扑排序 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%BE%E7%9A%84%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">图的存储结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86"><span class="nav-number">3.</span> <span class="nav-text">图的遍历</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A1%86%E6%9E%B6"><span class="nav-number">3.1.</span> <span class="nav-text">框架</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE-BFS"><span class="nav-number">3.2.</span> <span class="nav-text">题目-BFS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE-DFS-%E5%92%8C-BFS"><span class="nav-number">3.3.</span> <span class="nav-text">题目-DFS 和 BFS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B1%82%E5%85%B7%E4%BD%93%E8%B7%AF%E5%BE%84%EF%BC%9A%E5%8D%95%E8%AF%8D%E6%8E%A5%E9%BE%99-%E4%BA%8C"><span class="nav-number">3.4.</span> <span class="nav-text">求具体路径：单词接龙 二</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E5%BA%94%E7%94%A8%E5%92%8C%E7%AE%97%E6%B3%95"><span class="nav-number">4.</span> <span class="nav-text">其他应用和算法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="章亮"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">章亮</p>
+  <div class="site-description" itemprop="description">Developer For Android</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">56</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zhangliangnbu" title="GitHub → https://github.com/zhangliangnbu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhangliangnbu@qq.com" title="E-Mail → mailto:zhangliangnbu@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">章亮</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">376k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">5:42</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

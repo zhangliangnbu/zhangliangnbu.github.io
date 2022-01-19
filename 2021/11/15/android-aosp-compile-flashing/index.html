@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zhangliangnbu.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="说明基于Ubuntu 20.04编译AOSP里的Android 10系统，并烧录进Pixel 2实机设备里。  烧录指将编译后的系统文件刷入实机或模拟器中  也适用Ubuntu18.4，不一致的地方会做说明，主要是python版本有差异。 应该说AOSP官网对整个流程都有描述，但有些地方可能说得不够清楚明白，为避免不常编译系统的开发者少走弯路，故有此总结。另外需要说明的是，优先看官网文档，官网有不">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android10系统编译和烧录">
+<meta property="og:url" content="https://zhangliangnbu.github.io/2021/11/15/android-aosp-compile-flashing/index.html">
+<meta property="og:site_name" content="永恒的码流">
+<meta property="og:description" content="说明基于Ubuntu 20.04编译AOSP里的Android 10系统，并烧录进Pixel 2实机设备里。  烧录指将编译后的系统文件刷入实机或模拟器中  也适用Ubuntu18.4，不一致的地方会做说明，主要是python版本有差异。 应该说AOSP官网对整个流程都有描述，但有些地方可能说得不够清楚明白，为避免不常编译系统的开发者少走弯路，故有此总结。另外需要说明的是，优先看官网文档，官网有不">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-11-15T07:10:20.000Z">
+<meta property="article:modified_time" content="2022-01-14T03:13:10.554Z">
+<meta property="article:author" content="章亮">
+<meta property="article:tag" content="android">
+<meta property="article:tag" content="android系统开发">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://zhangliangnbu.github.io/2021/11/15/android-aosp-compile-flashing/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Android10系统编译和烧录 | 永恒的码流</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">永恒的码流</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">万物皆流，无物常驻</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2021/11/15/android-aosp-compile-flashing/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Android10系统编译和烧录
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-11-15 15:10:20" itemprop="dateCreated datePublished" datetime="2021-11-15T15:10:20+08:00">2021-11-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-01-14 11:13:10" itemprop="dateModified" datetime="2022-01-14T11:13:10+08:00">2022-01-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android系统开发</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h1><p>基于Ubuntu 20.04编译AOSP里的Android 10系统，并烧录进Pixel 2实机设备里。</p>
+<blockquote>
+<p>烧录指将编译后的系统文件刷入实机或模拟器中</p>
+</blockquote>
+<p>也适用Ubuntu18.4，不一致的地方会做说明，主要是python版本有差异。</p>
+<p>应该说<a target="_blank" rel="noopener" href="https://developer.android.google.cn/">AOSP官网</a>对整个流程都有描述，但有些地方可能说得不够清楚明白，为避免不常编译系统的开发者少走弯路，故有此总结。另外需要说明的是，优先看官网文档，官网有不清楚地方再看其他资料比如本文。</p>
+<p>AOSP官网有两个，国际版本和国内版本，内容一致，但国内版本速度较快些。</p>
+<ul>
+<li>国际版本：<a target="_blank" rel="noopener" href="https://source.android.com/">https://source.android.com</a></li>
+<li>国内版本：<a target="_blank" rel="noopener" href="https://source.android.google.cn/">https://source.android.google.cn</a></li>
+</ul>
+<span id="more"></span>
+
+<h1 id="搭建编译环境"><a href="#搭建编译环境" class="headerlink" title="搭建编译环境"></a>搭建编译环境</h1><p><strong>硬件环境说明</strong></p>
+<p><a target="_blank" rel="noopener" href="https://source.android.google.cn/setup/build/requirements">官网构建环境章节</a>上说了编译Android 10必须保证机器的内存在16G以上，实践过程中发现低于16G内存会报各种错误。网上有一些方法可以在低于16G内存的机器上通过编译，尝试了其中的一些，依旧不能完成编译，故最好保证机器内存在16G以上，内存越大编译速度越快，血的教训，注意。</p>
+<p><strong>开发平台版本说明</strong></p>
+<ul>
+<li>Ubuntu 20.04</li>
+<li>Python 3.6+</li>
+<li>Android 10 系统信息：QP1A.190711.019，android-10.0.0_r1    Android10，Pixel 3a XL, Pixel 3a, Pixel 3 XL, Pixel 3, Pixel 2 XL, Pixel 2, Pixel XL, Pixel    2019-09-05</li>
+<li>其他</li>
+</ul>
+<aside> 💡 Ubuntu 20.4 need Python 3.6+, Ubuntu 18.4 need Python 2.7+
+
+<p><strong>设置软件环境</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install git-core gnupg flex bison build-essential zip curl zlib1g-dev gcc-multilib g++-multilib libc6-dev-i386 libncurses5-dev lib32ncurses5-dev x11proto-core-dev libx11-dev lib32z1-dev libgl1-mesa-dev libxml2-utils xsltproc unzip fontconfig</span><br></pre></td></tr></table></figure>
+
+<p><strong>配置Git</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.email <span class="string">&quot;you@example.com&quot;</span></span><br><span class="line">git config --global user.name <span class="string">&quot;Your Name&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>检查Python</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">python --version</span><br><span class="line"><span class="comment"># if no python, then set a link</span></span><br><span class="line"><span class="comment"># use &#x27;whereis python&#x27; to find where python locate.</span></span><br><span class="line">sudo ln -s /usr/bin/python3 /usr/bin/python</span><br></pre></td></tr></table></figure>
+
+<p><strong>安装Repo工具</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mkdir ~/bin</span><br><span class="line">PATH=~/bin:<span class="variable">$PATH</span></span><br><span class="line">curl https://storage.googleapis.com/git-repo-downloads/repo &gt; ~/bin/repo</span><br><span class="line">chmod a+x ~/bin/repo</span><br></pre></td></tr></table></figure>
+
+<p><strong>将REPO_URL改清华的源</strong></p>
+<p>我使用的是清华源，使用其他源也可以</p>
+<p>方法一：配置环境变量（推荐）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vi ~/.bashrc</span><br><span class="line"><span class="comment"># export REPO_URL=&#x27;https://mirrors.tuna.tsinghua.edu.cn/git/git-repo/&#x27;</span></span><br><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<p>方法二：直接更改repo文件配置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 找到repo</span></span><br><span class="line">whereis repo</span><br><span class="line"><span class="comment"># 替换</span></span><br><span class="line">sudo vim /usr/bin/repo</span><br><span class="line"><span class="comment"># REPO_URL = &#x27;https://gerrit.googlesource.com/git-repo&#x27;</span></span><br><span class="line"><span class="comment"># 改为：</span></span><br><span class="line"><span class="comment"># REPO_URL = &#x27;https://mirrors.tuna.tsinghua.edu.cn/git/git-repo/&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="下载系统源代码"><a href="#下载系统源代码" class="headerlink" title="下载系统源代码"></a>下载系统源代码</h1><p>Android 10源代码也有很多小的版本，我们这里只下载最初的版本<code>android-10.0.0_r1</code>，官网可查看版本，见<a target="_blank" rel="noopener" href="https://source.android.google.cn/setup/start/build-numbers">代号、标记和 Build 号</a>，其中我们需要的是标记（Tags）。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mkdir aosp10</span><br><span class="line"><span class="built_in">cd</span> aosp10</span><br><span class="line"><span class="comment"># 注意这里的连接要改为清华镜像的 -b后面为分支版本，如可改为 android-10.0.0_r47 </span></span><br><span class="line"><span class="comment"># repo init -u https://android.googlesource.com/platform/manifest</span></span><br><span class="line"><span class="comment"># repo init -u https://mirrors.tuna.tsinghua.edu.cn/git/AOSP/platform/manifest -b android-9.0.0_r1 --depth=1</span></span><br><span class="line">repo init -u https://mirrors.tuna.tsinghua.edu.cn/git/AOSP/platform/manifest -b android-10.0.0_r1 --depth=1</span><br><span class="line"><span class="comment"># 开始下载 j后面的数字是线程数，推荐写4</span></span><br><span class="line">repo sync -c -j4</span><br></pre></td></tr></table></figure>
+
+<aside> 💡 另外一种下载源码的方法是 先用wget命令下载，然后解压、同步。
+
+<h1 id="编译源代码"><a href="#编译源代码" class="headerlink" title="编译源代码"></a>编译源代码</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">source</span> build/envsetup.sh</span><br><span class="line">$ lunch aosp_walleye-userdebug</span><br><span class="line">$ m</span><br><span class="line">...等待编译完成，没有报error就表示编译通过</span><br><span class="line">...一般需要几个小时到十几个小时不等，我使用32G内存时，大约需要3~4个小时</span><br></pre></td></tr></table></figure>
+
+<p>其中，<code>lunch</code>后的参数<code>aosp_walleye-userdebug</code>为Pixel 2手机的设备Build编号，因为我后面会将编译后的系统刷入谷歌pixel 2手机中，故选择此Build编号。</p>
+<p>设备Build编号选择说明见官网<a target="_blank" rel="noopener" href="https://source.android.google.cn/setup/build/running#selecting-device-build">设备Build编号</a>。</p>
+<h1 id="实机烧录"><a href="#实机烧录" class="headerlink" title="实机烧录"></a>实机烧录</h1><p><strong>下载并安装硬件驱动文件</strong></p>
+<p>硬件烧录时需要，如果不烧录到硬件则不需要下载。</p>
+<p>根据代号<code>qp1a.190711.019</code>查找Google和高通相关驱动，地址：<a target="_blank" rel="noopener" href="https://developers.google.cn/android/drivers#walleyeqp1a.190711.019">Pixel 2 binaries for Android 10.0.0 (QP1A.190711.019)</a></p>
+<p>下载完后解压放在aosp源码根目录，并安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sh extract-google_devices-walleye.sh</span><br><span class="line">sh extract-qcom-walleye.sh</span><br><span class="line"><span class="comment"># 看完license输入 I ACCEPT 安装完成, 此时ls会看到vendor文件夹</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>安装刷机工具</strong></p>
+<p>安装和配置ADB、FASTBOOT工具。</p>
+<p>安装：有两种方法安装工具，从SDK配置或直接命令行安装下载</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get install android-tools-adb</span><br><span class="line">$ sudo apt-get install android-tools-fastboot</span><br></pre></td></tr></table></figure>
+
+<p>配置：对于Ubuntu系统需要进行两项配置，一是添加当前用户到 plugdev 组中，二是配置udev 规则，详情请见<a target="_blank" rel="noopener" href="https://developer.android.com/studio/run/device">官网-在硬件设备上运行应用</a></p>
+<aside> 💡 注意使用数据线时，需要有通信能力的，有的usb数据线仅仅只有充电功能，本人亲身经历过！
+
+<p><strong>刷机</strong></p>
+<p>前提是手机已经解锁，我使用的Pixel 2手机已经解锁，使用以下命令进行烧录。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在lunch环境里</span></span><br><span class="line">$ <span class="built_in">source</span> build/envsetup.sh</span><br><span class="line">$ lunch aosp_walleye-userdebug</span><br><span class="line"></span><br><span class="line"><span class="comment"># 进入BootLoader</span></span><br><span class="line">$ adb reboot bootloader</span><br><span class="line"></span><br><span class="line"><span class="comment"># 烧录</span></span><br><span class="line">$ fastboot flashall -w</span><br></pre></td></tr></table></figure>
+
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://source.android.google.cn/setup/start?hl=zh-cn">官网-AOSP编译</a>：起始页</li>
+<li><a target="_blank" rel="noopener" href="https://source.android.google.cn/setup/start/build-numbers">官网-代号、标记和 Build 号</a>：根据标记下载源码版本，根据代号下载实机设备驱动。</li>
+<li><a target="_blank" rel="noopener" href="https://developer.android.com/studio/run/device">官网-在硬件设备上运行应用</a>：设置Linux系统以检测USB设备</li>
+<li><a target="_blank" rel="noopener" href="https://source.android.com/setup/build/running?hl=zh-cn#flashing-a-device">官网-刷写设备</a></li>
+<li><a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/help/AOSP/">清华源-Android 镜像使用帮助</a>：清华源下载AOSP代码</li>
+<li><a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/help/git-repo/">清华源-Git Repo 镜像使用帮助</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/ciml/p/13714036.html">三方博客-编译AOSP并刷入Pixel设备</a>：参考烧录章节</li>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844904104368537613">三方博客-Android 9.0编译</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/mvp_Dawn/article/details/107624203">三方博客-ubuntu20.4编译AOSP安卓源码（AndroidP android-9.0.0_r9）</a></li>
+<li><a target="_blank" rel="noopener" href="http://blog.hanschen.site/2019/09/12/aosp_compile_and_flash/">三方博客-AOSP 编译和烧写（实机烧录）</a></li>
+<li><a target="_blank" rel="noopener" href="https://debugtalk.com/post/android-development-environment-adb-and-fastboot/">三方博客-Android开发环境配置0：adb和fastboot</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/android/" rel="tag"># android</a>
+              <a href="/tags/android%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91/" rel="tag"># android系统开发</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/11/13/android-java-service-practice-guide/" rel="prev" title="编写Android的Java系统服务">
+      <i class="fa fa-chevron-left"></i> 编写Android的Java系统服务
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/12/02/auto-navigation-system-guide/" rel="next" title="车载导航系统概览">
+      车载导航系统概览 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AF%B4%E6%98%8E"><span class="nav-number">1.</span> <span class="nav-text">说明</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%90%AD%E5%BB%BA%E7%BC%96%E8%AF%91%E7%8E%AF%E5%A2%83"><span class="nav-number">2.</span> <span class="nav-text">搭建编译环境</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BD%E7%B3%BB%E7%BB%9F%E6%BA%90%E4%BB%A3%E7%A0%81"><span class="nav-number">3.</span> <span class="nav-text">下载系统源代码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E6%BA%90%E4%BB%A3%E7%A0%81"><span class="nav-number">4.</span> <span class="nav-text">编译源代码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%9E%E6%9C%BA%E7%83%A7%E5%BD%95"><span class="nav-number">5.</span> <span class="nav-text">实机烧录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="章亮"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">章亮</p>
+  <div class="site-description" itemprop="description">Developer For Android</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">56</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zhangliangnbu" title="GitHub → https://github.com/zhangliangnbu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhangliangnbu@qq.com" title="E-Mail → mailto:zhangliangnbu@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">章亮</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">376k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">5:42</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

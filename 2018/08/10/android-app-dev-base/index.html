@@ -226,19 +226,16 @@
 <span id="more"></span>
 
 <h1 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h1><p>Android 应用的生命周期由系统控制，包括三个阶段：启动、运行和结束。每个阶段会触发Application 对象中对应的回调方法。</p>
-<h2 id="应用的启动"><a href="#应用的启动" class="headerlink" title="应用的启动"></a>应用的启动</h2><p>启动流程：</p>
-<ol>
-<li>点击桌面App图标，Launcher进程通过Binder IPC向AMS进程发起<code>startActivity</code>请求。</li>
-<li>AMS接收到请求后，执行解析Intent、检查权限等操作，之后向Zygote进程发送<code>创建进程的请求</code>。</li>
-<li>Zygote进程fork出新的子进程即App进程，并返回一个pid，通过pid进入应用进程。</li>
-<li>应用进程进行初始化，初始化Binder线程池、运行时环境、创建Application对象、通过ActivityThread创建主线程，开启Loop循环等，并通过Binder向AMS发送<code>attachApplication(绑定Application)</code>的请求。</li>
-<li>AMS 进程收到请求后，把Application和进程进行绑定，再通过通过Binder机制请求启动Activity。</li>
-<li>App进程的binder线程（ApplicationThread）收到请求后，通过handler向主线程发送LAUNCH_ACTIVITY消息；</li>
-<li>主线程在收到Message后，通过反射机制创建目标Activity，并回调Activity.onCreate()等方法。 到此，App便正式启动，开始进入Activity生命周期，执行完onCreate/onStart/onResume方法，UI渲染结束后便可以看到App的主界面。</li>
-</ol>
+<h2 id="应用的启动"><a href="#应用的启动" class="headerlink" title="应用的启动"></a>应用的启动</h2><p>通过Launcher启动App的流程：</p>
+<ul>
+<li>Launcher进程请求SystemServer进程创建Activity。</li>
+<li>SystemServer进程解析Intent等，并检查目标APP进程是否存在，不存在则去创建进程。</li>
+<li>SystemServer进程通过Socket方式请求Zygote进程创建APP进程，返回进程号等信息。</li>
+<li>App进程入口为<code>ActivityThread.main()</code>方法，执行此方法，初始化进程并请求SystemServer绑定App进程。绑定进程的工作包括，一，通知App进程去启动Application；二，通知APP进程去启动Activity。</li>
+</ul>
 <img src="/images/android-app-start-simple-flow.png" width="70%" height="70%">
 
-<p>总结：当用户点击应用图标的时候，系统会去检测进程是否存在，如果不存在，则通过Zygote创建进程，创建完进程后，则需要将进程与App进行绑定，将App的资源加载到内存中，当加载完毕，各种条件准备就绪，接下来就是启动Activity了，如此，App的界面就展示出来了。</p>
+<p>总结：当用户点击应用图标的时候，系统会去检测进程是否存在，如果不存在，则通过Zygote创建进程，创建完进程后，则需要将进程与App进行绑定，将App的资源加载到内存中，当加载完毕，各种条件准备就绪，接下来就是启动Application和Activity了，如此，App的界面就展示出来了。</p>
 <h2 id="应用的销毁"><a href="#应用的销毁" class="headerlink" title="应用的销毁"></a>应用的销毁</h2><p>每个 Android 应用都在各自的 Linux 进程中运行，应用进程的终止由系统通过综合因素来决定。因素包括：当前运行的应用、应用对用户的重要程度、系统的可用内存等。</p>
 <p>当系统内存过低时，会根据不同进程的优先级进行内存回收。系统根据进程的状态，将进程分为四个等级：</p>
 <p><strong>前台进程（Foreground Process）</strong></p>
@@ -377,7 +374,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">74</span>
+          <span class="site-state-item-count">86</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -390,7 +387,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">54</span>
+        <span class="site-state-item-count">56</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -434,12 +431,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">304k</span>
+    <span title="站点总字数">376k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">4:36</span>
+    <span title="站点阅读时长">5:42</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>

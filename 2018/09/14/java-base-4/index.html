@@ -226,6 +226,26 @@
         <p>本文主要介绍字节码文件结构和加载、Java虚拟机结构等。</p>
 <span id="more"></span>
 
+<h1 id="虚拟机和编译模式"><a href="#虚拟机和编译模式" class="headerlink" title="虚拟机和编译模式"></a>虚拟机和编译模式</h1><h2 id="VM对字节码的执行"><a href="#VM对字节码的执行" class="headerlink" title="VM对字节码的执行"></a>VM对字节码的执行</h2><p>VM有java虚拟机也有Android虚拟机，它们对字节码的执行是不一样的，即便都是JVM，不同的java虚拟机对字节码的执行也是不一样的。<br> HotSpot VM采用解释器+自适应编译的执行引擎执行字节码，具体看<a target="_blank" rel="noopener" href="http://www.4k8k.xyz/article/lizhongyisailang/106555297#HotSpotVM">HotSpot VM</a>，JRockit VM采用JIT编译器+自适应编译器的执行引擎执行字节码，具体看<a target="_blank" rel="noopener" href="http://www.4k8k.xyz/article/lizhongyisailang/106555297#JRockitVM">JRockit VM</a>。  Dalvik和ART发展历程 ：</p>
+<ul>
+<li>2008年9月，Android发布，Dalvik VM的执行引擎是只有解释器的；</li>
+<li>2010年5月，Android 2.2发布，Dalvik VM引入了JIT编译器，JIT的引入使得Dalvik的性能提升了3～6倍；</li>
+<li>2013年10月，Android 4.4发布，Dalvik和ART并存；</li>
+<li>2014年10月，Android 5.0发布，ART取代了Dalvik成为了VM，同时AOT也成为了唯一的编译模式；单纯的使用JIT和AOT都是有缺点的，具体看<a target="_blank" rel="noopener" href="http://www.4k8k.xyz/article/lizhongyisailang/106555297#JITandAOT">JIT编译和AOT编译比较</a></li>
+<li> 2016年8月，Android 7.0发布，JIT编译器回归，形成了<a target="_blank" rel="noopener" href="http://www.4k8k.xyz/article/lizhongyisailang/106555297#AOTJIT">AOT/JIT混合编译模式</a>，吸取了两者的优点同时克服了缺点。</li>
+</ul>
+<h2 id="编译模式"><a href="#编译模式" class="headerlink" title="编译模式"></a>编译模式</h2><p>自适应编译（adaptive compilation）： 在所有执行过的代码里只寻找一部分来编译的做法，叫做自适应编译。为了实现自适应编译，执行引擎通常需要有多层：至少要有一层能够处理初始阶段的执行，然后再自适应编译其中部分代码。每次都要编译，部分编译。</p>
+<p>JIT编译：全称just-in-time compilation，按照其原始的、严格的定义，是每当一部分代码准备要第一次执行的时候，将这部分代码编译，然后跳进编译好的代码里执行。这样，所有执行过的代码都必然会被编译过。早期的JIT编译系统对同一块代码只会编译一次。JIT编译的单元也可以选择是方法/函数级别，或者别的，如trace。第一次执行时编译，需要执行的部分全量编译。</p>
+<p>动态编译（dynamic compilation）：JIT编译和自适应编译都属于动态编译，或者叫<strong>运行时编译</strong>的范畴，特点是在程序运行的时候进行编译，而不是在程序开始运行之前就完成了编译。<strong>现在“JIT编译”这个名称已经被泛化为等价于“动态编译”</strong>，所以包含了严格的JIT编译和自适应编译。按照绝大多少文章的上下文，JIT编译说的是根据热点进行编译的自适应编译。</p>
+<p>JIT和AOT的比较：JIT是在运行时进行编译，是动态编译，并且每次运行程序的时候都需要对odex重新进行编译；而AOT是静态编译，应用在安装的时候会启动dex2oat把dex预编译成ELF文件（二进制可执行文件），每次运行程序的时候不用重新编译，是真正意义上的本地应用。</p>
+<blockquote>
+<p>这里说的JIT编译是泛化的概念，具体指的是自适应编译</p>
+</blockquote>
+<ul>
+<li><strong>JIT编译模式的缺点：</strong>    每次启动应用都需要重新编译；  运行时比较耗电，造成电池额外的开销； </li>
+<li> <strong>AOT编译模式的缺点：</strong>    应用安装和系统升级之后的应用优化比较耗时；  优化后文件会占用额外的存储空间； </li>
+</ul>
+<h2 id="ART-VM中AOT-JIT混合编译"><a href="#ART-VM中AOT-JIT混合编译" class="headerlink" title="ART VM中AOT/JIT混合编译"></a>ART VM中AOT/JIT混合编译</h2><p>应用在安装的时候dex不会被编译，在运行dex文件先通过解释器（Interpreter）解释执行（这一步骤跟Android2.2-Android4.4的行为是一致的），与此同时，热点函数（hot code）会被识别并被JIT编译后存储在jit code  cache中并生成profile文件以记录热点函数的信息。手机进入IDLE（空闲）或者Charging（充电）状态的时候，系统会扫描App目录下的profile文件并执行AOT编译。<br> 也就说，应用在安装的时候没有编译，所以安装会很快，首次启动和运行时还是采用解释器+JIT编译的模式，虽然也有慢和耗电问题，但是，被系统AOT编译后，以后启动和运行就很快了，也不耗电。</p>
 <h1 id="Class文件结构"><a href="#Class文件结构" class="headerlink" title="Class文件结构"></a>Class文件结构</h1><p>Java虚拟机可以理解的代码就叫做<code>字节码</code>（即扩展名为 <code>.class</code> 的文件）。根据 Java 虚拟机规范，类文件由单个 ClassFile 结构组成：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">ClassFile &#123;</span><br><span class="line">    u4             magic; <span class="comment">//Class 文件的标志, 确定文件是一个能被虚拟机接收的Class文件</span></span><br><span class="line">    u2             minor_version;<span class="comment">//Class 的小版本号</span></span><br><span class="line">    u2             major_version;<span class="comment">//Class 的大版本号</span></span><br><span class="line">    u2             constant_pool_count;<span class="comment">//常量池的数量</span></span><br><span class="line">    cp_info        constant_pool[constant_pool_count-<span class="number">1</span>];<span class="comment">//常量池</span></span><br><span class="line">    u2             access_flags;<span class="comment">//Class 的访问标记</span></span><br><span class="line">    u2             this_class;<span class="comment">//当前类</span></span><br><span class="line">    u2             super_class;<span class="comment">//父类</span></span><br><span class="line">    u2             interfaces_count;<span class="comment">//接口</span></span><br><span class="line">    u2             interfaces[interfaces_count];<span class="comment">//一个类可以实现多个接口</span></span><br><span class="line">    u2             fields_count;<span class="comment">//Class 文件的字段属性</span></span><br><span class="line">    field_info     fields[fields_count];<span class="comment">//一个类会可以有个字段</span></span><br><span class="line">    u2             methods_count;<span class="comment">//Class 文件的方法数量</span></span><br><span class="line">    method_info    methods[methods_count];<span class="comment">//一个类可以有个多个方法</span></span><br><span class="line">    u2             attributes_count;<span class="comment">//此类的属性表中的属性数</span></span><br><span class="line">    attribute_info attributes[attributes_count];<span class="comment">//属性表集合</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -349,8 +369,8 @@
       <i class="fa fa-chevron-left"></i> Java基础三：集合
     </a></div>
       <div class="post-nav-item">
-    <a href="/2018/09/15/java-base-5/" rel="next" title="Java基础四：Java虚拟机垃圾回收机制">
-      Java基础四：Java虚拟机垃圾回收机制 <i class="fa fa-chevron-right"></i>
+    <a href="/2018/09/15/java-base-5/" rel="next" title="Java基础五：Java虚拟机垃圾回收机制">
+      Java基础五：Java虚拟机垃圾回收机制 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -410,7 +430,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Class%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text">Class文件结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Class%E6%96%87%E4%BB%B6%E7%9A%84%E5%8A%A0%E8%BD%BD"><span class="nav-number">2.</span> <span class="nav-text">Class文件的加载</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Class%E6%96%87%E4%BB%B6%E7%9A%84%E5%8A%A0%E8%BD%BD%E8%BF%87%E7%A8%8B"><span class="nav-number">2.1.</span> <span class="nav-text">Class文件的加载过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8"><span class="nav-number">2.2.</span> <span class="nav-text">类加载器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.3.</span> <span class="nav-text">双亲委派模型</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java%E7%9A%84%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F%E4%BB%8B%E7%BB%8D"><span class="nav-number">3.</span> <span class="nav-text">Java的内存区域介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%88%9B%E5%BB%BA%E5%92%8C%E8%AE%BF%E9%97%AE"><span class="nav-number">4.</span> <span class="nav-text">对象的创建和访问</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A1%A5%E5%85%85"><span class="nav-number">5.</span> <span class="nav-text">补充</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%92%8C%E7%BC%96%E8%AF%91%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">虚拟机和编译模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#VM%E5%AF%B9%E5%AD%97%E8%8A%82%E7%A0%81%E7%9A%84%E6%89%A7%E8%A1%8C"><span class="nav-number">1.1.</span> <span class="nav-text">VM对字节码的执行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.2.</span> <span class="nav-text">编译模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ART-VM%E4%B8%ADAOT-JIT%E6%B7%B7%E5%90%88%E7%BC%96%E8%AF%91"><span class="nav-number">1.3.</span> <span class="nav-text">ART VM中AOT&#x2F;JIT混合编译</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Class%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">Class文件结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Class%E6%96%87%E4%BB%B6%E7%9A%84%E5%8A%A0%E8%BD%BD"><span class="nav-number">3.</span> <span class="nav-text">Class文件的加载</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Class%E6%96%87%E4%BB%B6%E7%9A%84%E5%8A%A0%E8%BD%BD%E8%BF%87%E7%A8%8B"><span class="nav-number">3.1.</span> <span class="nav-text">Class文件的加载过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8"><span class="nav-number">3.2.</span> <span class="nav-text">类加载器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.3.</span> <span class="nav-text">双亲委派模型</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java%E7%9A%84%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F%E4%BB%8B%E7%BB%8D"><span class="nav-number">4.</span> <span class="nav-text">Java的内存区域介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%88%9B%E5%BB%BA%E5%92%8C%E8%AE%BF%E9%97%AE"><span class="nav-number">5.</span> <span class="nav-text">对象的创建和访问</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A1%A5%E5%85%85"><span class="nav-number">6.</span> <span class="nav-text">补充</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">7.</span> <span class="nav-text">参考</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -426,7 +446,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">74</span>
+          <span class="site-state-item-count">86</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -439,7 +459,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">54</span>
+        <span class="site-state-item-count">56</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -483,12 +503,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">304k</span>
+    <span title="站点总字数">376k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">4:36</span>
+    <span title="站点阅读时长">5:42</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>
