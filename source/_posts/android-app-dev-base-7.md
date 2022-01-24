@@ -41,6 +41,18 @@ Art虚拟机：ART代表AndroidRuntime，Dalvik是依靠一个Just-In-Time(JIT)�
 2. 没消息时会阻塞，但阻塞是程序处于等待状态，不会无限消耗CPU资源。
 3. 有消息时，程序被唤醒去处理消息。
 
+# Binder通信数据大小限制
+
+在文件`frameworks/native/libs/binder/ProcessState.cpp`中限制：1M - 8k
+
+```java
+#define BINDER_VM_SIZE ((1 * 1024 * 1024) - sysconf(_SC_PAGE_SIZE) * 2)
+```
+
+超出限制报异常。
+
+参考：https://www.jianshu.com/p/ea4fc6aefaa8
+
 # 参考
 
 - https://www.jianshu.com/p/dcf2ef4a1860

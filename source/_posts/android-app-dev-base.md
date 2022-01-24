@@ -10,8 +10,6 @@ categories:
 
 总结Android应用开发基础知识中的应用和Application类。
 
-<!-- more -->
-
 # 应用
 
 Android 应用的生命周期由系统控制，包括三个阶段：启动、运行和结束。每个阶段会触发Application 对象中对应的回调方法。
@@ -28,6 +26,8 @@ Android 应用的生命周期由系统控制，包括三个阶段：启动、运
 <img src="/images/android-app-start-simple-flow.png" width="70%" height="70%">
 
 总结：当用户点击应用图标的时候，系统会去检测进程是否存在，如果不存在，则通过Zygote创建进程，创建完进程后，则需要将进程与App进行绑定，将App的资源加载到内存中，当加载完毕，各种条件准备就绪，接下来就是启动Application和Activity了，如此，App的界面就展示出来了。
+
+<!--more-->
 
 ## 应用的销毁
 

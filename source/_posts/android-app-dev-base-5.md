@@ -75,7 +75,7 @@ public boolean superDispatchTouchEvent(MotionEvent event) {
 
 该流程的结果是计算出视图树中每个视图的宽高。每一个 ViewGroup 负责测绘它所有的子视图，而最底层的 View 会负责测绘自身。
 
-**一般流程：**measure 过程由`measure(int, int)`方法发起，从上到下有序的测量 View，在 measure 过程的最后，每个视图存储了自己的尺寸大小和测量规格MeasureSpec，子视图会根据父视图的MeasureSpec测量自身宽高。
+**一般流程：**measure 过程由`measure(int, int)`方法发起，从上到下有序的测量 View，在 measure 过程的最后，每个视图存储了自己的尺寸大小和测量规格MeasureSpec，子视图会根据父视图的MeasureSpec和自身的LayoutParams参数生成自己测量规格，并最终测量自身宽高。
 
 **二次测量：**measure 过程会为一个 View 及所有子节点的 mMeasuredWidth 和 mMeasuredHeight 变量赋值，该值可以通过 `getMeasuredWidth()`和`getMeasuredHeight()`方法获得。而且这两个值必须在父视图约束范围之内，这样才可以保证所有的父视图都接收所有子视图的测量。如果子视图对于 Measure 得到的大小不满意的时候，父视图会介入并设置测量规则进行第二次 measure。比如，父视图可以先根据未给定的 dimension 去测量每一个子视图，如果最终子视图的未约束尺寸太大或者太小的时候，父视图就会使用一个确切的大小再次对子视图进行 measure。
 

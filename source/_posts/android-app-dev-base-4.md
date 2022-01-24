@@ -160,6 +160,8 @@ private ServiceConnection connection = new ServiceConnection() {
 
 广播可用于应用内和应用间IPC通信。使用流程：注册广播接收者，发送广播。
 
+本质上是一种事件的订阅和发布机制。订阅者通过`registerReceiver`或者Manifest声明订阅消息，发布者通过`sendBroadcast`发送消息，消息由`AMS(ActivityManagerService)`进行和管理和派发，AMS充当消息中心的角色。
+
 注册广播接收者的两种方式：
 
 - 静态：在Manifest清单中声明。Android 8及以上有限制，只允许少数的系统级Action。
@@ -190,3 +192,9 @@ private ServiceConnection connection = new ServiceConnection() {
 使其他应用安全地访问和修改您的应用数据。
 
 ContentProvider 实例详解。**TODO**
+
+
+
+参考
+
+- https://juejin.cn/post/6844904057891471367
