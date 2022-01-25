@@ -260,6 +260,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// IBookManager 为aidl借口</span></span><br><span class="line"><span class="comment">// Service 核心代码</span></span><br><span class="line"><span class="keyword">private</span> Binder binder = <span class="keyword">new</span> IBookManager.Stub() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;Book&gt; <span class="title">getBookList</span><span class="params">()</span> <span class="keyword">throws</span> RemoteException </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> bookList;</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> IBinder <span class="title">onBind</span><span class="params">(Intent intent)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> binder;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Activity 核心代码</span></span><br><span class="line">IBookManager iBookManager;</span><br><span class="line"><span class="keyword">private</span> ServiceConnection connection = <span class="keyword">new</span> ServiceConnection() &#123;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onServiceConnected</span><span class="params">(ComponentName name, IBinder service)</span> </span>&#123;</span><br><span class="line">		iBookManager = IBookManager.Stub.asInterface(service);</span><br><span class="line">		List&lt;Book&gt; bookList = iBookManager.getBookList();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 <h1 id="BroadcastReceiver"><a href="#BroadcastReceiver" class="headerlink" title="BroadcastReceiver"></a>BroadcastReceiver</h1><p>广播可用于应用内和应用间IPC通信。使用流程：注册广播接收者，发送广播。</p>
+<p>本质上是一种事件的订阅和发布机制。订阅者通过<code>registerReceiver</code>或者Manifest声明订阅消息，发布者通过<code>sendBroadcast</code>发送消息，消息由<code>AMS(ActivityManagerService)</code>进行和管理和派发，AMS充当消息中心的角色。</p>
 <p>注册广播接收者的两种方式：</p>
 <ul>
 <li>静态：在Manifest清单中声明。Android 8及以上有限制，只允许少数的系统级Action。</li>
@@ -285,6 +286,10 @@
 </ul>
 <h1 id="ContentProvider"><a href="#ContentProvider" class="headerlink" title="ContentProvider"></a>ContentProvider</h1><p>使其他应用安全地访问和修改您的应用数据。</p>
 <p>ContentProvider 实例详解。<strong>TODO</strong></p>
+<p>参考</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844904057891471367">https://juejin.cn/post/6844904057891471367</a></li>
+</ul>
 
     </div>
 
@@ -384,7 +389,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-count">88</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -441,12 +446,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">376k</span>
+    <span title="站点总字数">384k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">5:42</span>
+    <span title="站点阅读时长">5:49</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>

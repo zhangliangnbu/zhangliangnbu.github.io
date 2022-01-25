@@ -20,18 +20,23 @@
     var CONFIG = {"hostname":"zhangliangnbu.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="Developer For Android">
-<meta property="og:type" content="website">
-<meta property="og:title" content="永恒的码流">
-<meta property="og:url" content="https://zhangliangnbu.github.io/archives/2022/01/index.html">
+  <meta name="description" content="简介Android 开机流程，即从用户按开机键到Launcher启动完成这一整个流程。由于Android 系统基于 Linux，因此整个启动流程会包括Linux的启动流程。 Android启动流程，大致分为六个阶段，如下所示：   Boot ROM。用于加载并执行Boot Loader。Android 设备上电后，开始执行固化在 CPU芯片里的 Boot ROM 中的预设代码，程序将 Boot L">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android开机启动流程概览">
+<meta property="og:url" content="https://zhangliangnbu.github.io/2021/10/24/android-start-flow-guide/index.html">
 <meta property="og:site_name" content="永恒的码流">
-<meta property="og:description" content="Developer For Android">
+<meta property="og:description" content="简介Android 开机流程，即从用户按开机键到Launcher启动完成这一整个流程。由于Android 系统基于 Linux，因此整个启动流程会包括Linux的启动流程。 Android启动流程，大致分为六个阶段，如下所示：   Boot ROM。用于加载并执行Boot Loader。Android 设备上电后，开始执行固化在 CPU芯片里的 Boot ROM 中的预设代码，程序将 Boot L">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://zhangliangnbu.github.io/images/android-start-flow-1.png">
+<meta property="og:image" content="https://zhangliangnbu.github.io/images/android-start-flow-2.png">
+<meta property="article:published_time" content="2021-10-24T03:23:41.000Z">
+<meta property="article:modified_time" content="2022-01-24T03:55:14.085Z">
 <meta property="article:author" content="章亮">
-<meta property="article:tag" content="Andriod">
+<meta property="article:tag" content="android">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zhangliangnbu.github.io/images/android-start-flow-1.png">
 
-<link rel="canonical" href="https://zhangliangnbu.github.io/archives/2022/01/">
+<link rel="canonical" href="https://zhangliangnbu.github.io/2021/10/24/android-start-flow-guide/">
 
 
 <script id="page-configurations">
@@ -39,12 +44,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>归档 | 永恒的码流</title>
+  <title>Android开机启动流程概览 | 永恒的码流</title>
   
 
 
@@ -158,51 +163,119 @@
         <div class="content-wrap">
           
 
-          <div class="content archive">
+          <div class="content post posts-expand">
             
 
+    
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        
-        <span class="collection-header">很好! 目前共计 86 篇日志。 继续努力。</span>
-      </div>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2021/10/24/android-start-flow-guide/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Android开机启动流程概览
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-10-24 11:23:41" itemprop="dateCreated datePublished" datetime="2021-10-24T11:23:41+08:00">2021-10-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-01-24 11:55:14" itemprop="dateModified" datetime="2022-01-24T11:55:14+08:00">2022-01-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">Android开发</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2022</span>
+        <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>Android 开机流程，即从用户按开机键到Launcher启动完成这一整个流程。由于Android 系统基于 Linux，因此整个启动流程会包括Linux的启动流程。</p>
+<p>Android启动流程，大致分为六个阶段，如下所示：</p>
+<p><img src="/images/android-start-flow-1.png" alt="android-start-flow-1"></p>
+<ul>
+<li>Boot ROM。用于加载并执行Boot Loader。Android 设备上电后，开始执行固化在 CPU芯片里的 Boot ROM 中的预设代码，程序将 Boot Loader 代码加载到 ROM 中。这一步由芯片厂商负责设计和实现。</li>
+<li>Boot Loader。用于将系统代码加载到 RAM 中。具体功能有：检查 RAM、初始化系统的硬件参数等功能，找到 Linux kernel 的代码，设置启动参数，并最终加载到RAM中。</li>
+<li>Kernel。Linux 内核开始启动，初始化各种软硬件环境、加载驱动程序、挂载根文件系统、并执行 init 程序，由此开启 Android 的世界。</li>
+<li>Init。Init 进程负责启动Android系统关键的几个核心进程，其中最关键的是Zygote 进程，Zygote 进程中创建了 ART 或 Dalvik 虚拟机。</li>
+<li>Zygote。Zygote 是 Android 系统的启动进程，Zygote 会启动 System Servers。</li>
+<li>System Servers。是Android系统的核心，负责启动和管理整个Java FrameWork，包含ActivityManagerService， WorkManagerService，PagerManagerService，PowerManagerService等服务。</li>
+</ul>
+<p>待服务启动完后，系统开始启动 APP。</p>
+<span id="more"></span>
+
+<p>上图对应的系统结构图如下：</p>
+<p><img src="/images/android-start-flow-2.png" alt="android-start-flow-2"></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://learnlinuxconcepts.blogspot.com/2014/02/android-boot-sequence.html">Android Boot Sequence</a></li>
+<li><a target="_blank" rel="noopener" href="https://dzone.com/articles/android-internals-the-android-os-bootup-process">Android Internals: The Android OS Bootup Process</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/android-boot-process/">Android Boot Process</a></li>
+<li><a target="_blank" rel="noopener" href="http://gityuan.com/android/">Android 操作系统架构开篇</a></li>
+</ul>
+
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+    
+    
+    
 
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2022-01-05T12:27:17+08:00"
-              content="2022-01-05">
-          01-05
-        </time>
-      </div>
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/android/" rel="tag"># android</a>
+          </div>
 
-      <div class="post-title">
-          <a class="post-title-link" href="/2022/01/05/auto-base-guide/" itemprop="url">
-            <span itemprop="name">车机开发基础</span>
-          </a>
-      </div>
+        
 
-    </header>
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/10/23/android-ui-system-guide/" rel="prev" title="Android图形系统概览">
+      <i class="fa fa-chevron-left"></i> Android图形系统概览
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/11/07/android-update-ui-in-sub-thread/" rel="next" title="探讨-如何在子线程直接刷新主线程的UI">
+      探讨-如何在子线程直接刷新主线程的UI <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
   </article>
-
-
-    </div>
-  </div>
   
   
-  
-
   
 
 
@@ -255,6 +328,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">2.</span> <span class="nav-text">参考</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -270,7 +344,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-count">88</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -327,12 +401,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">376k</span>
+    <span title="站点总字数">384k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">5:42</span>
+    <span title="站点阅读时长">5:49</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>

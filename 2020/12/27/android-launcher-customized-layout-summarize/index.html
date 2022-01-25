@@ -20,18 +20,18 @@
     var CONFIG = {"hostname":"zhangliangnbu.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="之前参与了Launcher项目，负责样式的自定义布局部分。这部分主要涉及到的技术点是自定义布局和动画，难度适中，但略繁杂，其中有几个技术相关的难点记录如下。">
+  <meta name="description" content="之前参与了Launcher项目，负责样式的自定义布局部分。这部分主要涉及到的技术点是自定义布局和动画，难度适中，但略繁杂，其中有几个技术相关的难点记录如下。 介绍布局基于二维格子：将图标显示区划分为m x n个格子，每个图标占据一个或多个格子。自由布局样式里，格子划分得更小，每个图标的最小尺寸有规定，不能小于规定值。 图标大小可更改：不同尺寸的图标展示的信息不一样，最小的图标仅展示一个ICON，最">
 <meta property="og:type" content="article">
-<meta property="og:title" content="拖拽和动画实践总结">
+<meta property="og:title" content="Launcher开发总结">
 <meta property="og:url" content="https://zhangliangnbu.github.io/2020/12/27/android-launcher-customized-layout-summarize/index.html">
 <meta property="og:site_name" content="永恒的码流">
-<meta property="og:description" content="之前参与了Launcher项目，负责样式的自定义布局部分。这部分主要涉及到的技术点是自定义布局和动画，难度适中，但略繁杂，其中有几个技术相关的难点记录如下。">
+<meta property="og:description" content="之前参与了Launcher项目，负责样式的自定义布局部分。这部分主要涉及到的技术点是自定义布局和动画，难度适中，但略繁杂，其中有几个技术相关的难点记录如下。 介绍布局基于二维格子：将图标显示区划分为m x n个格子，每个图标占据一个或多个格子。自由布局样式里，格子划分得更小，每个图标的最小尺寸有规定，不能小于规定值。 图标大小可更改：不同尺寸的图标展示的信息不一样，最小的图标仅展示一个ICON，最">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://zhangliangnbu.github.io/images/android-launcher-customized-1.drawio.svg">
 <meta property="og:image" content="https://zhangliangnbu.github.io/images/android-launcher-customized-2.svg">
 <meta property="og:image" content="https://zhangliangnbu.github.io/images/android-launcher-customized-2.svg">
 <meta property="article:published_time" content="2020-12-27T07:10:09.000Z">
-<meta property="article:modified_time" content="2022-01-18T00:58:29.464Z">
+<meta property="article:modified_time" content="2022-01-25T02:22:24.085Z">
 <meta property="article:author" content="章亮">
 <meta property="article:tag" content="android">
 <meta name="twitter:card" content="summary">
@@ -50,7 +50,7 @@
   };
 </script>
 
-  <title>拖拽和动画实践总结 | 永恒的码流</title>
+  <title>Launcher开发总结 | 永恒的码流</title>
   
 
 
@@ -184,7 +184,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          拖拽和动画实践总结
+          Launcher开发总结
         </h1>
 
         <div class="post-meta">
@@ -201,7 +201,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-01-18 08:58:29" itemprop="dateModified" datetime="2022-01-18T08:58:29+08:00">2022-01-18</time>
+                <time title="修改时间：2022-01-25 10:22:24" itemprop="dateModified" datetime="2022-01-25T10:22:24+08:00">2022-01-25</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -225,11 +225,25 @@
 
       
         <p>之前参与了Launcher项目，负责样式的自定义布局部分。这部分主要涉及到的技术点是自定义布局和动画，难度适中，但略繁杂，其中有几个技术相关的难点记录如下。</p>
-<span id="more"></span>
-
+<h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>布局基于二维格子：将图标显示区划分为<code>m x n</code>个格子，每个图标占据一个或多个格子。自由布局样式里，格子划分得更小，每个图标的最小尺寸有规定，不能小于规定值。</p>
+<p>图标大小可更改：不同尺寸的图标展示的信息不一样，最小的图标仅展示一个ICON，最大的图标可以展示应用丰富的信息以及操作。展示的信息是通过与应用提供的服务组件或广播来通信的。</p>
 <h1 id="手指长按触发拖动"><a href="#手指长按触发拖动" class="headerlink" title="手指长按触发拖动"></a>手指长按触发拖动</h1><p>下图边框表示一个ViewGroup，包含8个子View。我们希望长按某个子View，并拖动它到其他的位置，比如长按View-1后，显示能够拖动，然后拖动它到View-7的位置。</p>
 <p><img src="/images/android-launcher-customized-1.drawio.svg" alt="android-launcher-customized-1.drawio"></p>
-<p>Github上应该有相关框架，可以自己实现但不需要，因为Android提供了相关API，见<a target="_blank" rel="noopener" href="https://developer.android.com/guide/topics/ui/drag-drop">官方文档</a>。其原理是创建待拖动View的副本，并跟随手指触摸坐标更改副本View的位置。使用流程为在View的长按监听回调<code>OnLongClickListener.onLongClick(View v)</code>里调用开启拖动的方法<code>View.startDragAndDrop()</code>，然后在父视图中注册拖动回调监听即可触发拖动事件的回调方法<code>OnDragListener.onDragEvent()</code>，之后根据坐标判断拖动结束的地方或View。</p>
+<p>Github上应该有相关框架，可以自己实现但不需要，因为Android提供了相关API，见<a target="_blank" rel="noopener" href="https://developer.android.com/guide/topics/ui/drag-drop">官方文档</a>。其原理是创建待拖动View的副本，并跟随手指触摸坐标更改副本View的位置。使用流程为在View的长按监听回调<code>OnLongClickListener.onLongClick(View v)</code>里调用开启拖动的方法<code>View.startDragAndDrop()</code>，然后在目标容器中注册拖动回调监听即可触发拖动事件的回调方法<code>OnDragListener.onDragEvent()</code>，之后根据坐标判断拖动结束的地方或View。</p>
+<span id="more"></span>
+
+<p>关键代码如下：</p>
+<ol>
+<li><p>定义拖拽监听，处理drop和end(如果需要)事件</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 拖拽监听</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ItemDragEventListener</span> <span class="keyword">implements</span> <span class="title">View</span>.<span class="title">OnDragListener</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addEventSender</span><span class="params">(ViewGroup cell)</span> </span>&#123;</span><br><span class="line">        cell.setOnDragListener(<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onDrag</span><span class="params">(View v, DragEvent event)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">int</span> action = event.getAction();</span><br><span class="line">        <span class="keyword">switch</span>(action) &#123;</span><br><span class="line">            <span class="keyword">case</span> DragEvent.ACTION_DRAG_STARTED:</span><br><span class="line">            <span class="keyword">case</span> DragEvent.ACTION_DRAG_ENTERED:</span><br><span class="line">            <span class="keyword">case</span> DragEvent.ACTION_DRAG_LOCATION:</span><br><span class="line">            <span class="keyword">case</span> DragEvent.ACTION_DRAG_EXITED:</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">            <span class="keyword">case</span> DragEvent.ACTION_DROP:</span><br><span class="line">                <span class="keyword">return</span> onDrop(v, event);</span><br><span class="line">            <span class="keyword">case</span> DragEvent.ACTION_DRAG_ENDED:</span><br><span class="line">                <span class="keyword">return</span> onEnd(v, event);</span><br><span class="line">            <span class="keyword">default</span>:</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 处理drop事件</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">onDrop</span><span class="params">(View v, DragEvent event)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// from info</span></span><br><span class="line">        View view = (View) event.getLocalState();</span><br><span class="line">        ViewGroup fromCell = (ViewGroup) view.getParent();</span><br><span class="line">        <span class="keyword">int</span> fromIndex = fromCell.indexOfChild(view);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// current(target) info</span></span><br><span class="line">        <span class="keyword">final</span> ViewGroup targetCell = (ViewGroup) v;</span><br><span class="line">        <span class="keyword">int</span> targetIndex = Utils.getChildIndexStrictly(targetCell, event.getX(), event.getY());</span><br><span class="line"></span><br><span class="line">        <span class="comment">// move item</span></span><br><span class="line">        <span class="keyword">if</span> (targetIndex &gt;= <span class="number">0</span> &amp;&amp; targetIndex &lt; targetCell.getChildCount()) &#123;</span><br><span class="line">            moveItem(fromCell, fromIndex, targetCell, targetIndex);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中，通过坐标定位目标图标View的方法如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">getChildIndexStrictly</span><span class="params">(ViewGroup fl, <span class="keyword">float</span> x, <span class="keyword">float</span> y)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> count = fl.getChildCount();</span><br><span class="line">    <span class="keyword">int</span> left, top, right, bottom;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; count; i ++) &#123;</span><br><span class="line">        <span class="keyword">final</span> View child = fl.getChildAt(i);</span><br><span class="line">        left = child.getLeft();</span><br><span class="line">        right = child.getRight();</span><br><span class="line">        top = child.getTop();</span><br><span class="line">        bottom = child.getBottom();</span><br><span class="line">        <span class="keyword">if</span> (x &gt;= left &amp;&amp; x &lt;= right &amp;&amp; y &gt;= top &amp;&amp; y &lt;= bottom) &#123;</span><br><span class="line">            <span class="keyword">return</span> i;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>将拖拽监听设置给目标容器</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">itemDragEventListener.addEventSender(viewGroup);</span><br></pre></td></tr></table></figure></li>
+<li><p>在待拖拽的图标View长按监听里设置拖拽事件</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 长按监听</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">ItemLongClickListener</span> <span class="keyword">implements</span> <span class="title">OnLongClickListener</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onLongClick</span><span class="params">(View v)</span> </span>&#123;</span><br><span class="line">        v.startDragAndDrop(<span class="keyword">null</span>, <span class="keyword">new</span> DragShadowBuilder(aiv), aiv, <span class="number">0</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 设置长按监听</span></span><br><span class="line">itemView.setOnLongClickListener(<span class="keyword">new</span> ItemLongClickListener());</span><br></pre></td></tr></table></figure></li>
+</ol>
 <h1 id="拖动View到页面边界触延时连续页面切换"><a href="#拖动View到页面边界触延时连续页面切换" class="headerlink" title="拖动View到页面边界触延时连续页面切换"></a>拖动View到页面边界触延时连续页面切换</h1><p>在一个ViewPager里，我们希望拖动当前Pager里的一个View到Pager的边界时，会自动切换Pager。但切换之后我们不希望马上连续切换，因为我们希望在切换后的Pager里，留给用户些许时间来判断是否释放掉拖动的View。比如下图中，我们拖动View-2到Pager的左边界时，我们希望它切换到第2个页面，并且留些许时间让用户考虑是否将View-2放在页面2，如果不放在页面2，用户会继续保持长按，则会继续切换到页面1。</p>
 <p><img src="/images/android-launcher-customized-2.svg" alt="android-launcher-customized-2"></p>
 <p>实现：监听<code>DragEvent.ACTION_DRAG_LOCATION</code>事件，获取实时坐标，判断是否需要切换Pager，如果切换则发送一个延时消息，在这个延时消息触发之前不允许再次切换Pager。</p>
@@ -290,8 +304,8 @@
       <i class="fa fa-chevron-left"></i> 算法-贪心
     </a></div>
       <div class="post-nav-item">
-    <a href="/2021/06/29/Java%E9%9B%86%E5%90%88%E4%B8%AD%E5%85%83%E7%B4%A0%E5%88%A0%E9%99%A4%E6%96%B9%E5%BC%8F/" rel="next" title="Java集合中元素删除方式">
-      Java集合中元素删除方式 <i class="fa fa-chevron-right"></i>
+    <a href="/2021/01/24/cs-picture-structure/" rel="next" title="计算机视觉基础">
+      计算机视觉基础 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -351,7 +365,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%89%8B%E6%8C%87%E9%95%BF%E6%8C%89%E8%A7%A6%E5%8F%91%E6%8B%96%E5%8A%A8"><span class="nav-number">1.</span> <span class="nav-text">手指长按触发拖动</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8B%96%E5%8A%A8View%E5%88%B0%E9%A1%B5%E9%9D%A2%E8%BE%B9%E7%95%8C%E8%A7%A6%E5%BB%B6%E6%97%B6%E8%BF%9E%E7%BB%AD%E9%A1%B5%E9%9D%A2%E5%88%87%E6%8D%A2"><span class="nav-number">2.</span> <span class="nav-text">拖动View到页面边界触延时连续页面切换</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BC%A9%E6%94%BE%E7%88%B6%E8%A7%86%E5%9B%BE%E8%80%8C%E4%B8%8D%E6%94%B9%E5%8F%98%E5%AD%90%E8%A7%86%E5%9B%BE%E7%9A%84%E5%8A%A8%E7%94%BB"><span class="nav-number">3.</span> <span class="nav-text">缩放父视图而不改变子视图的动画</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ViewPager%E9%A1%B5%E9%9D%A2%E9%97%B4%E6%8B%96%E5%8A%A8%E5%AD%90%E8%A7%86%E5%9B%BE%E6%9B%B4%E6%94%B9%E4%BD%8D%E7%BD%AE%E7%9A%84%E5%8A%A8%E7%94%BB"><span class="nav-number">4.</span> <span class="nav-text">ViewPager页面间拖动子视图更改位置的动画</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%89%8B%E6%8C%87%E9%95%BF%E6%8C%89%E8%A7%A6%E5%8F%91%E6%8B%96%E5%8A%A8"><span class="nav-number">2.</span> <span class="nav-text">手指长按触发拖动</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8B%96%E5%8A%A8View%E5%88%B0%E9%A1%B5%E9%9D%A2%E8%BE%B9%E7%95%8C%E8%A7%A6%E5%BB%B6%E6%97%B6%E8%BF%9E%E7%BB%AD%E9%A1%B5%E9%9D%A2%E5%88%87%E6%8D%A2"><span class="nav-number">3.</span> <span class="nav-text">拖动View到页面边界触延时连续页面切换</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BC%A9%E6%94%BE%E7%88%B6%E8%A7%86%E5%9B%BE%E8%80%8C%E4%B8%8D%E6%94%B9%E5%8F%98%E5%AD%90%E8%A7%86%E5%9B%BE%E7%9A%84%E5%8A%A8%E7%94%BB"><span class="nav-number">4.</span> <span class="nav-text">缩放父视图而不改变子视图的动画</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ViewPager%E9%A1%B5%E9%9D%A2%E9%97%B4%E6%8B%96%E5%8A%A8%E5%AD%90%E8%A7%86%E5%9B%BE%E6%9B%B4%E6%94%B9%E4%BD%8D%E7%BD%AE%E7%9A%84%E5%8A%A8%E7%94%BB"><span class="nav-number">5.</span> <span class="nav-text">ViewPager页面间拖动子视图更改位置的动画</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -367,7 +381,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-count">88</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -424,12 +438,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">376k</span>
+    <span title="站点总字数">384k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">5:42</span>
+    <span title="站点阅读时长">5:49</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>

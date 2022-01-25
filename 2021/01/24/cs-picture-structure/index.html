@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zhangliangnbu.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="数字图像表示 二值图：二维矩阵，也叫黑白图，每个点的值用一个比特表示 0-1 灰度图：二维矩阵，每个点的值用8比特表示 0-255 彩色图：多重二位矩阵   视频和图像格式基础 封装格式：视频文件包括编码后的音频和编码后的视频，将这二者封装成一个文件，就涉及到封装格式 视频编码：将视频源文件进行编码，主流编解码格式为H264 帧格式：视频源文件包含一系列的帧文件，帧有帧的封装格式如YUV  YUV">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机视觉基础">
+<meta property="og:url" content="https://zhangliangnbu.github.io/2021/01/24/cs-picture-structure/index.html">
+<meta property="og:site_name" content="永恒的码流">
+<meta property="og:description" content="数字图像表示 二值图：二维矩阵，也叫黑白图，每个点的值用一个比特表示 0-1 灰度图：二维矩阵，每个点的值用8比特表示 0-255 彩色图：多重二位矩阵   视频和图像格式基础 封装格式：视频文件包括编码后的音频和编码后的视频，将这二者封装成一个文件，就涉及到封装格式 视频编码：将视频源文件进行编码，主流编解码格式为H264 帧格式：视频源文件包含一系列的帧文件，帧有帧的封装格式如YUV  YUV">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://zhangliangnbu.github.io/images/cs-picture-structure.png">
+<meta property="og:image" content="https://zhangliangnbu.github.io/images/cs-yuv-structure.png">
+<meta property="article:published_time" content="2021-01-24T09:54:25.000Z">
+<meta property="article:modified_time" content="2022-01-24T10:02:39.419Z">
+<meta property="article:author" content="章亮">
+<meta property="article:tag" content="cs">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zhangliangnbu.github.io/images/cs-picture-structure.png">
+
+<link rel="canonical" href="https://zhangliangnbu.github.io/2021/01/24/cs-picture-structure/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>计算机视觉基础 | 永恒的码流</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">永恒的码流</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">万物皆流，无物常驻</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2021/01/24/cs-picture-structure/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          计算机视觉基础
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-01-24 17:54:25" itemprop="dateCreated datePublished" datetime="2021-01-24T17:54:25+08:00">2021-01-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-01-24 18:02:39" itemprop="dateModified" datetime="2022-01-24T18:02:39+08:00">2022-01-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%85%B6%E4%BB%96/" itemprop="url" rel="index"><span itemprop="name">其他</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="数字图像表示"><a href="#数字图像表示" class="headerlink" title="数字图像表示"></a>数字图像表示</h1><ul>
+<li>二值图：二维矩阵，也叫黑白图，每个点的值用一个比特表示 0-1</li>
+<li>灰度图：二维矩阵，每个点的值用8比特表示 0-255</li>
+<li>彩色图：多重二位矩阵</li>
+</ul>
+<p><img src="/images/cs-picture-structure.png" alt="cs-picture-structure"></p>
+<h1 id="视频和图像格式基础"><a href="#视频和图像格式基础" class="headerlink" title="视频和图像格式基础"></a>视频和图像格式基础</h1><ul>
+<li>封装格式：视频文件包括编码后的音频和编码后的视频，将这二者封装成一个文件，就涉及到封装格式</li>
+<li>视频编码：将视频源文件进行编码，主流编解码格式为H264</li>
+<li>帧格式：视频源文件包含一系列的帧文件，帧有帧的封装格式如YUV</li>
+</ul>
+<h1 id="YUV420-888"><a href="#YUV420-888" class="headerlink" title="YUV420-888"></a>YUV420-888</h1><p>扩展：YUV_420_888 介绍</p>
+<p>首先YUV是一种颜色空间，基于YUV的颜色编码是流媒体的常用编码方式。“Y”表示明亮度（Luminance、Luma），“U”和“V”则是色度、浓度（Chrominance、Chroma）。</p>
+<p>YUV420是一类格式的集合，YUV420并不能完全确定颜色数据的存储顺序。举例来说，对于4x4的图片，在YUV420下，任何格式都有16个Y值，4个U值和4个V值，不同格式只是Y、U和V的排列顺序变化。</p>
+<p>I420（YUV420Planar的一种）则为YYYYYYYYYYYYYYYYUUUUVVVV，NV21（YUV420SemiPlanar）则为YYYYYYYYYYYYYYYYUVUVUVUV。</p>
+<p>在Camera2中，YUV_420_888通常为YUV420Planar排列（手机不同可能会存在差异，目前我用过的几个手机都是这个格式）。实际应用中，可以根据采集到的数据中的pixelStride值判断具体的格式，再去做数据转换，其中pixelStride代表行内颜色值间隔。</p>
+<p><img src="/images/cs-yuv-structure.png" alt="cs-yuv-structure"></p>
+<p>说明：</p>
+<ul>
+<li>图中PixelStride表示一个颜色点的字节长度</li>
+<li>图中LineStride也叫RowStride，表示一行字节长度</li>
+</ul>
+<span id="more"></span>
+
+<h1 id="Android-华为30Pro摄像头示例"><a href="#Android-华为30Pro摄像头示例" class="headerlink" title="Android 华为30Pro摄像头示例"></a>Android 华为30Pro摄像头示例</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">format=35, width=3648, height=2736, plans count=3, timestamp=492152060372000</span><br><span class="line">plan-0-Y, bufferSize=9980928, pixelStride=1, rowStride=3648</span><br><span class="line">plan-1-U, bufferSize=4990463, pixelStride=2, rowStride=3648</span><br><span class="line">plan-2-V, bufferSize=4990463, pixelStride=2, rowStride=3648</span><br><span class="line"></span><br><span class="line">-&gt;NV21 or NV 12</span><br><span class="line"></span><br><span class="line">// ImageFormat.YUV_420_888</span><br><span class="line">// Multi-plane Android YUV 420 format</span><br><span class="line">//This format is a generic YCbCr format, capable of describing any 4:2:0 chroma-subsampled planar or semiplanar buffer (but not fully interleaved), with 8 bits per color sample.</span><br><span class="line">//Images <span class="keyword">in</span> this format are always represented by three separate buffers of data, one <span class="keyword">for</span> each color plane. Additional information always accompanies the buffers, describing the row stride and the pixel stride <span class="keyword">for</span> each plane.</span><br><span class="line">//The order of planes <span class="keyword">in</span> the array returned by Image<span class="comment">#getPlanes() is guaranteed such that plane #0 is always Y, plane #1 is always U (Cb), and plane #2 is always V (Cr).</span></span><br><span class="line">//The Y-plane is guaranteed not to be interleaved with the U/V planes (<span class="keyword">in</span> particular, pixel stride is always 1 <span class="keyword">in</span> yPlane.getPixelStride()).</span><br><span class="line">//The U/V planes are guaranteed to have the same row stride and pixel stride (<span class="keyword">in</span> particular, uPlane.getRowStride() == vPlane.getRowStride() and uPlane.getPixelStride() == vPlane.getPixelStride(); ).</span><br><span class="line">//For example, the android.media.Image object can provide data <span class="keyword">in</span> this format from a android.hardware.camera2.CameraDevice through a android.media.ImageReader object.</span><br><span class="line"></span><br><span class="line">// PixelStride</span><br><span class="line">The distance between adjacent pixel samples, <span class="keyword">in</span> bytes.</span><br><span class="line">This is the distance between two consecutive pixel values <span class="keyword">in</span> a row of pixels. It may be larger than the size of a single pixel to account <span class="keyword">for</span> interleaved image data or padded formats. Note that pixel stride is undefined <span class="keyword">for</span> some formats such as RAW_PRIVATE, and calling getPixelStride on images of these formats will cause an UnsupportedOperationException being thrown. For formats <span class="built_in">where</span> pixel stride is well defined, the pixel stride is always greater than 0.</span><br><span class="line"></span><br><span class="line">// RowStride</span><br><span class="line">The row stride <span class="keyword">for</span> this color plane, <span class="keyword">in</span> bytes.</span><br><span class="line">This is the distance between the start of two consecutive rows of pixels <span class="keyword">in</span> the image. Note that row stried is undefined <span class="keyword">for</span> some formats such as RAW_PRIVATE, and calling getRowStride on images of these formats will cause an UnsupportedOperationException being thrown. For formats <span class="built_in">where</span> row stride is well defined, the row stride is always greater than 0.</span><br></pre></td></tr></table></figure>
+
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li>图像的基本表示方法，单通道与多通道 (<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/129314401">https://zhuanlan.zhihu.com/p/129314401</a>)</li>
+<li>行宽（line/row stride）说明（<a target="_blank" rel="noopener" href="https://blog.csdn.net/bjrxyz/article/details/52690661%EF%BC%89">https://blog.csdn.net/bjrxyz/article/details/52690661）</a></li>
+<li>图片宽、高、步长、像素深度形象展示 (<a target="_blank" rel="noopener" href="https://blog.csdn.net/guo_lei_lamant/article/details/106572915">https://blog.csdn.net/guo_lei_lamant/article/details/106572915</a>)</li>
+<li>A programmer’s view on digital images: the essentials (<a target="_blank" rel="noopener" href="https://www.collabora.com/news-and-blog/blog/2016/02/16/a-programmers-view-on-digital-images-the-essentials/">https://www.collabora.com/news-and-blog/blog/2016/02/16/a-programmers-view-on-digital-images-the-essentials/</a>)</li>
+<li>YUV color formats(<a target="_blank" rel="noopener" href="https://envytools.readthedocs.io/en/latest/hw/memory/g80-surface.html#yuv-color-formats">https://envytools.readthedocs.io/en/latest/hw/memory/g80-surface.html#yuv-color-formats</a>)</li>
+<li>后续：数字图像处理系列、计算机视觉基础、多媒体处理、计算机视觉处理、计算机图形学</li>
+<li>MATLAB图像与视频处理</li>
+<li>FFmpeg从入门到精通+音视频开发进阶指南 2本 FFMPEG视音频编解码基础书籍</li>
+<li>[零基础入门音视频开发]<a target="_blank" rel="noopener" href="https://www.jianshu.com/nb/22515965">https://www.jianshu.com/nb/22515965</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/358bf8b7eacc">详解 YUV 格式</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.im/post/6844904064568803341">Camera2不能设置NV21</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.polarxiong.com/archives/Android-YUV_420_888%E7%BC%96%E7%A0%81Image%E8%BD%AC%E6%8D%A2%E4%B8%BAI420%E5%92%8CNV21%E6%A0%BC%E5%BC%8Fbyte%E6%95%B0%E7%BB%84.html">Android:  YUV_420_888编码Image转换为I420和NV21格式byte数组</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/cs/" rel="tag"># cs</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/12/27/android-launcher-customized-layout-summarize/" rel="prev" title="Launcher开发总结">
+      <i class="fa fa-chevron-left"></i> Launcher开发总结
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/03/02/auto-navigation-system-guide/" rel="next" title="车载导航系统概览">
+      车载导航系统概览 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E8%A1%A8%E7%A4%BA"><span class="nav-number">1.</span> <span class="nav-text">数字图像表示</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A7%86%E9%A2%91%E5%92%8C%E5%9B%BE%E5%83%8F%E6%A0%BC%E5%BC%8F%E5%9F%BA%E7%A1%80"><span class="nav-number">2.</span> <span class="nav-text">视频和图像格式基础</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#YUV420-888"><span class="nav-number">3.</span> <span class="nav-text">YUV420-888</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Android-%E5%8D%8E%E4%B8%BA30Pro%E6%91%84%E5%83%8F%E5%A4%B4%E7%A4%BA%E4%BE%8B"><span class="nav-number">4.</span> <span class="nav-text">Android 华为30Pro摄像头示例</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="章亮"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">章亮</p>
+  <div class="site-description" itemprop="description">Developer For Android</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">88</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">56</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zhangliangnbu" title="GitHub → https://github.com/zhangliangnbu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhangliangnbu@qq.com" title="E-Mail → mailto:zhangliangnbu@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">章亮</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">384k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">5:49</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

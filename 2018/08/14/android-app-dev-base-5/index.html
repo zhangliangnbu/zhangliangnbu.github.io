@@ -252,7 +252,7 @@
 <p><img src="/images/android-view-touch.png" alt="示意图"></p>
 <h1 id="View-绘制机制"><a href="#View-绘制机制" class="headerlink" title="View 绘制机制"></a>View 绘制机制</h1><p>当View需要绘制的时候，首先计算脏区，然后遍历到顶层<code>ViewParent</code>即<code>ViewRootImpl</code>，调用流程的入口方法<code>ViewRootImpl.performTraversals()</code>，之后根据条件执行 measure、layout 和 draw三大操作。每个操作都是顺着视图树自父视图到子视图逐层进行的。</p>
 <h2 id="Measure"><a href="#Measure" class="headerlink" title="Measure"></a>Measure</h2><p>该流程的结果是计算出视图树中每个视图的宽高。每一个 ViewGroup 负责测绘它所有的子视图，而最底层的 View 会负责测绘自身。</p>
-<p><strong>一般流程：</strong>measure 过程由<code>measure(int, int)</code>方法发起，从上到下有序的测量 View，在 measure 过程的最后，每个视图存储了自己的尺寸大小和测量规格MeasureSpec，子视图会根据父视图的MeasureSpec测量自身宽高。</p>
+<p><strong>一般流程：</strong>measure 过程由<code>measure(int, int)</code>方法发起，从上到下有序的测量 View，在 measure 过程的最后，每个视图存储了自己的尺寸大小和测量规格MeasureSpec，子视图会根据父视图的MeasureSpec和自身的LayoutParams参数生成自己测量规格，并最终测量自身宽高。</p>
 <p><strong>二次测量：</strong>measure 过程会为一个 View 及所有子节点的 mMeasuredWidth 和 mMeasuredHeight 变量赋值，该值可以通过 <code>getMeasuredWidth()</code>和<code>getMeasuredHeight()</code>方法获得。而且这两个值必须在父视图约束范围之内，这样才可以保证所有的父视图都接收所有子视图的测量。如果子视图对于 Measure 得到的大小不满意的时候，父视图会介入并设置测量规则进行第二次 measure。比如，父视图可以先根据未给定的 dimension 去测量每一个子视图，如果最终子视图的未约束尺寸太大或者太小的时候，父视图就会使用一个确切的大小再次对子视图进行 measure。</p>
 <p><strong>测量入参：</strong>ViewGroup.LayoutParams，视图自身的布局参数，以及MeasureSpec，父视图对子视图的测量限制。</p>
 <p>MeasureSpec有三种模式：</p>
@@ -384,7 +384,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-count">88</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -441,12 +441,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">376k</span>
+    <span title="站点总字数">384k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">5:42</span>
+    <span title="站点阅读时长">5:49</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>
