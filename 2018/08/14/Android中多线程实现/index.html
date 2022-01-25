@@ -22,7 +22,7 @@
 
   <meta name="description" content="简介Android中涉及线程操作的类或机制主要有：  Thread。线程操作的最基本的类。 ThreadPoolExecutor。基于线程池，处理并发多线程操作。 Handler机制：Handler、Looper、MessageQueue等。Android中多线程处理的基本机制。 HandlerThread。Thread的子类，维护了一个Looper，Handler机制的辅助类。 AsyncTas">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Android中的多线程">
+<meta property="og:title" content="Android中的Handler机制">
 <meta property="og:url" content="https://zhangliangnbu.github.io/2018/08/14/Android%E4%B8%AD%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%AE%9E%E7%8E%B0/index.html">
 <meta property="og:site_name" content="永恒的码流">
 <meta property="og:description" content="简介Android中涉及线程操作的类或机制主要有：  Thread。线程操作的最基本的类。 ThreadPoolExecutor。基于线程池，处理并发多线程操作。 Handler机制：Handler、Looper、MessageQueue等。Android中多线程处理的基本机制。 HandlerThread。Thread的子类，维护了一个Looper，Handler机制的辅助类。 AsyncTas">
@@ -46,7 +46,7 @@
   };
 </script>
 
-  <title>Android中的多线程 | 永恒的码流</title>
+  <title>Android中的Handler机制 | 永恒的码流</title>
   
 
 
@@ -180,7 +180,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Android中的多线程
+          Android中的Handler机制
         </h1>
 
         <div class="post-meta">
@@ -229,8 +229,7 @@
 <li>AsyncTask。基于Handler机制。</li>
 <li>IntentService。基于Handler机制。</li>
 </ul>
-<span id="more"></span>
-
+<p>本文主要介绍Android中的Handler机制。</p>
 <h1 id="Handler机制"><a href="#Handler机制" class="headerlink" title="Handler机制"></a>Handler机制</h1><p>Handler 发消息到MessageQueue中，Looper 循环从MessageQueue中获取消息并消费（执行Handler的回调方法）。</p>
 <p>以线程B向线程A发消息为例，从时间顺序上说明如下：</p>
 <ul>
@@ -238,15 +237,24 @@
 <li>在线程B中，使用上面的Handler发送消息。</li>
 <li>在线程A中，Looper循环消息获取消息，由于消息持有Handler引用，最终会执行Handler的回调方法。</li>
 </ul>
+<span id="more"></span>
+
 <p>代码示例：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span>  Handler handler;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testHandler</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 创建线程A 、Looper、Handler</span></span><br><span class="line">    Thread threadA = <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">        Looper.prepare();</span><br><span class="line">        <span class="comment">// 创建 Handler。</span></span><br><span class="line">        handler = <span class="keyword">new</span> Handler() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(<span class="meta">@NonNull</span> Message msg)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">super</span>.handleMessage(msg);</span><br><span class="line">                Log.d(<span class="string">&quot;handleMessage&quot;</span>, <span class="string">&quot;msg what == &quot;</span> + msg.what);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        Looper.loop();</span><br><span class="line">    &#125;);</span><br><span class="line">    threadA.start();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建线程B，并利用Handler 发送消息</span></span><br><span class="line">    Thread threadB = <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">        <span class="comment">// 防止ThreadA没有执行完而导致handler为空</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Thread.sleep(<span class="number">3000</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        handler.sendEmptyMessage(<span class="number">111</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">    threadB.start();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>注意：创建Handler有多种方式，以绑定线程A的Looper为例：</p>
 <ul>
-<li>在<code>Looper.prepare()</code>和<code>Looper.loop()</code> 之间创建，<code>handler = new Handler()</code>。Android中主线程的第一个Handler就是如此创建。</li>
-<li>在线程A的某个Handler的回调消息中创建，<code>handler = new Handler()</code>。一般开发时在Activity里创建的Handler就属于这种情况。</li>
-<li>在其他线程中直接利用与线程A绑定的Looper进行创建，<code>handler = new Handler(looper)</code>。IntentService里使用HandlerThread，属于这种情况。</li>
+<li><p>在<code>Looper.prepare()</code>和<code>Looper.loop()</code> 之间创建，<code>handler = new Handler()</code>。Android中主线程的第一个Handler就是如此创建。</p>
+</li>
+<li><p>在线程A的某个Handler的回调消息中创建，<code>handler = new Handler()</code>。一般开发时在Activity里创建的Handler就属于这种情况。</p>
+</li>
+<li><p>在其他线程中直接利用与线程A绑定的Looper进行创建，<code>handler = new Handler(looper)</code>。IntentService里使用HandlerThread，属于这种情况。</p>
+</li>
 </ul>
+<h1 id="如何确保一个线程只有一个Looper？"><a href="#如何确保一个线程只有一个Looper？" class="headerlink" title="如何确保一个线程只有一个Looper？"></a>如何确保一个线程只有一个Looper？</h1><p>机制：每个线程对象持有一个<code>ThreadLocalMap</code>成员，<code>ThreadLocalMap</code>以<code>ThreadLocal</code>为key，以实际目标值为value。如果以一个静态<code>ThreadLocal</code>对象为key，则每个线程里的<code>ThreadLocalMap</code>都会持有相同的key却互不并不影响，但在线程内部，由于<code>ThreadLocalMap</code>里的key唯一，则可以确保只有一个值。在Looper创建时则是判断当前线程是否有Looper，有则抛出异常，从而确保唯一。</p>
+<p>相关代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Thread.java</span></span><br><span class="line">ThreadLocalMap threadLocals;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ThreadLocalMap</span></span><br><span class="line"><span class="keyword">private</span> ThreadLocal.ThreadLocalMap.Entry[] table;</span><br><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Entry</span> <span class="keyword">extends</span> <span class="title">WeakReference</span>&lt;<span class="title">ThreadLocal</span>&lt;?&gt;&gt; </span>&#123;</span><br><span class="line">    Object value;</span><br><span class="line">    Entry(ThreadLocal&lt;?&gt; k, Object v) &#123;</span><br><span class="line">        <span class="keyword">super</span>(k); <span class="comment">// key为弱引用，避免内存泄漏</span></span><br><span class="line">        <span class="keyword">this</span>.value = v;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ThreadLocal.java</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">set</span><span class="params">(T value)</span> </span>&#123;</span><br><span class="line">    Thread t = Thread.currentThread();</span><br><span class="line">    ThreadLocalMap map = getMap(t); <span class="comment">// t.threadLocals</span></span><br><span class="line">    <span class="keyword">if</span> (map != <span class="keyword">null</span>)</span><br><span class="line">        map.set(<span class="keyword">this</span>, value);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        createMap(t, value);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Looper.java</span></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">final</span> ThreadLocal&lt;Looper&gt; sThreadLocal = <span class="keyword">new</span> ThreadLocal&lt;Looper&gt;(); <span class="comment">// 静态成员对象，确保唯一</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">prepare</span><span class="params">(<span class="keyword">boolean</span> quitAllowed)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (sThreadLocal.get() != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">&quot;Only one Looper may be created per thread&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    sThreadLocal.set(<span class="keyword">new</span> Looper(quitAllowed));</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
 <h1 id="HandlerThread"><a href="#HandlerThread" class="headerlink" title="HandlerThread"></a>HandlerThread</h1><p><code>Thread</code>的子类，维护了一个<code>Looper</code>，在<code>run()</code>中创建<code>Looper</code>实例、与线程绑定，开启消息循环。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    mTid = Process.myTid();</span><br><span class="line">		<span class="comment">// </span></span><br><span class="line">    Looper.prepare();</span><br><span class="line">    <span class="keyword">synchronized</span> (<span class="keyword">this</span>) &#123;</span><br><span class="line">        mLooper = Looper.myLooper();</span><br><span class="line">        notifyAll();</span><br><span class="line">    &#125;</span><br><span class="line">    Process.setThreadPriority(mPriority);</span><br><span class="line">    onLooperPrepared();</span><br><span class="line">    Looper.loop();</span><br><span class="line">    mTid = -<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -341,7 +349,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Handler%E6%9C%BA%E5%88%B6"><span class="nav-number">2.</span> <span class="nav-text">Handler机制</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HandlerThread"><span class="nav-number">3.</span> <span class="nav-text">HandlerThread</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#AsyncTask"><span class="nav-number">4.</span> <span class="nav-text">AsyncTask</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#IntentService"><span class="nav-number">5.</span> <span class="nav-text">IntentService</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Handler%E6%9C%BA%E5%88%B6"><span class="nav-number">2.</span> <span class="nav-text">Handler机制</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E7%A1%AE%E4%BF%9D%E4%B8%80%E4%B8%AA%E7%BA%BF%E7%A8%8B%E5%8F%AA%E6%9C%89%E4%B8%80%E4%B8%AALooper%EF%BC%9F"><span class="nav-number">3.</span> <span class="nav-text">如何确保一个线程只有一个Looper？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HandlerThread"><span class="nav-number">4.</span> <span class="nav-text">HandlerThread</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#AsyncTask"><span class="nav-number">5.</span> <span class="nav-text">AsyncTask</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#IntentService"><span class="nav-number">6.</span> <span class="nav-text">IntentService</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -414,12 +422,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">384k</span>
+    <span title="站点总字数">385k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">5:49</span>
+    <span title="站点阅读时长">5:50</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>
