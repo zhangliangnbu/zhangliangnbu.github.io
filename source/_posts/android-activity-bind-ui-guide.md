@@ -10,8 +10,6 @@ categories:
 
 我们在`Activity.onCreate()`方法里调用`setContentView()`方法后，待Activity处于RESUME状态时就会呈现视图。这一过程涉及到Activity的启动以及视图的创建和绘制，那么Activity是如何与视图(Window、View)产生联系或绑定在一起的？
 
-<!-- more -->
-
 # 概述
 
 流程关键节点：
@@ -36,6 +34,8 @@ categories:
 ![](/images/android-window-view-relation.svg)
 
 上面的箭头表示有联系，直接持有引用或间接联系。
+
+<!-- more -->
 
 # 启动Activity
 

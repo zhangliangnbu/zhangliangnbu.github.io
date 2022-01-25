@@ -1,5 +1,5 @@
 ---
-title: 拖拽和动画实践总结
+title: Launcher开发总结
 date: 2020-12-27 15:10:09
 tags:
 - android
@@ -9,11 +9,9 @@ categories:
 
 之前参与了Launcher项目，负责样式的自定义布局部分。这部分主要涉及到的技术点是自定义布局和动画，难度适中，但略繁杂，其中有几个技术相关的难点记录如下。
 
-
-
 # 介绍
 
-布局基于二维格子：将图标显示区划分为`mxn`个格子，每个图标占据一个或多个格子。自由布局样式里，格子划分得更小，每个图标的最小尺寸有规定，不能小于规定值。
+布局基于二维格子：将图标显示区划分为`m x n`个格子，每个图标占据一个或多个格子。自由布局样式里，格子划分得更小，每个图标的最小尺寸有规定，不能小于规定值。
 
 图标大小可更改：不同尺寸的图标展示的信息不一样，最小的图标仅展示一个ICON，最大的图标可以展示应用丰富的信息以及操作。展示的信息是通过与应用提供的服务组件或广播来通信的。
 
@@ -23,9 +21,101 @@ categories:
 
 ![android-launcher-customized-1.drawio](/images/android-launcher-customized-1.drawio.svg)
 
-Github上应该有相关框架，可以自己实现但不需要，因为Android提供了相关API，见[官方文档](https://developer.android.com/guide/topics/ui/drag-drop)。其原理是创建待拖动View的副本，并跟随手指触摸坐标更改副本View的位置。使用流程为在View的长按监听回调`OnLongClickListener.onLongClick(View v)`里调用开启拖动的方法`View.startDragAndDrop()`，然后在父视图中注册拖动回调监听即可触发拖动事件的回调方法`OnDragListener.onDragEvent()`，之后根据坐标判断拖动结束的地方或View。
+Github上应该有相关框架，可以自己实现但不需要，因为Android提供了相关API，见[官方文档](https://developer.android.com/guide/topics/ui/drag-drop)。其原理是创建待拖动View的副本，并跟随手指触摸坐标更改副本View的位置。使用流程为在View的长按监听回调`OnLongClickListener.onLongClick(View v)`里调用开启拖动的方法`View.startDragAndDrop()`，然后在目标容器中注册拖动回调监听即可触发拖动事件的回调方法`OnDragListener.onDragEvent()`，之后根据坐标判断拖动结束的地方或View。
 
 <!-- more -->
+
+关键代码如下：
+
+1. 定义拖拽监听，处理drop和end(如果需要)事件
+
+   ```java
+   // 拖拽监听
+   public class ItemDragEventListener implements View.OnDragListener {
+       public void addEventSender(ViewGroup cell) {
+           cell.setOnDragListener(this);
+       }
+   
+       public boolean onDrag(View v, DragEvent event) {
+           final int action = event.getAction();
+           switch(action) {
+               case DragEvent.ACTION_DRAG_STARTED:
+               case DragEvent.ACTION_DRAG_ENTERED:
+               case DragEvent.ACTION_DRAG_LOCATION:
+               case DragEvent.ACTION_DRAG_EXITED:
+                   return true;
+               case DragEvent.ACTION_DROP:
+                   return onDrop(v, event);
+               case DragEvent.ACTION_DRAG_ENDED:
+                   return onEnd(v, event);
+               default:
+                   break;
+           }
+           return false;
+       }
+   
+       // 处理drop事件
+       private boolean onDrop(View v, DragEvent event) {
+           // from info
+           View view = (View) event.getLocalState();
+           ViewGroup fromCell = (ViewGroup) view.getParent();
+           int fromIndex = fromCell.indexOfChild(view);
+   
+           // current(target) info
+           final ViewGroup targetCell = (ViewGroup) v;
+           int targetIndex = Utils.getChildIndexStrictly(targetCell, event.getX(), event.getY());
+   
+           // move item
+           if (targetIndex >= 0 && targetIndex < targetCell.getChildCount()) {
+               moveItem(fromCell, fromIndex, targetCell, targetIndex);
+           }
+           return true;
+       }
+   }
+   ```
+
+   其中，通过坐标定位目标图标View的方法如下：
+
+   ```java
+   public static int getChildIndexStrictly(ViewGroup fl, float x, float y) {
+       int count = fl.getChildCount();
+       int left, top, right, bottom;
+       for (int i = 0; i < count; i ++) {
+           final View child = fl.getChildAt(i);
+           left = child.getLeft();
+           right = child.getRight();
+           top = child.getTop();
+           bottom = child.getBottom();
+           if (x >= left && x <= right && y >= top && y <= bottom) {
+               return i;
+           }
+       }
+       return -1;
+   }
+   ```
+
+2. 将拖拽监听设置给目标容器
+
+   ```java
+   itemDragEventListener.addEventSender(viewGroup);
+   ```
+
+3. 在待拖拽的图标View长按监听里设置拖拽事件
+
+   ```java
+   // 长按监听
+   public static class ItemLongClickListener implements OnLongClickListener {
+       @Override
+       public boolean onLongClick(View v) {
+           v.startDragAndDrop(null, new DragShadowBuilder(aiv), aiv, 0);
+           return true;
+       }
+   }
+   // 设置长按监听
+   itemView.setOnLongClickListener(new ItemLongClickListener());
+   ```
+
+
 
 # 拖动View到页面边界触延时连续页面切换
 

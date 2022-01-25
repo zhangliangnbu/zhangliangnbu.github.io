@@ -10,8 +10,6 @@ categories:
 
 本文主要探讨如何在子线程中不通过Handler而直接更新主线程的UI的问题，仅探讨。
 
-<!-- more -->
-
 # 问题场景
 
 之前被问到一个问题：如何在子线程中不通过Handler而直接更新主线程的UI，比如在主线程创建的TextView，如何在子线程直接调用`setText()`方法更新文本？实例代码如下：
@@ -57,6 +55,8 @@ E/AndroidRuntime: FATAL EXCEPTION: Thread-2
 ```
 
 有什么方法，保证程序不崩溃且能够更新UI？
+
+<!-- more -->
 
 # 探讨
 

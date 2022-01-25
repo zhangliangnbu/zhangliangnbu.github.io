@@ -29,7 +29,7 @@ Android服务框架包括Java服务框架（Java层）和本地服务框架（C+
 
 <!-- more -->
 
-### RPC层说明
+## RPC层说明
 
 - 客户端：调用Proxy具体方法，通过`BinderProxy.transact(code, data, reply, flag)`将方法名和入参等信息传给IPC层
 - 服务端：调用`Stub.onTransact(code, data, reply, flag)`方法，根据code定位具体方法，根据data获取入参。

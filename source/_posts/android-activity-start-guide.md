@@ -17,8 +17,6 @@ categories:
 
 两者主流程基本一致，区别在于根Activity启动流程还包含启动APP进程和实例化Application的流程。
 
-<!-- more -->
-
 # 普通Activity启动流程
 
 ## 流程概述
@@ -32,6 +30,8 @@ categories:
 1. 客户端发起启动Activity请求。客户端里的Activity通过`Instrumentation.execStartActivity()`请求服务端的ATMS启动Activity。
 2. 服务端完成Intent解析和数据、权限、状态等检查的准备工作。ATMS通过ActivityStarter、ActivityStack、ActivityStackSupervisor等完成Intent解析、检查等准备工作，并将数据传递给客户端的ApplicationThread，请求后者完成剩余启动工作。
 3. 客户端完成Activity的创建、数据绑定、onCreate回调等工作。ApplicationThread通过ActivityThread将数据传到其主线程的Handler中进行处理，完成Activity的创建、数据绑定和onCreate回调等工作。
+
+<!-- more -->
 
 ## 方法说明
 

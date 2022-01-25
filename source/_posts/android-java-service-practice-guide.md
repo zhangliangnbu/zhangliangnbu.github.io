@@ -12,8 +12,6 @@ categories:
 
 参考闹钟服务编写一个HelloWorldService服务，功能为打印字符串"Hello, World!"，然后基于编译后的系统，编写APP使用该服务。
 
-<!-- more -->
-
 ```bash
 闹钟服务相关接口和类
 - /frameworks/base/core/java/android/app/IAlarmManager.aidl  接口定义
@@ -24,9 +22,11 @@ categories:
 
 ```
 
+<!-- more -->
+
 # 编写Framwork代码
 
-### 编写和配置 IHelloWorld.aidl
+## 编写和配置 IHelloWorld.aidl
 
 **编写接口**。目录：`/frameworks/base/core/java/android/app`
 
@@ -60,7 +60,7 @@ java_defaults {
 }
 ```
 
-### 编写和注册HelloWorldService
+## 编写和注册HelloWorldService
 
 **配置常量**。在编写服务之前需要在Context.java里配置常量，参照ALARM_SERVICE，进行如下配置。
 
@@ -137,7 +137,7 @@ private void startOtherServices() {
 }
 ```
 
-### 编写和注册HelloWorldManager
+## 编写和注册HelloWorldManager
 
 **编写HelloWorldManager**。参考AlarmManager编写客户端的HelloWorldManager，基于此应用开发者可以使用HelloWorldService。
 
@@ -186,7 +186,7 @@ final class SystemServiceRegistry {
 }
 ```
 
-### 配置SELinux权限
+## 配置SELinux权限
 
 在system/sepolicy 目录下的service.te 和 service_contexts 中配置 HelloWorldService的权限。**TODO，待详细了解**
 
@@ -213,8 +213,6 @@ protected void onCreate(Bundle savedInstanceState) {
 ```
 
 运行APP并查看Log
-
-
 
 # 参考
 

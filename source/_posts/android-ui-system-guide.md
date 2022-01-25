@@ -14,8 +14,6 @@ categories:
 
 代码基于Android 10。
 
-<!-- more -->
-
 # 概述
 
 对于Android图形系统，可以这样理解：App中我们见到状态栏、Activity界面、弹窗等都是一个个窗口，对应App端的Window和服务端的WindowState；每个窗口包含多个控件，对应View和ViewGroup；每个窗口独占单独的画布，对应Surface（持有Canvas）；多个画布内容通过SurfaceFlinger合成一帧画面，最后通过显示设备输出。
@@ -38,7 +36,11 @@ Window和WindowState都间接持有Surface的引用，WindowState持有与Surfac
 
 ![android-draw-total-flow](/images/android-draw-total-flow.svg)
 
+<!-- more -->
+
 > 这幅图参考[Android-Surface原理解析](https://ljd1996.github.io/2020/11/09/Android-Surface%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90/)，图例比较清晰全面，我直接拿过来并重新绘制了全图。
+
+
 
 # 准备阶段
 
