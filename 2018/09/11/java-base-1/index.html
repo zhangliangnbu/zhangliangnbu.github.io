@@ -306,6 +306,13 @@
 </ul>
 </li>
 </ol>
+<p>四种拒绝策略：</p>
+<ol>
+<li>AbortPolicy：任务队列装不下，直接拒绝，抛异常。默认策略</li>
+<li>CallerRunsPolicy：当前线程直接运行任务</li>
+<li>DiscardPolicy：丢弃</li>
+<li>DiscardOldestPolicy：丢弃最旧的任务</li>
+</ol>
 <h1 id="ThreadLocal"><a href="#ThreadLocal" class="headerlink" title="ThreadLocal"></a>ThreadLocal</h1><p>通常情况下，我们创建的变量是可以被任何一个线程访问并修改的。如果想实现每一个线程都有自己的专属本地变量该如何解决呢？ JDK中提供的<code>ThreadLocal</code>类正是为了解决这样的问题。 </p>
 <p><code>Thread</code>有成员<code>ThreadLocalMap</code>，而<code>ThreadLocalMap</code>存储以<code>ThreadLocal</code>为key的键值对。 比如我们在同一个线程中声明了两个 <code>ThreadLocal</code> 对象的话，会使用 <code>Thread</code>内部<code>ThreadLocalMap</code>存放数据的，<code>ThreadLocalMap</code>的 key 就是 <code>ThreadLocal</code>对象，value 就是 <code>ThreadLocal</code> 对象调用<code>set</code>方法设置的值。</p>
 <blockquote>
@@ -417,7 +424,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">88</span>
+          <span class="site-state-item-count">89</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -474,12 +481,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">385k</span>
+    <span title="站点总字数">386k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">5:50</span>
+    <span title="站点阅读时长">5:51</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>

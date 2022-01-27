@@ -164,6 +164,159 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2020/01/23/algorithm-base-four-important/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="章亮">
+      <meta itemprop="description" content="Developer For Android">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永恒的码流">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/01/23/algorithm-base-four-important/" class="post-title-link" itemprop="url">算法-动态规划</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-01-23 15:12:03" itemprop="dateCreated datePublished" datetime="2020-01-23T15:12:03+08:00">2020-01-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-01-18 08:58:29" itemprop="dateModified" datetime="2022-01-18T08:58:29+08:00">2022-01-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%85%B6%E4%BB%96/" itemprop="url" rel="index"><span itemprop="name">其他</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p><strong>基本思想和策略</strong></p>
+<p>基本思想与分治法类似，也是将待求解的问题分解为若干个子问题（阶段），按顺序求解子阶段，前一子问题的解，为后一子问题的求解提供了有用的信息。在求解任一子问题时，列出各种可能的局部解，通过决策保留那些有可能达到最优的局部解，丢弃其他局部解。依次解决各子问题，最后一个子问题就是初始问题的解。</p>
+<p>由于动态规划解决的问题多数有重叠子问题这个特点，为减少重复计算，对每一个子问题只解一次，将其不同阶段的不同状态保存在一个二维数组中。</p>
+<p>与分治法最大的差别是：适合于用动态规划法求解的问题，经分解后得到的子问题往往不是互相独立的（即下一个子阶段的求解是建立在上一个子阶段的解的基础上，进行进一步的求解）。</p>
+<p>$$ f(n,m)=max{f(n-1,m), f(n-1,m-w[n])+P(n,m)} $$</p>
+<p><strong>通俗理解</strong></p>
+<p>动态规划即要求最值，求解动态规划的核心问题是穷举！列出所有可能的答案，然后找出最值！</p>
+<p>一，穷举；二，利用备忘录聪明的穷举。</p>
+<ul>
+<li>动态规划的穷举有点特别，因为这类问题存在「重叠子问题」，如果暴力穷举的话效率会极其低下，所以需要「备忘录」或者「DP table」来优化穷举过程，避免不必要的计算。</li>
+<li>动态规划问题一定会具备「最优子结构」，才能通过子问题的最值得到原问题的最值。</li>
+<li>动态规划的核心思想就是穷举求最值，但是问题可以千变万化，穷举所有可行解其实并不是一件容易的事，只有列出正确的「状态转移方程」，才能正确地穷举。</li>
+</ul>
+<p>核心在于：</p>
+<ul>
+<li>确定基本例</li>
+<li>确定状态，状态的参数。</li>
+<li>确定选择，即达到当前状态有几种方式，从这几种方式中选出最优解。</li>
+<li>明确 dp 函数/数组的定义。</li>
+</ul>
+<h1 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h1><h2 id="轮流选择问题"><a href="#轮流选择问题" class="headerlink" title="轮流选择问题"></a><strong>轮流选择问题</strong></h2><p>状态：先手最优解。具体<code>*dps[i][j]*</code>表示区间*<code>i~j</code>*先手获得的最大值或差值等。</p>
+<p>转移：先手最优即次手最差，$dp[i][j] = sum[i][j] - Math.min(dp[i + 1][j], dp[i][j - 1]);$</p>
+<p>情景：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/stone-game/">leetcode 877. 石子游戏</a>，限制为两端获取</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/predict-the-winner/">leetcode 486. 预测赢家</a>，限制为两端获取</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/can-i-win/">464. 我能赢吗</a>，不限制</li>
+</ul>
+<p>示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 示例：预测赢家，状态为先手的分数</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">PredictTheWinner</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = nums.length;</span><br><span class="line">        <span class="keyword">int</span>[][] dps = <span class="keyword">new</span> <span class="keyword">int</span>[n][n];</span><br><span class="line">        <span class="keyword">int</span>[][] sums = <span class="keyword">new</span> <span class="keyword">int</span>[n][n];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = n - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i --) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = i; j &lt; n; j ++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (i == j) &#123;</span><br><span class="line">                    dps[i][j] = nums[i];</span><br><span class="line">                    sums[i][j] = nums[i];</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    sums[i][j] = sums[i][j-<span class="number">1</span>] + nums[j];</span><br><span class="line">                    dps[i][j] = sums[i][j] - Math.min(dps[i + <span class="number">1</span>][j], dps[i][j - <span class="number">1</span>]);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dps[<span class="number">0</span>][n-<span class="number">1</span>] &gt;= sums[<span class="number">0</span>][n-<span class="number">1</span>] - dps[<span class="number">0</span>][n-<span class="number">1</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="最长子序列问题"><a href="#最长子序列问题" class="headerlink" title="最长子序列问题"></a>最长<strong>子序列问题</strong></h2><p>状态一：*<code>dp[i]</code>*表示，以<code>*i*</code>结尾的最大长度</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/longest-increasing-subsequence/">300. 最长递增子序列</a>， *<code>dp[i]</code>*表示以<code>*i*</code>结尾的最大长度</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/maximum-subarray/">53. 最大子序和</a></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/russian-doll-envelopes/">354. 俄罗斯套娃信封问题</a></li>
+</ul>
+<p>状态二：*<code>dps[i][j]</code><em>表示，单序列时<code>\*i~j\*</code>间最长子序列长度，双序列时长度分别为</em><code>0~i</code>*和<code>*0~j*</code>的序列最长公共子序列长度或其他值。</p>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/longest-palindromic-subsequence/">leetcode 516. 最长回文子序列</a>，</p>
+<p>$dps[i][j] = max(dps[i][j-1], dps[i+1][j] or dps[i+1][j-1] + 2)$</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/longest-common-subsequence/">leetcode 1143. 最长公共子序列</a></p>
+<p><em>dps[i][j] = max(dps[i][j-1], dps[i-1][j] or dps[i-1][j-1] + 1)</em></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/delete-operation-for-two-strings/">583. 两个字符串的删除操作</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/minimum-ascii-delete-sum-for-two-strings/">712. 两个字符串的最小ASCII删除和</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/edit-distance/">72. 编辑距离</a></p>
+</li>
+</ul>
+<h2 id="最小路径和类"><a href="#最小路径和类" class="headerlink" title="最小路径和类"></a>最小路径和类</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/minimum-path-sum/">64. 最小路径和</a></li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/dungeon-game/">174. 地下城游戏</a>，从后往前推算。</li>
+</ul>
+<h2 id="股票交易问题"><a href="#股票交易问题" class="headerlink" title="股票交易问题"></a><strong>股票交易问题</strong></h2><p>状态：*<code>dps[i][j][k]</code><em>表示</em><code>i</code><em>天内</em><code>j</code>*次交易处于<code>k</code>(持有或不持有股票)状态时的最大利润。</p>
+<p>变形：j可以为1次、无限次、k次；k可以添加格外的冷冻期等状态；可增加手续费</p>
+<p>边界值：</p>
+<p>dp[-1][k][0] = dp[i][0][0] = 0</p>
+<p>dp[-1][k][1] = dp[i][0][1] = -infinity</p>
+<p>状态转移方程，买的时候算交易一次：</p>
+<p>不持有：$dp[i][k][0] = max(dp[i-1][k][0], dp[i-1][k][1] + prices[i])$</p>
+<p>持有时：$dp[i][k][1] = max(dp[i-1][k][1], dp[i-1][k-1][0] - prices[i])$</p>
+<p>情景：</p>
+<ul>
+<li>leetcode 121. 买卖股票的最佳时机 最多可以交易1次</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/gu-piao-de-zui-da-li-run-lcof/">剑指 Offer 63. 股票的最大利润</a>，最多交易1次</li>
+<li>leetcode 122. 买卖股票的最佳时机 II 最多可以交易无限次</li>
+<li>leetcode 123. 买卖股票的最佳时机 III 最多可以交易2次</li>
+<li>leetcode 188. 买卖股票的最佳时机 IV 最多可以交易k次</li>
+<li>leetcode 309. 最佳买卖股票时机含冷冻期 最多可以交易无限次</li>
+<li>leetcode 714. 买卖股票的最佳时机含手续费 最多可以交易无限次</li>
+</ul>
+<h2 id="背包问题"><a href="#背包问题" class="headerlink" title="背包问题"></a>背包问题</h2><p>状态：*<code>dp[i][j]</code><em>表示前</em><code>i</code><em>个物品满足目标</em><code>j</code>*的最优解。</p>
+<p><a target="_blank" rel="noopener" href="https://www.notion.so/2f7bdfa95c224c63b865047a608cff9b">背包问题</a></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/steven_oyj/archive/2010/05/22/1741374.html">五大常用算法之二：动态规划算法</a></li>
+<li><a target="_blank" rel="noopener" href="https://labuladong.gitbook.io/algo/mu-lu-ye-2/mu-lu-ye/dong-tai-gui-hua-xiang-jie-jin-jie">动态规划解题核心框架</a></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2020/01/22/algorithm-base-sort/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1065,94 +1218,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhangliangnbu.github.io/2019/04/26/tools-alfred/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="章亮">
-      <meta itemprop="description" content="Developer For Android">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="永恒的码流">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/04/26/tools-alfred/" class="post-title-link" itemprop="url">工具-Alfred</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-04-26 16:06:15" itemprop="dateCreated datePublished" datetime="2019-04-26T16:06:15+08:00">2019-04-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-29 09:13:08" itemprop="dateModified" datetime="2021-06-29T09:13:08+08:00">2021-06-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%85%B6%E4%BB%96/" itemprop="url" rel="index"><span itemprop="name">其他</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>入门</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="http://louiszhai.github.io/2018/05/31/alfred/#5-%E5%BF%AB%E6%8D%B7%E7%BD%91%E9%A1%B5%E6%90%9C%E7%B4%A2">Alfred神器使用手册</a></li>
-</ul>
-<p>Workflow</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://github.com/wensonsmith/YoudaoTranslate">Alfred Youdao Translate Workflow</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/gharlan/alfred-github-workflow">GitHub Workflow for Alfred 3</a></li>
-<li><a target="_blank" rel="noopener" href="http://www.packal.org/workflow/colors">Colors</a></li>
-</ul>
-<p>参考</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://github.com/zenorocha/alfred-workflows">workflows集合</a></li>
-<li>Packal](<a target="_blank" rel="noopener" href="http://www.packal.org/">http://www.packal.org/</a>)</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1224,7 +1289,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">88</span>
+          <span class="site-state-item-count">89</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1281,12 +1346,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">385k</span>
+    <span title="站点总字数">386k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">5:50</span>
+    <span title="站点阅读时长">5:51</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>
