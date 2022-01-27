@@ -53,6 +53,32 @@ Art虚拟机：ART代表AndroidRuntime，Dalvik是依靠一个Just-In-Time(JIT)�
 
 参考：https://www.jianshu.com/p/ea4fc6aefaa8
 
+# 三种软件架构模式
+
+三种主流模式为MVC、MVP、MVVM，核心都是代码实现分为视图、数据、逻辑处理三层，区别在于各层间通信有所差异。
+
+- MVC：V-->C-->M-->V，通信都是单向的。
+- MVP：V<==>P<==>M，通信都是双向的，但V和M之间没有联系。
+- MVVM：V<-->VM<==>M，基于MVP，但V和VM是直接双向绑定的，View的变动，自动反映在 ViewModel，反之亦然。
+
+> 各层说明：
+>
+> - V，View，视图：用户界面
+> - M，Model，模型：数据保存
+> - C，Controller，控制器：业务逻辑
+> - P，Presenter，呈现者：业务逻辑
+> - VM，ViewModel：业务逻辑
+
+说明
+
+- 双向通信并不表示双向依赖。比如MVP中，P与M双向通信，但一般P依赖M，而M不需要依赖P，在Java里的表现即是P持有M的引用，而M不会持有P的引用。
+
+参考：
+
+- https://zh.wikipedia.org/wiki/MVC
+- https://zh.wikipedia.org/wiki/Model-view-presenter
+- https://www.ruanyifeng.com/blog/2015/02/mvcmvp_mvvm.html
+
 # 参考
 
 - https://www.jianshu.com/p/dcf2ef4a1860

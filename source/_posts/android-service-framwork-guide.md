@@ -59,7 +59,7 @@ public static abstract class Stub extends android.os.Binder implements IFoo {
 
 ```
 
-## **Android系统服务框架各类相互作用**
+## **服务框架各类相互作用**
 
 ![](/images/android-service-framwork-class-work.svg)
 

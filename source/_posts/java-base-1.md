@@ -128,6 +128,13 @@ public ThreadPoolExecutor(
    - `SingleThreadExecutor`
    - `CachedThreadPool`
 
+四种拒绝策略：
+
+1. AbortPolicy：任务队列装不下，直接拒绝，抛异常。默认策略
+2. CallerRunsPolicy：当前线程直接运行任务
+3. DiscardPolicy：丢弃
+4. DiscardOldestPolicy：丢弃最旧的任务
+
 # ThreadLocal
 
 通常情况下，我们创建的变量是可以被任何一个线程访问并修改的。如果想实现每一个线程都有自己的专属本地变量该如何解决呢？ JDK中提供的`ThreadLocal`类正是为了解决这样的问题。 
